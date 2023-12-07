@@ -1,5 +1,4 @@
 · Pokémon Team Visualizer ·
-ver 1.0
 
 ###########################
 CREADO POR 
