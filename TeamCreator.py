@@ -1,9 +1,11 @@
+from ast import Delete
 from tkinter import *
 import tkinter as tk
 import shutil;
 import os
 import sys
 import webbrowser
+from winreg import DeleteKey
 
 class PokemonFrame:
     def __init__(self, count):
@@ -26,6 +28,10 @@ class PokemonFrame:
         self.pokemonMoteInput = Entry(self.frame, justify=CENTER, font=f"{fontName} {smallSize}", width=entryWidth, textvariable=self.pokemonMoteEntry)
         self.pokemonMoteInput.grid(row=0, column=3, padx=10, pady=10)
 
+    def Clear(self):
+        self.pokemonNameInput.delete(0, 'end')
+        self.pokemonMoteInput.delete(0, 'end')
+            
 #App
 credits = "Made by Adriplodocus."
 appName = "Pokémon team visualizer by @Adriplodocus"
@@ -59,19 +65,13 @@ originalNamesFileName = "TeamOriginalNames.txt"
 aliasNamesFileName = "TeamAliasNames.txt"
 gifExtension = ".gif"
 
-allPokemon = []
-pokemonList = []
-nicknameList = []
-
-maxPokemon = 6
-
 #UI
 root = Tk()
 root.resizable(0,0) #The window size won't be modified.
 root.title(appName)
 
 #This canvas will contain all app elements.
-canvas = tk.Canvas(root, height=450, width=600, bg="#E8E2DB")
+canvas = tk.Canvas(root, height=500, width=600, bg="#E8E2DB")
 canvas.pack()
 
 mainFrame = tk.Frame(root, bg=mainFrameColor,highlightbackground=edgeColor,highlightthickness=3)
@@ -82,14 +82,20 @@ titleLabel.pack()
 
 #Update button
 updateFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-updateFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 7.5, anchor="n")
+updateFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 7.75, anchor="n")
 updateButton = Button(updateFrame, text="Update team", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:UpdateTeam())
 updateButton.pack(fill=X)
+
+#Update button
+resetFrame = tk.Frame(mainFrame, bg=innerFrameColor)
+resetFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 8.75, anchor="n")
+resetButton = Button(resetFrame, text="Reset all data", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:ResetData())
+resetButton.pack(fill=X)
 
 #Spam
 debugLabelText = tk.StringVar()
 spamFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-spamFrame.place(relwidth=0.95, height=250, relx=0.5, y=baseYForFrames * 8.5, anchor="n")
+spamFrame.place(relwidth=0.95, height=250, relx=0.5, y=baseYForFrames * 10, anchor="n")
 spamLabel = Label(spamFrame, text=credits, font=f"{fontName} 12 ", bg=innerFrameColor, fg=fontColor)
 spamLabel.pack(fill=X)
 twitchButton = Button(spamFrame, text="Twitch", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("www.twitch.tv/Adriplodocus"))
@@ -102,9 +108,15 @@ instagramButton.pack()
 #Debug
 debugLabelText = tk.StringVar()
 debugFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-debugFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 11.5, anchor="n")
+debugFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 12.5, anchor="n")
 debugLabel = Label(debugFrame, font=f"{fontName} {smallSize} ", bg=innerFrameColor, textvariable=debugLabelText)
 debugLabel.pack(fill=X)
+
+allPokemon = [PokemonFrame(0), PokemonFrame(1), PokemonFrame(2), PokemonFrame(3), PokemonFrame(4), PokemonFrame(5)]
+pokemonList = []
+nicknameList = []
+
+maxPokemon = 6
 
 def GetFilePath():
     global p
@@ -115,12 +127,6 @@ def GetFilePath():
         application_path = os.path.dirname(__file__)
 
     p = os.path.join(application_path)
-
-def InitPokemons(): 
-    counter = 0
-    while counter < maxPokemon:
-        allPokemon.append(PokemonFrame(counter))
-        counter+=1
 
 def Init():
     if os.path.exists(p + "/" + txtFolder + originalNamesFileName):
@@ -285,6 +291,19 @@ def CreateJS():
     # Saving the data into the JS file
     file_js.close()
 
+def ClearTextFields():
+    counter = 0
+    while counter < maxPokemon:
+        allPokemon[counter].Clear()
+        counter+=1
+
+def ResetData():
+    RemoveCurrentTeam()
+    ResetOriginalNamesFile()
+    ResetAliasNamesFile()
+    ClearTextFields()
+    DebugMsg("All data reseted.", errorColor)
+
 def UpdateTeam():
     debugLabelText.set("")
     RemoveCurrentTeam()
@@ -332,13 +351,17 @@ def CheckForDuplicateNames(list):
     return len(namesToCheck) != len(set(namesToCheck))
 
 def CreateOriginalNamesFile():
-    # Creating the JS file
     originalNamesFile = open(p + txtFolder + originalNamesFileName, "w", encoding="utf-8")
-    # Adding the input data to the JS file
     originalNamesFile.write(
     f'''{pokemonList[0]},{pokemonList[1]},{pokemonList[2]},{pokemonList[3]},{pokemonList[4]},{pokemonList[5]}'''
     )
-    # Saving the data into the JS file
+    originalNamesFile.close()
+
+def ResetOriginalNamesFile():
+    originalNamesFile = open(p + txtFolder + originalNamesFileName, "w", encoding="utf-8")
+    originalNamesFile.write(
+    f''',,,,,'''
+    )
     originalNamesFile.close()
 
 def GetOriginalNamesLines():
@@ -347,13 +370,17 @@ def GetOriginalNamesLines():
         originalLines = f.readlines()
 
 def CreateAliasNamesFile():
-    # Creating the JS file
     aliasNamesFile = open(p + txtFolder + aliasNamesFileName, "w", encoding="utf-8")
-    # Adding the input data to the JS file
     aliasNamesFile.write(
     f'''{nicknameList[0]},{nicknameList[1]},{nicknameList[2]},{nicknameList[3]},{nicknameList[4]},{nicknameList[5]}'''
     )
-    # Saving the data into the JS file
+    aliasNamesFile.close()
+
+def ResetAliasNamesFile():
+    aliasNamesFile = open(p + txtFolder + aliasNamesFileName, "w", encoding="utf-8")
+    aliasNamesFile.write(
+    f''',,,,,'''
+    )
     aliasNamesFile.close()
 
 def GetAliasNamesLines():
@@ -395,8 +422,6 @@ def OpenURL(url):
     webbrowser.open(url)
 
 GetFilePath()
-InitPokemons()
-
 Init()
 
 root.mainloop()
