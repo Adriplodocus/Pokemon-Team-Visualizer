@@ -34,5 +34,9 @@ Permite visualizar en una fuente de navegador de obs u otra herramienta de strea
 · Recomendaciones
 - Utiliza streamdeck, la aplicación Touch Portal en un móvil o Lioran Board para crear un botón que oculte/muestre la fuente para actualizarla fácilmente.
 
+· Otros
+- Si quieres reiniciar los datos, ve a la carpeta Resources/TXTs y en ambos archivos de texto deja únicamente ,,,,,
+En futuras actualizaciones se añadirá esta funcionalidad.
+
 Coméntame cualquier añadido que creas que le pueda venir bien a la app. ¡Estaré encantado de mejorarla!
 

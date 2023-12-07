@@ -55,10 +55,10 @@ baseYForFrames = 35
 #Pokemon base class.
 class PokemonFrame:
     def __init__(self, count):
-        self.frame = tk.Frame(mainFrame, bg=innerFrameColor)
-        self.frame.place(relwidth=0.95, height=50, relx=0.5, y=baseYForFrames * count, anchor="n")
+        self.frame = tk.Frame(root, bg=innerFrameColor)
+        self.frame.place(relwidth=0.95, height=50, relx=0.5, rely=0.1, y=baseYForFrames * count, anchor="n")
 
-        self.label = Label(self.frame, text="Pokemon " + str(count) + ":", font=f"{fontName} {smallSize}", bg=innerFrameColor, fg=fontColor)
+        self.label = Label(self.frame, text="Pokemon " + str(count+1) + ":", font=f"{fontName} {smallSize}", bg=innerFrameColor, fg=fontColor)
         self.label.grid(row=0, column=0, padx=10, pady=10)
 
         self.pokemonNameEntry = tk.StringVar()
@@ -143,6 +143,98 @@ def Init():
         for name in aliasNames:
             allPokemon[counter].pokemonMoteEntry.set(name)
             counter+=1
+
+def CreateHTML():
+    htmlText = '''
+        <html>
+            <head>
+                <script src="Team.js"></script>
+                <meta charset="UTF-8">
+                <style>
+                    .pkDiv{
+                        width:225px;
+                        height: 150px;
+                        float: left;
+                    }
+                    .shadowDiv{
+                        width:225px;
+                        height: 150px;
+                        float: left;
+                        padding-top: 80px;
+                    }
+                    img {
+                        width: 100%;
+                        max-width: 100%;
+                        max-height: 100%;
+                        object-fit: contain;
+                    }
+                    p {
+                        height: 25px;
+                        color: white;
+                        text-align: center;
+                        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                        font-size: 35px;
+                    }
+                    .container{
+                        clear: both;
+                    }
+                </style>
+            </head>
+
+            <body onload="changeP()">
+                <div class="container">
+                    <div class="pkDiv">
+                        <p id="p1"></p>
+                        <img id="img1">
+                    </div>
+                    <div class="pkDiv">
+                        <p id="p2"></p>
+                        <img id="img2">
+                    </div>
+                    <div class="pkDiv">
+                        <p id="p3"></p>
+                        <img id="img3">
+                    </div>
+                    <div class="pkDiv">
+                        <p id="p4"></p>
+                        <img id="img4">
+                    </div>
+                    <div class="pkDiv">
+                        <p id="p5"></p>
+                        <img id="img5">
+                    </div>
+                    <div class="pkDiv">
+                        <p id="p6"></p>
+                        <img id="img6">
+                    </div>
+                </div>
+                <div class="container">
+                    <div class="shadowDiv">
+                        <img src="../Resources/Shadow.png">
+                    </div>       
+                    <div class="shadowDiv">
+                        <img src="../Resources/Shadow.png">
+                    </div>       
+                    <div class="shadowDiv">
+                        <img src="../Resources/Shadow.png">
+                    </div>        
+                    <div class="shadowDiv">
+                        <img src="../Resources/Shadow.png">
+                    </div>        
+                    <div class="shadowDiv">
+                        <img src="../Resources/Shadow.png">
+                    </div>        
+                    <div class="shadowDiv">
+                        <img src="../Resources/Shadow.png">
+                    </div>
+                </div>
+            </body>
+        </html>
+    '''
+    # Creating the JS file
+    file_html = open(p +"/OBS/" + "TeamVisualizer.html", "w", encoding="utf-8")
+    file_html.write(htmlText)
+    file_html.close()
 
 def CreateJS():
     jsText = '''function changeP() {
@@ -235,6 +327,7 @@ def UpdateTeam():
             counter+=1
 
         Init()
+        CreateHTML()
         CreateJS()
     else:
         DebugMsg("There are duplicated names. Please, check this.", errorColor)
