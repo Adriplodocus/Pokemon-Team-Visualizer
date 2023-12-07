@@ -1,4 +1,3 @@
-from pickle import APPEND
 from tkinter import *
 import tkinter as tk
 import shutil;
@@ -6,53 +5,6 @@ import os
 import sys
 import webbrowser
 
-#Créditos del desarrollador.
-credits = "Made by Adriplodocus."
-
-#Colors
-mainFrameColor = "#333333"
-edgeColor = "#706C61"
-innerFrameColor ="#333333"
-buttonsColor = "#333333"
-fontColor = "#E6E6E6"
-linkColor = "#ff8af9"
-errorColor = "#ff6161"
-correctColor = "#7aff9e"
-
-#Font properties
-fontName = "Fixedsys"
-smallSize = 12
-mediumSize = 15
-largeSize = 20
-
-#Values
-appName = "Pokémon team visualizer by @Adriplodocus"
-appTitle = "Pokémon team visualizer"
-
-#UI
-root = Tk()
-root.resizable(0,0) #Evitamos que el tamaño de la ventana se pueda cambiar.
-root.title(appName)
-
-#Creamos un canvas que contendrá todos los elementos de la app.
-canvas = tk.Canvas(root, height=450, width=600, bg="#E8E2DB")
-#Pack para mostrar el canvas.
-canvas.pack()
-
-#Creamos un mainFrame que contendrá algunos elementos de la interfaz.
-mainFrame = tk.Frame(root, bg=mainFrameColor,highlightbackground=edgeColor,highlightthickness=3)
-#Lo situamos con place.
-mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
-
-#Label para mostrar el título de la app.
-titleLabel = Label(mainFrame, text=appTitle, font=f"{fontName} {largeSize} bold", bg=mainFrameColor, fg=fontColor)
-titleLabel.pack()
-
-# Variables para tamaños de elementos de UI
-entryWidth = 20
-baseYForFrames = 35
-
-#Pokemon base class.
 class PokemonFrame:
     def __init__(self, count):
         self.frame = tk.Frame(root, bg=innerFrameColor)
@@ -74,7 +26,61 @@ class PokemonFrame:
         self.pokemonMoteInput = Entry(self.frame, justify=CENTER, font=f"{fontName} {smallSize}", width=entryWidth, textvariable=self.pokemonMoteEntry)
         self.pokemonMoteInput.grid(row=0, column=3, padx=10, pady=10)
 
-#Botón de update.
+#App
+credits = "Made by Adriplodocus."
+appName = "Pokémon team visualizer by @Adriplodocus"
+appTitle = "Pokémon team visualizer"
+
+#Colors
+mainFrameColor = "#333333"
+edgeColor = "#706C61"
+innerFrameColor ="#333333"
+buttonsColor = "#333333"
+fontColor = "#E6E6E6"
+linkColor = "#ff8af9"
+errorColor = "#ff6161"
+correctColor = "#7aff9e"
+
+#Font properties
+fontName = "Fixedsys"
+smallSize = 12
+mediumSize = 15
+largeSize = 20
+
+#UI element sizes
+entryWidth = 20
+baseYForFrames = 35
+
+#IO
+animatedSpritesFolder = "/Resources/AnimatedSprites/"
+currentTeamFolder = "/Resources/CurrentTeam/"
+txtFolder = "/Resources/TXTs/"
+originalNamesFileName = "TeamOriginalNames.txt"
+aliasNamesFileName = "TeamAliasNames.txt"
+gifExtension = ".gif"
+
+allPokemon = []
+pokemonList = []
+nicknameList = []
+
+maxPokemon = 6
+
+#UI
+root = Tk()
+root.resizable(0,0) #The window size won't be modified.
+root.title(appName)
+
+#This canvas will contain all app elements.
+canvas = tk.Canvas(root, height=450, width=600, bg="#E8E2DB")
+canvas.pack()
+
+mainFrame = tk.Frame(root, bg=mainFrameColor,highlightbackground=edgeColor,highlightthickness=3)
+mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
+
+titleLabel = Label(mainFrame, text=appTitle, font=f"{fontName} {largeSize} bold", bg=mainFrameColor, fg=fontColor)
+titleLabel.pack()
+
+#Update button
 updateFrame = tk.Frame(mainFrame, bg=innerFrameColor)
 updateFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 7.5, anchor="n")
 updateButton = Button(updateFrame, text="Update team", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:UpdateTeam())
@@ -100,12 +106,6 @@ debugFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 11.5, an
 debugLabel = Label(debugFrame, font=f"{fontName} {smallSize} ", bg=innerFrameColor, textvariable=debugLabelText)
 debugLabel.pack(fill=X)
 
-animatedSpritesFolder = "/Resources/AnimatedSprites/"
-currentTeamFolder = "/Resources/CurrentTeam/"
-txtFolder = "/Resources/TXTs/"
-originalNamesFileName = "TeamOriginalNames.txt"
-aliasNamesFileName = "TeamAliasNames.txt"
-
 def GetFilePath():
     global p
 
@@ -117,11 +117,8 @@ def GetFilePath():
     p = os.path.join(application_path)
 
 def InitPokemons(): 
-    global allPokemon
-    allPokemon = []
-
     counter = 0
-    while counter < 6:
+    while counter < maxPokemon:
         allPokemon.append(PokemonFrame(counter))
         counter+=1
 
@@ -293,18 +290,12 @@ def UpdateTeam():
     RemoveCurrentTeam()
 
     #Original names recovery.
-    global pokemonList
-    pokemonList = []
-
     counter = 0
     for pokemon in allPokemon:
         pokemonList.append(pokemon.pokemonNameInput.get().upper())
         counter+=1
 
     #Nicknames recovery.
-    global nicknameList
-    nicknameList = []
-
     counter = 0
     for pokemon in allPokemon:
         nicknameList.append(pokemon.pokemonMoteInput.get().upper())
@@ -372,11 +363,11 @@ def GetAliasNamesLines():
 
 def ProcessPokemon(originalName, newName):
     error = FALSE
-    file = p + animatedSpritesFolder + originalName+".gif"
-    if os.path.exists(p + animatedSpritesFolder + originalName + ".gif"):
-        movedFile = p + currentTeamFolder + originalName + ".gif"
+    file = p + animatedSpritesFolder + originalName + gifExtension
+    if os.path.exists(p + animatedSpritesFolder + originalName + gifExtension):
+        movedFile = p + currentTeamFolder + originalName + gifExtension
         Copy(file, p + currentTeamFolder)
-        newF = newName + ".gif"
+        newF = newName + gifExtension
         os.rename(movedFile, p + currentTeamFolder + newF)
     else:
         error = TRUE
@@ -405,5 +396,7 @@ def OpenURL(url):
 
 GetFilePath()
 InitPokemons()
+
 Init()
+
 root.mainloop()
