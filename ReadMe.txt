@@ -1,4 +1,5 @@
 · Pokémon Team Visualizer ·
+ver 2.0
 
 ###########################
 CREADO POR 
@@ -22,7 +23,7 @@ Permite visualizar en una fuente de navegador de obs u otra herramienta de strea
 - No cambies el nombre de ningún fichero.
 - No muevas ningún fichero a otra carpeta. Si quieres mover la herramienta, debes mover todo.
 - Esta aplicación se encuentra en fase alpha. Si encuentras un error o se te ocurre una forma de mejorarla no dudes en ponerte en contacto conmigo. Todavía no he mordido a nadie :D.
-- De momento solo se admiten los gif que hay dentro de la carpeta "Resources/AnimatedSprites". Es muy importante no cambiar el nombre de estos ficheros.
+- De momento solo se admiten los gif que hay dentro de la carpeta "Resources/AnimatedSprites".
 
 · Cómo añadirlo a OBS o StreamLabs
 - Añade una fuente de navegador a tu escena e introduce el fichero TeamVisualizer.html como fichero local en dicha fuente. Lo encontrarás dentro de la carpeta "OBS".
@@ -32,10 +33,6 @@ Permite visualizar en una fuente de navegador de obs u otra herramienta de strea
 
 · Recomendaciones
 - Utiliza streamdeck, la aplicación Touch Portal en un móvil o Lioran Board para crear un botón que oculte/muestre la fuente para actualizarla fácilmente.
-
-· Otros
-- Si quieres reiniciar los datos, ve a la carpeta Resources/TXTs y en ambos archivos de texto deja únicamente ,,,,,
-En futuras actualizaciones se añadirá esta funcionalidad.
 
 Coméntame cualquier añadido que creas que le pueda venir bien a la app. ¡Estaré encantado de mejorarla!
 
