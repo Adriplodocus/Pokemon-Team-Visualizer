@@ -266,26 +266,14 @@ def CreateJS():
 
     # Creating the JS file
     file_js = open(p +"/OBS/" + "Team.js", "w", encoding="utf-8")
-    # Adding the input data to the JS file
-    jsText = jsText.replace("%1", nicknameList[0])
-    jsText = jsText.replace("%2", nicknameList[1])
-    jsText = jsText.replace("%3", nicknameList[2])
-    jsText = jsText.replace("%4", nicknameList[3])
-    jsText = jsText.replace("%5", nicknameList[4])
-    jsText = jsText.replace("%6", nicknameList[5])
 
-    if pokemonList[0] != "":
-        jsText = jsText.replace("//%htmlImg1", '''document.getElementById("img1").src = "../Resources/CurrentTeam/".concat(document.getElementById("p1").textContent.concat(".gif"));''')
-    if pokemonList[1] != "":
-        jsText = jsText.replace("//%htmlImg2", '''document.getElementById("img2").src = "../Resources/CurrentTeam/".concat(document.getElementById("p2").textContent.concat(".gif"));''')
-    if pokemonList[2] != "":
-        jsText = jsText.replace("//%htmlImg3", '''document.getElementById("img3").src = "../Resources/CurrentTeam/".concat(document.getElementById("p3").textContent.concat(".gif"));''')
-    if pokemonList[3] != "":
-        jsText = jsText.replace("//%htmlImg4", '''document.getElementById("img4").src = "../Resources/CurrentTeam/".concat(document.getElementById("p4").textContent.concat(".gif"));''')
-    if pokemonList[4] != "":
-        jsText = jsText.replace("//%htmlImg5", '''document.getElementById("img5").src = "../Resources/CurrentTeam/".concat(document.getElementById("p5").textContent.concat(".gif"));''')
-    if pokemonList[5] != "":
-        jsText = jsText.replace("//%htmlImg6", '''document.getElementById("img6").src = "../Resources/CurrentTeam/".concat(document.getElementById("p6").textContent.concat(".gif"));''')
+    # Adding the input data to the JS file
+    for i in range(0, maxPokemon):
+        placeHolder = f"%{i+1}"
+        jsText = jsText.replace(placeHolder, nicknameList[i])
+
+        if pokemonList[i] != "":
+            jsText = jsText.replace(f"//%htmlImg{i+1}", f'''document.getElementById("img{i+1}").src = "../Resources/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));''')
        
     file_js.write(jsText)
     # Saving the data into the JS file
