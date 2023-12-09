@@ -290,11 +290,15 @@ def ResetData():
     ResetOriginalNamesFile()
     ResetAliasNamesFile()
     ClearTextFields()
+    UpdateTeam()
     DebugMsg("All data reseted.", errorColor)
 
 def UpdateTeam():
     debugLabelText.set("")
     RemoveCurrentTeam()
+
+    pokemonList.clear()
+    nicknameList.clear()
 
     #Original names recovery.
     counter = 0
