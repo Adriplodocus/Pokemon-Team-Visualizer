@@ -20,7 +20,7 @@ class PokemonFrame:
         self.pokemonNameInput = Entry(self.frame, justify=CENTER, font=f"{fontName} {smallSize}",width=entryWidth, textvariable=self.pokemonNameEntry)
         self.pokemonNameInput.grid(row=0, column=1, padx=10, pady=10)
 
-        self.moteLabel = Label(self.frame, text="Mote:", font=f"{fontName} {smallSize}", bg=innerFrameColor, fg=fontColor)
+        self.moteLabel = Label(self.frame, text="Nickname:", font=f"{fontName} {smallSize}", bg=innerFrameColor, fg=fontColor)
         self.moteLabel.grid(row=0, column=2, padx=10, pady=10)
 
         self.pokemonMoteEntry = tk.StringVar()
@@ -33,7 +33,7 @@ class PokemonFrame:
         self.pokemonMoteInput.delete(0, 'end')
             
 #App
-credits = "Made by Adriplodocus."
+credits = "Made by @Adriplodocus."
 appName = "Pokémon team visualizer by @Adriplodocus"
 appTitle = "Pokémon team visualizer"
 
