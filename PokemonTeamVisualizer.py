@@ -5,7 +5,8 @@ import os
 import sys
 import webbrowser
 import os
-import pkg_resources
+import os
+from importlib.resources import files, as_file
 import ctypes
 
 class PokemonFrame:
@@ -408,19 +409,25 @@ def GetAliasNamesLines():
         aliasLines = f.readlines()
 
 def ProcessPokemon(originalName, newName):
-    resource_path = "/Resources/AnimatedSprites/" + originalName + gifExtension
-    gif_data = pkg_resources.resource_filename(__name__, resource_path)
+    resource_path = "AnimatedSprites/" + originalName + gifExtension  # No leading '/'
+    
+    try:
+        # Access the resource using importlib.resources
+        ref = files('Resources') / resource_path  # Replace 'my_package' with your actual package name
+        with as_file(ref) as path:
+            gif_data = str(path)  # This gives you the file path
 
-    if gif_data:
-        try:
+            # Proceed with copying the resource and renaming the file
             Copy(gif_data, appDirectory + obsFolder + currentTeamFolder)
-        except Exception as e:
-            DebugMsg("Some errors found on original pokemon names.\nPlease, check they're properly written.", errorColor)
 
-        copiedFile = appDirectory + obsFolder + currentTeamFolder + originalName + gifExtension
-        os.rename(copiedFile, appDirectory + obsFolder + currentTeamFolder + newName + gifExtension)
- 
-    DebugMsg("The team has been succesfully generated!", correctColor)
+            copiedFile = appDirectory + obsFolder + currentTeamFolder + originalName + gifExtension
+            os.rename(copiedFile, appDirectory + obsFolder + currentTeamFolder + newName + gifExtension)
+        
+        DebugMsg("The team has been successfully generated!", correctColor)
+
+    except Exception as e:
+        DebugMsg("Some errors found on original pokemon names.\nPlease, check they're properly written.", errorColor)
+        print(str(e))  # Optional, to see the error if needed
 
 def DebugMsg(msg, color):
     debugLabel.config(fg=color)
