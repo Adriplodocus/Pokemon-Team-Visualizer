@@ -20,7 +20,7 @@ Un mensaje abajo indicará si todo fue exitoso.
 
 · Cómo añadirlo a OBS o StreamLabs
 Añade una fuente de navegador y selecciona /OBS/TeamVisualizer.html como fichero local.
-Tamaño recomendado: 1350x265. Despues reajustas en obs como quieras.
+Tamaño recomendado: 1350x265. Despues reajustas en OBS como quieras.
 Marca "Apagar fuente cuando no sea visible".
 ¡Listo! Desactiva/reactiva la fuente para actualizar.
 

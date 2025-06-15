@@ -35,9 +35,9 @@ class PokemonFrame:
         self.pokemonMoteInput.delete(0, 'end')
             
 #App
-credits = "Made by @Adriplodocus."
-appName = "Pokémon team visualizer by @Adriplodocus"
-appTitle = "Pokémon team visualizer"
+credits = "Made by @Adriplodocus"
+appName = "Pokémon Team Visualizer"
+appTitle = "Pokémon Team Visualizer"
 
 #Colors
 mainFrameColor = "#333333"
@@ -104,7 +104,7 @@ spamLabel = Label(spamFrame, text=credits, font=f"{fontName} 12 ", bg=innerFrame
 spamLabel.pack(fill=X)
 twitchButton = Button(spamFrame, text="Twitch", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("www.twitch.tv/Adriplodocus"))
 twitchButton.pack()
-twitterButton = Button(spamFrame, text="Twitter", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("https://twitter.com/Adriplodocus"))
+twitterButton = Button(spamFrame, text="X", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("https://twitter.com/Adriplodocus"))
 twitterButton.pack()
 instagramButton = Button(spamFrame, text="Instagram", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("https://www.instagram.com/adriplodocus/"))
 instagramButton.pack()
