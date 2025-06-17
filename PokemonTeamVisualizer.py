@@ -92,13 +92,12 @@ mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
 titleLabel = Label(mainFrame, text=appTitle, font=f"{fontName} {largeSize} bold", bg=mainFrameColor, fg=fontColor)
 titleLabel.pack()
 
-#Settings area
-#Layout
+#Layout area
 settingsFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-settingsFrame.place(relwidth=0.985, height=50, relx=0.5, rely=0.475, anchor=N)
+settingsFrame.place(relwidth=0.985, height=75, relx=0.5, rely=0.475, anchor=N)
 
-LayoutLabel = Label(settingsFrame, text="Layout", font=f"{fontName} {mediumSize} bold", bg=mainFrameColor, fg=fontColor)
-LayoutLabel.pack()
+layoutLabel = Label(settingsFrame, text="Layout", font=f"{fontName} {mediumSize} bold", bg=mainFrameColor, fg=fontColor)
+layoutLabel.pack()
 
 layouts = ["Horizontal", "Vertical"]
 layout = StringVar(value="Horizontal")  # Default value
@@ -108,20 +107,25 @@ comboBox.pack()
 
 comboBox.bind("<<ComboboxSelected>>", lambda event: UpdateLayoutFile())
 
-#Update button
-updateFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-updateFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 10, anchor="n")
-updateButton = Button(updateFrame, text="Update team", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:UpdateTeam())
+showShadows = tk.BooleanVar
+check = tk.Checkbutton(settingsFrame, text="Show shadows", font=f"{fontName} {mediumSize}", bg=mainFrameColor, fg=fontColor, activebackground=mainFrameColor, selectcolor=mainFrameColor, activeforeground=fontColor, variable=showShadows)
+check.place(relx=0.5, rely=0.60, anchor="n")
+
+#Buttons
+buttonsFrame = tk.Frame(mainFrame, bg=innerFrameColor)
+buttonsFrame.place(relwidth=0.985, height=60, relx=0.5, rely=0.625, anchor=N)
+
+updateFrame = tk.Frame(buttonsFrame, bg=innerFrameColor)
+updateFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0, anchor="n")
+updateButton = Button(updateFrame, text="Update team", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, activebackground=buttonsColor, command=lambda:UpdateTeam())
 updateButton.pack(fill=X)
 
-#Reset button
-resetFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-resetFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 10.75, anchor="n")
-resetButton = Button(resetFrame, text="Reset all data", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:ResetData())
+resetFrame = tk.Frame(buttonsFrame, bg=innerFrameColor)
+resetFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0.5, anchor="n")
+resetButton = Button(resetFrame, text="Reset all data", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, activebackground=buttonsColor, command=lambda:ResetData())
 resetButton.pack(fill=X)
 
 #Spam
-debugLabelText = tk.StringVar()
 spamFrame = tk.Frame(mainFrame, bg=innerFrameColor)
 spamFrame.place(relwidth=0.95, height=250, relx=0.5, rely=0.85, anchor="n")
 spamLabel = Label(spamFrame, text=credits, font=f"{fontName} 12 ", bg=innerFrameColor, fg=fontColor)
@@ -133,10 +137,10 @@ twitterButton.pack()
 instagramButton = Button(spamFrame, text="Instagram", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("https://www.instagram.com/adriplodocus/"))
 instagramButton.pack()
 
-#Debug
-debugLabelText = tk.StringVar()
+#Debug. Must be placed after #Spam frame to avoid overlapping.
 debugFrame = tk.Frame(mainFrame, bg=innerFrameColor)
 debugFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 12.5, anchor="n")
+debugLabelText = tk.StringVar()
 debugLabel = Label(debugFrame, font=f"{fontName} {smallSize} ", bg=innerFrameColor, textvariable=debugLabelText)
 debugLabel.pack(fill=X)
 
