@@ -107,9 +107,17 @@ comboBox.pack()
 
 comboBox.bind("<<ComboboxSelected>>", lambda event: UpdateLayoutFile())
 
-showShadows = tk.BooleanVar
-check = tk.Checkbutton(settingsFrame, text="Show shadows", font=f"{fontName} {mediumSize}", bg=mainFrameColor, fg=fontColor, activebackground=mainFrameColor, selectcolor=mainFrameColor, activeforeground=fontColor, variable=showShadows)
-check.place(relx=0.5, rely=0.60, anchor="n")
+showShadows = tk.BooleanVar(value=True)
+showShadowsCheck = tk.Checkbutton(settingsFrame, text="Show shadows", font=f"{fontName} {mediumSize}", bg=mainFrameColor, fg=fontColor, activebackground=mainFrameColor, selectcolor=mainFrameColor, activeforeground=fontColor, variable=showShadows)
+showShadowsCheck.place(relx=0.5, rely=0.60, anchor="n")
+showShadowsCheck.pack()
+
+def UpdateShowShadows(*args):
+    if os.path.exists(appDirectory + obsFolder + txtFolder + "Shadow.txt"):
+        with open(appDirectory + obsFolder + txtFolder + "Shadow.txt", "w", encoding="utf-8") as f:
+            f.write(str(showShadows.get()))
+
+showShadows.trace_add("write", UpdateShowShadows)
 
 #Buttons
 buttonsFrame = tk.Frame(mainFrame, bg=innerFrameColor)
@@ -402,21 +410,33 @@ def CreateJS():
         jsText = jsText.replace(placeHolder, nicknameList[i])
 
         if pokemonList[i] != "":
-            jsText = jsText.replace(f"//%htmlImg{i+1}", 
-                                    f'''
-                                    document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));
-                                    document.getElementById("shadow{i+1}").src = "https://i.postimg.cc/htkbFn8V/Shadow.png";
-                                    ''')
+            if showShadows.get() == True:
+                jsText = jsText.replace(f"//%htmlImg{i+1}", 
+                                        f'''
+            document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));
+            document.getElementById("shadow{i+1}").src = "https://i.postimg.cc/htkbFn8V/Shadow.png";
+                                        ''')
+            else:
+                jsText = jsText.replace(f"//%htmlImg{i+1}", 
+                                        f'''
+            document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));
+                                        ''')
        
     file_js.write(jsText)
     # Hide(appDirectory + obsFolder + "Team.js")
     file_js.close()
 
+def CreateShadowsFile():
+    if not os.path.exists(appDirectory + obsFolder + txtFolder + "Shadow.txt"):
+        layoutFile = open(appDirectory + obsFolder + txtFolder + "Shadow.txt", "w", encoding="utf-8")
+        layoutFile.write(str(showShadows.get()))
+        layoutFile.close() 
+
 def CreateLayoutFile():
-        if not os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
-            layoutFile = open(appDirectory + obsFolder + txtFolder + "Layout.txt", "w", encoding="utf-8")
-            layoutFile.write(layout.get())
-            layoutFile.close()
+    if not os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
+        layoutFile = open(appDirectory + obsFolder + txtFolder + "Layout.txt", "w", encoding="utf-8")
+        layoutFile.write(layout.get())
+        layoutFile.close()
 
 def UpdateLayoutFile():
     if os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
@@ -498,6 +518,7 @@ def Init():
             allPokemon[counter].pokemonMoteEntry.set(name)
             counter+=1
     
+    CreateShadowsFile()
     CreateLayoutFile()
     GetLayout()
 
