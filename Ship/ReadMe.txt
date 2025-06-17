@@ -1,59 +1,63 @@
 · Pokémon Team Visualizer ·
-ver 1.0
+Version 2.0
+
+Visualiza tu equipo de Pokémon en OBS u otra herramienta de streaming sin problemas de distribución o tamaño. Olvídate de ajustes molestos.
 
 ###########################
 CREADO POR
 www.twitch.tv/Adriplodocus
-www.twitter.com/Adriplodocus
+www.x.com/Adriplodocus
 www.instagram.com/Adriplodocus
 ###########################
 
-· Descripción
-Visualiza tu equipo de Pokémon en OBS u otra herramienta de streaming sin problemas de distribución o tamaño. Olvídate de ajustes molestos.
-
 · Setup
-Ejecuta PokemonTeamVisualizer.exe.
-Escribe el nombre original del Pokémon a la izquierda.
-Escribe el mote deseado a la derecha; si no, se usará el nombre original.
-Presiona "Update Team".
-Un mensaje abajo indicará si todo fue exitoso.
+1. Ejecuta PokemonTeamVisualizer.exe.
+2. Escribe el nombre original del Pokémon a la izquierda.
+3. Escribe el mote deseado a la derecha; si no, se usará el nombre original.
+4. Selecciona si quieres layout horizontal o vertical.
+5. Presiona "Update Team".
+
+Un mensaje abajo indicará si hubo algún error.
 
 · Cómo añadirlo a OBS o StreamLabs
-Añade una fuente de navegador y selecciona /OBS/TeamVisualizer.html como fichero local.
-Tamaño recomendado: 1350x265. Despues reajustas en OBS como quieras.
-Marca "Apagar fuente cuando no sea visible".
-¡Listo! Desactiva/reactiva la fuente para actualizar.
+1. Añade una fuente de navegador y selecciona /OBS/TeamVisualizer.html como fichero local.
+2. Tamaño recomendado: 1350x265 (horizontal) o 265x1350 (vertical). Luego ajusta en OBS a tu gusto.
+3. Marca "Apagar fuente cuando no sea visible".
+4. Desactiva y vuelve a reactivar la fuente para que se actualice el equipo.
 
 · Recomendaciones
 Usa Stream Deck, Touch Portal en móvil o Lioran Board para ocultar/mostrar la fuente fácilmente.
 
 ¡Comenta mejoras! ¡Encantado de hacerlas!
 
+· Pokémon Team Visualizer ·
+Version 2.0
+
+Visualize your Pokémon team in OBS or any other streaming software without size or layout issues. Forget about annoying adjustments.
+
 ###########################
 CREATED BY
 www.twitch.tv/Adriplodocus
-www.twitter.com/Adriplodocus
+www.x.com/Adriplodocus
 www.instagram.com/Adriplodocus
 ###########################
 
-· Description
-Visualize your Pokémon team in OBS or another streaming tool without distribution or size issues. Forget about annoying adjustments.
-
 · Setup
-Run PokemonTeamVisualizer.exe.
-Type the original name of the Pokémon on the left.
-Type the desired nickname on the right; if not, the original name will be used.
-Press "Update Team."
-A message below will indicate if everything was successful.
+1. Run PokemonTeamVisualizer.exe.
+2. Enter the Pokémon's original name on the left.
+3. Enter the desired nickname on the right; if empty, the original name will be used.
+4. Choose either horizontal or vertical layout.
+5. Click "Update Team".
+
+A message below will indicate if there was any error.
 
 · How to add it to OBS or StreamLabs
-Add a browser source and select /OBS/TeamVisualizer.html as the local file.
-Recommended size: 1350x265. Then readjust in OBS as you prefer.
-Check "Turn off source when not visible."
-Ready! Disable/enable the source to update.
+1. Add a browser source and select /OBS/TeamVisualizer.html as a local file.
+2. Recommended size: 1350x265 (horizontal) or 265x1350 (vertical). Adjust in OBS as needed.
+3. Check "Turn off source when not visible".
+4. To update the team, toggle the source off and on.
 
 · Recommendations
-Use Stream Deck, Touch Portal on mobile, or Lioran Board to easily hide/show the source.
+Use Stream Deck, Touch Portal (mobile) or Lioran Board to easily show/hide the source.
 
-Comment on improvements! Happy to make them!
-
+Feel free to suggest improvements! Happy to add them!

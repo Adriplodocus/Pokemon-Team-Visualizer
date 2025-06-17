@@ -443,6 +443,11 @@ def UpdateLayoutFile():
         with open(appDirectory + obsFolder + txtFolder + "Layout.txt", "w", encoding="utf-8") as f:
             f.write(layout.get())
 
+def GetShowShadows():
+    if os.path.exists(appDirectory + obsFolder + txtFolder + "Shadow.txt"):
+        with open(appDirectory + obsFolder + txtFolder + "Shadow.txt", encoding="utf-8") as f:
+            showShadows.set(f.read().strip() == 'True')
+
 def GetLayout():
     if os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
         with open(appDirectory + obsFolder + txtFolder + "Layout.txt", encoding="utf-8") as f:
@@ -519,6 +524,7 @@ def Init():
             counter+=1
     
     CreateShadowsFile()
+    GetShowShadows()
     CreateLayoutFile()
     GetLayout()
 
