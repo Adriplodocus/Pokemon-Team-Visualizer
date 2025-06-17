@@ -1,5 +1,6 @@
 from tkinter import *
 import tkinter as tk
+from tkinter import ttk
 import shutil;
 import os
 import sys
@@ -33,7 +34,13 @@ class PokemonFrame:
     def Clear(self):
         self.pokemonNameInput.delete(0, 'end')
         self.pokemonMoteInput.delete(0, 'end')
-            
+
+class SettingsFrame:
+    def __init__(self):
+        self.frame = tk.Frame(root, bg=innerFrameColor)
+        self.frame.place(relwidth=0.95, height=50, relx=0.5, rely=0.1, y=baseYForFrames * 6, anchor="n")
+        self.label = Label(self.frame, text="Layout:", font=f"{fontName} {smallSize}", bg=innerFrameColor, fg=fontColor)
+          
 #App
 credits = "Made by @Adriplodocus"
 appName = "Pokémon Team Visualizer"
@@ -48,6 +55,7 @@ fontColor = "#E6E6E6"
 linkColor = "#ff8af9"
 errorColor = "#ff6161"
 correctColor = "#7aff9e"
+testFrameColor = "#B4B4B4"
 
 #Font properties
 fontName = "Fixedsys"
@@ -75,7 +83,7 @@ root.resizable(0,0) #The window size won't be modified.
 root.title(appName)
 
 #This canvas will contain all app elements.
-canvas = tk.Canvas(root, height=500, width=600, bg="#E8E2DB")
+canvas = tk.Canvas(root, height=600, width=600, bg="#E8E2DB")
 canvas.pack()
 
 mainFrame = tk.Frame(root, bg=mainFrameColor,highlightbackground=edgeColor,highlightthickness=3)
@@ -84,22 +92,38 @@ mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
 titleLabel = Label(mainFrame, text=appTitle, font=f"{fontName} {largeSize} bold", bg=mainFrameColor, fg=fontColor)
 titleLabel.pack()
 
+#Settings area
+#Layout
+settingsFrame = tk.Frame(mainFrame, bg=innerFrameColor)
+settingsFrame.place(relwidth=0.985, height=50, relx=0.5, rely=0.475, anchor=N)
+
+LayoutLabel = Label(settingsFrame, text="Layout", font=f"{fontName} {mediumSize} bold", bg=mainFrameColor, fg=fontColor)
+LayoutLabel.pack()
+
+layouts = ["Horizontal", "Vertical"]
+layout = StringVar(value="Horizontal")  # Default value
+comboBox = ttk.Combobox(settingsFrame, textvariable=layout, state="readonly", values=layouts, font=f"{fontName} {mediumSize}")
+comboBox.current(0)  # Set default selection
+comboBox.pack()
+
+comboBox.bind("<<ComboboxSelected>>", lambda event: UpdateLayoutFile())
+
 #Update button
 updateFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-updateFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 7.75, anchor="n")
+updateFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 10, anchor="n")
 updateButton = Button(updateFrame, text="Update team", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:UpdateTeam())
 updateButton.pack(fill=X)
 
-#Update button
+#Reset button
 resetFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-resetFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 8.75, anchor="n")
+resetFrame.place(relwidth=0.95, height=35, relx=0.5, y=baseYForFrames * 10.75, anchor="n")
 resetButton = Button(resetFrame, text="Reset all data", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, command=lambda:ResetData())
 resetButton.pack(fill=X)
 
 #Spam
 debugLabelText = tk.StringVar()
 spamFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-spamFrame.place(relwidth=0.95, height=250, relx=0.5, y=baseYForFrames * 10, anchor="n")
+spamFrame.place(relwidth=0.95, height=250, relx=0.5, rely=0.85, anchor="n")
 spamLabel = Label(spamFrame, text=credits, font=f"{fontName} 12 ", bg=innerFrameColor, fg=fontColor)
 spamLabel.pack(fill=X)
 twitchButton = Button(spamFrame, text="Twitch", font=f"{fontName} {smallSize} underline", highlightthickness = 0, bd=0, bg=buttonsColor, fg=linkColor, command=lambda:OpenURL("www.twitch.tv/Adriplodocus"))
@@ -137,93 +161,205 @@ def Hide(path):
     FILE_ATTRIBUTE_HIDDEN = 0x02
     ret = ctypes.windll.kernel32.SetFileAttributesW(path, FILE_ATTRIBUTE_HIDDEN)
 
-def CreateHTML():
-    htmlText = '''
-        <html>
-            <head>
-                <script src="Team.js"></script>
-                <meta charset="UTF-8">
-                <style>
-                    .pkDiv{
-                        width:225px;
-                        height: 150px;
-                        float: left;
-                    }
-                    .shadowDiv{
-                        width:225px;
-                        height: 150px;
-                        float: left;
-                        padding-top: 80px;
-                    }
-                    img {
-                        width: 100%;
-                        max-width: 100%;
-                        max-height: 100%;
-                        object-fit: contain;
-                    }
-                    p {
-                        height: 25px;
-                        color: white;
-                        text-align: center;
-                        font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-                        font-size: 35px;
-                    }
-                    .container{
-                        clear: both;
-                    }
-                </style>
-            </head>
+horizontalHTMLTemplate = '''
+<html>
+    <head>
+        <script src="Team.js"></script>
+        <meta charset="UTF-8">
+        <style>
+            .pkDiv{
+                width:225px;
+                height: 150px;
+                float: left;
+            }
+            .shadowDiv{
+                width:225px;
+                height: 150px;
+                float: left;
+                padding-top: 80px;
+            }
+            img {
+                width: 100%;
+                max-width: 100%;
+                max-height: 100%;
+                object-fit: contain;
+            }
+            p {
+                height: 25px;
+                color: white;
+                text-align: center;
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-size: 35px;
+            }
+            .container{
+                clear: both;
+            }
+        </style>
+    </head>
 
-            <body onload="changeP()">
-                <div class="container">
-                    <div class="pkDiv">
-                        <p id="p1"></p>
-                        <img id="img1">
-                    </div>
-                    <div class="pkDiv">
-                        <p id="p2"></p>
-                        <img id="img2">
-                    </div>
-                    <div class="pkDiv">
-                        <p id="p3"></p>
-                        <img id="img3">
-                    </div>
-                    <div class="pkDiv">
-                        <p id="p4"></p>
-                        <img id="img4">
-                    </div>
-                    <div class="pkDiv">
-                        <p id="p5"></p>
-                        <img id="img5">
-                    </div>
-                    <div class="pkDiv">
-                        <p id="p6"></p>
-                        <img id="img6">
-                    </div>
-                </div>
-                <div class="container">
-                    <div class="shadowDiv">
-                        <img src='https://i.postimg.cc/htkbFn8V/Shadow.png'>
-                    </div>       
-                    <div class="shadowDiv">
-                        <img src='https://i.postimg.cc/htkbFn8V/Shadow.png'>
-                    </div>       
-                    <div class="shadowDiv">
-                        <img src='https://i.postimg.cc/htkbFn8V/Shadow.png'>
-                    </div>        
-                    <div class="shadowDiv">
-                        <img src='https://i.postimg.cc/htkbFn8V/Shadow.png'>
-                    </div>        
-                    <div class="shadowDiv">
-                        <img src='https://i.postimg.cc/htkbFn8V/Shadow.png'>
-                    </div>        
-                    <div class="shadowDiv">
-                        <img src='https://i.postimg.cc/htkbFn8V/Shadow.png'>
-                    </div>
-                </div>
-            </body>
-        </html>
+    <body onload="changeP()">
+        <div class="container">
+            <div class="pkDiv">
+                <p id="p1"></p>
+                <img id="img1">
+            </div>
+            <div class="pkDiv">
+                <p id="p2"></p>
+                <img id="img2">
+            </div>
+            <div class="pkDiv">
+                <p id="p3"></p>
+                <img id="img3">
+            </div>
+            <div class="pkDiv">
+                <p id="p4"></p>
+                <img id="img4">
+            </div>
+            <div class="pkDiv">
+                <p id="p5"></p>
+                <img id="img5">
+            </div>
+            <div class="pkDiv">
+                <p id="p6"></p>
+                <img id="img6">
+            </div>
+        </div>
+        <div class="container">
+            <div class="shadowDiv">
+                <img  id="shadow1">
+            </div>       
+            <div class="shadowDiv">
+                <img  id="shadow2">
+            </div>       
+            <div class="shadowDiv">
+                <img  id="shadow3">
+            </div>        
+            <div class="shadowDiv">
+                <img  id="shadow4">
+            </div>        
+            <div class="shadowDiv">
+                <img  id="shadow5">
+            </div>        
+            <div class="shadowDiv">
+                <img  id="shadow6">
+            </div>
+        </div>
+    </body>
+</html>
     '''
+verticalHtmlTemplate = '''
+ <html>
+    <head>
+        <script src="Team.js"></script>
+        <meta charset="UTF-8">
+        <style>
+            .wrapper {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .pair {
+                display: flex;
+                flex-direction: column;
+                margin: 0;
+                padding: 0;
+                margin-bottom: 20px;
+            }
+
+            .pkDiv, .shadowDiv {
+                width: 225px;
+                margin: 0;
+                padding: 0;
+            }
+
+            .shadowDiv {
+            margin-top: -15px;
+            }
+
+            img {
+                display: block; /* elimina espacios fantasmas debajo de imágenes */
+                width: 100%;
+                height: auto;
+                max-height: 100px; /* ajusta si quieres */
+                object-fit: contain;
+            }
+
+            p {
+                margin: 0;
+                padding: 0;
+                height: 25px;
+                color: white;
+                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-size: 25px;
+                text-align: center;
+            }
+        </style>
+    </head>
+
+    <body onload="changeP()">
+        <div class="wrapper">
+            <div class="pair">
+                <div class="pkDiv">
+                    <p id="p1"></p>
+                    <img id="img1">
+                </div>
+                <div class="shadowDiv">
+                <img id="shadow1"></img>
+                </div>
+            </div>
+            <div class="pair">
+                <div class="pkDiv">
+                    <p id="p2"></p>
+                    <img id="img2">
+                </div>
+                <div class="shadowDiv">
+                    <img id="shadow2"></img>
+                </div>
+            </div>
+            <div class="pair">
+                <div class="pkDiv">
+                    <p id="p3"></p>
+                    <img id="img3">
+                </div>
+                <div class="shadowDiv">
+                    <img id="shadow3"></img>
+                </div>
+            </div>
+            <div class="pair">
+                <div class="pkDiv">
+                    <p id="p4"></p>
+                    <img id="img4">
+                </div>
+                <div class="shadowDiv">
+                    <img id="shadow4"></img>
+                </div>
+            </div>
+            <div class="pair">
+                <div class="pkDiv">
+                    <p id="p5"></p>
+                    <img id="img5">
+                </div>
+                <div class="shadowDiv">
+                    <img id="shadow5"></img>
+                </div>
+            </div>
+            <div class="pair">
+                <div class="pkDiv">
+                    <p id="p6"></p>
+                    <img id="img6">
+                </div>
+                <div class="shadowDiv">
+                    <img id="shadow6"></img>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
+'''
+
+def CreateHTML():
+    htmlText = horizontalHTMLTemplate if layout.get() == "Horizontal" else verticalHtmlTemplate
+
     # Creating the JS file
     file_html = open(appDirectory + obsFolder + "TeamVisualizer.html", "w", encoding="utf-8")
     file_html.write(htmlText)
@@ -251,8 +387,7 @@ def CreateJS():
         //%htmlImg4
         //%htmlImg5
         //%htmlImg6
-    }
-    '''
+    }'''
 
     # Creating the JS file
     file_js = open(appDirectory + obsFolder + "Team.js", "w", encoding="utf-8")
@@ -263,11 +398,31 @@ def CreateJS():
         jsText = jsText.replace(placeHolder, nicknameList[i])
 
         if pokemonList[i] != "":
-            jsText = jsText.replace(f"//%htmlImg{i+1}", f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));''')
+            jsText = jsText.replace(f"//%htmlImg{i+1}", 
+                                    f'''
+                                    document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));
+                                    document.getElementById("shadow{i+1}").src = "https://i.postimg.cc/htkbFn8V/Shadow.png";
+                                    ''')
        
     file_js.write(jsText)
     # Hide(appDirectory + obsFolder + "Team.js")
     file_js.close()
+
+def CreateLayoutFile():
+        if not os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
+            layoutFile = open(appDirectory + obsFolder + txtFolder + "Layout.txt", "w", encoding="utf-8")
+            layoutFile.write(layout.get())
+            layoutFile.close()
+
+def UpdateLayoutFile():
+    if os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
+        with open(appDirectory + obsFolder + txtFolder + "Layout.txt", "w", encoding="utf-8") as f:
+            f.write(layout.get())
+
+def GetLayout():
+    if os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
+        with open(appDirectory + obsFolder + txtFolder + "Layout.txt", encoding="utf-8") as f:
+            layout.set(f.read().strip())
 
 def CreateBaseFolders():
     if os.path.exists(appDirectory + obsFolder) == FALSE:
@@ -338,6 +493,9 @@ def Init():
         for name in aliasNames:
             allPokemon[counter].pokemonMoteEntry.set(name)
             counter+=1
+    
+    CreateLayoutFile()
+    GetLayout()
 
 def ClearTextFields():
     counter = 0
