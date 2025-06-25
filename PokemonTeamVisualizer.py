@@ -94,7 +94,7 @@ titleLabel.pack()
 
 #Layout area
 settingsFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-settingsFrame.place(relwidth=0.985, height=75, relx=0.5, rely=0.475, anchor=N)
+settingsFrame.place(relwidth=0.985, height=85, relx=0.5, rely=0.475, anchor=N)
 
 layoutLabel = Label(settingsFrame, text="Layout", font=f"{fontName} {mediumSize} bold", bg=mainFrameColor, fg=fontColor)
 layoutLabel.pack()
@@ -119,9 +119,21 @@ def UpdateShowShadows(*args):
 
 showShadows.trace_add("write", UpdateShowShadows)
 
+showPokeballBackground = tk.BooleanVar(value=True)
+showPokeballBackgroundCheck = tk.Checkbutton(settingsFrame, text="Show pokeball background", font=f"{fontName} {mediumSize}", bg=mainFrameColor, fg=fontColor, activebackground=mainFrameColor, selectcolor=mainFrameColor, activeforeground=fontColor, variable=showPokeballBackground)
+showPokeballBackgroundCheck.place(relx=0.5, rely=0.60, anchor="n")
+showPokeballBackgroundCheck.pack()
+
+def UpdateShowPokeballBackground(*args):
+    if os.path.exists(appDirectory + obsFolder + txtFolder + "ShowBackground.txt"):
+        with open(appDirectory + obsFolder + txtFolder + "ShowBackground.txt", "w", encoding="utf-8") as f:
+            f.write(str(showPokeballBackground.get()))
+
+showPokeballBackground.trace_add("write", UpdateShowPokeballBackground)
+
 #Buttons
 buttonsFrame = tk.Frame(mainFrame, bg=innerFrameColor)
-buttonsFrame.place(relwidth=0.985, height=60, relx=0.5, rely=0.625, anchor=N)
+buttonsFrame.place(relwidth=0.985, height=60, relx=0.5, rely=0.635, anchor=N)
 
 updateFrame = tk.Frame(buttonsFrame, bg=innerFrameColor)
 updateFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0, anchor="n")
@@ -184,6 +196,12 @@ horizontalHTMLTemplate = '''
                 height: 150px;
                 float: left;
             }
+            #pokeballBackground1, #pokeballBackground2, #pokeballBackground3, #pokeballBackground4, #pokeballBackground5, #pokeballBackground6 {
+                position: absolute;
+                width: 225px;
+                height: 150px;
+                z-index: -1;
+            }
             .shadowDiv{
                 width:225px;
                 height: 150px;
@@ -211,49 +229,31 @@ horizontalHTMLTemplate = '''
 
     <body onload="changeP()">
         <div class="container">
-            <div class="pkDiv">
-                <p id="p1"></p>
-                <img id="img1">
-            </div>
-            <div class="pkDiv">
-                <p id="p2"></p>
-                <img id="img2">
-            </div>
-            <div class="pkDiv">
-                <p id="p3"></p>
-                <img id="img3">
-            </div>
-            <div class="pkDiv">
-                <p id="p4"></p>
-                <img id="img4">
-            </div>
-            <div class="pkDiv">
-                <p id="p5"></p>
-                <img id="img5">
-            </div>
-            <div class="pkDiv">
-                <p id="p6"></p>
-                <img id="img6">
-            </div>
+            <div class="pkDiv"> %pkDivContent1 </div>
+            <div class="pkDiv"> %pkDivContent2 </div>
+            <div class="pkDiv"> %pkDivContent3 </div>
+            <div class="pkDiv"> %pkDivContent4 </div>
+            <div class="pkDiv"> %pkDivContent5 </div>
+            <div class="pkDiv"> %pkDivContent6 </div>
         </div>
         <div class="container">
             <div class="shadowDiv">
-                <img  id="shadow1">
+                <img id="shadow1">
             </div>       
             <div class="shadowDiv">
-                <img  id="shadow2">
+                <img id="shadow2">
             </div>       
             <div class="shadowDiv">
-                <img  id="shadow3">
+                <img id="shadow3">
             </div>        
             <div class="shadowDiv">
-                <img  id="shadow4">
+                <img id="shadow4">
             </div>        
             <div class="shadowDiv">
-                <img  id="shadow5">
+                <img id="shadow5">
             </div>        
             <div class="shadowDiv">
-                <img  id="shadow6">
+                <img id="shadow6">
             </div>
         </div>
     </body>
@@ -372,6 +372,16 @@ verticalHtmlTemplate = '''
 def CreateHTML():
     htmlText = horizontalHTMLTemplate if layout.get() == "Horizontal" else verticalHtmlTemplate
 
+    for i in range(0, len(pokemonList)):
+        codeText = f'''<p id="p{i+1}"></p>'''
+        
+        if showPokeballBackground.get() == True and pokemonList[i] != "":
+            codeText += f'''<img id="pokeballBackground{i+1}">'''
+        
+        codeText += f'''<img id="img{i+1}">'''
+
+        htmlText = htmlText.replace(f"%pkDivContent{i+1}", codeText)
+
     # Creating the JS file
     file_html = open(appDirectory + obsFolder + "TeamVisualizer.html", "w", encoding="utf-8")
     file_html.write(htmlText)
@@ -393,12 +403,12 @@ def CreateJS():
         document.getElementById("p5").textContent = pokemon5;
         document.getElementById("p6").textContent = pokemon6;
 
-        //%htmlImg1
-        //%htmlImg2
-        //%htmlImg3
-        //%htmlImg4
-        //%htmlImg5
-        //%htmlImg6
+        //%htmlReplacement1
+        //%htmlReplacement2
+        //%htmlReplacement3
+        //%htmlReplacement4
+        //%htmlReplacement5
+        //%htmlReplacement6
     }'''
 
     # Creating the JS file
@@ -406,21 +416,27 @@ def CreateJS():
 
     # Adding the input data to the JS file
     for i in range(0, maxPokemon):
-        placeHolder = f"%{i+1}"
-        jsText = jsText.replace(placeHolder, nicknameList[i])
+        pokemonNamePlaceholder = f"%{i+1}"
+        jsText = jsText.replace(pokemonNamePlaceholder, nicknameList[i])
+    
+#             <div class="pkDiv">
+#                 <p id="p1"></p>
+#                 <img id="pokeballBackground1">
+#                 <img id="img1">
+#             </div>
 
         if pokemonList[i] != "":
+            codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));'''
+
             if showShadows.get() == True:
-                jsText = jsText.replace(f"//%htmlImg{i+1}", 
-                                        f'''
-            document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));
-            document.getElementById("shadow{i+1}").src = "https://i.postimg.cc/htkbFn8V/Shadow.png";
-                                        ''')
-            else:
-                jsText = jsText.replace(f"//%htmlImg{i+1}", 
-                                        f'''
-            document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));
-                                        ''')
+                codeText += f'''
+        document.getElementById("shadow{i+1}").src = "../Resources/Shadow.png";'''
+
+            if showPokeballBackground.get() == True:
+                codeText += f'''
+        document.getElementById("pokeballBackground{i+1}").src = "../Resources/PokeballBackground.png";'''
+
+            jsText = jsText.replace(f"//%htmlReplacement{i+1}", codeText)
        
     file_js.write(jsText)
     # Hide(appDirectory + obsFolder + "Team.js")
