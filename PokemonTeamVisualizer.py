@@ -276,12 +276,28 @@ verticalHtmlTemplate = '''
                 margin: 0;
                 padding: 0;
                 margin-bottom: 20px;
+                width: 225px;
+                align-items: center;
             }
 
             .pkDiv, .shadowDiv {
-                width: 225px;
                 margin: 0;
                 padding: 0;
+            }
+
+            .pkDiv {
+                width: 225px;
+            }
+
+            .shadowDiv {
+                width: 150px;
+            }
+
+            #pokeballBackground1, #pokeballBackground2, #pokeballBackground3, #pokeballBackground4, #pokeballBackground5, #pokeballBackground6 {
+                position: absolute;
+                width: 225px;
+                height: 150px;
+                z-index: -1;
             }
 
             .shadowDiv {
@@ -311,55 +327,37 @@ verticalHtmlTemplate = '''
     <body onload="changeP()">
         <div class="wrapper">
             <div class="pair">
-                <div class="pkDiv">
-                    <p id="p1"></p>
-                    <img id="img1">
-                </div>
+                <div class="pkDiv"> %pkDivContent1 </div>
                 <div class="shadowDiv">
                 <img id="shadow1"></img>
                 </div>
             </div>
             <div class="pair">
-                <div class="pkDiv">
-                    <p id="p2"></p>
-                    <img id="img2">
-                </div>
+                <div class="pkDiv"> %pkDivContent2 </div>
                 <div class="shadowDiv">
                     <img id="shadow2"></img>
                 </div>
             </div>
             <div class="pair">
-                <div class="pkDiv">
-                    <p id="p3"></p>
-                    <img id="img3">
-                </div>
+                <div class="pkDiv"> %pkDivContent3 </div>
                 <div class="shadowDiv">
                     <img id="shadow3"></img>
                 </div>
             </div>
             <div class="pair">
-                <div class="pkDiv">
-                    <p id="p4"></p>
-                    <img id="img4">
-                </div>
+                <div class="pkDiv"> %pkDivContent4 </div>
                 <div class="shadowDiv">
                     <img id="shadow4"></img>
                 </div>
             </div>
             <div class="pair">
-                <div class="pkDiv">
-                    <p id="p5"></p>
-                    <img id="img5">
-                </div>
+                <div class="pkDiv"> %pkDivContent5 </div>
                 <div class="shadowDiv">
                     <img id="shadow5"></img>
                 </div>
             </div>
             <div class="pair">
-                <div class="pkDiv">
-                    <p id="p6"></p>
-                    <img id="img6">
-                </div>
+                <div class="pkDiv"> %pkDivContent6 </div>
                 <div class="shadowDiv">
                     <img id="shadow6"></img>
                 </div>
@@ -374,7 +372,7 @@ def CreateHTML():
 
     for i in range(0, len(pokemonList)):
         codeText = f'''<p id="p{i+1}"></p>'''
-        
+
         if showPokeballBackground.get() == True and pokemonList[i] != "":
             codeText += f'''<img id="pokeballBackground{i+1}">'''
         
