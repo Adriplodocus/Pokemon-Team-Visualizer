@@ -428,11 +428,11 @@ def CreateJS():
 
             if showShadows.get() == True:
                 codeText += f'''
-        document.getElementById("shadow{i+1}").src = "../Resources/Shadow.png";'''
+        document.getElementById("shadow{i+1}").src = "https://i.postimg.cc/xdmpF4Tm/Shadow.png";'''
 
             if showPokeballBackground.get() == True:
                 codeText += f'''
-        document.getElementById("pokeballBackground{i+1}").src = "../Resources/PokeballBackground.png";'''
+        document.getElementById("pokeballBackground{i+1}").src = "https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png";'''
 
             jsText = jsText.replace(f"//%htmlReplacement{i+1}", codeText)
        
@@ -452,6 +452,12 @@ def CreateLayoutFile():
         layoutFile.write(layout.get())
         layoutFile.close()
 
+def CreateShowBackgroundFile():
+    if not os.path.exists(appDirectory + obsFolder + txtFolder + "ShowBackground.txt"):
+        showBackgroundFile = open(appDirectory + obsFolder + txtFolder + "ShowBackground.txt", "w", encoding="utf-8")
+        showBackgroundFile.write(str(showPokeballBackground.get()))
+        showBackgroundFile.close()
+
 def UpdateLayoutFile():
     if os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
         with open(appDirectory + obsFolder + txtFolder + "Layout.txt", "w", encoding="utf-8") as f:
@@ -466,6 +472,11 @@ def GetLayout():
     if os.path.exists(appDirectory + obsFolder + txtFolder + "Layout.txt"):
         with open(appDirectory + obsFolder + txtFolder + "Layout.txt", encoding="utf-8") as f:
             layout.set(f.read().strip())
+
+def GetShowPokeballBackground():
+    if os.path.exists(appDirectory + obsFolder + txtFolder + "ShowBackground.txt"):
+        with open(appDirectory + obsFolder + txtFolder + "ShowBackground.txt", encoding="utf-8") as f:
+            showPokeballBackground.set(f.read().strip() == 'True')
 
 def CreateBaseFolders():
     if os.path.exists(appDirectory + obsFolder) == FALSE:
@@ -539,8 +550,13 @@ def Init():
     
     CreateShadowsFile()
     GetShowShadows()
+
     CreateLayoutFile()
     GetLayout()
+
+    CreateShowBackgroundFile()
+    GetShowPokeballBackground()
+
 
 def ClearTextFields():
     counter = 0
@@ -576,27 +592,24 @@ def UpdateTeam():
         nicknameList.append(pokemon.pokemonMoteInput.get().upper())
         counter+=1
 
-    if (CheckForDuplicateNames(nicknameList) == FALSE):
-        counter = 0
-        while counter < len(pokemonList):
-            if (nicknameList[counter] == ""):
-                nicknameList[counter] = pokemonList[counter]
-            counter+=1
+    counter = 0
+    while counter < len(pokemonList):
+        if (nicknameList[counter] == ""):
+            nicknameList[counter] = pokemonList[counter]
+        counter+=1
 
-        CreateOriginalNamesFile()
-        CreateAliasNamesFile()
+    CreateOriginalNamesFile()
+    CreateAliasNamesFile()
 
-        counter = 0
-        while counter < len(pokemonList):
-            if (pokemonList[counter] != ""):
-                ProcessPokemon(pokemonList[counter], nicknameList[counter])
-            counter+=1
+    counter = 0
+    while counter < len(pokemonList):
+        if (pokemonList[counter] != ""):
+            ProcessPokemon(pokemonList[counter], nicknameList[counter])
+        counter+=1
 
-        Init()
-        CreateHTML()
-        CreateJS()
-    else:
-        DebugMsg("There are duplicated names. Please, check this.", errorColor)
+    Init()
+    CreateHTML()
+    CreateJS()
 
 def CheckForDuplicateNames(list):
     namesToCheck = []
