@@ -142,7 +142,7 @@ updateButton.pack(fill=X)
 
 resetFrame = tk.Frame(buttonsFrame, bg=innerFrameColor)
 resetFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0.5, anchor="n")
-resetButton = Button(resetFrame, text="Reset all data", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, activebackground=buttonsColor, command=lambda:ResetData())
+resetButton = Button(resetFrame, text="Reset team data", font=f"{fontName} {mediumSize} ", bg=buttonsColor, fg=fontColor, activebackground=buttonsColor, command=lambda:ResetData())
 resetButton.pack(fill=X)
 
 #Spam
