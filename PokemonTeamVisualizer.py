@@ -220,6 +220,11 @@ horizontalHTMLTemplate = '''
                 text-align: center;
                 font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
                 font-size: 35px;
+                text-shadow:
+                    3px 3px 0 #000,
+                    -3px 3px 0 #000,
+                    -3px -3px 0 #000,
+                    3px -3px 0 #000;
             }
             .container{
                 clear: both;
@@ -320,6 +325,11 @@ verticalHtmlTemplate = '''
                 font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
                 font-size: 25px;
                 text-align: center;
+                text-shadow:
+                    3px 3px 0 #000,
+                    -3px 3px 0 #000,
+                    -3px -3px 0 #000,
+                    3px -3px 0 #000;
             }
         </style>
     </head>

@@ -1,5 +1,5 @@
 · Pokémon Team Visualizer ·
-Version 2.0
+Version 2.1
 
 Visualiza tu equipo de Pokémon en OBS u otra herramienta de streaming sin problemas de distribución o tamaño. Olvídate de ajustes molestos.
 
@@ -14,7 +14,7 @@ www.instagram.com/Adriplodocus
 1. Ejecuta PokemonTeamVisualizer.exe.
 2. Escribe el nombre original del Pokémon a la izquierda.
 3. Escribe el mote deseado a la derecha; si no, se usará el nombre original.
-4. Selecciona si quieres layout horizontal o vertical.
+4. Selecciona el layout y las opciones gráficas.
 5. Presiona "Update Team".
 
 Un mensaje abajo indicará si hubo algún error.
@@ -31,7 +31,7 @@ Usa Stream Deck, Touch Portal en móvil o Lioran Board para ocultar/mostrar la f
 ¡Comenta mejoras! ¡Encantado de hacerlas!
 
 · Pokémon Team Visualizer ·
-Version 2.0
+Version 2.1
 
 Visualize your Pokémon team in OBS or any other streaming software without size or layout issues. Forget about annoying adjustments.
 
@@ -46,7 +46,7 @@ www.instagram.com/Adriplodocus
 1. Run PokemonTeamVisualizer.exe.
 2. Enter the Pokémon's original name on the left.
 3. Enter the desired nickname on the right; if empty, the original name will be used.
-4. Choose either horizontal or vertical layout.
+4. Choose your desired layout and graphic settings.
 5. Click "Update Team".
 
 A message below will indicate if there was any error.
