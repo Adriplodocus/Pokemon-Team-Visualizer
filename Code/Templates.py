@@ -3,6 +3,7 @@ horizontalHTMLTemplate = '''
     <head>
         <script src="Team.js"></script>
         <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <style>
             .pkDiv{
                 width:225px;
@@ -31,7 +32,7 @@ horizontalHTMLTemplate = '''
                 height: 25px;
                 color: white;
                 text-align: center;
-                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-family: Anton, 'Arial Narrow Bold', sans-serif;
                 font-size: 35px;
                 text-shadow:
                     3px 3px 0 #000,
@@ -83,6 +84,7 @@ verticalHtmlTemplate = '''
     <head>
         <script src="Team.js"></script>
         <meta charset="UTF-8">
+        <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <style>
             .wrapper {
                 display: flex;
@@ -136,7 +138,7 @@ verticalHtmlTemplate = '''
                 padding: 0;
                 height: 25px;
                 color: white;
-                font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+                font-family: Anton, 'Arial Narrow Bold', sans-serif;
                 font-size: 25px;
                 text-align: center;
                 text-shadow:
