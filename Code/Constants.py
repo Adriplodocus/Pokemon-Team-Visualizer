@@ -29,8 +29,12 @@ obsFolder ="/OBS/"
 currentTeamFolder = "/CurrentTeam/"
 resourcesFolder ="/Resources/"
 animatedSpritesFolder = "/AnimatedSprites/"
+megaFolder = "/Mega/"
+shinyFolder = "/Shiny/"
 txtFolder = "/TXTs/"
+jsonFolder = "/Code/JSON/"
 
+jsonFileName = "Team.json"
 jsFileName = "Team.js"
 teamVisualizerFileName = "TeamVisualizer.html"
 
@@ -41,6 +45,9 @@ layoutFileName = "Layout.txt"
 showBackgroundFileName = "ShowBackground.txt"
 
 gifExtension = ".gif"
+
+megaSuffix = "-mega"
+shinySuffix = " (1)"
 
 #Messages
 successfulTeam = "The team has been successfully generated!"

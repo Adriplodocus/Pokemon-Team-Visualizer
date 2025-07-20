@@ -1,5 +1,5 @@
 from Code import Constants as constants
-from tkinter import Label, Entry, CENTER
+from tkinter import Label, Checkbutton, BooleanVar, Entry, CENTER
 
 import sys
 import os
@@ -12,21 +12,34 @@ class PokemonFrame:
         self.frame.place(relwidth=0.95, height=50, relx=0.5, rely=0.1, y=constants.baseYForFrames * count, anchor="n")
 
         self.label = Label(self.frame, text="Pokemon " + str(count+1) + ":", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
-        self.label.grid(row=0, column=0, padx=10, pady=10)
+        self.moteLabel = Label(self.frame, text="Nickname:", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
+        self.megaLabel = Label(self.frame, text="Mega", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
+        self.shinyLabel = Label(self.frame, text="Shiny", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
+        
+        self.shiny = BooleanVar()
+        self.mega = BooleanVar()
+        self.megaCheck = Checkbutton(self.frame, text="Mega", font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=self.mega)
+        self.shinyCheck = Checkbutton(self.frame, text="Shiny", font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=self.shiny)
 
         self.pokemonNameEntry = tk.StringVar()
-
-        self.pokemonNameInput = Entry(self.frame, justify=CENTER, font=f"{constants.fontName} {constants.smallSize}",width=constants.entryWidth, textvariable=self.pokemonNameEntry)
-        self.pokemonNameInput.grid(row=0, column=1, padx=10, pady=10)
-
-        self.moteLabel = Label(self.frame, text="Nickname:", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
-        self.moteLabel.grid(row=0, column=2, padx=10, pady=10)
-
         self.pokemonMoteEntry = tk.StringVar()
-
+        self.pokemonNameInput = Entry(self.frame, justify=CENTER, font=f"{constants.fontName} {constants.smallSize}",width=constants.entryWidth, textvariable=self.pokemonNameEntry)
         self.pokemonMoteInput = Entry(self.frame, justify=CENTER, font=f"{constants.fontName} {constants.smallSize}", width=constants.entryWidth, textvariable=self.pokemonMoteEntry)
-        self.pokemonMoteInput.grid(row=0, column=3, padx=10, pady=10)
 
+        self.pokemonMegaEntry = tk.BooleanVar()
+        self.pokemonShinyEntry = tk.BooleanVar()
+
+        self.label.grid(row=0, column=0, padx=10)
+        self.moteLabel.grid(row=0, column=2, padx=10)
+        self.megaLabel.grid(row=0, column=7, padx=10)
+        self.shinyLabel.grid(row=0, column=9, padx=10)
+
+        self.pokemonNameInput.grid(row=0, column=1, padx=10)
+        self.pokemonMoteInput.grid(row=0, column=3, padx=10)
+        self.megaCheck.grid(row=0, column=7, padx=5)
+        self.shinyCheck.grid(row=0, column=9, padx=5)
+        
     def Clear(self):
         self.pokemonNameInput.delete(0, 'end')
         self.pokemonMoteInput.delete(0, 'end')
+        self.shiny.set(False)

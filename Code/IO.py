@@ -31,7 +31,7 @@ def CreateHTML(appDirectory, layout, pokemonList, showPokeballBackground):
     file_html.write(htmlText)
     file_html.close()
 
-def CreateJS(appDirectory, maxPokemon, nicknameList, pokemonList, showShadows, showPokeballBackground):
+def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBackground):
     jsText = '''function changeP() {
         var pokemon1 = "%1";
         var pokemon2 = "%2";
@@ -61,7 +61,7 @@ def CreateJS(appDirectory, maxPokemon, nicknameList, pokemonList, showShadows, s
     # Adding the input data to the JS file
     for i in range(0, maxPokemon):
         pokemonNamePlaceholder = f"%{i+1}"
-        jsText = jsText.replace(pokemonNamePlaceholder, nicknameList[i])
+        jsText = jsText.replace(pokemonNamePlaceholder, pokemonList[i].mote)
 
         if pokemonList[i] != "":
             codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));'''

@@ -1,0 +1,52 @@
+{
+    "pokemon": {
+        "pokemon1": [
+            {
+                "name": "PIKACHU",
+                "mote": "",
+                "shiny": false,
+                "mega": true
+            }
+        ],
+        "pokemon2": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon3": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon4": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon5": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon6": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ]
+    }
+}

@@ -9,6 +9,9 @@ from importlib.resources import files, as_file
 import Code.Constants as constants
 import Code.PokemonFrame as PokemonFrame
 import Code.IO as IO
+import json
+
+from Code.Pokemon import Pokemon
 
 def GetAppPath():
     if getattr(sys, 'frozen', False):
@@ -24,7 +27,7 @@ root.resizable(0,0) #The window size won't be modified.
 root.title(constants.appName)
 
 #This canvas will contain all app elements.
-canvas = tk.Canvas(root, height=600, width=600, bg="#E8E2DB")
+canvas = tk.Canvas(root, height=600, width=750, bg="#E8E2DB")
 canvas.pack()
 
 #Frames
@@ -43,19 +46,19 @@ titleLabel = Label(mainFrame, text=constants.appTitle, font=f"{constants.fontNam
 titleLabel.pack()
 
 #Layout area
-layoutLabel = Label(settingsFrame, text="Layout", font=f"{constants.fontName} {constants.mediumSize} bold", bg=constants.mainFrameColor, fg=constants.fontColor)
+layoutLabel = Label(settingsFrame, text="Layout", font=f"{constants.fontName} {constants.smallSize} bold", bg=constants.mainFrameColor, fg=constants.fontColor)
 layoutLabel.pack()
 
 layouts = [constants.horizontalLayout, constants.verticalLayout]
 layout = StringVar(value=constants.horizontalLayout)  # Default value
-comboBox = ttk.Combobox(settingsFrame, textvariable=layout, state="readonly", values=layouts, font=f"{constants.fontName} {constants.mediumSize}")
+comboBox = ttk.Combobox(settingsFrame, textvariable=layout, state="readonly", values=layouts, font=f"{constants.fontName} {constants.smallSize}")
 comboBox.current(0)
 comboBox.pack()
 
 comboBox.bind("<<ComboboxSelected>>", lambda event: IO.UpdateLayoutFile(GetAppPath(), layout))
 
 showShadows = tk.BooleanVar(value=True)
-showShadowsCheck = tk.Checkbutton(settingsFrame, text="Show shadows", font=f"{constants.fontName} {constants.mediumSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showShadows)
+showShadowsCheck = tk.Checkbutton(settingsFrame, text="Show shadows", font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showShadows)
 showShadowsCheck.place(relx=0.5, rely=0.60, anchor="n")
 showShadowsCheck.pack()
 
@@ -68,7 +71,7 @@ def make_callback_showShadows(showShadows):
 showShadows.trace_add("write", make_callback_showShadows(showShadows))
 
 showPokeballBackground = tk.BooleanVar(value=True)
-showPokeballBackgroundCheck = tk.Checkbutton(settingsFrame, text="Show pokeball background", font=f"{constants.fontName} {constants.mediumSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showPokeballBackground)
+showPokeballBackgroundCheck = tk.Checkbutton(settingsFrame, text="Show pokeball background", font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showPokeballBackground)
 showPokeballBackgroundCheck.place(relx=0.5, rely=0.60, anchor="n")
 showPokeballBackgroundCheck.pack()
 
@@ -83,12 +86,12 @@ showPokeballBackground.trace_add("write", make_callback_showPokeballBackground(s
 #Buttons
 updateFrame = tk.Frame(buttonsFrame, bg=constants.innerFrameColor)
 updateFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0, anchor="n")
-updateButton = Button(updateFrame, text=constants.updateButtonText, font=f"{constants.fontName} {constants.mediumSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:UpdateTeam())
+updateButton = Button(updateFrame, text=constants.updateButtonText, font=f"{constants.fontName} {constants.smallSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:UpdateTeam())
 updateButton.pack(fill=X)
 
 resetFrame = tk.Frame(buttonsFrame, bg=constants.innerFrameColor)
 resetFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0.5, anchor="n")
-resetButton = Button(resetFrame, text=constants.resetButton, font=f"{constants.fontName} {constants.mediumSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:ResetData())
+resetButton = Button(resetFrame, text=constants.resetButton, font=f"{constants.fontName} {constants.smallSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:ResetData())
 resetButton.pack(fill=X)
 
 #Spam
@@ -114,32 +117,16 @@ pokemonFrame3 = PokemonFrame.PokemonFrame(3, root, tk.Frame, tk)
 pokemonFrame4 = PokemonFrame.PokemonFrame(4, root, tk.Frame, tk)
 pokemonFrame5 = PokemonFrame.PokemonFrame(5, root, tk.Frame, tk)
 
-allPokemon = [pokemonFrame0, pokemonFrame1, pokemonFrame2, pokemonFrame3, pokemonFrame4, pokemonFrame5]
+pokemonFrames = [pokemonFrame0, pokemonFrame1, pokemonFrame2, pokemonFrame3, pokemonFrame4, pokemonFrame5]
 pokemonList = []
-nicknameList = []
 
 maxPokemon = 6
 
 def Init():
     IO.CreateBaseFolders(GetAppPath())
 
-    if os.path.exists(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.originalNamesFileName):
-        IO.GetOriginalNamesLines(GetAppPath())
-        originalNames = IO.originalLines[0].split(',')
-
-        counter = 0
-        for name in originalNames:
-            allPokemon[counter].pokemonNameEntry.set(name)
-            counter+=1
-    
-    if os.path.exists(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName):
-        GetAliasNamesLines()
-        aliasNames = aliasLines[0].split(',')
-
-        counter = 0
-        for name in aliasNames:
-            allPokemon[counter].pokemonMoteEntry.set(name)
-            counter+=1
+    GetStoredTeamData()
+    FillEntries()
     
     IO.CreateShadowsFile(GetAppPath(), showShadows)
     IO.GetShowShadows(GetAppPath(), showShadows)
@@ -150,16 +137,69 @@ def Init():
     IO.CreateShowBackgroundFile(GetAppPath(), showPokeballBackground)
     IO.GetShowPokeballBackground(GetAppPath(), showPokeballBackground)
 
+def GetStoredTeamData():
+    if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
+        with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
+            pokemonList.clear()  # Clear the list before loading new data
+            data = json.load(file)
+        
+            for key in data['pokemon']:
+                for p in data['pokemon'][key]:
+                    pokemon = Pokemon(
+                        name=p['name'],
+                        mote=p['mote'],
+                        mega=p['mega'],
+                        shiny=p['shiny']
+                    )
+
+                    pokemonList.append(pokemon)
+
+def UpdateStoredTeamData():
+    if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
+        with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
+            data = json.load(file)
+
+            data_to_save = {
+                'pokemon': {
+                    'pokemon1': [],
+                    'pokemon2': [],
+                    'pokemon3': [],
+                    'pokemon4': [],
+                    'pokemon5': [],
+                    'pokemon6': []
+                }
+            }
+
+            keys = list(data_to_save['pokemon'].keys())
+        
+            for i, frame in enumerate(pokemonFrames):
+                p_dict = {
+                    'name': frame.pokemonNameEntry.get().upper(),
+                    'mote': frame.pokemonMoteEntry.get().upper(),
+                    'shiny': frame.shiny.get(),
+                    'mega': frame.mega.get()
+                }
+                data_to_save['pokemon'][keys[i]].append(p_dict)
+
+            # Guardar JSON
+            with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'w') as file:
+                json.dump(data_to_save, file, indent=4)
+
+def FillEntries():
+    for i, pokemon in enumerate(pokemonList):
+        pokemonFrames[i].pokemonNameEntry.set(pokemon.name)
+        pokemonFrames[i].pokemonMoteEntry.set(pokemon.mote)
+        pokemonFrames[i].mega.set(pokemon.mega)
+        pokemonFrames[i].shiny.set(pokemon.shiny)
+
 def ClearTextFields():
     counter = 0
     while counter < maxPokemon:
-        allPokemon[counter].Clear()
+        pokemonFrames[counter].Clear()
         counter+=1
 
 def ResetData():
     RemoveCurrentTeam()
-    IO.ResetOriginalNamesFile(GetAppPath)
-    IO.ResetAliasNamesFile(GetAppPath)
     ClearTextFields()
     UpdateTeam()
     DebugMsg(constants.dataReset, constants.correctColor)
@@ -168,40 +208,16 @@ def UpdateTeam():
     debugLabelText.set("")
 
     RemoveCurrentTeam()
+    UpdateStoredTeamData()
 
-    pokemonList.clear()
-    nicknameList.clear()
-
-    #Original names recovery.
-    counter = 0
-    for pokemon in allPokemon:
-        pokemonList.append(pokemon.pokemonNameInput.get().upper())
-        counter+=1
-
-    #Nicknames recovery.
-    counter = 0
-    for pokemon in allPokemon:
-        nicknameList.append(pokemon.pokemonMoteInput.get().upper())
-        counter+=1
-
-    counter = 0
-    while counter < len(pokemonList):
-        if (nicknameList[counter] == ""):
-            nicknameList[counter] = pokemonList[counter]
-        counter+=1
-
-    IO.CreateOriginalNamesFile(GetAppPath(), pokemonList)
-    IO.CreateAliasNamesFile(GetAppPath(), nicknameList)
-
-    counter = 0
-    while counter < len(pokemonList):
-        if (pokemonList[counter] != ""):
-            ProcessPokemon(pokemonList[counter], nicknameList[counter])
-        counter+=1
+    for pokemon in pokemonList:
+        if pokemon.name != "":
+            ProcessPokemon(pokemon)
 
     Init()
+
     IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
-    IO.CreateJS(GetAppPath(), maxPokemon, nicknameList, pokemonList, showShadows, showPokeballBackground)
+    IO.CreateJS(GetAppPath(), maxPokemon, pokemonList, showShadows, showPokeballBackground)
 
 def CheckForDuplicateNames(list):
     namesToCheck = []
@@ -216,9 +232,27 @@ def GetAliasNamesLines():
     with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, encoding="utf-8") as f:
         aliasLines = f.readlines()
 
-def ProcessPokemon(originalName, newName):
-    resource_path = "AnimatedSprites/" + originalName + constants.gifExtension  # No leading '/'
-    
+def ProcessPokemon(pokemon):
+    resource_path = constants.animatedSpritesFolder
+    pokemonName = pokemon.name
+
+    if pokemon.mega:
+        if os.path.exists(GetAppPath() + constants.animatedSpritesFolder + constants.megaFolder + pokemonName + constants.megaSuffix + constants.gifExtension):
+            resource_path += constants.megaFolder
+            pokemonName += constants.megaSuffix
+
+        if pokemon.shiny:
+            if os.path.exists(GetAppPath() + constants.animatedSpritesFolder + constants.megaFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
+                resource_path += constants.shinyFolder
+                pokemonName += constants.shinySuffix
+    else:
+        if pokemon.shiny:
+            if os.path.exists(GetAppPath() + constants.animatedSpritesFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
+                resource_path += constants.shinyFolder
+                pokemonName += constants.shinySuffix
+                
+    resource_path += pokemonName.lower() + constants.gifExtension
+
     try:
         # Access the resource using importlib.resources
         ref = files('Resources') / resource_path  # Replace 'my_package' with your actual package name
@@ -228,8 +262,8 @@ def ProcessPokemon(originalName, newName):
             # Proceed with copying the resource and renaming the file
             IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
 
-            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + originalName + constants.gifExtension
-            os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + newName + constants.gifExtension)
+            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemon.name + constants.gifExtension
+            os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemon.mote + constants.gifExtension)
         
         DebugMsg(constants.successfulTeam, constants.correctColor)
 
@@ -242,10 +276,36 @@ def DebugMsg(msg, color):
     debugLabelText.set(msg)
 
 def RemoveCurrentTeam():
-    files = os.listdir(GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
+    if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
+        with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
+            data = json.load(file)
 
-    for f in files:
-        os.remove(GetAppPath() + constants.obsFolder + constants.currentTeamFolder + f)
+            data_to_save = {
+                'pokemon': {
+                    'pokemon1': [],
+                    'pokemon2': [],
+                    'pokemon3': [],
+                    'pokemon4': [],
+                    'pokemon5': [],
+                    'pokemon6': []
+                }
+            }
+
+            keys = list(data_to_save['pokemon'].keys())
+        
+            for i, frame in enumerate(pokemonFrames):
+                p_dict = {
+                    'name': "",
+                    'mote': "",
+                    'male': True,
+                    'shiny': False,
+                    'mega': False
+                }
+                data_to_save['pokemon'][keys[i]].append(p_dict)
+
+            # Guardar JSON
+            with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'w') as file:
+                json.dump(data_to_save, file, indent=4)
 
 def OpenURL(url):
     webbrowser.open(url)
