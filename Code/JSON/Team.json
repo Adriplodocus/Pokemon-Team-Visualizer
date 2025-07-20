@@ -2,10 +2,10 @@
     "pokemon": {
         "pokemon1": [
             {
-                "name": "PIKACHU",
+                "name": "",
                 "mote": "",
                 "shiny": false,
-                "mega": true
+                "mega": false
             }
         ],
         "pokemon2": [

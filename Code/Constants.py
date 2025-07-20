@@ -27,10 +27,10 @@ baseYForFrames = 35
 #IO
 obsFolder ="/OBS/"
 currentTeamFolder = "/CurrentTeam/"
-resourcesFolder ="/Resources/"
-animatedSpritesFolder = "/AnimatedSprites/"
-megaFolder = "/Mega/"
-shinyFolder = "/Shiny/"
+resourcesFolder ="Resources/"
+animatedSpritesFolder = "AnimatedSprites/"
+megaFolder = "Mega/"
+shinyFolder = "Shiny/"
 txtFolder = "/TXTs/"
 jsonFolder = "/Code/JSON/"
 

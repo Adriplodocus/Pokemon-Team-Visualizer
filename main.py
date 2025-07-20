@@ -110,14 +110,11 @@ debugLabel = Label(debugFrame, font=f"{constants.fontName} {constants.smallSize}
 debugLabel.pack(fill=X)
 
 #Pokemon frames
-pokemonFrame0 = PokemonFrame.PokemonFrame(0, root, tk.Frame, tk)
-pokemonFrame1 = PokemonFrame.PokemonFrame(1, root, tk.Frame, tk)
-pokemonFrame2 = PokemonFrame.PokemonFrame(2, root, tk.Frame, tk)
-pokemonFrame3 = PokemonFrame.PokemonFrame(3, root, tk.Frame, tk)
-pokemonFrame4 = PokemonFrame.PokemonFrame(4, root, tk.Frame, tk)
-pokemonFrame5 = PokemonFrame.PokemonFrame(5, root, tk.Frame, tk)
+pokemonFrames = [
+    PokemonFrame.PokemonFrame(i, root, tk.Frame, tk)
+    for i in range(6)
+]
 
-pokemonFrames = [pokemonFrame0, pokemonFrame1, pokemonFrame2, pokemonFrame3, pokemonFrame4, pokemonFrame5]
 pokemonList = []
 
 maxPokemon = 6
@@ -143,22 +140,22 @@ def GetStoredTeamData():
             pokemonList.clear()  # Clear the list before loading new data
             data = json.load(file)
         
+            counter = 0
             for key in data['pokemon']:
                 for p in data['pokemon'][key]:
                     pokemon = Pokemon(
                         name=p['name'],
                         mote=p['mote'],
                         mega=p['mega'],
-                        shiny=p['shiny']
+                        shiny=p['shiny'],
+                        frame=pokemonFrames[counter]
                     )
-
                     pokemonList.append(pokemon)
+                    counter += 1
 
 def UpdateStoredTeamData():
     if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
         with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
-            data = json.load(file)
-
             data_to_save = {
                 'pokemon': {
                     'pokemon1': [],
@@ -175,7 +172,7 @@ def UpdateStoredTeamData():
             for i, frame in enumerate(pokemonFrames):
                 p_dict = {
                     'name': frame.pokemonNameEntry.get().upper(),
-                    'mote': frame.pokemonMoteEntry.get().upper(),
+                    'mote': frame.pokemonMoteEntry.get().upper() if frame.pokemonMoteEntry.get() != "" else frame.pokemonNameEntry.get().upper(),
                     'shiny': frame.shiny.get(),
                     'mega': frame.mega.get()
                 }
@@ -187,32 +184,42 @@ def UpdateStoredTeamData():
 
 def FillEntries():
     for i, pokemon in enumerate(pokemonList):
-        pokemonFrames[i].pokemonNameEntry.set(pokemon.name)
-        pokemonFrames[i].pokemonMoteEntry.set(pokemon.mote)
-        pokemonFrames[i].mega.set(pokemon.mega)
-        pokemonFrames[i].shiny.set(pokemon.shiny)
-
-def ClearTextFields():
-    counter = 0
-    while counter < maxPokemon:
-        pokemonFrames[counter].Clear()
-        counter+=1
+        pokemon.frame.pokemonNameEntry.set(pokemon.name)
+        pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
+        pokemon.frame.mega.set(pokemon.mega)
+        pokemon.frame.shiny.set(pokemon.shiny)
 
 def ResetData():
-    RemoveCurrentTeam()
-    ClearTextFields()
+    ClearJsonTeam()
+    RemoveGifFiles()
+    ClearPokemonFrames()
+    ClearBooleanVars()
+    GetStoredTeamData()
     UpdateTeam()
     DebugMsg(constants.dataReset, constants.correctColor)
+
+def ClearBooleanVars():
+    for pokemon in pokemonFrames:
+        pokemon.shiny.set(False)
+        pokemon.mega.set(False)
+
+def ClearPokemonFrames():
+    for pokemon in pokemonList:
+        pokemon.frame.Clear()
 
 def UpdateTeam():
     debugLabelText.set("")
 
-    RemoveCurrentTeam()
+    ClearJsonTeam()
+    RemoveGifFiles()
+
     UpdateStoredTeamData()
 
-    for pokemon in pokemonList:
+    GetStoredTeamData()
+
+    for i,pokemon in enumerate(pokemonList):
         if pokemon.name != "":
-            ProcessPokemon(pokemon)
+            ProcessPokemon(pokemon, pokemonFrames[i])
 
     Init()
 
@@ -232,26 +239,26 @@ def GetAliasNamesLines():
     with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, encoding="utf-8") as f:
         aliasLines = f.readlines()
 
-def ProcessPokemon(pokemon):
-    resource_path = constants.animatedSpritesFolder
-    pokemonName = pokemon.name
+def ProcessPokemon(pokemon, frame):
+    resource_path = "AnimatedSprites/"
+    pokemonName = pokemon.name.lower()
 
     if pokemon.mega:
-        if os.path.exists(GetAppPath() + constants.animatedSpritesFolder + constants.megaFolder + pokemonName + constants.megaSuffix + constants.gifExtension):
+        if os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + pokemonName + constants.megaSuffix + constants.gifExtension):
             resource_path += constants.megaFolder
             pokemonName += constants.megaSuffix
 
-        if pokemon.shiny:
-            if os.path.exists(GetAppPath() + constants.animatedSpritesFolder + constants.megaFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
+        if pokemon.shiny:       
+            if os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
                 resource_path += constants.shinyFolder
                 pokemonName += constants.shinySuffix
     else:
         if pokemon.shiny:
-            if os.path.exists(GetAppPath() + constants.animatedSpritesFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
+            if os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
                 resource_path += constants.shinyFolder
                 pokemonName += constants.shinySuffix
                 
-    resource_path += pokemonName.lower() + constants.gifExtension
+    resource_path += pokemonName + constants.gifExtension
 
     try:
         # Access the resource using importlib.resources
@@ -262,7 +269,7 @@ def ProcessPokemon(pokemon):
             # Proceed with copying the resource and renaming the file
             IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
 
-            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemon.name + constants.gifExtension
+            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemonName + constants.gifExtension
             os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemon.mote + constants.gifExtension)
         
         DebugMsg(constants.successfulTeam, constants.correctColor)
@@ -275,7 +282,7 @@ def DebugMsg(msg, color):
     debugLabel.config(fg=color)
     debugLabelText.set(msg)
 
-def RemoveCurrentTeam():
+def ClearJsonTeam():
     if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
         with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
             data = json.load(file)
@@ -293,19 +300,31 @@ def RemoveCurrentTeam():
 
             keys = list(data_to_save['pokemon'].keys())
         
-            for i, frame in enumerate(pokemonFrames):
+            counter = 0
+            for i in pokemonList:
                 p_dict = {
                     'name': "",
                     'mote': "",
-                    'male': True,
                     'shiny': False,
                     'mega': False
                 }
-                data_to_save['pokemon'][keys[i]].append(p_dict)
+                data_to_save['pokemon'][keys[counter]].append(p_dict)
+                counter += 1
 
             # Guardar JSON
             with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'w') as file:
                 json.dump(data_to_save, file, indent=4)
+
+def RemoveGifFiles():
+    currentTeamPath = GetAppPath() + constants.obsFolder + constants.currentTeamFolder
+    if os.path.exists(currentTeamPath):
+        for filename in os.listdir(currentTeamPath):
+            if filename.endswith(constants.gifExtension):
+                file_path = os.path.join(currentTeamPath, filename)
+                try:
+                    os.remove(file_path)
+                except Exception as e:
+                    print(f"Error removing file {file_path}: {e}")
 
 def OpenURL(url):
     webbrowser.open(url)
