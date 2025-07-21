@@ -122,7 +122,7 @@ maxPokemon = 6
 def Init():
     IO.CreateBaseFolders(GetAppPath())
 
-    GetStoredTeamData()
+    GetJsonData()
     FillEntries()
     
     IO.CreateShadowsFile(GetAppPath(), showShadows)
@@ -134,7 +134,7 @@ def Init():
     IO.CreateShowBackgroundFile(GetAppPath(), showPokeballBackground)
     IO.GetShowPokeballBackground(GetAppPath(), showPokeballBackground)
 
-def GetStoredTeamData():
+def GetJsonData():
     if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
         with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
             pokemonList.clear()  # Clear the list before loading new data
@@ -153,7 +153,7 @@ def GetStoredTeamData():
                     pokemonList.append(pokemon)
                     counter += 1
 
-def UpdateStoredTeamData():
+def UpdateJsonData():
     if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
         with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
             data_to_save = {
@@ -169,18 +169,61 @@ def UpdateStoredTeamData():
 
             keys = list(data_to_save['pokemon'].keys())
         
-            for i, frame in enumerate(pokemonFrames):
+            for i, pokemon in enumerate(pokemonList):
+                InitialisePokemon(pokemon)
+
                 p_dict = {
-                    'name': frame.pokemonNameEntry.get().upper(),
-                    'mote': frame.pokemonMoteEntry.get().upper() if frame.pokemonMoteEntry.get() != "" else frame.pokemonNameEntry.get().upper(),
-                    'shiny': frame.shiny.get(),
-                    'mega': frame.mega.get()
+                    'name': pokemon.frame.pokemonNameEntry.get().upper(),
+                    'mote': pokemon.frame.pokemonMoteEntry.get().upper() if pokemon.frame.pokemonMoteEntry.get() != "" else pokemon.frame.pokemonNameEntry.get().upper(),
+                    'shiny': pokemon.shiny,
+                    'mega': pokemon.mega
                 }
                 data_to_save['pokemon'][keys[i]].append(p_dict)
 
             # Guardar JSON
             with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'w') as file:
                 json.dump(data_to_save, file, indent=4)
+
+def InitialisePokemon(pokemon):
+    pokemon.name = pokemon.frame.pokemonNameEntry.get().upper()
+    pokemon.mote = pokemon.frame.pokemonMoteEntry.get().upper() if pokemon.frame.pokemonMoteEntry.get() != "" else pokemon.frame.pokemonNameEntry.get().upper()
+
+    if pokemon.frame.mega.get():
+        if HasMegaEvo(pokemon):
+            pokemon.mega = True
+
+            if pokemon.frame.shiny.get():
+                if HasMegaShiny(pokemon):
+                    pokemon.shiny = True
+        else:
+            pokemon.mega = False
+    else:
+        pokemon.mega = False
+        
+    if pokemon.frame.shiny.get():
+        pokemon.shiny = HasShiny(pokemon)
+    else:
+        pokemon.shiny = False
+    
+    pokemon.frame.mega.set(pokemon.mega)
+    pokemon.frame.shiny.set(pokemon.shiny)
+
+def UpdateTeam():
+    debugLabelText.set("")
+
+    ClearJsonTeam()
+    RemoveGifFiles()
+
+    UpdateJsonData()
+
+    for pokemon in pokemonList:
+        if pokemon.name != "":
+            ProcessPokemon(pokemon)
+
+    Init()
+
+    IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
+    IO.CreateJS(GetAppPath(), maxPokemon, pokemonList, showShadows, showPokeballBackground)
 
 def FillEntries():
     for i, pokemon in enumerate(pokemonList):
@@ -194,7 +237,7 @@ def ResetData():
     RemoveGifFiles()
     ClearPokemonFrames()
     ClearBooleanVars()
-    GetStoredTeamData()
+    GetJsonData()
     UpdateTeam()
     DebugMsg(constants.dataReset, constants.correctColor)
 
@@ -207,25 +250,6 @@ def ClearPokemonFrames():
     for pokemon in pokemonList:
         pokemon.frame.Clear()
 
-def UpdateTeam():
-    debugLabelText.set("")
-
-    ClearJsonTeam()
-    RemoveGifFiles()
-
-    UpdateStoredTeamData()
-
-    GetStoredTeamData()
-
-    for i,pokemon in enumerate(pokemonList):
-        if pokemon.name != "":
-            ProcessPokemon(pokemon, pokemonFrames[i])
-
-    Init()
-
-    IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
-    IO.CreateJS(GetAppPath(), maxPokemon, pokemonList, showShadows, showPokeballBackground)
-
 def CheckForDuplicateNames(list):
     namesToCheck = []
     for name in list:
@@ -234,29 +258,38 @@ def CheckForDuplicateNames(list):
 
     return len(namesToCheck) != len(set(namesToCheck))
 
+def HasShiny(pokemon):
+    pokemonName = pokemon.name.lower()
+    return os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension)
+
+def HasMegaEvo(pokemon):
+    pokemonName = pokemon.name.lower()
+    return os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + pokemonName + constants.megaSuffix + constants.gifExtension)
+
+def HasMegaShiny(pokemon):
+    pokemonName = pokemon.name.lower()
+    return os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension)
+
 def GetAliasNamesLines():
     global aliasLines
     with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, encoding="utf-8") as f:
         aliasLines = f.readlines()
 
-def ProcessPokemon(pokemon, frame):
+def ProcessPokemon(pokemon):
     resource_path = "AnimatedSprites/"
     pokemonName = pokemon.name.lower()
 
-    if pokemon.mega:
-        if os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + pokemonName + constants.megaSuffix + constants.gifExtension):
-            resource_path += constants.megaFolder
-            pokemonName += constants.megaSuffix
+    if pokemon.mega and HasMegaEvo(pokemon):
+        resource_path += constants.megaFolder
+        pokemonName += constants.megaSuffix
 
-        if pokemon.shiny:       
-            if os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
-                resource_path += constants.shinyFolder
-                pokemonName += constants.shinySuffix
+        if HasMegaShiny(pokemon):       
+            resource_path += constants.shinyFolder
+            pokemonName += constants.shinySuffix
     else:
-        if pokemon.shiny:
-            if os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension):
-                resource_path += constants.shinyFolder
-                pokemonName += constants.shinySuffix
+        if pokemon.shiny and HasShiny(pokemon):
+            resource_path += constants.shinyFolder
+            pokemonName += constants.shinySuffix
                 
     resource_path += pokemonName + constants.gifExtension
 

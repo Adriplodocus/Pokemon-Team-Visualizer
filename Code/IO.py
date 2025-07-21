@@ -19,7 +19,7 @@ def CreateHTML(appDirectory, layout, pokemonList, showPokeballBackground):
     for i in range(0, len(pokemonList)):
         codeText = f'''<p id="p{i+1}"></p>'''
 
-        if showPokeballBackground.get() == True and pokemonList[i] != "":
+        if showPokeballBackground.get() == True and pokemonList[i].name != "":
             codeText += f'''<img id="pokeballBackground{i+1}">'''
         
         codeText += f'''<img id="img{i+1}">'''
@@ -63,7 +63,7 @@ def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBac
         pokemonNamePlaceholder = f"%{i+1}"
         jsText = jsText.replace(pokemonNamePlaceholder, pokemonList[i].mote)
 
-        if pokemonList[i] != "":
+        if pokemonList[i].name != "":
             codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));'''
 
             if showShadows.get() == True:
