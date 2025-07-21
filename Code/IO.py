@@ -7,8 +7,6 @@ import os
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
-
-
 def Hide(path):
     FILE_ATTRIBUTE_HIDDEN = 0x02
     ret = ctypes.windll.kernel32.SetFileAttributesW(path, FILE_ATTRIBUTE_HIDDEN)
@@ -61,9 +59,17 @@ def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBac
     # Adding the input data to the JS file
     for i in range(0, maxPokemon):
         pokemonNamePlaceholder = f"%{i+1}"
-        jsText = jsText.replace(pokemonNamePlaceholder, pokemonList[i].mote)
 
-        if pokemonList[i].name != "":
+        if i >= len(pokemonList):
+            mote = ""
+            name = ""
+        else:
+            mote = pokemonList[i].mote
+            name = pokemonList[i].name
+
+        jsText = jsText.replace(pokemonNamePlaceholder, mote)
+
+        if name != "":
             codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));'''
 
             if showShadows.get() == True:
@@ -98,6 +104,66 @@ def CreateShowBackgroundFile(appDirectory, showPokeballBackground):
         showBackgroundFile.write(str(showPokeballBackground.get()))
         showBackgroundFile.close()
 
+def CreateJsonFile(appDirectory, override):
+    if override or not os.path.exists(appDirectory + constants.obsFolder + constants.txtFolder + constants.jsonFileName):
+        jsonFile = open(appDirectory + constants.obsFolder + constants.txtFolder + constants.jsonFileName, "w", encoding="utf-8")
+        jsonFile.write(
+'''{
+    "pokemon": {
+        "pokemon1": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon2": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon3": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon4": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon5": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ],
+        "pokemon6": [
+            {
+                "name": "",
+                "mote": "",
+                "shiny": false,
+                "mega": false
+            }
+        ]
+    }
+}
+'''
+        )
+        jsonFile.close()
+
 def UpdateLayoutFile(appDirectory, layout):
     if os.path.exists(appDirectory + constants.obsFolder + constants.txtFolder + constants.layoutFileName):
         with open(appDirectory + constants.obsFolder + constants.txtFolder + constants.layoutFileName, "w", encoding="utf-8") as f:
@@ -129,39 +195,6 @@ def CreateBaseFolders(appDirectory):
     if os.path.exists(appDirectory + constants.obsFolder + constants.txtFolder) == False:
         os.mkdir(appDirectory + constants.obsFolder + constants.txtFolder)
         Hide(appDirectory + constants.obsFolder + constants.txtFolder)
-
-def CreateOriginalNamesFile(appDirectory, pokemonList):
-    originalNamesFile = open(appDirectory + constants.obsFolder + constants.txtFolder + constants.originalNamesFileName, "w", encoding="utf-8")
-    originalNamesFile.write(
-    f'''{pokemonList[0]},{pokemonList[1]},{pokemonList[2]},{pokemonList[3]},{pokemonList[4]},{pokemonList[5]}'''
-    )
-    originalNamesFile.close()
-
-def ResetOriginalNamesFile(appDirectory):
-    originalNamesFile = open(appDirectory + constants.obsFolder + constants.txtFolder + constants.originalNamesFileName, "w", encoding="utf-8")
-    originalNamesFile.write(
-    f''',,,,,'''
-    )
-    originalNamesFile.close()
-
-def GetOriginalNamesLines(appDirectory):
-    global originalLines
-    with open(appDirectory + constants.obsFolder + constants.txtFolder + constants.originalNamesFileName, encoding="utf-8") as f:
-        originalLines = f.readlines()
-
-def CreateAliasNamesFile(appDirectory, nicknameList):
-    aliasNamesFile = open(appDirectory + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, "w", encoding="utf-8")
-    aliasNamesFile.write(
-    f'''{nicknameList[0]},{nicknameList[1]},{nicknameList[2]},{nicknameList[3]},{nicknameList[4]},{nicknameList[5]}'''
-    )
-    aliasNamesFile.close()
-
-def ResetAliasNamesFile(appDirectory):
-    aliasNamesFile = open(appDirectory + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, "w", encoding="utf-8")
-    aliasNamesFile.write(
-    f''',,,,,'''
-    )
-    aliasNamesFile.close()
 
 def UpdateShowShadows(*args, showShadows, appDirectory):
     if os.path.exists(appDirectory + constants.obsFolder + constants.txtFolder + constants.shadowsFileName):

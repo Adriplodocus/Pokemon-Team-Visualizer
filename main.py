@@ -121,6 +121,7 @@ maxPokemon = 6
 
 def Init():
     IO.CreateBaseFolders(GetAppPath())
+    IO.CreateJsonFile(GetAppPath(), False)
 
     GetJsonData()
     FillEntries()
@@ -135,8 +136,8 @@ def Init():
     IO.GetShowPokeballBackground(GetAppPath(), showPokeballBackground)
 
 def GetJsonData():
-    if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
-        with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
+    if os.path.exists(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName):
+        with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName, 'r') as file:
             pokemonList.clear()  # Clear the list before loading new data
             data = json.load(file)
         
@@ -154,8 +155,8 @@ def GetJsonData():
                     counter += 1
 
 def UpdateJsonData():
-    if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
-        with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
+    if os.path.exists(GetAppPath() + constants.obsFolder +  constants.txtFolder + constants.jsonFileName):
+        with open(GetAppPath() + constants.obsFolder +  constants.txtFolder + constants.jsonFileName, 'r') as file:
             data_to_save = {
                 'pokemon': {
                     'pokemon1': [],
@@ -172,16 +173,21 @@ def UpdateJsonData():
             for i, pokemon in enumerate(pokemonList):
                 InitialisePokemon(pokemon)
 
+                pokemon.frame.pokemonNameEntry.set(pokemon.name)
+                pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
+                pokemon.frame.mega.set(pokemon.mega)
+                pokemon.frame.shiny.set(pokemon.shiny)
+
                 p_dict = {
-                    'name': pokemon.frame.pokemonNameEntry.get().upper(),
-                    'mote': pokemon.frame.pokemonMoteEntry.get().upper() if pokemon.frame.pokemonMoteEntry.get() != "" else pokemon.frame.pokemonNameEntry.get().upper(),
+                    'name': pokemon.name,
+                    'mote': pokemon.mote,
                     'shiny': pokemon.shiny,
                     'mega': pokemon.mega
                 }
                 data_to_save['pokemon'][keys[i]].append(p_dict)
 
             # Guardar JSON
-            with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'w') as file:
+            with open(GetAppPath() + constants.obsFolder +  constants.txtFolder + constants.jsonFileName, 'w') as file:
                 json.dump(data_to_save, file, indent=4)
 
 def InitialisePokemon(pokemon):
@@ -211,7 +217,7 @@ def InitialisePokemon(pokemon):
 def UpdateTeam():
     debugLabelText.set("")
 
-    ClearJsonTeam()
+    IO.CreateJsonFile(GetAppPath(), True)
     RemoveGifFiles()
 
     UpdateJsonData()
@@ -219,8 +225,6 @@ def UpdateTeam():
     for pokemon in pokemonList:
         if pokemon.name != "":
             ProcessPokemon(pokemon)
-
-    Init()
 
     IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
     IO.CreateJS(GetAppPath(), maxPokemon, pokemonList, showShadows, showPokeballBackground)
@@ -233,7 +237,7 @@ def FillEntries():
         pokemon.frame.shiny.set(pokemon.shiny)
 
 def ResetData():
-    ClearJsonTeam()
+    IO.CreateJsonFile(GetAppPath(), True)
     RemoveGifFiles()
     ClearPokemonFrames()
     ClearBooleanVars()
@@ -260,15 +264,53 @@ def CheckForDuplicateNames(list):
 
 def HasShiny(pokemon):
     pokemonName = pokemon.name.lower()
-    return os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension)
+    resource_path = (
+        constants.animatedSpritesFolder +
+        constants.shinyFolder +
+        pokemonName +
+        constants.shinySuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
 
 def HasMegaEvo(pokemon):
     pokemonName = pokemon.name.lower()
-    return os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + pokemonName + constants.megaSuffix + constants.gifExtension)
+    resource_path = (
+        constants.animatedSpritesFolder +
+        constants.megaFolder +
+        pokemonName +
+        constants.megaSuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
 
 def HasMegaShiny(pokemon):
     pokemonName = pokemon.name.lower()
-    return os.path.exists(GetAppPath() + "/" + constants.resourcesFolder + constants.animatedSpritesFolder + constants.megaFolder + constants.shinyFolder + pokemonName + constants.shinySuffix + constants.gifExtension)
+    resource_path = (
+        constants.animatedSpritesFolder +
+        constants.megaFolder +
+        constants.shinyFolder +
+        pokemonName +
+        constants.megaSuffix +
+        constants.shinySuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
 
 def GetAliasNamesLines():
     global aliasLines
@@ -283,7 +325,7 @@ def ProcessPokemon(pokemon):
         resource_path += constants.megaFolder
         pokemonName += constants.megaSuffix
 
-        if HasMegaShiny(pokemon):       
+        if pokemon.shiny and HasMegaShiny(pokemon):       
             resource_path += constants.shinyFolder
             pokemonName += constants.shinySuffix
     else:
@@ -314,39 +356,6 @@ def ProcessPokemon(pokemon):
 def DebugMsg(msg, color):
     debugLabel.config(fg=color)
     debugLabelText.set(msg)
-
-def ClearJsonTeam():
-    if os.path.exists(GetAppPath() + constants.jsonFolder + constants.jsonFileName):
-        with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'r') as file:
-            data = json.load(file)
-
-            data_to_save = {
-                'pokemon': {
-                    'pokemon1': [],
-                    'pokemon2': [],
-                    'pokemon3': [],
-                    'pokemon4': [],
-                    'pokemon5': [],
-                    'pokemon6': []
-                }
-            }
-
-            keys = list(data_to_save['pokemon'].keys())
-        
-            counter = 0
-            for i in pokemonList:
-                p_dict = {
-                    'name': "",
-                    'mote': "",
-                    'shiny': False,
-                    'mega': False
-                }
-                data_to_save['pokemon'][keys[counter]].append(p_dict)
-                counter += 1
-
-            # Guardar JSON
-            with open(GetAppPath() + constants.jsonFolder + constants.jsonFileName, 'w') as file:
-                json.dump(data_to_save, file, indent=4)
 
 def RemoveGifFiles():
     currentTeamPath = GetAppPath() + constants.obsFolder + constants.currentTeamFolder

@@ -52,7 +52,7 @@ shinySuffix = " (1)"
 #Messages
 successfulTeam = "The team has been successfully generated!"
 errorTeam = "Some errors found on original Pokémon names.\nPlease, check they're properly written."
-dataReset ="Team data reseted successfully."
+dataReset ="Team data was reset successfully."
 
 #Layouts
 horizontalLayout = "Horizontal"
@@ -61,4 +61,4 @@ defaultLayout = horizontalLayout
 
 #Button text
 updateButtonText = "Update Team"
-resetButton ="Reset team data"
+resetButton ="Reset all data"
