@@ -26,7 +26,9 @@ Un mensaje abajo indicará si hubo algún error.
 ### Recomendaciones
 Usa Stream Deck, Touch Portal en móvil o Lioran Board para ocultar/mostrar la fuente fácilmente.
 
-#### ¡Comenta mejoras! ¡Encantado de implementarlas!
+#### Descarga
+Descarga el archivo .exe de:
+https://github.com/Adriplodocus/Pokemon-Team-Visualizer/releases/tag/3.0
 
 ---
 
@@ -53,7 +55,9 @@ A message below will indicate if there was any error.
 ### Recommendations
 Use Stream Deck, Touch Portal (mobile) or Lioran Board to easily show/hide the source.
 
-#### Feel free to suggest improvements! Happy to add them!
+#### Download
+Grab the .exe file from:
+https://github.com/Adriplodocus/Pokemon-Team-Visualizer/releases/tag/3.0
 
 ---
 
