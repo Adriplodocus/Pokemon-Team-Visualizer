@@ -1,5 +1,5 @@
 #App
-credits = "Made by @Adriplodocus"
+credits = "Made by @MrKlypp"
 appName = "Pokémon Team Visualizer"
 appTitle = "Pokémon Team Visualizer"
 
