@@ -114,48 +114,66 @@ def CreateJsonFile(appDirectory, override):
             {
                 "name": "",
                 "mote": "",
-                "shiny": false,
-                "mega": false
+                "properties": {
+                    "gender": "male",
+                    "skin": "common"
+                    "shiny": "False",
+                }
             }
         ],
         "pokemon2": [
             {
                 "name": "",
                 "mote": "",
-                "shiny": false,
-                "mega": false
+                "properties": {
+                    "gender": "male",
+                    "skin": "common"
+                    "shiny": "False"
+                }
             }
         ],
         "pokemon3": [
             {
                 "name": "",
                 "mote": "",
-                "shiny": false,
-                "mega": false
+                "properties": {
+                    "gender": "male",
+                    "skin": "common"
+                    "shiny": "False"
+                }
             }
         ],
         "pokemon4": [
             {
                 "name": "",
                 "mote": "",
-                "shiny": false,
-                "mega": false
+                "properties": {
+                    "gender": "male",
+                    "skin": "common"
+                    "shiny": "False"
+                }
             }
         ],
         "pokemon5": [
             {
                 "name": "",
                 "mote": "",
-                "shiny": false,
-                "mega": false
+                "properties": {
+                    "gender": "male",
+                    "skin": "common"
+                    "shiny": "False"
+                }
             }
         ],
         "pokemon6": [
             {
                 "name": "",
                 "mote": "",
-                "shiny": false,
-                "mega": false
+                "properties": {
+                    "gender": "male",
+                    "skin": "common"
+                    "shiny": "False"
+                }
             }
         ]
     }

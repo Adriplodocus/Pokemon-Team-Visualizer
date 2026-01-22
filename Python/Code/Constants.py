@@ -24,6 +24,9 @@ largeSize = 20
 entryWidth = 20
 baseYForFrames = 35
 
+#Pokemon properties
+propertyHeight = 35
+
 #IO
 obsFolder ="/OBS/"
 currentTeamFolder = "/CurrentTeam/"
@@ -48,6 +51,7 @@ gifExtension = ".gif"
 
 megaSuffix = "-mega"
 shinySuffix = " (1)"
+femaleSuffix = '-f'
 
 #Messages
 successfulTeam = "The team has been successfully generated!"
@@ -62,3 +66,4 @@ defaultLayout = horizontalLayout
 #Button text
 updateButtonText = "Update Team"
 resetButton ="Reset all data"
+pokemonPropertiesText = "Properties"

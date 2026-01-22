@@ -4,6 +4,7 @@ import 'package:window_manager/window_manager.dart';
 //Classes
 import 'pokemon.dart';
 import 'constants.dart';
+import 'pokemon_catalog.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -68,6 +69,8 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+String log = "";
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,34 +79,195 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+
               ...List.generate(numPokemon, (index) {
-                return Padding(
-                  padding: const EdgeInsets.only(bottom: 16),
-                  child: Row(
+  final currentPokemon = pokemons[index];
+
+final specificProps = pokemonProperties[currentPokemon.nombre];
+
+final props = {
+  'boolean': [
+    ...commonProps['boolean']!,
+    if (specificProps != null && specificProps.containsKey('boolean'))
+      ...specificProps['boolean']
+  ],
+
+  'gender': commonProps['gender']!,
+
+  'region': [
+    ...commonProps['region']!,
+    if (specificProps != null && specificProps.containsKey('region'))
+      ...specificProps['region']
+  ],
+
+  'colors': specificProps != null && specificProps.containsKey('colors')
+      ? specificProps['colors']
+      : commonProps['colors'],
+};
+
+final genderItems = props['gender'] as List<String>;
+final currentGender = genderItems.contains(currentPokemon.gender)
+    ? currentPokemon.gender
+    : genderItems[0];
+
+final regionItems = (props['region'] as List).cast<String>();
+final currentRegion = regionItems.contains(currentPokemon.region)
+    ? currentPokemon.region
+    : regionItems[0];
+
+final colorItems = props['colors'] as List<String>;
+final currentColor = colorItems.contains(currentPokemon.color)
+    ? currentPokemon.color
+    : colorItems[0];
+
+  return Padding(
+    padding: const EdgeInsets.only(bottom: 16),
+    child: Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Row de nombre y mote
+        Row(
+          children: [
+            Expanded(
+              child: TextField(
+                controller: _nombreControllers[index],
+                decoration: InputDecoration(
+                  labelText: 'Pokémon ${index + 1}:',
+                  border: const OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    currentPokemon.nombre = value;
+
+                    //Reset
+                    currentPokemon.isMega = false;
+                    currentPokemon.region = currentRegion;
+                    currentPokemon.color = currentColor;
+                  });
+                },
+              ),
+            ),
+            const SizedBox(width: 16),
+            Expanded(
+              child: TextField(
+                controller: _moteControllers[index],
+                decoration: InputDecoration(
+                  labelText: 'Mote ${index + 1}:',
+                  border: const OutlineInputBorder(),
+                ),
+                onChanged: (value) {
+                  setState(() {
+                    currentPokemon.mote = value;
+                  });
+                },
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 8),
+        // Row de propiedades
+        Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Propiedades comunes
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
                     children: [
-                      Expanded(
-                        child: TextField(
-                          controller: _nombreControllers[index],
-                          decoration: InputDecoration(
-                            labelText: 'Pokémon ${index + 1}:',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: TextField(
-                          controller: _moteControllers[index],
-                          decoration: InputDecoration(
-                            labelText: 'Mote ${index + 1}:',
-                            border: const OutlineInputBorder(),
-                          ),
-                        ),
+                      const Text("Gender: "),
+                      DropdownButton<String>(
+                        value: currentGender,
+                        items: genderItems
+                            .map((g) => DropdownMenuItem(
+                                value: g, child: Text(g)))
+                            .toList(),
+                        onChanged: (val) {
+                          setState(() {
+                            currentPokemon.gender = val!;
+                          });
+                        },
                       ),
                     ],
                   ),
-                );
-              }),
+                  Row(
+                    children: [
+                      Checkbox(
+                        value: currentPokemon.isShiny,
+                        onChanged: (val) {
+                          setState(() {
+                            currentPokemon.isShiny = val!;
+                          });
+                        },
+                      ),
+                      const Text("Shiny"),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(width: 16),
+            // Propiedades específicas
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  if (props['boolean']!
+                      .any((b) => b != 'shiny')) // excluimos shiny
+                    ...props['boolean']!
+                        .where((b) => b != 'shiny')
+                        .map(
+                          (b) => Row(
+                          ),
+                        ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Text("Color: "),
+                      DropdownButton<String>(
+                        value: currentColor,
+                        items: colorItems
+                            .map((c) => DropdownMenuItem(
+                                value: c, child: Text(c)))
+                            .toList(),
+                        onChanged: (val) {
+                          setState(() {
+                            currentPokemon.color = val!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      const Text("Region: "),
+                      DropdownButton<String>(
+                        value: currentRegion,
+                        items: regionItems
+                            .map((c) => DropdownMenuItem(
+                                value: c, child: Text(c)))
+                            .toList(),
+                        onChanged: (val) {
+                          setState(() {
+                            currentPokemon.region = val!;
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ],
+    ),
+  );
+}),
+
+
               ElevatedButton(
                 onPressed: () {
                   setState(() {
@@ -113,11 +277,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     }
                   });
                 },
-                child: const Text('Mostrar valores'),
+                child: const Text('Mostrar log'),
               ),
               const SizedBox(height: 16),
-              ...pokemons.map((p) => Text(
-                  'Pokémon: ${p.nombre.isEmpty ? "-" : p.nombre} - Mote: ${p.mote.isEmpty ? "-" : p.mote}')),
+                  Text(log),
             ],
           ),
         ),

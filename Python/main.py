@@ -27,7 +27,7 @@ root.resizable(0,0) #The window size won't be modified.
 root.title(constants.appName)
 
 #This canvas will contain all app elements.
-canvas = tk.Canvas(root, height=600, width=750, bg="#E8E2DB")
+canvas = tk.Canvas(root, height=600, width=720, bg="#E8E2DB")
 canvas.pack()
 
 #Frames
@@ -138,7 +138,7 @@ def Init():
 def GetJsonData():
     if os.path.exists(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName):
         with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName, 'r') as file:
-            pokemonList.clear()  # Clear the list before loading new data
+            pokemonList.clear()
             data = json.load(file)
         
             counter = 0
@@ -147,10 +147,15 @@ def GetJsonData():
                     pokemon = Pokemon(
                         name=p['name'],
                         mote=p['mote'],
-                        mega=p['mega'],
-                        shiny=p['shiny'],
                         frame=pokemonFrames[counter]
                     )
+                    pokemon.frame.frameData.name = p['name']
+                    pokemon.frame.frameData.mote = p['mote']
+                    
+                    pokemon.frame.frameData.properties.update(
+                        p.get('properties', {})
+                    )
+
                     pokemonList.append(pokemon)
                     counter += 1
 
@@ -173,17 +178,12 @@ def UpdateJsonData():
             for i, pokemon in enumerate(pokemonList):
                 InitialisePokemon(pokemon)
 
-                pokemon.frame.pokemonNameEntry.set(pokemon.name)
-                pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
-                pokemon.frame.mega.set(pokemon.mega)
-                pokemon.frame.shiny.set(pokemon.shiny)
-
                 p_dict = {
                     'name': pokemon.name,
                     'mote': pokemon.mote,
-                    'shiny': pokemon.shiny,
-                    'mega': pokemon.mega
+                    'properties': pokemon.frame.frameData.properties
                 }
+
                 data_to_save['pokemon'][keys[i]].append(p_dict)
 
             # Guardar JSON
@@ -193,26 +193,6 @@ def UpdateJsonData():
 def InitialisePokemon(pokemon):
     pokemon.name = pokemon.frame.pokemonNameEntry.get().upper()
     pokemon.mote = pokemon.frame.pokemonMoteEntry.get().upper() if pokemon.frame.pokemonMoteEntry.get() != "" else pokemon.frame.pokemonNameEntry.get().upper()
-
-    if pokemon.frame.mega.get():
-        if HasMegaEvo(pokemon):
-            pokemon.mega = True
-
-            if pokemon.frame.shiny.get():
-                if HasMegaShiny(pokemon):
-                    pokemon.shiny = True
-        else:
-            pokemon.mega = False
-    else:
-        pokemon.mega = False
-        
-    if pokemon.frame.shiny.get():
-        pokemon.shiny = HasShiny(pokemon)
-    else:
-        pokemon.shiny = False
-    
-    pokemon.frame.mega.set(pokemon.mega)
-    pokemon.frame.shiny.set(pokemon.shiny)
 
 def UpdateTeam():
     debugLabelText.set("")
@@ -233,22 +213,14 @@ def FillEntries():
     for i, pokemon in enumerate(pokemonList):
         pokemon.frame.pokemonNameEntry.set(pokemon.name)
         pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
-        pokemon.frame.mega.set(pokemon.mega)
-        pokemon.frame.shiny.set(pokemon.shiny)
 
 def ResetData():
     IO.CreateJsonFile(GetAppPath(), True)
     RemoveGifFiles()
     ClearPokemonFrames()
-    ClearBooleanVars()
     GetJsonData()
     UpdateTeam()
     DebugMsg(constants.dataReset, constants.correctColor)
-
-def ClearBooleanVars():
-    for pokemon in pokemonFrames:
-        pokemon.shiny.set(False)
-        pokemon.mega.set(False)
 
 def ClearPokemonFrames():
     for pokemon in pokemonList:
@@ -262,13 +234,11 @@ def CheckForDuplicateNames(list):
 
     return len(namesToCheck) != len(set(namesToCheck))
 
-def HasShiny(pokemon):
-    pokemonName = pokemon.name.lower()
+def HasShiny(name):
     resource_path = (
         constants.animatedSpritesFolder +
         constants.shinyFolder +
-        pokemonName +
-        constants.shinySuffix +
+        name +
         constants.gifExtension
     )
     
@@ -321,19 +291,20 @@ def ProcessPokemon(pokemon):
     resource_path = "AnimatedSprites/"
     pokemonName = pokemon.name.lower()
 
-    if pokemon.mega and HasMegaEvo(pokemon):
-        resource_path += constants.megaFolder
-        pokemonName += constants.megaSuffix
+    filename = pokemonName
 
-        if pokemon.shiny and HasMegaShiny(pokemon):       
-            resource_path += constants.shinyFolder
-            pokemonName += constants.shinySuffix
+    skin = pokemon.frame.frameData.properties.get('skin')
+    if (pokemon.frame.frameData.properties.get('gender') == 'female' and skin == "common"):
+        filename += constants.femaleSuffix
+
+    if (skin != 'common'):
+        filename += "-" + skin
     else:
-        if pokemon.shiny and HasShiny(pokemon):
+        if pokemon.frame.frameData.properties.get('shiny') == 'true' and HasShiny(pokemonName + constants.shinySuffix):
+            filename += constants.shinySuffix
             resource_path += constants.shinyFolder
-            pokemonName += constants.shinySuffix
                 
-    resource_path += pokemonName + constants.gifExtension
+    resource_path += filename + constants.gifExtension
 
     try:
         # Access the resource using importlib.resources
@@ -344,7 +315,7 @@ def ProcessPokemon(pokemon):
             # Proceed with copying the resource and renaming the file
             IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
 
-            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemonName + constants.gifExtension
+            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + filename + constants.gifExtension
             os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemon.mote + constants.gifExtension)
         
         DebugMsg(constants.successfulTeam, constants.correctColor)
