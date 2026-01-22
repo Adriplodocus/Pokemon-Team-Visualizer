@@ -1,5 +1,5 @@
 # Pokémon Team Visualizer
-### 3.0
+### 4.0
 
 ---
 
@@ -11,7 +11,7 @@ Visualiza tu equipo de Pokémon en OBS u otra herramienta de streaming sin probl
 1. Ejecuta PokemonTeamVisualizer.exe.
 2. Escribe el nombre original del Pokémon a la izquierda.
 3. Escribe el mote deseado a la derecha; si no, se usará el nombre original.
-4. Selecciona si usar mega evolución o versión shiny. Déjalas desmarcadas para usar la versión normal del pokémon.
+4. Selecciona las propiedades que te interesen.
 5. Selecciona el layout y las opciones gráficas.
 6. Presiona "Update Team".
 
@@ -28,7 +28,7 @@ Usa Stream Deck, Touch Portal en móvil o Lioran Board para ocultar/mostrar la f
 
 #### Descarga
 Descarga el archivo .exe de:
-https://github.com/Adriplodocus/Pokemon-Team-Visualizer/releases/tag/3.0
+https://github.com/Adriplodocus/Pokemon-Team-Visualizer/releases/tag/4.0
 
 ---
 
@@ -40,7 +40,7 @@ Visualize your Pokémon team in OBS or any other streaming software without size
 1. Run PokemonTeamVisualizer.exe.
 2. Enter the Pokémon's original name on the left.
 3. Enter the desired nickname on the right; if empty, the original name will be used.
-4. Select mega evolution or shiny versions. Keep them unmarked to use the normal version of the pokémon.
+4. Select properties you would like to apply.
 4. Choose your desired layout and graphic settings.
 5. Click "Update Team".
 
@@ -57,14 +57,14 @@ Use Stream Deck, Touch Portal (mobile) or Lioran Board to easily show/hide the s
 
 #### Download
 Grab the .exe file from:
-https://github.com/Adriplodocus/Pokemon-Team-Visualizer/releases/tag/3.0
+https://github.com/Adriplodocus/Pokemon-Team-Visualizer/releases/tag/4.0
 
 ---
 
-www.twitch.tv/Adriplodocus
+www.twitch.tv/MrKlypp
 
-www.x.com/Adriplodocus
+www.x.com/MrKlypp
 
-www.instagram.com/Adriplodocus
+www.instagram.com/MrKlypp
 
 ---
