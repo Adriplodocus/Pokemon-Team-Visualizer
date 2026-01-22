@@ -288,41 +288,51 @@ def GetAliasNamesLines():
         aliasLines = f.readlines()
 
 def ProcessPokemon(pokemon):
-    resource_path = "AnimatedSprites/"
-    pokemonName = pokemon.name.lower()
+    result = BuildPath(pokemon.name, pokemon.frame.frameData.properties)
+    ref = files('Resources') / result["path"]
 
-    filename = pokemonName
-
-    skin = pokemon.frame.frameData.properties.get('skin')
-    if (pokemon.frame.frameData.properties.get('gender') == 'female' and skin == "common"):
-        filename += constants.femaleSuffix
-
-    if (skin != 'common'):
-        filename += "-" + skin
-    else:
-        if pokemon.frame.frameData.properties.get('shiny') == 'true' and HasShiny(pokemonName + constants.shinySuffix):
-            filename += constants.shinySuffix
-            resource_path += constants.shinyFolder
-                
-    resource_path += filename + constants.gifExtension
-
-    try:
-        # Access the resource using importlib.resources
-        ref = files('Resources') / resource_path  # Replace 'my_package' with your actual package name
-        with as_file(ref) as path:
-            gif_data = str(path)  # This gives you the file path
-
-            # Proceed with copying the resource and renaming the file
-            IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
-
-            copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + filename + constants.gifExtension
-            os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + pokemon.mote + constants.gifExtension)
-        
+    if (Exists(ref)):
+        Copy(ref, result["resultName"] , pokemon.mote)
         DebugMsg(constants.successfulTeam, constants.correctColor)
-
-    except Exception as e:
+    else:
         DebugMsg(constants.errorTeam, constants.errorColor)
-        print(str(e))  # Optional, to see the error if needed
+
+def Copy(ref, fileName, mote):
+    with as_file(ref) as path:
+        gif_data = str(path)
+
+        IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
+
+        copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + fileName + constants.gifExtension
+        os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + mote + constants.gifExtension)
+
+def BuildPath(pokemonName, properties) -> dict[str, str]:
+    path = constants.resource_path 
+    fileName = pokemonName.lower()
+
+    skin = properties.get('skin')
+    gender = properties.get('gender')
+    shiny = properties.get('shiny')
+
+    if gender == 'female' and skin == "common":
+        fileName += constants.femaleSuffix
+
+    if skin == 'common' :
+        if shiny == 'True' and HasShiny(fileName + constants.shinySuffix):
+            fileName += constants.shinySuffix
+            path += constants.shinyFolder
+    else:
+        fileName += "-" + skin
+
+    path += fileName + constants.gifExtension
+
+    return {
+        "resultName": fileName,
+        "path": path
+    }
+
+def Exists(path) -> bool:
+    return os.path.exists(path)
 
 def DebugMsg(msg, color):
     debugLabel.config(fg=color)

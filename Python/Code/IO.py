@@ -116,8 +116,8 @@ def CreateJsonFile(appDirectory, override):
                 "mote": "",
                 "properties": {
                     "gender": "male",
-                    "skin": "common"
-                    "shiny": "False",
+                    "skin": "common",
+                    "shiny": "False"
                 }
             }
         ],
@@ -127,7 +127,7 @@ def CreateJsonFile(appDirectory, override):
                 "mote": "",
                 "properties": {
                     "gender": "male",
-                    "skin": "common"
+                    "skin": "common",
                     "shiny": "False"
                 }
             }
@@ -138,7 +138,7 @@ def CreateJsonFile(appDirectory, override):
                 "mote": "",
                 "properties": {
                     "gender": "male",
-                    "skin": "common"
+                    "skin": "common",
                     "shiny": "False"
                 }
             }
@@ -149,7 +149,7 @@ def CreateJsonFile(appDirectory, override):
                 "mote": "",
                 "properties": {
                     "gender": "male",
-                    "skin": "common"
+                    "skin": "common",
                     "shiny": "False"
                 }
             }
@@ -160,7 +160,7 @@ def CreateJsonFile(appDirectory, override):
                 "mote": "",
                 "properties": {
                     "gender": "male",
-                    "skin": "common"
+                    "skin": "common",
                     "shiny": "False"
                 }
             }
@@ -171,7 +171,7 @@ def CreateJsonFile(appDirectory, override):
                 "mote": "",
                 "properties": {
                     "gender": "male",
-                    "skin": "common"
+                    "skin": "common",
                     "shiny": "False"
                 }
             }

@@ -13,7 +13,7 @@ sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
 class PokemonFrame:
     def __init__(self, count, root, frame, tk):
-        default_properties = dict(pokemonCatalog.default_props)
+        default_properties = copy.deepcopy(pokemonCatalog.default_props)
 
         self.frameData = FrameData(
             name='',
@@ -58,20 +58,10 @@ class PokemonFrame:
                 self.skipReset = False
                 return
 
-            # Creamos una copia de default_properties para no compartir referencias
-            default_props_copy = default_properties.copy()
-            
-            # Aseguramos que 'shiny' sea siempre booleano
-            if 'shiny' in default_props_copy:
-                if isinstance(default_props_copy['shiny'], list):
-                    default_props_copy['shiny'] = 'shiny' in default_props_copy['shiny']
-                elif not isinstance(default_props_copy['shiny'], bool):
-                    default_props_copy['shiny'] = False
-
             self.frameData = FrameData(
                 name='',
                 mote='',
-                properties=default_props_copy
+                properties = copy.deepcopy(pokemonCatalog.default_props)
             )
 
         self.pokemonNameEntry.trace_add("write", reset_frame_data)
@@ -118,7 +108,6 @@ class PokemonFrame:
 
             # Tomamos el valor actual: el guardado previamente o el primer valor de la lista
             current_value = self.frameData.properties.get(key)
-            print(current_value)
             
             current_value = str(current_value)
 
@@ -141,8 +130,6 @@ class PokemonFrame:
 
             self.frameData.name = pokemonName
             self.frameData.properties = result
-
-            print(self.frameData.properties.get('shiny'))
 
             updateWindow.destroy()
 

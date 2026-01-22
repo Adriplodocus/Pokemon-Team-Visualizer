@@ -28,6 +28,8 @@ baseYForFrames = 35
 propertyHeight = 35
 
 #IO
+resources = 'Resources'
+resource_path = "AnimatedSprites/"
 obsFolder ="/OBS/"
 currentTeamFolder = "/CurrentTeam/"
 resourcesFolder ="Resources/"
