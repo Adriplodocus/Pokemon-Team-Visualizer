@@ -317,12 +317,12 @@ def BuildPath(pokemonName, properties) -> dict[str, str]:
     if gender == 'female' and skin == "common":
         fileName += constants.femaleSuffix
 
-    if skin == 'common' :
-        if shiny == 'True' and HasShiny(fileName + constants.shinySuffix):
+    if (skin != 'common'):
+            fileName += "-" + skin
+
+    if shiny == 'True' and HasShiny(fileName + constants.shinySuffix):
             fileName += constants.shinySuffix
             path += constants.shinyFolder
-    else:
-        fileName += "-" + skin
 
     path += fileName + constants.gifExtension
 

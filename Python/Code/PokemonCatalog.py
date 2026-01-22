@@ -15,9 +15,74 @@ pokemon_properties = {
         'skin': ['gorra1', 'gorra2', 'coquette','popstar', 'rockstar', 'libre', 'phd', 'cosplay', 'belle'],
     },
 
+    'aegislash': {
+        'skin': ['blade'],
+    },
+
+    'arceus': {
+        'skin': ['bug', 'dark', 'dragon','electric', 'ghost', 'grass', 'ground', 'ice', 'poison', 'psychic', 'rock', 'steel','water'],
+    },
+
+    'basculin': {
+        'skin': ['blue'],
+    },
+
+    'deerling': {
+        'skin': ['blue'],
+    },
+
+    'deoxys': {
+        'skin': ['attack','defense','speed'],
+    },
+
+    'flabebe': {
+        'skin': ['blue','orange','white', 'yellow'],
+    },
+
+    'floette': {
+        'skin': ['blue','orange','white', 'yellow', 'eternal'],
+    },
+
+    'kyogre': {
+        'skin': ['primal'],
+    },
+
+    'kyurem': {
+        'skin': ['white'],
+    },
+
+    'minior': {
+        'skin': ['blue', 'green', 'indigo','orange', 'red','violet', 'yellow'],
+    },
+
+    'palafin': {
+        'skin': ['hero'],
+    },
+
+    'shaymin': {
+        'skin': ['sky'],
+    },
+
+    'shellos': {
+        'skin': ['east'],
+    },
+
+    'minior': {
+        'skin': ['blue', 'green', 'indigo','orange', 'red','violet', 'yellow'],
+    },
+
+    'unown': {
+    'skin': [
+        'bravo', 'charlie', 'delta', 'echo', 'foxtrot', 'golf', 'hotel',
+        'india', 'juliet', 'kilo', 'lima', 'mike', 'oscar', 'papa', 'quebec',
+        'romeo', 'sierra', 'tango', 'uniform', 'victor', 'whiskey', 'xray',
+        'yankee', 'zulu'
+        ],
+    },
+
     #region Region
     'raichu': {
-        'skin': ['alola'],
+        'skin': ['autumn', 'summer', 'winter'],
     },
 
     'marowak': {
@@ -210,7 +275,7 @@ pokemon_properties = {
     },
 
     'darmanitan': {
-        'skin': ['galarice', 'galaricefire'],
+        'skin': ['zen', 'galarice', 'galaricefire'],
     },
 
     'yamask': {
