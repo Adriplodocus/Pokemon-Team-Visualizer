@@ -228,6 +228,7 @@ def UpdateTeam():
         return
     else:
         for pokemon in pokemonList:
+            pokemon.frame.skipReset = True
             pokemon.frame.pokemonNameEntry.set(pokemon.name.upper())
             pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
 
