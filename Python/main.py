@@ -27,23 +27,34 @@ root.resizable(0,0) #The window size won't be modified.
 root.title(constants.appName)
 
 #This canvas will contain all app elements.
-canvas = tk.Canvas(root, height=600, width=720, bg="#E8E2DB")
+canvas = tk.Canvas(root, height=675, width=755, bg="#E8E2DB")
 canvas.pack()
 
 #Frames
 mainFrame = tk.Frame(root, bg=constants.mainFrameColor,highlightbackground=constants.edgeColor,highlightthickness=3)
+subtitleFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
+pokemonArea = tk.Frame(mainFrame, bg=constants.innerFrameColor)
 settingsFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
 buttonsFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
-spamFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
 debugFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
+spamFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
+
 mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
-settingsFrame.place(relwidth=0.985, height=85, relx=0.5, rely=0.475, anchor=N)
-buttonsFrame.place(relwidth=0.985, height=60, relx=0.5, rely=0.635, anchor=N)
-spamFrame.place(relwidth=0.985, height=85, relx=0.5, rely=0.85, anchor=N)
-debugFrame.place(relwidth=0.985, height=35, relx=0.5, y=constants.baseYForFrames * 12.5, anchor=N)
+subtitleFrame.place(relwidth=0.985, relheight=0.25, relx=0.5, y=45, anchor=N)
+pokemonArea.place(relwidth=0.985, height=250, relx=0.5, y=90, anchor=N)
+settingsFrame.place(relwidth=0.985, height=85, relx=0.5, rely=0.5, anchor=N)
+buttonsFrame.place(relwidth=0.985, height=90, relx=0.5, rely=0.65, anchor=N)
+debugFrame.place(relwidth=0.985, height=60, relx=0.5, rely = 0.75, anchor=N)
+spamFrame.place(relwidth=0.985, height=95, relx=0.5, rely=0.835, anchor=N)
 
 titleLabel = Label(mainFrame, text=constants.appTitle, font=f"{constants.fontName} {constants.largeSize} bold", bg=constants.mainFrameColor, fg=constants.fontColor)
 titleLabel.pack()
+
+tipLabel = Label(subtitleFrame, text=constants.tip1, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor)
+tipLabel.pack()
+
+warnLabel = Label(subtitleFrame, text=constants.warning, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor)
+warnLabel.pack()
 
 #Layout area
 layoutLabel = Label(settingsFrame, text="Layout", font=f"{constants.fontName} {constants.smallSize} bold", bg=constants.mainFrameColor, fg=constants.fontColor)
@@ -90,19 +101,21 @@ updateButton = Button(updateFrame, text=constants.updateButtonText, font=f"{cons
 updateButton.pack(fill=X)
 
 resetFrame = tk.Frame(buttonsFrame, bg=constants.innerFrameColor)
-resetFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0.5, anchor="n")
+resetFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0.35, anchor="n")
 resetButton = Button(resetFrame, text=constants.resetButton, font=f"{constants.fontName} {constants.smallSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:ResetData())
 resetButton.pack(fill=X)
 
 #Spam
-spamLabel = Label(spamFrame, text=constants.credits, font=f"{constants.fontName} 12 ", bg=constants.innerFrameColor, fg=constants.fontColor)
+spamLabel = Label(spamFrame, text=constants.credits, font=f"{constants.fontName} 15", bg=constants.innerFrameColor, fg=constants.fontColor)
 spamLabel.pack(fill=X)
 twitchButton = Button(spamFrame, text="Twitch", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("www.twitch.tv/MrKlypp"))
 twitterButton = Button(spamFrame, text="X", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("https://x.com/MrKlypp"))
 instagramButton = Button(spamFrame, text="Instagram", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("https://www.instagram.com/MrKlypp_/"))
+tiktokButton = Button(spamFrame, text="Tiktok", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("https://www.tiktok.com/@mrklypp"))
 twitchButton.pack()
-twitterButton.pack()
 instagramButton.pack()
+tiktokButton.pack()
+twitterButton.pack()
 
 #Debug.
 debugLabelText = tk.StringVar()
@@ -111,7 +124,7 @@ debugLabel.pack(fill=X)
 
 #Pokemon frames
 pokemonFrames = [
-    PokemonFrame.PokemonFrame(i, root, tk.Frame, tk)
+    PokemonFrame.PokemonFrame(i, pokemonArea, tk.Frame, tk)
     for i in range(6)
 ]
 
@@ -202,9 +215,23 @@ def UpdateTeam():
 
     UpdateJsonData()
 
+    error = False
+
     for pokemon in pokemonList:
         if pokemon.name != "":
-            ProcessPokemon(pokemon)
+            if ProcessPokemon(pokemon) is False:
+                error = True
+                break
+
+    if error:
+        DebugMsg(constants.errorTeam, constants.errorColor)
+        return
+    else:
+        for pokemon in pokemonList:
+            pokemon.frame.pokemonNameEntry.set(pokemon.name.upper())
+            pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
+
+        DebugMsg(constants.successfulTeam, constants.correctColor)
 
     IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
     IO.CreateJS(GetAppPath(), maxPokemon, pokemonList, showShadows, showPokeballBackground)
@@ -287,15 +314,15 @@ def GetAliasNamesLines():
     with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, encoding="utf-8") as f:
         aliasLines = f.readlines()
 
-def ProcessPokemon(pokemon):
+def ProcessPokemon(pokemon) -> bool:
     result = BuildPath(pokemon.name, pokemon.frame.frameData.properties)
     ref = files('Resources') / result["path"]
 
     if (Exists(ref)):
         Copy(ref, result["resultName"] , pokemon.mote)
-        DebugMsg(constants.successfulTeam, constants.correctColor)
+        return True
     else:
-        DebugMsg(constants.errorTeam, constants.errorColor)
+        return False
 
 def Copy(ref, fileName, mote):
     with as_file(ref) as path:

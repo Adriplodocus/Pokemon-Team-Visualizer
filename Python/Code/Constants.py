@@ -1,7 +1,7 @@
 #App
-credits = "Made by @MrKlypp"
 appName = "Pokémon Team Visualizer"
 appTitle = "Pokémon Team Visualizer"
+credits = "Made by @MrKlypp"
 
 #Colors
 mainFrameColor = "#333333"
@@ -59,6 +59,8 @@ femaleSuffix = '-f'
 successfulTeam = "The team has been successfully generated!"
 errorTeam = "Some errors found on original Pokémon names.\nPlease, check they're properly written."
 dataReset ="Team data was reset successfully."
+tip1 = "Write pokémon names exactly as they appear ingame."
+warning = "Some pokémon or forms may not be added yet. If you encounter one, please, let me know."
 
 #Layouts
 horizontalLayout = "Horizontal"
