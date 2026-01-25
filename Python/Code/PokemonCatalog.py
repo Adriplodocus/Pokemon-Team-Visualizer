@@ -166,10 +166,14 @@ pokemon_properties = {
     'morpeko': {
         'skin': ['hangry'],
     },
+
     'necrozma': {
         'skin': ['dawnwings','duskmane','ultra'],
     },
 
+    'zygarde': {
+        'skin': ['50','100'],
+    },
 
     'oricorio': {
         'skin': ['sensu'],
@@ -185,9 +189,21 @@ pokemon_properties = {
 
     'pikachu': {
         'skin': [
-            'alolacap','belle','cap','cosplay','libre','phd',
-            'popstar','rockstar','originalcap','partnercap',
-            'hoenncap','sinnoh','unovacap','gorra8'
+            'alolacap',
+            'cap',
+            'gorra8',
+            'hoenncap',
+            'originalcap',
+            'partnercap',
+            'sinnohcap'
+            'unovacap',
+
+            'belle',
+            'cosplay',
+            'libre',
+            'phd',
+            'popstar',
+            'rockstar',
         ],
     },
 
@@ -390,6 +406,10 @@ pokemon_properties = {
         'skin': ['paldea'],
     },
 
+    'wormadam': {
+        'skin': ['sandy', 'trash'],
+    },
+
     'tauros': {
         'skin': ['paldeacombat','paldeablaze','paldeaaqua'],
     },
@@ -410,7 +430,7 @@ pokemon_properties = {
         'skin': ['galar'],
     },
 
-    'farfetchd': {
+    'farfetch\'d': {
         'skin': ['galar'],
     },
 

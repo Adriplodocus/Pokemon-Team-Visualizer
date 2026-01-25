@@ -31,19 +31,26 @@ def CreateHTML(appDirectory, layout, pokemonList, showPokeballBackground):
 
 def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBackground):
     jsText = '''function changeP() {
-        var pokemon1 = "%1";
-        var pokemon2 = "%2";
-        var pokemon3 = "%3";
-        var pokemon4 = "%4";
-        var pokemon5 = "%5";
-        var pokemon6 = "%6";
+        var pokemon1 = "%name1";
+        var pokemon2 = "%name2";
+        var pokemon3 = "%name3";
+        var pokemon4 = "%name4";
+        var pokemon5 = "%name5";
+        var pokemon6 = "%name6";
 
-        document.getElementById("p1").textContent = pokemon1;
-        document.getElementById("p2").textContent = pokemon2;
-        document.getElementById("p3").textContent = pokemon3;
-        document.getElementById("p4").textContent = pokemon4;
-        document.getElementById("p5").textContent = pokemon5;
-        document.getElementById("p6").textContent = pokemon6;
+        var pokemon1alias = "%mote1";
+        var pokemon2alias = "%mote2";
+        var pokemon3alias = "%mote3";
+        var pokemon4alias = "%mote4";
+        var pokemon5alias = "%mote5";
+        var pokemon6alias = "%mote6";
+
+        document.getElementById("p1").textContent = pokemon1alias;
+        document.getElementById("p2").textContent = pokemon2alias;
+        document.getElementById("p3").textContent = pokemon3alias;
+        document.getElementById("p4").textContent = pokemon4alias;
+        document.getElementById("p5").textContent = pokemon5alias;
+        document.getElementById("p6").textContent = pokemon6alias;
 
         //%htmlReplacement1
         //%htmlReplacement2
@@ -58,19 +65,21 @@ def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBac
 
     # Adding the input data to the JS file
     for i in range(0, maxPokemon):
-        pokemonNamePlaceholder = f"%{i+1}"
+        pokemonNamePlaceholder = f"%name{i+1}"
+        pokemonAliasPlaceHolder = f"%mote{i+1}"
 
         if i >= len(pokemonList):
             mote = ""
             name = ""
         else:
             mote = pokemonList[i].mote
-            name = pokemonList[i].name
+            name = pokemonList[i].fileName
 
-        jsText = jsText.replace(pokemonNamePlaceholder, mote)
+        jsText = jsText.replace(pokemonNamePlaceholder, name)
+        jsText = jsText.replace(pokemonAliasPlaceHolder, mote)
 
         if name != "":
-            codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(document.getElementById("p{i+1}").textContent.concat(".gif"));'''
+            codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(pokemon{i+1}.concat(".gif"));'''
 
             if showShadows.get() == True:
                 codeText += f'''

@@ -1,6 +1,6 @@
 from Code import Constants as constants
 from Code.FrameData import FrameData
-from tkinter import Label, Checkbutton, Button, BooleanVar, Entry, CENTER
+from tkinter import Label, Entry, CENTER
 import tkinter as tk
 from tkinter import ttk
 import sys
@@ -24,8 +24,8 @@ class PokemonFrame:
         self.frame = frame(root, bg=constants.innerFrameColor)
         self.frame.place(relwidth=0.95, height=50, relx=0.5, rely=0.1, y=constants.baseYForFrames * count, anchor="n")
 
-        self.label = Label(self.frame, text="Pokemon " + str(count+1) + ":", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
-        self.moteLabel = Label(self.frame, text="Nickname:", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
+        self.label = Label(self.frame, text=constants.pokemonName + str(count+1) + ":", font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
+        self.moteLabel = Label(self.frame, text=constants.pokemonNickname, font=f"{constants.fontName} {constants.smallSize}", bg=constants.innerFrameColor, fg=constants.fontColor)
 
         self.pokemonNameEntry = tk.StringVar()
         self.pokemonMoteEntry = tk.StringVar()
@@ -70,16 +70,16 @@ class PokemonFrame:
         updateWindow = tk.Toplevel(self.frame)
 
         if pokemonName.strip() == "":
-            updateWindow.title("Error")
+            updateWindow.title(constants.errorWindowTitle)
             tk.Label(
                 updateWindow,
-                text="Debes introducir un nombre de Pokémon para ver sus propiedades.",
+                text=constants.pokemonEmptyProperties,
                 font=f"{constants.fontName} {constants.smallSize}",
                 fg=constants.errorColor
             ).pack(pady=50)
             return
         else:
-            updateWindow.title(f"Propiedades de {pokemonName.capitalize()}")
+            updateWindow.title(f"{pokemonName.capitalize() + constants.propertiesSuffix}")
 
         specific_props = pokemonCatalog.pokemon_properties.get(pokemonName.lower(), {})
         self.prop_vars = {}

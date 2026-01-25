@@ -56,18 +56,39 @@ shinySuffix = " (1)"
 femaleSuffix = '-f'
 
 #Messages
+pokemonName = "Pokémon "
+pokemonNickname = "Nickname"
+errorWindowTitle = "Error"
+propertiesSuffix = " properties"
 successfulTeam = "The team has been successfully generated!"
 errorTeam = "Some errors found on original Pokémon names.\nPlease, check they're properly written."
+noNamesError = "Write any pokémon name to start."
+pokemonEmptyProperties = "You must introduce a Pokémon name to check its properties."
+
 dataReset ="Team data was reset successfully."
-tip1 = "Write pokémon names exactly as they appear ingame."
-warning = "Some pokémon or forms may not be added yet. If you encounter one, please, let me know."
+tip1 = "Write pokémon names exactly as they appear ingame. \nSome pokémon or forms may not be added yet."
+warning = "If you encounter any error, please, let me know."
 
 #Layouts
 horizontalLayout = "Horizontal"
 verticalLayout = "Vertical"
 defaultLayout = horizontalLayout
 
+#Settings text
+showShadowsProperties ="Show shadows"
+showPokeballBackgroundText ="Show pokeball background"
+
 #Button text
 updateButtonText = "Update Team"
 resetButton ="Reset all data"
 pokemonPropertiesText = "Properties"
+
+#Networks
+twitch = "Twitch"
+twitchAddress = "www.twitch.tv/MrKlypp"
+x = "X"
+xAddress ="https://x.com/MrKlypp"
+instagram ="Instagram"
+instagramAddress ="https://www.instagram.com/MrKlypp_/"
+tiktok ="Tiktok"
+tiktokAddress ="https://www.tiktok.com/@mrklypp"

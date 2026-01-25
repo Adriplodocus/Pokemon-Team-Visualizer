@@ -41,7 +41,7 @@ spamFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
 
 mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
 subtitleFrame.place(relwidth=0.985, relheight=0.25, relx=0.5, y=45, anchor=N)
-pokemonArea.place(relwidth=0.985, height=250, relx=0.5, y=90, anchor=N)
+pokemonArea.place(relwidth=0.985, height=250, relx=0.5, rely=0.15, anchor=N)
 settingsFrame.place(relwidth=0.985, height=85, relx=0.5, rely=0.5, anchor=N)
 buttonsFrame.place(relwidth=0.985, height=90, relx=0.5, rely=0.65, anchor=N)
 debugFrame.place(relwidth=0.985, height=60, relx=0.5, rely = 0.75, anchor=N)
@@ -53,7 +53,7 @@ titleLabel.pack()
 tipLabel = Label(subtitleFrame, text=constants.tip1, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor)
 tipLabel.pack()
 
-warnLabel = Label(subtitleFrame, text=constants.warning, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor)
+warnLabel = Label(subtitleFrame, text=constants.warning, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.errorColor)
 warnLabel.pack()
 
 #Layout area
@@ -69,7 +69,7 @@ comboBox.pack()
 comboBox.bind("<<ComboboxSelected>>", lambda event: IO.UpdateLayoutFile(GetAppPath(), layout))
 
 showShadows = tk.BooleanVar(value=True)
-showShadowsCheck = tk.Checkbutton(settingsFrame, text="Show shadows", font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showShadows)
+showShadowsCheck = tk.Checkbutton(settingsFrame, text = constants.showShadowsProperties, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showShadows)
 showShadowsCheck.place(relx=0.5, rely=0.60, anchor="n")
 showShadowsCheck.pack()
 
@@ -82,7 +82,7 @@ def make_callback_showShadows(showShadows):
 showShadows.trace_add("write", make_callback_showShadows(showShadows))
 
 showPokeballBackground = tk.BooleanVar(value=True)
-showPokeballBackgroundCheck = tk.Checkbutton(settingsFrame, text="Show pokeball background", font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showPokeballBackground)
+showPokeballBackgroundCheck = tk.Checkbutton(settingsFrame, text=constants.showPokeballBackgroundText, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showPokeballBackground)
 showPokeballBackgroundCheck.place(relx=0.5, rely=0.60, anchor="n")
 showPokeballBackgroundCheck.pack()
 
@@ -108,10 +108,10 @@ resetButton.pack(fill=X)
 #Spam
 spamLabel = Label(spamFrame, text=constants.credits, font=f"{constants.fontName} 15", bg=constants.innerFrameColor, fg=constants.fontColor)
 spamLabel.pack(fill=X)
-twitchButton = Button(spamFrame, text="Twitch", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("www.twitch.tv/MrKlypp"))
-twitterButton = Button(spamFrame, text="X", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("https://x.com/MrKlypp"))
-instagramButton = Button(spamFrame, text="Instagram", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("https://www.instagram.com/MrKlypp_/"))
-tiktokButton = Button(spamFrame, text="Tiktok", font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL("https://www.tiktok.com/@mrklypp"))
+twitchButton = Button(spamFrame, text=constants.twitch, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.twitchAddress))
+twitterButton = Button(spamFrame, text=constants.x, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.xAddress))
+instagramButton = Button(spamFrame, text=constants.instagram, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.instagramAddress))
+tiktokButton = Button(spamFrame, text=constants.tiktok, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.tiktokAddress))
 twitchButton.pack()
 instagramButton.pack()
 tiktokButton.pack()
@@ -159,6 +159,7 @@ def GetJsonData():
                 for p in data['pokemon'][key]:
                     pokemon = Pokemon(
                         name=p['name'],
+                        fileName='',
                         mote=p['mote'],
                         frame=pokemonFrames[counter]
                     )
@@ -210,19 +211,28 @@ def InitialisePokemon(pokemon):
 def UpdateTeam():
     debugLabelText.set("")
 
+    noNamesError = False
+    error = False
+
+    emptyNamesCounter = 0
+    for pokemon in pokemonFrames:
+        if pokemon.pokemonNameEntry.get() == "":
+            emptyNamesCounter+=1
+
+    if (emptyNamesCounter == maxPokemon):
+        noNamesError = True
+
     IO.CreateJsonFile(GetAppPath(), True)
     RemoveGifFiles()
 
     UpdateJsonData()
-
-    error = False
 
     for pokemon in pokemonList:
         if pokemon.name != "":
             if ProcessPokemon(pokemon) is False:
                 error = True
                 break
-
+            
     if error:
         DebugMsg(constants.errorTeam, constants.errorColor)
         return
@@ -232,7 +242,8 @@ def UpdateTeam():
             pokemon.frame.pokemonNameEntry.set(pokemon.name.upper())
             pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
 
-        DebugMsg(constants.successfulTeam, constants.correctColor)
+        if (noNamesError is not True):
+            DebugMsg(constants.successfulTeam, constants.correctColor)
 
     IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
     IO.CreateJS(GetAppPath(), maxPokemon, pokemonList, showShadows, showPokeballBackground)
@@ -262,54 +273,6 @@ def CheckForDuplicateNames(list):
 
     return len(namesToCheck) != len(set(namesToCheck))
 
-def HasShiny(name):
-    resource_path = (
-        constants.animatedSpritesFolder +
-        constants.shinyFolder +
-        name +
-        constants.gifExtension
-    )
-    
-    try:
-        ref = files('Resources') / resource_path
-        return ref.is_file()
-    except:
-        return False
-
-def HasMegaEvo(pokemon):
-    pokemonName = pokemon.name.lower()
-    resource_path = (
-        constants.animatedSpritesFolder +
-        constants.megaFolder +
-        pokemonName +
-        constants.megaSuffix +
-        constants.gifExtension
-    )
-    
-    try:
-        ref = files('Resources') / resource_path
-        return ref.is_file()
-    except:
-        return False
-
-def HasMegaShiny(pokemon):
-    pokemonName = pokemon.name.lower()
-    resource_path = (
-        constants.animatedSpritesFolder +
-        constants.megaFolder +
-        constants.shinyFolder +
-        pokemonName +
-        constants.megaSuffix +
-        constants.shinySuffix +
-        constants.gifExtension
-    )
-    
-    try:
-        ref = files('Resources') / resource_path
-        return ref.is_file()
-    except:
-        return False
-
 def GetAliasNamesLines():
     global aliasLines
     with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.aliasNamesFileName, encoding="utf-8") as f:
@@ -320,37 +283,45 @@ def ProcessPokemon(pokemon) -> bool:
     ref = files('Resources') / result["path"]
 
     if (Exists(ref)):
-        Copy(ref, result["resultName"] , pokemon.mote)
+        if (pokemon.name != ""):
+            pokemon.fileName = result["resultName"]
+
+        Copy(ref)
+
         return True
     else:
         return False
 
-def Copy(ref, fileName, mote):
+def Copy(ref):
     with as_file(ref) as path:
         gif_data = str(path)
-
         IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
-
-        copiedFile = GetAppPath() + constants.obsFolder + constants.currentTeamFolder + fileName + constants.gifExtension
-        os.rename(copiedFile, GetAppPath() + constants.obsFolder + constants.currentTeamFolder + mote + constants.gifExtension)
 
 def BuildPath(pokemonName, properties) -> dict[str, str]:
     path = constants.resource_path 
+    defaultName = pokemonName.lower()
     fileName = pokemonName.lower()
 
+    shiny = properties.get('shiny')
     skin = properties.get('skin')
     gender = properties.get('gender')
-    shiny = properties.get('shiny')
 
-    if gender == 'female' and skin == "common":
+    if shiny == 'True' and HasShiny(defaultName):
+        if skin != 'common' and HasShinySkin(defaultName, skin):
+                fileName += "-" + skin
+
+        if gender == 'female' and HasFemaleShiny(defaultName):
+            fileName += constants.femaleSuffix
+
+        fileName += constants.shinySuffix
+        path += constants.shinyFolder
+    elif skin != 'common' and HasSkin(defaultName, skin):
+        fileName += "-" + skin
+
+        if HasFemaleSkin(defaultName, skin):
+            fileName += constants.femaleSuffix
+    elif gender == 'female' and HasFemale(defaultName):
         fileName += constants.femaleSuffix
-
-    if (skin != 'common'):
-            fileName += "-" + skin
-
-    if shiny == 'True' and HasShiny(fileName + constants.shinySuffix):
-            fileName += constants.shinySuffix
-            path += constants.shinyFolder
 
     path += fileName + constants.gifExtension
 
@@ -359,6 +330,96 @@ def BuildPath(pokemonName, properties) -> dict[str, str]:
         "path": path
     }
 
+def HasShiny(name):
+    resource_path = (
+        constants.animatedSpritesFolder +
+        constants.shinyFolder +
+        name +
+        constants.shinySuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
+    
+def HasFemaleShiny(name):
+    resource_path = (
+        constants.animatedSpritesFolder +
+        constants.shinyFolder +
+        name +
+        constants.femaleSuffix +
+        constants.shinySuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
+    
+def HasShinySkin(pokemonName, skinName):
+    resource_path = (
+        constants.animatedSpritesFolder +
+        constants.shinyFolder +
+        pokemonName + "-" +
+        skinName +
+        constants.shinySuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
+
+def HasSkin(pokemonName, skinName):
+    resource_path = (
+        constants.animatedSpritesFolder +
+        pokemonName + "-" +
+        skinName +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
+
+def HasFemaleSkin(pokemonName, skinName):
+    resource_path = (
+        constants.animatedSpritesFolder +
+        pokemonName +
+        skinName +
+        constants.femaleSuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
+
+def HasFemale(pokemonName):
+    resource_path = (
+        constants.animatedSpritesFolder +
+        pokemonName +
+        constants.femaleSuffix +
+        constants.gifExtension
+    )
+    
+    try:
+        ref = files('Resources') / resource_path
+        return ref.is_file()
+    except:
+        return False
+    
 def Exists(path) -> bool:
     return os.path.exists(path)
 
