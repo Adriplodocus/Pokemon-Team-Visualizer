@@ -656,10 +656,23 @@ ${entries.map((e, i) => `<div class="pair">
     }
 }
 
+// ── Validation ──────────────────────────────────────────────────
+function validateTeam() {
+    const invalid = team
+        .filter(s => s.name.trim())
+        .filter(s => !pokemonNames.includes(s.name.trim().toLowerCase()));
+    if (invalid.length) {
+        setStatus('Unknown Pokémon: ' + invalid.map(s => s.name).join(', '), 'var(--error)');
+        return false;
+    }
+    return true;
+}
+
 // ── Download ────────────────────────────────────────────────────
 function generateAndDownload() {
     const hasAny = team.some(s => s.name.trim());
     if (!hasAny) { setStatus('Write at least one Pokémon name.', 'var(--error)'); return; }
+    if (!validateTeam()) return;
 
     const html = buildOverlayHTML(
         document.getElementById('layout-select').value,
@@ -673,6 +686,7 @@ function generateAndDownload() {
 function previewOverlay() {
     const hasAny = team.some(s => s.name.trim());
     if (!hasAny) { setStatus('Write at least one Pokémon name.', 'var(--error)'); return; }
+    if (!validateTeam()) return;
 
     const html = buildOverlayHTML(
         document.getElementById('layout-select').value,
