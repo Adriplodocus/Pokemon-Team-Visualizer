@@ -165,7 +165,7 @@ fetch('pokemon-list.json')
     .then(r => r.json())
     .then(names => {
         pokemonNames = names;
-        for (let i = 0; i < 6; i++) refreshSprite(i);
+        for (let i = 0; i < 6; i++) { refreshSprite(i); refreshNameValidation(i); }
     })
     .catch(() => {});
 
@@ -208,6 +208,7 @@ function buildRows() {
             updateSuggestions(nameInput, suggestions, i);
             refreshIcons(i);
             refreshSprite(i);
+            refreshNameValidation(i);
             saveState();
         });
         nameInput.addEventListener('keydown', e => {
@@ -319,6 +320,25 @@ function updateSuggestions(input, list, idx) {
 
 function closeSuggestions(list) { list.innerHTML = ''; list.style.display = 'none'; }
 
+// ── Name validation ─────────────────────────────────────────────
+function refreshNameValidation(i) {
+    const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    if (!row) return;
+    const input = row.querySelector('.name-input');
+    const val   = input.value.trim().toLowerCase();
+    if (!val || !pokemonNames.length) {
+        input.classList.remove('valid', 'invalid');
+    } else if (pokemonNames.includes(val)) {
+        input.classList.add('valid');
+        input.classList.remove('invalid');
+    } else if (!pokemonNames.some(n => n.startsWith(val) || n.includes(val))) {
+        input.classList.add('invalid');
+        input.classList.remove('valid');
+    } else {
+        input.classList.remove('valid', 'invalid');
+    }
+}
+
 // ── Icons ───────────────────────────────────────────────────────
 function refreshIcons(i) {
     const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
@@ -371,6 +391,7 @@ function refreshRow(i) {
     row.querySelector('.mote-input').value = team[i].mote;
     refreshIcons(i);
     refreshSprite(i);
+    refreshNameValidation(i);
 }
 
 // ── Clear slot ──────────────────────────────────────────────────
@@ -381,6 +402,7 @@ function clearSlot(i) {
     row.querySelector('.mote-input').value = '';
     refreshIcons(i);
     refreshSprite(i);
+    refreshNameValidation(i);
     saveState();
 }
 

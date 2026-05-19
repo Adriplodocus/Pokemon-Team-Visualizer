@@ -186,6 +186,8 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
     transition: border-color 0.15s;
 }
 .name-input:focus, .mote-input:focus { border-color: var(--border-focus); }
+.name-input.valid   { border-color: var(--success); }
+.name-input.invalid { border-color: var(--error); }
 .mote-input { flex: 0 0 120px; }
 .suggestions {
     position: absolute;
