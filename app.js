@@ -376,7 +376,6 @@ function refreshRow(i) {
     row.querySelector('.mote-input').value = team[i].mote;
     refreshIcons(i);
     refreshSprite(i);
-    refreshNameValidation(i);
 }
 
 // ── Clear slot ──────────────────────────────────────────────────
@@ -387,7 +386,6 @@ function clearSlot(i) {
     row.querySelector('.mote-input').value = '';
     refreshIcons(i);
     refreshSprite(i);
-    refreshNameValidation(i);
     saveState();
 }
 
