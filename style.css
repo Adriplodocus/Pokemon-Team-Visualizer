@@ -367,8 +367,10 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {
-    body { padding: 16px 8px 32px; }
+    body { padding: 16px 8px 32px; overflow-x: hidden; }
     .card { padding: 14px; }
+    .header-title-row { flex-direction: column; gap: 8px; }
+    h1 { font-size: 22px; }
     .pokemon-row { gap: 5px; }
     .row-label { display: none; }
     .sprite-preview { flex: 0 0 36px; width: 36px; height: 36px; }
