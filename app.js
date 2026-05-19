@@ -220,12 +220,14 @@ function buildRows() {
                     nameInput.value = target.dataset.value;
                     team[i].name = target.dataset.value;
                     refreshSprite(i);
+                    refreshNameValidation(i);
                     saveState();
                 }
                 closeSuggestions(suggestions);
                 activeSuggIdx = -1;
             } else if (e.key === 'Enter') {
                 refreshSprite(i);
+                refreshNameValidation(i);
                 saveState();
                 closeSuggestions(suggestions);
                 activeSuggIdx = -1;
@@ -243,6 +245,7 @@ function buildRows() {
                 nameInput.value = items[activeSuggIdx].dataset.value;
                 team[i].name = nameInput.value;
                 refreshSprite(i);
+                refreshNameValidation(i);
             }
         });
         moteInput.addEventListener('input', () => { team[i].mote = moteInput.value; saveState(); });
@@ -255,6 +258,7 @@ function buildRows() {
             closeSuggestions(suggestions);
             activeSuggIdx = -1;
             refreshSprite(i);
+            refreshNameValidation(i);
             saveState();
         });
 
