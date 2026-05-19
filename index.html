@@ -530,7 +530,7 @@ function buildRows() {
         row.dataset.index = i;
         row.innerHTML = `
             <span class="drag-handle" title="Drag to reorder">⠿</span>
-            <img class="sprite-preview" src="" alt="" onerror="this.classList.remove('visible')">
+            <img class="sprite-preview" src="" alt="">
             <span class="row-label">Pokémon ${i + 1}:</span>
             <div class="ac-wrapper">
                 <input class="name-input" type="text" data-i18n-ph="namePh" autocomplete="off" spellcheck="false">
@@ -662,9 +662,20 @@ function refreshSprite(i) {
     const img  = row.querySelector('.sprite-preview');
     const name = team[i].name.trim().toLowerCase();
     if (name && pokemonNames.includes(name)) {
-        img.src = buildSpriteUrl(name, team[i].properties);
+        const url         = buildSpriteUrl(name, team[i].properties);
+        const fallbackUrl = BASE_URL + encodeURIComponent(name) + '.gif';
+        img.onerror = () => {
+            if (img.src !== fallbackUrl) {
+                img.src = fallbackUrl;
+            } else {
+                img.classList.remove('visible');
+                img.onerror = null;
+            }
+        };
+        img.src = url;
         img.classList.add('visible');
     } else {
+        img.onerror = null;
         img.classList.remove('visible');
         img.src = '';
     }
