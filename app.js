@@ -325,6 +325,7 @@ function clearSlot(i) {
     row.querySelector('.mote-input').value = '';
     refreshIcons(i);
     refreshSprite(i);
+    saveState();
 }
 
 // ── Reset all ───────────────────────────────────────────────────
