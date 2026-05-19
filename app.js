@@ -179,7 +179,7 @@ function buildRows() {
         row.dataset.index = i;
         row.innerHTML = `
             <span class="drag-handle" title="Drag to reorder">⠿</span>
-            <img class="sprite-preview" src="" alt="">
+            <img class="sprite-preview" src="" alt="" onclick="openModal(${i})" style="cursor:pointer">
             <span class="row-label">Pokémon ${i + 1}:</span>
             <div class="ac-wrapper">
                 <input class="name-input" type="text" data-i18n-ph="namePh" autocomplete="off" spellcheck="false">
@@ -309,7 +309,9 @@ function buildRows() {
 function updateSuggestions(input, list, idx) {
     const typed = input.value.toLowerCase();
     if (typed.length < 2) { closeSuggestions(list); return; }
-    const matches = pokemonNames.filter(n => n.startsWith(typed)).slice(0, 8);
+    const starts  = pokemonNames.filter(n => n.startsWith(typed));
+    const rest    = pokemonNames.filter(n => !n.startsWith(typed) && n.includes(typed));
+    const matches = [...starts, ...rest].slice(0, 8);
     if (!matches.length) { closeSuggestions(list); return; }
     list.innerHTML = matches.map(n => `<li data-value="${n}">${n}</li>`).join('');
     list.style.display = 'block';

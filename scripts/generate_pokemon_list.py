@@ -1,6 +1,6 @@
 import os, json
 
-sprites_dir = os.path.join(os.path.dirname(__file__), 'Resources', 'AnimatedSprites')
+sprites_dir = os.path.join(os.path.dirname(__file__), '..', 'sprites')
 names = sorted(set(
     f[:-4] for f in os.listdir(sprites_dir)
     if f.endswith('.gif')
