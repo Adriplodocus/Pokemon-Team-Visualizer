@@ -756,6 +756,7 @@ function clearSlot(i) {
 // ── Reset all ───────────────────────────────────────────────────
 function resetAll() {
     for (let i = 0; i < 6; i++) clearSlot(i);
+    saveState();
     setStatus(t('successReset'), 'var(--success)');
 }
 
