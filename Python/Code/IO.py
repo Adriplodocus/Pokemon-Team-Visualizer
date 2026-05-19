@@ -13,86 +13,33 @@ def Hide(path):
 
 def CreateHTML(appDirectory, layout, pokemonList, showPokeballBackground):
     htmlText = templates.horizontalHTMLTemplate if layout.get() == "Horizontal" else templates.verticalHtmlTemplate
-
-    for i in range(0, len(pokemonList)):
-        codeText = f'''<p id="p{i+1}"></p>'''
-
-        if showPokeballBackground.get() == True and pokemonList[i].name != "":
-            codeText += f'''<img id="pokeballBackground{i+1}">'''
-        
-        codeText += f'''<img id="img{i+1}">'''
-
-        htmlText = htmlText.replace(f"%pkDivContent{i+1}", codeText)
-
-    # Creating the JS file
     file_html = open(appDirectory + constants.obsFolder + constants.teamVisualizerFileName, "w", encoding="utf-8")
     file_html.write(htmlText)
     file_html.close()
 
 def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBackground):
-    jsText = '''function changeP() {
-        var pokemon1 = "%name1";
-        var pokemon2 = "%name2";
-        var pokemon3 = "%name3";
-        var pokemon4 = "%name4";
-        var pokemon5 = "%name5";
-        var pokemon6 = "%name6";
-
-        var pokemon1alias = "%mote1";
-        var pokemon2alias = "%mote2";
-        var pokemon3alias = "%mote3";
-        var pokemon4alias = "%mote4";
-        var pokemon5alias = "%mote5";
-        var pokemon6alias = "%mote6";
-
-        document.getElementById("p1").textContent = pokemon1alias;
-        document.getElementById("p2").textContent = pokemon2alias;
-        document.getElementById("p3").textContent = pokemon3alias;
-        document.getElementById("p4").textContent = pokemon4alias;
-        document.getElementById("p5").textContent = pokemon5alias;
-        document.getElementById("p6").textContent = pokemon6alias;
-
-        //%htmlReplacement1
-        //%htmlReplacement2
-        //%htmlReplacement3
-        //%htmlReplacement4
-        //%htmlReplacement5
-        //%htmlReplacement6
-    }'''
-
-    # Creating the JS file
-    file_js = open(appDirectory + constants.obsFolder + constants.jsFileName, "w", encoding="utf-8")
-
-    # Adding the input data to the JS file
-    for i in range(0, maxPokemon):
-        pokemonNamePlaceholder = f"%name{i+1}"
-        pokemonAliasPlaceHolder = f"%mote{i+1}"
-
-        if i >= len(pokemonList):
-            mote = ""
-            name = ""
+    entries = []
+    for i in range(maxPokemon):
+        if i < len(pokemonList) and pokemonList[i].name != "":
+            p = pokemonList[i]
+            shadow = 'true' if showShadows.get() else 'false'
+            bg     = 'true' if showPokeballBackground.get() else 'false'
+            entries.append(f'  {{"name":"{p.fileName}","alias":"{p.mote}","shadow":{shadow},"bg":{bg}}}')
         else:
-            mote = pokemonList[i].mote
-            name = pokemonList[i].fileName
+            entries.append('  {"name":"","alias":"","shadow":false,"bg":false}')
 
-        jsText = jsText.replace(pokemonNamePlaceholder, name)
-        jsText = jsText.replace(pokemonAliasPlaceHolder, mote)
+    jsText = 'window.teamData = [\n' + ',\n'.join(entries) + '\n];\n\n'
+    jsText += (
+        'function changeP() {\n'
+        '    var saved = null;\n'
+        '    try { saved = JSON.parse(localStorage.getItem("pkOrder")); } catch(e) {}\n'
+        '    var order = (Array.isArray(saved) && saved.length === 6) ? saved : [0,1,2,3,4,5];\n'
+        '    renderTeam(order);\n'
+        '}'
+    )
 
-        if name != "":
-            codeText = f'''document.getElementById("img{i+1}").src = "../OBS/CurrentTeam/".concat(pokemon{i+1}.concat(".gif"));'''
-
-            if showShadows.get() == True:
-                codeText += f'''
-        document.getElementById("shadow{i+1}").src = "https://i.postimg.cc/xdmpF4Tm/Shadow.png";'''
-
-            if showPokeballBackground.get() == True:
-                codeText += f'''
-        document.getElementById("pokeballBackground{i+1}").src = "https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png";'''
-
-            jsText = jsText.replace(f"//%htmlReplacement{i+1}", codeText)
-       
+    file_js = open(appDirectory + constants.obsFolder + constants.jsFileName, "w", encoding="utf-8")
     file_js.write(jsText)
-    # Hide(appDirectory + constants.obsFolder + "Team.js")
     file_js.close()
 
     import time

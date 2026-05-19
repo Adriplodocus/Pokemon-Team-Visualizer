@@ -577,39 +577,38 @@ function buildRows() {
         });
 
         // ── Drag & drop ─────────────────────────────────────────
-        row.addEventListener('dragstart', e => {
-            const tag = e.target.tagName.toLowerCase();
-            if (tag === 'input' || tag === 'button' || tag === 'select') { e.preventDefault(); return; }
-            if (!e.target.closest('.drag-handle')) { e.preventDefault(); return; }
+        const handle = row.querySelector('.drag-handle');
+        handle.draggable = true;
+
+        handle.addEventListener('dragstart', e => {
             dragSrcIndex = i;
             e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', String(i));
+            e.dataTransfer.setDragImage(row, 20, row.offsetHeight / 2);
             setTimeout(() => row.classList.add('dragging'), 0);
         });
-        row.addEventListener('dragend', () => {
+        handle.addEventListener('dragend', () => {
+            dragSrcIndex = -1;
             row.classList.remove('dragging');
             document.querySelectorAll('.pokemon-row').forEach(r => r.classList.remove('drag-over'));
         });
         row.addEventListener('dragover', e => {
             e.preventDefault();
-            e.dataTransfer.dropEffect = 'move';
-            document.querySelectorAll('.pokemon-row').forEach(r => r.classList.remove('drag-over'));
             if (dragSrcIndex !== i) row.classList.add('drag-over');
         });
-        row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
-        row.addEventListener('drop', e => {
-            e.stopPropagation();
-            row.classList.remove('drag-over');
-            if (dragSrcIndex < 0 || dragSrcIndex === i) return;
-            const tmp = { ...team[dragSrcIndex], properties: { ...team[dragSrcIndex].properties } };
-            team[dragSrcIndex] = { ...team[i], properties: { ...team[i].properties } };
-            team[i] = tmp;
-            refreshRow(dragSrcIndex);
-            refreshRow(i);
-            saveState();
-            dragSrcIndex = -1;
+        row.addEventListener('dragleave', e => {
+            if (!row.contains(e.relatedTarget)) row.classList.remove('drag-over');
         });
-
-        row.setAttribute('draggable', 'true');
+        row.addEventListener('drop', e => {
+            e.preventDefault();
+            row.classList.remove('drag-over');
+            const src = dragSrcIndex;
+            if (src < 0 || src === i) return;
+            const [item] = team.splice(src, 1);
+            team.splice(i, 0, item);
+            for (let k = 0; k < 6; k++) refreshRow(k);
+            saveState();
+        });
     }
 
     document.addEventListener('click', e => {
