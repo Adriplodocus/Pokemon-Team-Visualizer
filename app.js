@@ -487,27 +487,26 @@ document.getElementById('modal-backdrop').addEventListener('click', e => {
 
 // ── Sprite URL builder ──────────────────────────────────────────
 function buildSpriteUrl(name, props) {
-    const lower  = name.toLowerCase();
-    const shiny  = props.shiny === 'True';
-    const skin   = props.skin  || 'common';
-    const gender = props.gender|| 'male';
+    const lower   = name.toLowerCase();
+    const shiny   = props.shiny === 'True';
+    const skin    = props.skin  || 'common';
+    const gender  = props.gender || 'male';
 
-    const catalog = POKEMON_CATALOG[lower] || {};
-    const skins   = catalog.skin || [];
+    const catalog   = POKEMON_CATALOG[lower] || {};
+    const skins     = catalog.skin || [];
+    const hasFemale = FEMALE_VARIANTS.has(lower);
 
     let fileName = lower;
     let folder   = BASE_URL;
 
-    const hasFemale = FEMALE_VARIANTS.has(lower);
+    if (skin !== 'common' && skins.includes(skin)) {
+        fileName += '_' + skin;
+    }
     if (shiny) {
-        if (skin !== 'common' && skins.includes(skin)) fileName += '-' + skin;
-        if (gender === 'female' && hasFemale) fileName += '-f';
-        fileName += ' (1)';
-        folder += 'Shiny/';
-    } else if (skin !== 'common' && skins.includes(skin)) {
-        fileName += '-' + skin;
-    } else if (gender === 'female' && hasFemale) {
-        fileName += '-f';
+        folder += 'shiny/';
+    }
+    if (gender === 'female' && hasFemale) {
+        folder += 'female/';
     }
 
     return folder + encodeURIComponent(fileName) + '.gif';
