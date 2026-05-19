@@ -327,6 +327,20 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     transition: background 0.15s, border-color 0.15s;
 }
 .social a:hover { background: var(--btn-hover); border-color: var(--cyan); }
+.donate-btn {
+    display: inline-block;
+    margin-bottom: 12px;
+    padding: 7px 22px;
+    background: var(--surface-2);
+    border: 1px solid #7c3aed;
+    border-radius: 20px;
+    color: #a78bfa;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: background 0.15s, border-color 0.15s;
+}
+.donate-btn:hover { background: var(--btn-hover); border-color: #a78bfa; }
 
 /* ── Modal ────────────────────────────────────────────────────── */
 #modal-backdrop {
