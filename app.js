@@ -29,8 +29,10 @@ const STRINGS = {
         errRead:       'Error al leer el archivo.',
         successReset:  'Datos reseteados correctamente.',
         successDl:     '¡TeamVisualizer.html descargado!',
-        successImport: '¡Equipo importado correctamente!',
-        obsHint:       dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong><br>Puedes reemplazar el archivo directamente.`,
+        successImport:    '¡Equipo importado correctamente!',
+        obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong><br>Puedes reemplazar el archivo directamente.`,
+        livePreviewOn:    '👁 Vista previa en vivo',
+        livePreviewOff:   '👁 Ocultar vista previa',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -61,8 +63,10 @@ const STRINGS = {
         errRead:       'Error reading file.',
         successReset:  'Team data was reset successfully.',
         successDl:     'TeamVisualizer.html downloaded!',
-        successImport: 'Team imported successfully!',
-        obsHint:       dims => `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>Recommended size: <strong>${dims}</strong><br>You can replace the file directly.`,
+        successImport:    'Team imported successfully!',
+        obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>Recommended size: <strong>${dims}</strong><br>You can replace the file directly.`,
+        livePreviewOn:    '👁 Live preview',
+        livePreviewOff:   '👁 Hide live preview',
     }
 };
 
@@ -93,6 +97,8 @@ function applyLang() {
         if (typeof s[key] === 'string') el.placeholder = s[key];
     });
     updateObsHint();
+    const btn = document.getElementById('btn-live-preview');
+    if (btn) btn.textContent = t(previewVisible ? 'livePreviewOff' : 'livePreviewOn');
 }
 
 // ── Constants ───────────────────────────────────────────────────
@@ -597,12 +603,58 @@ function importTeam(input) {
     reader.readAsText(file);
 }
 
+// ── Live preview ─────────────────────────────────────────────────
+let previewVisible = false;
+let previewTimeout = null;
+
+function togglePreview() {
+    previewVisible = !previewVisible;
+    document.getElementById('preview-card').style.display = previewVisible ? '' : 'none';
+    document.getElementById('btn-live-preview').textContent = t(previewVisible ? 'livePreviewOff' : 'livePreviewOn');
+    if (previewVisible) updatePreview();
+}
+
+function schedulePreviewUpdate() {
+    if (!previewVisible) return;
+    clearTimeout(previewTimeout);
+    previewTimeout = setTimeout(updatePreview, 300);
+}
+
+function updatePreview() {
+    if (!previewVisible) return;
+    const layout  = document.getElementById('layout-select').value;
+    const shadows = document.getElementById('shadows-check').checked;
+    const bg      = document.getElementById('bg-check').checked;
+
+    const wrapper     = document.getElementById('preview-wrapper');
+    const iframe      = document.getElementById('preview-iframe');
+    const containerW  = wrapper.parentElement.clientWidth;
+
+    let nativeW, nativeH, scale;
+    if (layout === 'horizontal') {
+        nativeW = 1350; nativeH = 265;
+        scale   = containerW / nativeW;
+    } else {
+        nativeW = 265; nativeH = 1350;
+        scale   = 480 / nativeH;
+    }
+
+    iframe.style.width     = nativeW + 'px';
+    iframe.style.height    = nativeH + 'px';
+    iframe.style.transform = `scale(${scale})`;
+    wrapper.style.width    = Math.round(nativeW * scale) + 'px';
+    wrapper.style.height   = Math.round(nativeH * scale) + 'px';
+
+    iframe.srcdoc = buildOverlayHTML(layout, shadows, bg);
+}
+
 // ── Persistence ─────────────────────────────────────────────────
 function saveState() {
     localStorage.setItem('ptv_team',    JSON.stringify(team));
     localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
     localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
     localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
+    schedulePreviewUpdate();
 }
 
 function loadState() {
