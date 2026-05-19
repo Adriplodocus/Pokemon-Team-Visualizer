@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Pokémon Team Visualizer</title>
+<script src="pokemon-catalog.js"></script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap');
+
+:root {
+    --bg:          #0f0f11;
+    --surface:     #18181b;
+    --surface-2:   #27272a;
+    --border:      rgba(255,255,255,0.07);
+    --border-focus: #FF56B4;
+    --input-bg:    #27272a;
+    --btn:         #27272a;
+    --btn-hover:   #3f3f46;
+    --text:        #fafafa;
+    --text-2:      #a1a1aa;
+    --accent:      #FF56B4;
+    --cyan:        #00CCFF;
+    --error:       #f87171;
+    --success:     #4ade80;
+    --reset:       #3f1111;
+    --reset-hover: #5c1f1f;
+    --dimmed:      #52525b;
+    --gold:        #fbbf24;
+    --male-blue:   #60a5fa;
+    --radius:      12px;
+    --radius-sm:   8px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 32px 16px 48px;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+header { text-align: center; margin-bottom: 24px; }
+h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6px; }
+.subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 4px; }
+.warn { color: var(--error); font-size: 12px; margin-top: 4px; }
+
+#app { width: 100%; max-width: 680px; }
+
+/* ── Cards ───────────────────────────────────────────────────── */
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 20px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.3);
+}
+
+/* ── Pokémon rows ─────────────────────────────────────────────── */
+.pokemon-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+}
+.pokemon-row:last-child { border-bottom: none; }
+.row-label { min-width: 88px; font-size: 13px; color: var(--text-2); font-weight: 500; white-space: nowrap; }
+
+/* Autocomplete */
+.ac-wrapper { position: relative; flex: 0 0 175px; }
+.name-input, .mote-input {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 6px 10px;
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+}
+.name-input:focus, .mote-input:focus { border-color: var(--border-focus); }
+.mote-input { flex: 0 0 140px; }
+.suggestions {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    list-style: none;
+    z-index: 100;
+    display: none;
+    max-height: 200px;
+    overflow-y: auto;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.4);
+}
+.suggestions li { padding: 7px 12px; cursor: pointer; font-size: 13px; }
+.suggestions li:hover, .suggestions li.active { background: var(--btn-hover); }
+
+/* Property icons */
+.icons { display: flex; gap: 6px; }
+.icon { font-size: 15px; cursor: default; user-select: none; transition: color 0.15s; }
+.icon.dimmed { color: var(--dimmed); }
+.gender-icon { color: var(--male-blue); }
+.gender-icon.female { color: var(--accent); }
+.skin-icon.active { color: var(--accent); }
+.shiny-icon.active { color: var(--gold); }
+
+/* Buttons */
+button {
+    background: var(--btn);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 6px 12px;
+    transition: background 0.15s;
+    white-space: nowrap;
+}
+button:hover { background: var(--btn-hover); }
+.props-btn { flex: 0 0 84px; font-size: 12px; }
+.clear-btn  { flex: 0 0 30px; background: var(--reset); border-color: transparent; padding: 6px 0; }
+.clear-btn:hover { background: var(--reset-hover); }
+
+/* ── Settings ─────────────────────────────────────────────────── */
+.settings-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+.settings-row label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    user-select: none;
+    font-size: 13px;
+    color: var(--text-2);
+    font-weight: 500;
+}
+select {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 6px 10px;
+    outline: none;
+    cursor: pointer;
+}
+input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px; cursor: pointer; }
+
+/* ── Actions ──────────────────────────────────────────────────── */
+.actions { display: flex; flex-direction: column; gap: 8px; }
+
+.obs-hint {
+    font-size: 12px;
+    color: var(--text-2);
+    line-height: 1.6;
+    padding: 10px 14px;
+    background: var(--surface-2);
+    border-radius: var(--radius-sm);
+    border-left: 3px solid var(--accent);
+}
+.obs-hint strong { color: var(--text); font-weight: 600; }
+
+.btn-generate {
+    width: 100%;
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--cyan);
+    border-color: transparent;
+    color: #000;
+    letter-spacing: 0.3px;
+}
+.btn-generate:hover { background: #00b8e6; }
+
+.btn-preview { width: 100%; padding: 9px; }
+.btn-import-header {
+    margin-top: 12px;
+    padding: 7px 18px;
+    font-size: 13px;
+    background: var(--btn);
+    border-color: var(--border);
+}
+
+.btn-reset {
+    width: 100%;
+    padding: 9px;
+    background: var(--reset);
+    border-color: transparent;
+    color: #fca5a5;
+}
+.btn-reset:hover { background: var(--reset-hover); }
+
+#status { text-align: center; min-height: 20px; font-size: 13px; margin-top: 2px; }
+
+/* ── Social ───────────────────────────────────────────────────── */
+.social { text-align: center; }
+.social p { font-size: 13px; color: var(--text-2); margin-bottom: 10px; }
+.social a {
+    color: var(--cyan);
+    text-decoration: none;
+    font-size: 13px;
+    margin: 0 10px;
+    font-weight: 500;
+    transition: opacity 0.15s;
+}
+.social a:hover { opacity: 0.75; }
+
+/* ── Modal ────────────────────────────────────────────────────── */
+#modal-backdrop {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.7);
+    backdrop-filter: blur(4px);
+    z-index: 200;
+    justify-content: center;
+    align-items: center;
+}
+#modal-backdrop.open { display: flex; }
+#modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    min-width: 300px;
+    box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+#modal h3 { text-align: center; margin-bottom: 20px; font-size: 15px; font-weight: 600; }
+.modal-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+.modal-row label { font-size: 13px; color: var(--text-2); font-weight: 500; min-width: 60px; }
+.modal-row select { width: 170px; }
+.modal-apply {
+    display: block;
+    margin: 20px auto 0;
+    width: 130px;
+    padding: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    background: var(--accent);
+    border-color: transparent;
+    color: #fff;
+}
+.modal-apply:hover { background: #e04aa0; }
+</style>
+</head>
+<body>
+<header>
+    <h1>Pokémon Team Visualizer</h1>
+    <p class="subtitle">Generate your Pokémon team overlay for OBS in seconds.</p>
+    <p class="subtitle">Write Pokémon names exactly as they appear in-game.</p>
+    <p class="warn">If you encounter any error, please let me know.</p>
+    <button class="btn-import-header" onclick="document.getElementById('import-input').click()">⬆ Import team from file</button>
+    <input type="file" id="import-input" accept=".html" style="display:none" onchange="importTeam(this)">
+</header>
+<div id="app">
+
+    <!-- Team -->
+    <div class="card">
+        <div id="team-rows"></div>
+    </div>
+
+    <!-- Settings -->
+    <div class="card">
+        <div class="settings-row">
+            <label>Layout
+                <select id="layout-select">
+                    <option value="horizontal">Horizontal</option>
+                    <option value="vertical">Vertical</option>
+                </select>
+            </label>
+            <label><input type="checkbox" id="shadows-check" checked> Show shadows</label>
+            <label><input type="checkbox" id="bg-check" checked> Show pokéball background</label>
+        </div>
+    </div>
+
+    <!-- Actions -->
+    <div class="card">
+        <div class="actions">
+            <p id="obs-hint" class="obs-hint"></p>
+            <button class="btn-generate" onclick="generateAndDownload()">⬇ Generate &amp; Download</button>
+            <button class="btn-preview" onclick="previewOverlay()">Preview in browser</button>
+<button class="btn-reset" onclick="resetAll()">Reset all data</button>
+            <div id="status"></div>
+        </div>
+    </div>
+
+    <!-- Social -->
+    <div class="card social">
+        <p>Made by @MrKlypp</p>
+        <a href="https://www.twitch.tv/MrKlypp" target="_blank">Twitch</a>
+        <a href="https://www.instagram.com/MrKlypp_/" target="_blank">Instagram</a>
+        <a href="https://www.tiktok.com/@mrklypp" target="_blank">TikTok</a>
+        <a href="https://x.com/MrKlypp" target="_blank">X</a>
+    </div>
+</div>
+
+<!-- Properties modal -->
+<div id="modal-backdrop">
+    <div id="modal">
+        <h3 id="modal-title"></h3>
+        <div id="modal-props"></div>
+        <button class="modal-apply" onclick="applyModal()">Set</button>
+    </div>
+</div>
+
+<script>
+// ── Constants ───────────────────────────────────────────────────
+const BASE_URL    = 'https://pokemonteamvisualizer.pages.dev/Python/Resources/AnimatedSprites/';
+const SHADOW_URL  = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
+const POKEBALL_URL= 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
+
+// ── State ───────────────────────────────────────────────────────
+const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
+
+const team = Array.from({ length: 6 }, () => ({
+    name: '',
+    mote: '',
+    properties: { ...DEFAULT_PROPS }
+}));
+
+let pokemonNames = [];
+let modalIndex = -1;
+let modalVars  = {};
+
+// ── Load autocomplete list ──────────────────────────────────────
+fetch('pokemon-list.json')
+    .then(r => r.json())
+    .then(names => { pokemonNames = names; })
+    .catch(() => {});
+
+// ── Build UI rows ───────────────────────────────────────────────
+function buildRows() {
+    const container = document.getElementById('team-rows');
+    container.innerHTML = '';
+    for (let i = 0; i < 6; i++) {
+        const row = document.createElement('div');
+        row.className = 'pokemon-row';
+        row.dataset.index = i;
+        row.innerHTML = `
+            <span class="row-label">Pokémon ${i + 1}:</span>
+            <div class="ac-wrapper">
+                <input class="name-input" type="text" placeholder="Name..." autocomplete="off" spellcheck="false">
+                <ul class="suggestions"></ul>
+            </div>
+            <input class="mote-input" type="text" placeholder="Nickname...">
+            <div class="icons">
+                <span class="icon gender-icon" title="Gender">♂</span>
+                <span class="icon skin-icon dimmed" title="Skin">◆</span>
+                <span class="icon shiny-icon dimmed" title="Shiny">★</span>
+            </div>
+            <button class="props-btn" onclick="openModal(${i})">Properties</button>
+            <button class="clear-btn" onclick="clearSlot(${i})">✕</button>
+        `;
+        container.appendChild(row);
+
+        const nameInput = row.querySelector('.name-input');
+        const moteInput = row.querySelector('.mote-input');
+        const suggestions = row.querySelector('.suggestions');
+
+        nameInput.addEventListener('input', () => {
+            team[i].name = nameInput.value;
+            team[i].properties = { ...DEFAULT_PROPS };
+            updateSuggestions(nameInput, suggestions, i);
+            refreshIcons(i);
+            saveState();
+        });
+        nameInput.addEventListener('keydown', e => {
+            if (e.key === 'Enter')          closeSuggestions(suggestions);
+            else if (e.key === 'ArrowDown') navigateSuggestions(suggestions, 1);
+            else if (e.key === 'ArrowUp')   navigateSuggestions(suggestions, -1);
+        });
+        moteInput.addEventListener('input', () => { team[i].mote = moteInput.value; saveState(); });
+
+        suggestions.addEventListener('click', e => {
+            const li = e.target.closest('li');
+            if (!li) return;
+            nameInput.value = li.dataset.value;
+            team[i].name = li.dataset.value;
+            closeSuggestions(suggestions);
+            saveState();
+        });
+    }
+
+    document.addEventListener('click', e => {
+        document.querySelectorAll('.suggestions').forEach(s => {
+            if (!s.closest('.ac-wrapper').contains(e.target)) closeSuggestions(s);
+        });
+    });
+}
+
+function updateSuggestions(input, list, idx) {
+    const typed = input.value.toLowerCase();
+    if (typed.length < 2) { closeSuggestions(list); return; }
+    const matches = pokemonNames.filter(n => n.startsWith(typed)).slice(0, 8);
+    if (!matches.length) { closeSuggestions(list); return; }
+    list.innerHTML = matches.map(n => `<li data-value="${n}">${n}</li>`).join('');
+    list.style.display = 'block';
+}
+
+function closeSuggestions(list) { list.innerHTML = ''; list.style.display = 'none'; }
+
+function navigateSuggestions(list, dir) {
+    const items = list.querySelectorAll('li');
+    if (!items.length) return;
+    const active = list.querySelector('li.active');
+    let idx = active ? [...items].indexOf(active) + dir : (dir > 0 ? 0 : items.length - 1);
+    idx = Math.max(0, Math.min(items.length - 1, idx));
+    items.forEach(li => li.classList.remove('active'));
+    items[idx].classList.add('active');
+    // Set value on the parent row's name input
+    const row = list.closest('.pokemon-row');
+    const input = row.querySelector('.name-input');
+    input.value = items[idx].dataset.value;
+    team[parseInt(row.dataset.index)].name = input.value;
+}
+
+// ── Icons ───────────────────────────────────────────────────────
+function refreshIcons(i) {
+    const row  = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    const p    = team[i].properties;
+
+    const gIcon = row.querySelector('.gender-icon');
+    gIcon.textContent = p.gender === 'female' ? '♀' : '♂';
+    gIcon.className = 'icon gender-icon' + (p.gender === 'female' ? ' female' : '');
+
+    row.querySelector('.skin-icon').className  = 'icon skin-icon'  + (p.skin  !== 'common'  ? ' active' : ' dimmed');
+    row.querySelector('.shiny-icon').className = 'icon shiny-icon' + (p.shiny === 'True'    ? ' active' : ' dimmed');
+}
+
+// ── Clear slot ──────────────────────────────────────────────────
+function clearSlot(i) {
+    team[i] = { name: '', mote: '', properties: { ...DEFAULT_PROPS } };
+    const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    row.querySelector('.name-input').value = '';
+    row.querySelector('.mote-input').value = '';
+    refreshIcons(i);
+}
+
+// ── Reset all ───────────────────────────────────────────────────
+function resetAll() {
+    for (let i = 0; i < 6; i++) clearSlot(i);
+    setStatus('Team data was reset successfully.', 'var(--success)');
+}
+
+// ── Properties modal ────────────────────────────────────────────
+function openModal(i) {
+    modalIndex = i;
+    const name = team[i].name.trim();
+    if (!name) {
+        setStatus('Write a Pokémon name first.', 'var(--error)');
+        return;
+    }
+    document.getElementById('modal-title').textContent = capitalize(name) + ' properties';
+
+    const catalog = POKEMON_CATALOG[name.toLowerCase()] || {};
+    const skins   = ['common', ...(catalog.skin || [])];
+    const props   = team[i].properties;
+    modalVars = {};
+
+    const propsEl = document.getElementById('modal-props');
+    propsEl.innerHTML = '';
+
+    // Gender
+    modalVars.gender = props.gender;
+    propsEl.innerHTML += `
+        <div class="modal-row">
+            <label>Gender</label>
+            <select id="mp-gender" onchange="modalVars.gender=this.value">
+                <option value="male"   ${props.gender==='male'   ? 'selected':''}>male</option>
+                <option value="female" ${props.gender==='female' ? 'selected':''}>female</option>
+            </select>
+        </div>`;
+
+    // Skin
+    modalVars.skin = props.skin;
+    propsEl.innerHTML += `
+        <div class="modal-row">
+            <label>Skin</label>
+            <select id="mp-skin" onchange="modalVars.skin=this.value">
+                ${skins.map(s => `<option value="${s}" ${props.skin===s?'selected':''}>${s}</option>`).join('')}
+            </select>
+        </div>`;
+
+    // Shiny
+    modalVars.shiny = props.shiny;
+    propsEl.innerHTML += `
+        <div class="modal-row">
+            <label>Shiny</label>
+            <select id="mp-shiny" onchange="modalVars.shiny=this.value">
+                <option value="False" ${props.shiny==='False'?'selected':''}>False</option>
+                <option value="True"  ${props.shiny==='True' ?'selected':''}>True</option>
+            </select>
+        </div>`;
+
+    document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function applyModal() {
+    if (modalIndex < 0) return;
+    team[modalIndex].properties = { ...modalVars };
+    refreshIcons(modalIndex);
+    saveState();
+    closeModal();
+}
+
+function closeModal() {
+    document.getElementById('modal-backdrop').classList.remove('open');
+    modalIndex = -1;
+}
+
+document.getElementById('modal-backdrop').addEventListener('click', e => {
+    if (e.target === document.getElementById('modal-backdrop')) closeModal();
+});
+
+// ── Sprite URL builder ──────────────────────────────────────────
+function buildSpriteUrl(name, props) {
+    const lower  = name.toLowerCase();
+    const shiny  = props.shiny === 'True';
+    const skin   = props.skin  || 'common';
+    const gender = props.gender|| 'male';
+
+    const catalog = POKEMON_CATALOG[lower] || {};
+    const skins   = catalog.skin || [];
+
+    let fileName = lower;
+    let folder   = BASE_URL;
+
+    if (shiny) {
+        if (skin !== 'common' && skins.includes(skin)) fileName += '-' + skin;
+        if (gender === 'female') fileName += '-f';
+        fileName += ' (1)';
+        folder += 'Shiny/';
+    } else if (skin !== 'common' && skins.includes(skin)) {
+        fileName += '-' + skin;
+    } else if (gender === 'female') {
+        fileName += '-f';
+    }
+
+    return folder + encodeURIComponent(fileName) + '.gif';
+}
+
+// ── Generate HTML ───────────────────────────────────────────────
+function buildOverlayHTML(layout, showShadows, showBg) {
+    const dataBlock = JSON.stringify({ team, layout, shadows: showShadows, bg: showBg });
+    const entries = team.map(slot => {
+        if (!slot.name.trim()) return null;
+        return {
+            mote: (slot.mote || slot.name).toUpperCase(),
+            url:  buildSpriteUrl(slot.name.trim(), slot.properties)
+        };
+    });
+
+    const isHorizontal = layout === 'horizontal';
+
+    const pkDivContent = entries.map((e, i) => {
+        if (!e) return '';
+        let c = `<p>${e.mote}</p>`;
+        if (showBg)     c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}">`;
+        c += `<img id="img${i+1}" src="${e.url}">`;
+        return c;
+    });
+
+    const shadowContent = entries.map((e, i) =>
+        e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}">` : `<img id="shadow${i+1}">`
+    );
+
+    if (isHorizontal) {
+        return `<html>
+<head>
+<meta charset="UTF-8">
+<script type="application/json" id="ptv-data">${dataBlock}<${'/script>'}
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+.pkDiv{width:225px;height:150px;float:left;}
+#pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
+.shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
+img{width:100%;max-width:100%;max-height:100%;object-fit:contain;}
+p{height:25px;color:white;text-align:center;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:35px;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
+.container{clear:both;}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.pkDiv,.shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
+.pkDiv:nth-child(1),.shadowDiv:nth-child(1){animation-delay:0.00s;}
+.pkDiv:nth-child(2),.shadowDiv:nth-child(2){animation-delay:0.12s;}
+.pkDiv:nth-child(3),.shadowDiv:nth-child(3){animation-delay:0.24s;}
+.pkDiv:nth-child(4),.shadowDiv:nth-child(4){animation-delay:0.36s;}
+.pkDiv:nth-child(5),.shadowDiv:nth-child(5){animation-delay:0.48s;}
+.pkDiv:nth-child(6),.shadowDiv:nth-child(6){animation-delay:0.60s;}
+</style>
+</head>
+<body>
+<div class="container">
+${entries.map((e, i) => `<div class="pkDiv">${pkDivContent[i]}</div>`).join('\n')}
+</div>
+<div class="container">
+${entries.map((_, i) => `<div class="shadowDiv">${shadowContent[i]}</div>`).join('\n')}
+</div>
+</body>
+</html>`;
+    } else {
+        return `<html>
+<head>
+<meta charset="UTF-8">
+<script type="application/json" id="ptv-data">${dataBlock}<${'/script>'}
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+.wrapper{display:flex;flex-direction:column;}
+.pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
+.pkDiv,.shadowDiv{margin:0;padding:0;}
+.pkDiv{width:225px;}
+.shadowDiv{width:150px;margin-top:-15px;}
+#pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
+img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;}
+p{margin:0;padding:0;height:25px;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:25px;text-align:center;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+.pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
+.pair:nth-child(1){animation-delay:0.00s;}
+.pair:nth-child(2){animation-delay:0.12s;}
+.pair:nth-child(3){animation-delay:0.24s;}
+.pair:nth-child(4){animation-delay:0.36s;}
+.pair:nth-child(5){animation-delay:0.48s;}
+.pair:nth-child(6){animation-delay:0.60s;}
+</style>
+</head>
+<body>
+<div class="wrapper">
+${entries.map((e, i) => `<div class="pair">
+  <div class="pkDiv">${pkDivContent[i]}</div>
+  <div class="shadowDiv">${shadowContent[i]}</div>
+</div>`).join('\n')}
+</div>
+</body>
+</html>`;
+    }
+}
+
+// ── Download ────────────────────────────────────────────────────
+function generateAndDownload() {
+    const hasAny = team.some(s => s.name.trim());
+    if (!hasAny) { setStatus('Write at least one Pokémon name.', 'var(--error)'); return; }
+
+    const html = buildOverlayHTML(
+        document.getElementById('layout-select').value,
+        document.getElementById('shadows-check').checked,
+        document.getElementById('bg-check').checked
+    );
+    triggerDownload(html, 'TeamVisualizer.html');
+    setStatus('TeamVisualizer.html downloaded!', 'var(--success)');
+}
+
+function previewOverlay() {
+    const hasAny = team.some(s => s.name.trim());
+    if (!hasAny) { setStatus('Write at least one Pokémon name.', 'var(--error)'); return; }
+
+    const html = buildOverlayHTML(
+        document.getElementById('layout-select').value,
+        document.getElementById('shadows-check').checked,
+        document.getElementById('bg-check').checked
+    );
+    const blob = new Blob([html], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+}
+
+function triggerDownload(content, filename) {
+    const blob = new Blob([content], { type: 'text/html' });
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href     = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+// ── Import ───────────────────────────────────────────────────────
+function importTeam(input) {
+    const file = input.files[0];
+    if (!file) return;
+    const reader = new FileReader();
+    reader.onload = e => {
+        const match = e.target.result.match(/<script type="application\/json" id="ptv-data">([\s\S]*?)<\/script>/);
+        if (!match) { setStatus('No team data found in this file.', 'var(--error)'); return; }
+        try {
+            const data = JSON.parse(match[1]);
+            data.team.forEach((slot, i) => {
+                if (i >= 6) return;
+                team[i] = { name: slot.name || '', mote: slot.mote || '', properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) } };
+                const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+                row.querySelector('.name-input').value = team[i].name;
+                row.querySelector('.mote-input').value = team[i].mote;
+                refreshIcons(i);
+            });
+            if (data.layout)             document.getElementById('layout-select').value   = data.layout;
+            if (data.shadows !== undefined) document.getElementById('shadows-check').checked = data.shadows;
+            if (data.bg      !== undefined) document.getElementById('bg-check').checked      = data.bg;
+            updateObsHint();
+            saveState();
+            setStatus('Team imported successfully!', 'var(--success)');
+        } catch(_) { setStatus('Error reading file.', 'var(--error)'); }
+        input.value = '';
+    };
+    reader.readAsText(file);
+}
+
+// ── Persistence ─────────────────────────────────────────────────
+function saveState() {
+    localStorage.setItem('ptv_team', JSON.stringify(team));
+    localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
+    localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
+    localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
+}
+
+function loadState() {
+    const saved = localStorage.getItem('ptv_team');
+    if (!saved) return;
+    try {
+        const data = JSON.parse(saved);
+        data.forEach((slot, i) => {
+            if (i >= 6) return;
+            team[i] = { name: slot.name || '', mote: slot.mote || '', properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) } };
+            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+            row.querySelector('.name-input').value = team[i].name;
+            row.querySelector('.mote-input').value = team[i].mote;
+            refreshIcons(i);
+        });
+    } catch(e) {}
+
+    const layout = localStorage.getItem('ptv_layout');
+    if (layout) document.getElementById('layout-select').value = layout;
+
+    const shadows = localStorage.getItem('ptv_shadows');
+    if (shadows !== null) document.getElementById('shadows-check').checked = shadows === 'true';
+
+    const bg = localStorage.getItem('ptv_bg');
+    if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
+}
+
+// ── Helpers ─────────────────────────────────────────────────────
+function setStatus(msg, color) {
+    const el = document.getElementById('status');
+    el.textContent = msg;
+    el.style.color = color;
+    setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+}
+
+function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+// ── OBS hint ────────────────────────────────────────────────────
+function updateObsHint() {
+    const layout = document.getElementById('layout-select').value;
+    const dims   = layout === 'horizontal' ? '1350x265' : '265x1350';
+    document.getElementById('obs-hint').innerHTML =
+        `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>
+         Recommended size: <strong>${dims}</strong>`;
+}
+
+document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
+document.getElementById('shadows-check').addEventListener('change', saveState);
+document.getElementById('bg-check').addEventListener('change', saveState);
+
+// ── Init ─────────────────────────────────────────────────────────
+buildRows();
+loadState();
+updateObsHint();
+</script>
+</body>
+</html>

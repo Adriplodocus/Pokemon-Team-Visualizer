@@ -4,15 +4,19 @@ appTitle = "Pokémon Team Visualizer"
 credits = "Made by @MrKlypp"
 
 #Colors
-mainFrameColor = "#333333"
+mainFrameColor = "#2b2b2b"
 edgeColor = "#706C61"
-innerFrameColor ="#333333"
-buttonsColor = "#333333"
+innerFrameColor = "#2b2b2b"
+buttonsColor = "#3d3d3d"
 fontColor = "#E6E6E6"
-linkColor = "#ff8af9"
+linkColor = "#00CCFF"
 errorColor = "#ff6161"
 correctColor = "#7aff9e"
-testFrameColor = "#B4B4B4"
+entryColor = "#3d3d3d"
+buttonHoverColor = "#555555"
+accentColor = "#FF56B4"
+resetButtonColor = "#5c2e2e"
+resetButtonHoverColor = "#7a3a3a"
 
 #Font properties
 fontName = "Fixedsys"
@@ -41,6 +45,7 @@ jsonFolder = "/Code/JSON/"
 
 jsonFileName = "Team.json"
 jsFileName = "Team.js"
+versionFileName = "version.txt"
 teamVisualizerFileName = "TeamVisualizer.html"
 
 originalNamesFileName = "TeamOriginalNames.txt"

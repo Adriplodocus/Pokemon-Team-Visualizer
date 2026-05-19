@@ -2,6 +2,17 @@ horizontalHTMLTemplate = '''
 <html>
     <head>
         <script src="Team.js"></script>
+        <script>
+            (function() {
+                var _v = null;
+                fetch('version.txt').then(function(r){return r.text();}).then(function(t){_v=t.trim();}).catch(function(){});
+                setInterval(function() {
+                    fetch('version.txt?_='+Date.now()).then(function(r){return r.text();}).then(function(t){
+                        if(_v!==null && t.trim()!==_v) location.reload();
+                    }).catch(function(){});
+                }, 2000);
+            })();
+        </script>
         <meta charset="UTF-8">
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <style>
@@ -43,6 +54,20 @@ horizontalHTMLTemplate = '''
             .container{
                 clear: both;
             }
+            @keyframes fadeSlideUp {
+                from { opacity: 0; transform: translateY(12px); }
+                to   { opacity: 1; transform: translateY(0);    }
+            }
+            .pkDiv, .shadowDiv {
+                animation: fadeSlideUp 0.45s ease forwards;
+                opacity: 0;
+            }
+            .pkDiv:nth-child(1), .shadowDiv:nth-child(1) { animation-delay: 0.00s; }
+            .pkDiv:nth-child(2), .shadowDiv:nth-child(2) { animation-delay: 0.12s; }
+            .pkDiv:nth-child(3), .shadowDiv:nth-child(3) { animation-delay: 0.24s; }
+            .pkDiv:nth-child(4), .shadowDiv:nth-child(4) { animation-delay: 0.36s; }
+            .pkDiv:nth-child(5), .shadowDiv:nth-child(5) { animation-delay: 0.48s; }
+            .pkDiv:nth-child(6), .shadowDiv:nth-child(6) { animation-delay: 0.60s; }
         </style>
     </head>
 
@@ -83,6 +108,17 @@ verticalHtmlTemplate = '''
  <html>
     <head>
         <script src="Team.js"></script>
+        <script>
+            (function() {
+                var _v = null;
+                fetch('version.txt').then(function(r){return r.text();}).then(function(t){_v=t.trim();}).catch(function(){});
+                setInterval(function() {
+                    fetch('version.txt?_='+Date.now()).then(function(r){return r.text();}).then(function(t){
+                        if(_v!==null && t.trim()!==_v) location.reload();
+                    }).catch(function(){});
+                }, 2000);
+            })();
+        </script>
         <meta charset="UTF-8">
         <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
         <style>
@@ -147,6 +183,20 @@ verticalHtmlTemplate = '''
                     -3px -3px 0 #000,
                     3px -3px 0 #000;
             }
+            @keyframes fadeSlideUp {
+                from { opacity: 0; transform: translateY(12px); }
+                to   { opacity: 1; transform: translateY(0);    }
+            }
+            .pair {
+                animation: fadeSlideUp 0.45s ease forwards;
+                opacity: 0;
+            }
+            .pair:nth-child(1) { animation-delay: 0.00s; }
+            .pair:nth-child(2) { animation-delay: 0.12s; }
+            .pair:nth-child(3) { animation-delay: 0.24s; }
+            .pair:nth-child(4) { animation-delay: 0.36s; }
+            .pair:nth-child(5) { animation-delay: 0.48s; }
+            .pair:nth-child(6) { animation-delay: 0.60s; }
         </style>
     </head>
 

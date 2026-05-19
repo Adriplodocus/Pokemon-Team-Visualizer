@@ -1,10 +1,8 @@
-from tkinter import *
 import tkinter as tk
-from tkinter import ttk
+import customtkinter as ctk
 import os
 import sys
 import webbrowser
-import os
 from importlib.resources import files, as_file
 import Code.Constants as constants
 import Code.PokemonFrame as PokemonFrame
@@ -12,6 +10,8 @@ import Code.IO as IO
 import json
 
 from Code.Pokemon import Pokemon
+
+ctk.set_appearance_mode("dark")
 
 def GetAppPath():
     if getattr(sys, 'frozen', False):
@@ -21,112 +21,178 @@ def GetAppPath():
 
     return os.path.join(application_path)
 
-#UI
-root = Tk()
-root.resizable(0,0) #The window size won't be modified.
+root = ctk.CTk()
 root.title(constants.appName)
+root.configure(fg_color=constants.mainFrameColor)
 
-#This canvas will contain all app elements.
-canvas = tk.Canvas(root, height=675, width=755, bg="#E8E2DB")
-canvas.pack()
+_btn_font   = ctk.CTkFont(family=constants.fontName, size=constants.smallSize)
+_label_font = ctk.CTkFont(family=constants.fontName, size=constants.smallSize)
+_link_font  = ctk.CTkFont(family=constants.fontName, size=constants.smallSize, underline=True)
 
-#Frames
-mainFrame = tk.Frame(root, bg=constants.mainFrameColor,highlightbackground=constants.edgeColor,highlightthickness=3)
-subtitleFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
-pokemonArea = tk.Frame(mainFrame, bg=constants.innerFrameColor)
-settingsFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
-buttonsFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
-debugFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
-spamFrame = tk.Frame(mainFrame, bg=constants.innerFrameColor)
+# ── Contenedor principal ──────────────────────────────────────────────────────
+mainFrame = ctk.CTkFrame(root, fg_color=constants.mainFrameColor, corner_radius=10,
+                         border_width=2, border_color=constants.edgeColor)
+mainFrame.pack(fill="both", expand=True, padx=4, pady=4)
 
-mainFrame.place(relwidth=0.985, relheight=0.985, relx=0.5, anchor=N)
-subtitleFrame.place(relwidth=0.985, relheight=0.25, relx=0.5, y=45, anchor=N)
-pokemonArea.place(relwidth=0.985, height=250, relx=0.5, rely=0.15, anchor=N)
-settingsFrame.place(relwidth=0.985, height=85, relx=0.5, rely=0.5, anchor=N)
-buttonsFrame.place(relwidth=0.985, height=90, relx=0.5, rely=0.65, anchor=N)
-debugFrame.place(relwidth=0.985, height=60, relx=0.5, rely = 0.75, anchor=N)
-spamFrame.place(relwidth=0.985, height=95, relx=0.5, rely=0.835, anchor=N)
+# ── Título y avisos ───────────────────────────────────────────────────────────
+ctk.CTkLabel(mainFrame, text=constants.appTitle,
+             font=ctk.CTkFont(family=constants.fontName, size=constants.largeSize, weight="bold"),
+             text_color=constants.fontColor).pack(pady=(10, 2))
 
-titleLabel = Label(mainFrame, text=constants.appTitle, font=f"{constants.fontName} {constants.largeSize} bold", bg=constants.mainFrameColor, fg=constants.fontColor)
-titleLabel.pack()
+ctk.CTkLabel(mainFrame, text=constants.tip1, font=_label_font,
+             text_color=constants.fontColor, fg_color="transparent",
+             justify="center").pack()
 
-tipLabel = Label(subtitleFrame, text=constants.tip1, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor)
-tipLabel.pack()
+ctk.CTkLabel(mainFrame, text=constants.warning, font=_label_font,
+             text_color=constants.errorColor, fg_color="transparent").pack(pady=(0, 8))
 
-warnLabel = Label(subtitleFrame, text=constants.warning, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.errorColor)
-warnLabel.pack()
+# ── Área de Pokémon ───────────────────────────────────────────────────────────
+pokemonArea = ctk.CTkFrame(mainFrame, fg_color=constants.innerFrameColor, corner_radius=0)
+pokemonArea.pack(fill="x", padx=8, pady=(0, 8))
 
-#Layout area
-layoutLabel = Label(settingsFrame, text="Layout", font=f"{constants.fontName} {constants.smallSize} bold", bg=constants.mainFrameColor, fg=constants.fontColor)
-layoutLabel.pack()
+# ── Settings (layout + opciones) ─────────────────────────────────────────────
+settingsFrame = ctk.CTkFrame(mainFrame, fg_color=constants.innerFrameColor, corner_radius=0)
+settingsFrame.pack(fill="x", padx=8, pady=(0, 8))
+
+ctk.CTkLabel(settingsFrame, text="Layout",
+             font=ctk.CTkFont(family=constants.fontName, size=constants.smallSize, weight="bold"),
+             text_color=constants.fontColor, fg_color="transparent").pack(pady=(8, 2))
 
 layouts = [constants.horizontalLayout, constants.verticalLayout]
-layout = StringVar(value=constants.horizontalLayout)  # Default value
-comboBox = ttk.Combobox(settingsFrame, textvariable=layout, state="readonly", values=layouts, font=f"{constants.fontName} {constants.smallSize}")
-comboBox.current(0)
-comboBox.pack()
+layout = tk.StringVar(value=constants.horizontalLayout)
 
-comboBox.bind("<<ComboboxSelected>>", lambda event: IO.UpdateLayoutFile(GetAppPath(), layout))
+def on_layout_change(value):
+    layout.set(value)
+    IO.UpdateLayoutFile(GetAppPath(), layout)
+
+comboBox = ctk.CTkComboBox(settingsFrame, variable=layout, values=layouts, command=on_layout_change,
+                           font=_btn_font, fg_color=constants.entryColor,
+                           text_color=constants.fontColor, button_color=constants.buttonsColor,
+                           button_hover_color=constants.buttonHoverColor, border_color=constants.edgeColor,
+                           dropdown_fg_color=constants.innerFrameColor, dropdown_text_color=constants.fontColor,
+                           dropdown_hover_color=constants.buttonHoverColor, width=180)
+comboBox.set(layouts[0])
+comboBox.pack(pady=(0, 6))
 
 showShadows = tk.BooleanVar(value=True)
-showShadowsCheck = tk.Checkbutton(settingsFrame, text = constants.showShadowsProperties, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showShadows)
-showShadowsCheck.place(relx=0.5, rely=0.60, anchor="n")
-showShadowsCheck.pack()
+showShadowsCheck = ctk.CTkCheckBox(settingsFrame, text=constants.showShadowsProperties,
+                                   font=_label_font, text_color=constants.fontColor,
+                                   variable=showShadows, fg_color=constants.accentColor,
+                                   hover_color=constants.buttonHoverColor,
+                                   checkmark_color=constants.mainFrameColor,
+                                   border_color=constants.edgeColor)
+showShadowsCheck.pack(pady=(0, 4))
 
 def make_callback_showShadows(showShadows):
     def callback(*args):
-        appDirectory = GetAppPath()
-        IO.UpdateShowShadows(*args, showShadows=showShadows, appDirectory=appDirectory)
+        IO.UpdateShowShadows(*args, showShadows=showShadows, appDirectory=GetAppPath())
     return callback
 
 showShadows.trace_add("write", make_callback_showShadows(showShadows))
 
 showPokeballBackground = tk.BooleanVar(value=True)
-showPokeballBackgroundCheck = tk.Checkbutton(settingsFrame, text=constants.showPokeballBackgroundText, font=f"{constants.fontName} {constants.smallSize}", bg=constants.mainFrameColor, fg=constants.fontColor, activebackground=constants.mainFrameColor, selectcolor=constants.mainFrameColor, activeforeground=constants.fontColor, variable=showPokeballBackground)
-showPokeballBackgroundCheck.place(relx=0.5, rely=0.60, anchor="n")
-showPokeballBackgroundCheck.pack()
+showPokeballBackgroundCheck = ctk.CTkCheckBox(settingsFrame, text=constants.showPokeballBackgroundText,
+                                              font=_label_font, text_color=constants.fontColor,
+                                              variable=showPokeballBackground, fg_color=constants.accentColor,
+                                              hover_color=constants.buttonHoverColor,
+                                              checkmark_color=constants.mainFrameColor,
+                                              border_color=constants.edgeColor)
+showPokeballBackgroundCheck.pack(pady=(0, 8))
 
 def make_callback_showPokeballBackground(showPokeballBackground):
     def callback(*args):
-        appDirectory = GetAppPath()
-        IO.UpdateShowPokeballBackground(*args, showPokeballBackground=showPokeballBackground, appDirectory=appDirectory)
+        IO.UpdateShowPokeballBackground(*args, showPokeballBackground=showPokeballBackground,
+                                        appDirectory=GetAppPath())
     return callback
 
 showPokeballBackground.trace_add("write", make_callback_showPokeballBackground(showPokeballBackground))
 
-#Buttons
-updateFrame = tk.Frame(buttonsFrame, bg=constants.innerFrameColor)
-updateFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0, anchor="n")
-updateButton = Button(updateFrame, text=constants.updateButtonText, font=f"{constants.fontName} {constants.smallSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:UpdateTeam())
-updateButton.pack(fill=X)
+# ── Botones + mensaje de estado ───────────────────────────────────────────────
+buttonsFrame = ctk.CTkFrame(mainFrame, fg_color=constants.innerFrameColor, corner_radius=0)
+buttonsFrame.pack(fill="x", padx=8, pady=(0, 8))
 
-resetFrame = tk.Frame(buttonsFrame, bg=constants.innerFrameColor)
-resetFrame.place(relwidth=0.95, height=35, relx=0.5, rely=0.35, anchor="n")
-resetButton = Button(resetFrame, text=constants.resetButton, font=f"{constants.fontName} {constants.smallSize} ", bg=constants.buttonsColor, fg=constants.fontColor, activebackground=constants.buttonsColor, command=lambda:ResetData())
-resetButton.pack(fill=X)
+updateButton = ctk.CTkButton(buttonsFrame, text=constants.updateButtonText, font=_btn_font,
+                             fg_color=constants.buttonsColor, hover_color=constants.buttonHoverColor,
+                             text_color=constants.fontColor, corner_radius=6,
+                             command=lambda: UpdateTeam())
+updateButton.pack(fill="x", padx=10, pady=(8, 4))
 
-#Spam
-spamLabel = Label(spamFrame, text=constants.credits, font=f"{constants.fontName} 15", bg=constants.innerFrameColor, fg=constants.fontColor)
-spamLabel.pack(fill=X)
-twitchButton = Button(spamFrame, text=constants.twitch, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.twitchAddress))
-twitterButton = Button(spamFrame, text=constants.x, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.xAddress))
-instagramButton = Button(spamFrame, text=constants.instagram, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.instagramAddress))
-tiktokButton = Button(spamFrame, text=constants.tiktok, font=f"{constants.fontName} {constants.smallSize} underline", highlightthickness = 0, bd=0, bg=constants.buttonsColor, fg=constants.linkColor, command=lambda:OpenURL(constants.tiktokAddress))
-twitchButton.pack()
-instagramButton.pack()
-tiktokButton.pack()
-twitterButton.pack()
+previewButton = ctk.CTkButton(buttonsFrame, text="Open in browser", font=_btn_font,
+                              fg_color=constants.buttonsColor, hover_color=constants.buttonHoverColor,
+                              text_color=constants.fontColor, corner_radius=6,
+                              command=lambda: OpenHTMLPreview())
+previewButton.pack(fill="x", padx=10, pady=(0, 4))
 
-#Debug.
-debugLabelText = tk.StringVar()
-debugLabel = Label(debugFrame, font=f"{constants.fontName} {constants.smallSize} ", bg=constants.innerFrameColor, textvariable=debugLabelText)
-debugLabel.pack(fill=X)
+resetButton = ctk.CTkButton(buttonsFrame, text=constants.resetButton, font=_btn_font,
+                            fg_color=constants.resetButtonColor, hover_color=constants.resetButtonHoverColor,
+                            text_color=constants.fontColor, corner_radius=6,
+                            command=lambda: ResetData())
+resetButton.pack(fill="x", padx=10, pady=(0, 4))
 
-#Pokemon frames
+debugLabel = ctk.CTkLabel(buttonsFrame, text="", font=_label_font,
+                          fg_color="transparent", text_color=constants.fontColor)
+debugLabel.pack(pady=(0, 6))
+
+# ── Créditos / redes sociales ─────────────────────────────────────────────────
+spamFrame = ctk.CTkFrame(mainFrame, fg_color=constants.innerFrameColor, corner_radius=0)
+spamFrame.pack(fill="x", padx=8, pady=(0, 8))
+
+ctk.CTkLabel(spamFrame, text=constants.credits,
+             font=ctk.CTkFont(family=constants.fontName, size=13),
+             fg_color="transparent", text_color=constants.fontColor).pack(pady=(6, 2))
+
+twitchButton   = ctk.CTkButton(spamFrame, text=constants.twitch,    font=_link_font,
+                               fg_color="transparent", hover_color=constants.buttonHoverColor,
+                               text_color=constants.linkColor, width=80, height=20,
+                               command=lambda: OpenURL(constants.twitchAddress))
+instagramButton = ctk.CTkButton(spamFrame, text=constants.instagram, font=_link_font,
+                                fg_color="transparent", hover_color=constants.buttonHoverColor,
+                                text_color=constants.linkColor, width=80, height=20,
+                                command=lambda: OpenURL(constants.instagramAddress))
+tiktokButton   = ctk.CTkButton(spamFrame, text=constants.tiktok,    font=_link_font,
+                               fg_color="transparent", hover_color=constants.buttonHoverColor,
+                               text_color=constants.linkColor, width=80, height=20,
+                               command=lambda: OpenURL(constants.tiktokAddress))
+twitterButton  = ctk.CTkButton(spamFrame, text=constants.x,         font=_link_font,
+                               fg_color="transparent", hover_color=constants.buttonHoverColor,
+                               text_color=constants.linkColor, width=80, height=20,
+                               command=lambda: OpenURL(constants.xAddress))
+twitchButton.pack(pady=0)
+instagramButton.pack(pady=0)
+tiktokButton.pack(pady=0)
+twitterButton.pack(pady=(0, 6))
+
 pokemonFrames = [
-    PokemonFrame.PokemonFrame(i, pokemonArea, tk.Frame, tk)
+    PokemonFrame.PokemonFrame(i, pokemonArea)
     for i in range(6)
 ]
+
+# Carga nombres válidos desde los recursos para el autocompletado
+def _load_pokemon_names():
+    try:
+        sprites_dir = files('Resources') / 'AnimatedSprites'
+        names = set()
+        for entry in sprites_dir.iterdir():
+            n = entry.name
+            if n.endswith('.gif') and not n.endswith(' (1).gif') and not n.endswith('-f.gif'):
+                name = n[:-4]
+                if '-' not in name and '(' not in name:
+                    names.add(name)
+        return sorted(names)
+    except Exception:
+        return []
+
+_pokemon_names = _load_pokemon_names()
+
+def _update_suggestions(pf, *_):
+    typed = pf.pokemonNameEntry.get().lower()
+    matches = [n for n in _pokemon_names if n.startswith(typed)][:8] if len(typed) >= 2 else []
+    pf.pokemonNameInput.configure(values=matches)
+
+for _pf in pokemonFrames:
+    _pf.pokemonNameEntry.trace_add("write", lambda *a, p=_pf: _update_suggestions(p))
+    _pf.pokemonNameInput.bind("<Return>", lambda e: UpdateTeam())
+    _pf.pokemonMoteInput.bind("<Return>", lambda e: UpdateTeam())
 
 pokemonList = []
 
@@ -138,7 +204,7 @@ def Init():
 
     GetJsonData()
     FillEntries()
-    
+
     IO.CreateShadowsFile(GetAppPath(), showShadows)
     IO.GetShowShadows(GetAppPath(), showShadows)
 
@@ -153,7 +219,7 @@ def GetJsonData():
         with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName, 'r') as file:
             pokemonList.clear()
             data = json.load(file)
-        
+
             counter = 0
             for key in data['pokemon']:
                 for p in data['pokemon'][key]:
@@ -165,17 +231,18 @@ def GetJsonData():
                     )
                     pokemon.frame.frameData.name = p['name']
                     pokemon.frame.frameData.mote = p['mote']
-                    
+
                     pokemon.frame.frameData.properties.update(
                         p.get('properties', {})
                     )
+                    pokemon.frame._refresh_icons()
 
                     pokemonList.append(pokemon)
                     counter += 1
 
 def UpdateJsonData():
-    if os.path.exists(GetAppPath() + constants.obsFolder +  constants.txtFolder + constants.jsonFileName):
-        with open(GetAppPath() + constants.obsFolder +  constants.txtFolder + constants.jsonFileName, 'r') as file:
+    if os.path.exists(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName):
+        with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName, 'r') as file:
             data_to_save = {
                 'pokemon': {
                     'pokemon1': [],
@@ -188,7 +255,7 @@ def UpdateJsonData():
             }
 
             keys = list(data_to_save['pokemon'].keys())
-        
+
             for i, pokemon in enumerate(pokemonList):
                 InitialisePokemon(pokemon)
 
@@ -200,8 +267,7 @@ def UpdateJsonData():
 
                 data_to_save['pokemon'][keys[i]].append(p_dict)
 
-            # Guardar JSON
-            with open(GetAppPath() + constants.obsFolder +  constants.txtFolder + constants.jsonFileName, 'w') as file:
+            with open(GetAppPath() + constants.obsFolder + constants.txtFolder + constants.jsonFileName, 'w') as file:
                 json.dump(data_to_save, file, indent=4)
 
 def InitialisePokemon(pokemon):
@@ -209,7 +275,7 @@ def InitialisePokemon(pokemon):
     pokemon.mote = pokemon.frame.pokemonMoteEntry.get().upper() if pokemon.frame.pokemonMoteEntry.get() != "" else pokemon.frame.pokemonNameEntry.get().upper()
 
 def UpdateTeam():
-    debugLabelText.set("")
+    DebugMsg("", constants.fontColor)
 
     noNamesError = False
     error = False
@@ -217,9 +283,9 @@ def UpdateTeam():
     emptyNamesCounter = 0
     for pokemon in pokemonFrames:
         if pokemon.pokemonNameEntry.get() == "":
-            emptyNamesCounter+=1
+            emptyNamesCounter += 1
 
-    if (emptyNamesCounter == maxPokemon):
+    if emptyNamesCounter == maxPokemon:
         noNamesError = True
 
     IO.CreateJsonFile(GetAppPath(), True)
@@ -232,7 +298,7 @@ def UpdateTeam():
             if ProcessPokemon(pokemon) is False:
                 error = True
                 break
-            
+
     if error:
         DebugMsg(constants.errorTeam, constants.errorColor)
         return
@@ -242,7 +308,7 @@ def UpdateTeam():
             pokemon.frame.pokemonNameEntry.set(pokemon.name.upper())
             pokemon.frame.pokemonMoteEntry.set(pokemon.mote)
 
-        if (noNamesError is not True):
+        if noNamesError is not True:
             DebugMsg(constants.successfulTeam, constants.correctColor)
 
     IO.CreateHTML(GetAppPath(), layout, pokemonList, showPokeballBackground)
@@ -268,7 +334,7 @@ def ClearPokemonFrames():
 def CheckForDuplicateNames(list):
     namesToCheck = []
     for name in list:
-        if (name != ""):
+        if name != "":
             namesToCheck.append(name)
 
     return len(namesToCheck) != len(set(namesToCheck))
@@ -282,8 +348,8 @@ def ProcessPokemon(pokemon) -> bool:
     result = BuildPath(pokemon.name, pokemon.frame.frameData.properties)
     ref = files('Resources') / result["path"]
 
-    if (Exists(ref)):
-        if (pokemon.name != ""):
+    if Exists(ref):
+        if pokemon.name != "":
             pokemon.fileName = result["resultName"]
 
         Copy(ref)
@@ -298,7 +364,7 @@ def Copy(ref):
         IO.Copy(gif_data, GetAppPath() + constants.obsFolder + constants.currentTeamFolder)
 
 def BuildPath(pokemonName, properties) -> dict[str, str]:
-    path = constants.resource_path 
+    path = constants.resource_path
     defaultName = pokemonName.lower()
     fileName = pokemonName.lower()
 
@@ -308,7 +374,7 @@ def BuildPath(pokemonName, properties) -> dict[str, str]:
 
     if shiny == 'True' and HasShiny(defaultName):
         if skin != 'common' and HasShinySkin(defaultName, skin):
-                fileName += "-" + skin
+            fileName += "-" + skin
 
         if gender == 'female' and HasFemaleShiny(defaultName):
             fileName += constants.femaleSuffix
@@ -338,13 +404,13 @@ def HasShiny(name):
         constants.shinySuffix +
         constants.gifExtension
     )
-    
+
     try:
         ref = files('Resources') / resource_path
         return ref.is_file()
     except:
         return False
-    
+
 def HasFemaleShiny(name):
     resource_path = (
         constants.animatedSpritesFolder +
@@ -354,13 +420,13 @@ def HasFemaleShiny(name):
         constants.shinySuffix +
         constants.gifExtension
     )
-    
+
     try:
         ref = files('Resources') / resource_path
         return ref.is_file()
     except:
         return False
-    
+
 def HasShinySkin(pokemonName, skinName):
     resource_path = (
         constants.animatedSpritesFolder +
@@ -370,7 +436,7 @@ def HasShinySkin(pokemonName, skinName):
         constants.shinySuffix +
         constants.gifExtension
     )
-    
+
     try:
         ref = files('Resources') / resource_path
         return ref.is_file()
@@ -384,7 +450,7 @@ def HasSkin(pokemonName, skinName):
         skinName +
         constants.gifExtension
     )
-    
+
     try:
         ref = files('Resources') / resource_path
         return ref.is_file()
@@ -399,7 +465,7 @@ def HasFemaleSkin(pokemonName, skinName):
         constants.femaleSuffix +
         constants.gifExtension
     )
-    
+
     try:
         ref = files('Resources') / resource_path
         return ref.is_file()
@@ -413,19 +479,18 @@ def HasFemale(pokemonName):
         constants.femaleSuffix +
         constants.gifExtension
     )
-    
+
     try:
         ref = files('Resources') / resource_path
         return ref.is_file()
     except:
         return False
-    
+
 def Exists(path) -> bool:
     return os.path.exists(path)
 
 def DebugMsg(msg, color):
-    debugLabel.config(fg=color)
-    debugLabelText.set(msg)
+    debugLabel.configure(text=msg, text_color=color)
 
 def RemoveGifFiles():
     currentTeamPath = GetAppPath() + constants.obsFolder + constants.currentTeamFolder
@@ -441,7 +506,17 @@ def RemoveGifFiles():
 def OpenURL(url):
     webbrowser.open(url)
 
+def OpenHTMLPreview():
+    import pathlib
+    html_path = os.path.abspath(GetAppPath() + constants.obsFolder + constants.teamVisualizerFileName)
+    if os.path.exists(html_path):
+        webbrowser.open(pathlib.Path(html_path).as_uri())
+    else:
+        DebugMsg("Generate the team first.", constants.errorColor)
+
 GetAppPath()
 Init()
 
+root.update_idletasks()
+root.resizable(False, False)
 root.mainloop()

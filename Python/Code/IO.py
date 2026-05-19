@@ -95,6 +95,10 @@ def CreateJS(appDirectory, maxPokemon, pokemonList, showShadows, showPokeballBac
     # Hide(appDirectory + constants.obsFolder + "Team.js")
     file_js.close()
 
+    import time
+    with open(appDirectory + constants.obsFolder + constants.versionFileName, "w", encoding="utf-8") as f:
+        f.write(str(int(time.time())))
+
 def CreateShadowsFile(appDirectory, showShadows):
     if not os.path.exists(appDirectory + constants.obsFolder + constants.txtFolder + constants.shadowsFileName):
         layoutFile = open(appDirectory + constants.obsFolder + constants.txtFolder + constants.shadowsFileName, "w", encoding="utf-8")

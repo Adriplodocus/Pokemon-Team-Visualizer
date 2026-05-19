@@ -1,0 +1,14 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pip show *)",
+      "Bash(pip install *)",
+      "Bash(python -c ' *)",
+      "Bash(timeout 8 python -c ' *)",
+      "Bash(timeout 12 python -c ' *)",
+      "Bash(Get-ChildItem C:\\\\Proyectos\\\\Python\\\\Pokemon-Team-Visualizer *)",
+      "Bash(python generate_pokemon_list.py)",
+      "Bash(git add *)"
+    ]
+  }
+}
