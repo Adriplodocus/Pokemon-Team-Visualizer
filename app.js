@@ -159,8 +159,10 @@ function buildRows() {
         const nameInput   = row.querySelector('.name-input');
         const moteInput   = row.querySelector('.mote-input');
         const suggestions = row.querySelector('.suggestions');
+        let activeSuggIdx = -1;
 
         nameInput.addEventListener('input', () => {
+            activeSuggIdx = -1;
             team[i].name = nameInput.value;
             team[i].properties = { ...DEFAULT_PROPS };
             updateSuggestions(nameInput, suggestions, i);
@@ -171,20 +173,36 @@ function buildRows() {
         nameInput.addEventListener('keydown', e => {
             if (e.key === 'Tab' && suggestions.style.display === 'block') {
                 e.preventDefault();
-                const first = suggestions.querySelector('li.active') || suggestions.querySelector('li');
-                if (first) {
-                    nameInput.value = first.dataset.value;
-                    team[i].name = first.dataset.value;
+                const items = [...suggestions.querySelectorAll('li')];
+                const target = items[activeSuggIdx] ?? items[0];
+                if (target) {
+                    nameInput.value = target.dataset.value;
+                    team[i].name = target.dataset.value;
                     refreshSprite(i);
                     saveState();
                 }
                 closeSuggestions(suggestions);
+                activeSuggIdx = -1;
             } else if (e.key === 'Enter') {
                 refreshSprite(i);
                 saveState();
                 closeSuggestions(suggestions);
-            } else if (e.key === 'ArrowDown') navigateSuggestions(suggestions, 1);
-            else if (e.key === 'ArrowUp')   navigateSuggestions(suggestions, -1);
+                activeSuggIdx = -1;
+            } else if ((e.key === 'ArrowDown' || e.key === 'ArrowUp') && suggestions.style.display === 'block') {
+                e.preventDefault();
+                const items = [...suggestions.querySelectorAll('li')];
+                if (!items.length) return;
+                if (e.key === 'ArrowDown') {
+                    activeSuggIdx = activeSuggIdx < items.length - 1 ? activeSuggIdx + 1 : activeSuggIdx;
+                } else {
+                    activeSuggIdx = activeSuggIdx < 0 ? items.length - 1 : Math.max(0, activeSuggIdx - 1);
+                }
+                items.forEach(li => li.classList.remove('active'));
+                items[activeSuggIdx].classList.add('active');
+                nameInput.value = items[activeSuggIdx].dataset.value;
+                team[i].name = nameInput.value;
+                refreshSprite(i);
+            }
         });
         moteInput.addEventListener('input', () => { team[i].mote = moteInput.value; saveState(); });
 
@@ -194,6 +212,7 @@ function buildRows() {
             nameInput.value = li.dataset.value;
             team[i].name = li.dataset.value;
             closeSuggestions(suggestions);
+            activeSuggIdx = -1;
             refreshSprite(i);
             saveState();
         });
@@ -250,22 +269,6 @@ function updateSuggestions(input, list, idx) {
 }
 
 function closeSuggestions(list) { list.innerHTML = ''; list.style.display = 'none'; }
-
-function navigateSuggestions(list, dir) {
-    const items = list.querySelectorAll('li');
-    if (!items.length) return;
-    const active = list.querySelector('li.active');
-    let idx = active ? [...items].indexOf(active) + dir : (dir > 0 ? 0 : items.length - 1);
-    idx = Math.max(0, Math.min(items.length - 1, idx));
-    items.forEach(li => li.classList.remove('active'));
-    items[idx].classList.add('active');
-    const row = list.closest('.pokemon-row');
-    const input = row.querySelector('.name-input');
-    const rowIndex = parseInt(row.dataset.index);
-    input.value = items[idx].dataset.value;
-    team[rowIndex].name = input.value;
-    refreshSprite(rowIndex);
-}
 
 // ── Icons ───────────────────────────────────────────────────────
 function refreshIcons(i) {
