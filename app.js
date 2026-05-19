@@ -26,6 +26,7 @@ const STRINGS = {
         errWriteFirst: 'Escribe primero un nombre de Pokémon.',
         errNoData:     'No se encontraron datos en este archivo.',
         errRead:       'Error al leer el archivo.',
+        confirmReset:  '¿Seguro que quieres resetear todos los datos?',
         successReset:  'Datos reseteados correctamente.',
         successDl:     '¡TeamVisualizer.html descargado!',
         successImport:    '¡Equipo importado correctamente!',
@@ -60,6 +61,7 @@ const STRINGS = {
         errWriteFirst: 'Write a Pokémon name first.',
         errNoData:     'No team data found in this file.',
         errRead:       'Error reading file.',
+        confirmReset:  'Are you sure you want to reset all data?',
         successReset:  'Team data was reset successfully.',
         successDl:     'TeamVisualizer.html downloaded!',
         successImport:    'Team imported successfully!',
@@ -330,6 +332,7 @@ function clearSlot(i) {
 
 // ── Reset all ───────────────────────────────────────────────────
 function resetAll() {
+    if (!confirm(t('confirmReset'))) return;
     for (let i = 0; i < 6; i++) clearSlot(i);
     saveState();
     setStatus(t('successReset'), 'var(--success)');
@@ -481,10 +484,10 @@ p{height:25px;color:white;text-align:center;font-family:Anton,'Arial Narrow Bold
 </head>
 <body>
 <div class="container">
-${entries.map((e, i) => `<div class="pkDiv">${pkDivContent[i]}</div>`).join('\n')}
+${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
 <div class="container">
-${entries.map((_, i) => `<div class="shadowDiv">${shadowContent[i]}</div>`).join('\n')}
+${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
 </div>
 </body>
 </html>`;
@@ -516,10 +519,10 @@ p{margin:0;padding:0;height:25px;color:white;font-family:Anton,'Arial Narrow Bol
 </head>
 <body>
 <div class="wrapper">
-${entries.map((e, i) => `<div class="pair">
+${entries.map((e, i) => e ? `<div class="pair">
   <div class="pkDiv">${pkDivContent[i]}</div>
   <div class="shadowDiv">${shadowContent[i]}</div>
-</div>`).join('\n')}
+</div>` : '').join('\n')}
 </div>
 </body>
 </html>`;
