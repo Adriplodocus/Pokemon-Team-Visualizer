@@ -165,7 +165,7 @@ fetch('pokemon-list.json')
     .then(r => r.json())
     .then(names => {
         pokemonNames = names;
-        for (let i = 0; i < 6; i++) { refreshSprite(i); refreshNameValidation(i); }
+        for (let i = 0; i < 6; i++) refreshSprite(i);
     })
     .catch(() => {});
 
@@ -208,7 +208,7 @@ function buildRows() {
             updateSuggestions(nameInput, suggestions, i);
             refreshIcons(i);
             refreshSprite(i);
-            refreshNameValidation(i);
+
             saveState();
         });
         nameInput.addEventListener('keydown', e => {
@@ -220,14 +220,14 @@ function buildRows() {
                     nameInput.value = target.dataset.value;
                     team[i].name = target.dataset.value;
                     refreshSprite(i);
-                    refreshNameValidation(i);
+        
                     saveState();
                 }
                 closeSuggestions(suggestions);
                 activeSuggIdx = -1;
             } else if (e.key === 'Enter') {
                 refreshSprite(i);
-                refreshNameValidation(i);
+    
                 saveState();
                 closeSuggestions(suggestions);
                 activeSuggIdx = -1;
@@ -245,7 +245,7 @@ function buildRows() {
                 nameInput.value = items[activeSuggIdx].dataset.value;
                 team[i].name = nameInput.value;
                 refreshSprite(i);
-                refreshNameValidation(i);
+    
             }
         });
         moteInput.addEventListener('input', () => { team[i].mote = moteInput.value; saveState(); });
@@ -258,7 +258,7 @@ function buildRows() {
             closeSuggestions(suggestions);
             activeSuggIdx = -1;
             refreshSprite(i);
-            refreshNameValidation(i);
+
             saveState();
         });
 
@@ -323,25 +323,6 @@ function updateSuggestions(input, list, idx) {
 }
 
 function closeSuggestions(list) { list.innerHTML = ''; list.style.display = 'none'; }
-
-// ── Name validation ─────────────────────────────────────────────
-function refreshNameValidation(i) {
-    const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-    if (!row) return;
-    const input = row.querySelector('.name-input');
-    const val   = input.value.trim().toLowerCase();
-    if (!val || !pokemonNames.length) {
-        input.classList.remove('valid', 'invalid');
-    } else if (pokemonNames.includes(val)) {
-        input.classList.add('valid');
-        input.classList.remove('invalid');
-    } else if (!pokemonNames.some(n => n.startsWith(val) || n.includes(val))) {
-        input.classList.add('invalid');
-        input.classList.remove('valid');
-    } else {
-        input.classList.remove('valid', 'invalid');
-    }
-}
 
 // ── Icons ───────────────────────────────────────────────────────
 function refreshIcons(i) {
