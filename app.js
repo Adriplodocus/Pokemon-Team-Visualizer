@@ -228,9 +228,9 @@ function buildRows() {
             updateSuggestions(nameInput, suggestions, i);
             refreshIcons(i);
             refreshSprite(i);
-
-            saveState();
+            saveState(false);
         });
+        nameInput.addEventListener('blur', () => { schedulePreviewUpdate(); });
         nameInput.addEventListener('keydown', e => {
             if (e.key === 'Tab' && suggestions.style.display === 'block') {
                 e.preventDefault();
@@ -724,12 +724,12 @@ function updatePreview() {
 }
 
 // ── Persistence ─────────────────────────────────────────────────
-function saveState() {
+function saveState(updatePreview = true) {
     localStorage.setItem('ptv_team',    JSON.stringify(team));
     localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
     localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
     localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
-    schedulePreviewUpdate();
+    if (updatePreview) schedulePreviewUpdate();
 }
 
 function loadState() {
