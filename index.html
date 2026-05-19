@@ -613,7 +613,17 @@ function buildRows() {
             saveState();
         });
         nameInput.addEventListener('keydown', e => {
-            if (e.key === 'Enter')          closeSuggestions(suggestions);
+            if (e.key === 'Tab' && suggestions.style.display === 'block') {
+                e.preventDefault();
+                const first = suggestions.querySelector('li');
+                if (first) {
+                    nameInput.value = first.dataset.value;
+                    team[i].name = first.dataset.value;
+                    refreshSprite(i);
+                    saveState();
+                }
+                closeSuggestions(suggestions);
+            } else if (e.key === 'Enter')          closeSuggestions(suggestions);
             else if (e.key === 'ArrowDown') navigateSuggestions(suggestions, 1);
             else if (e.key === 'ArrowUp')   navigateSuggestions(suggestions, -1);
         });
