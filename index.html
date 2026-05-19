@@ -625,8 +625,11 @@ function buildRows() {
                     saveState();
                 }
                 closeSuggestions(suggestions);
-            } else if (e.key === 'Enter')          closeSuggestions(suggestions);
-            else if (e.key === 'ArrowDown') navigateSuggestions(suggestions, 1);
+            } else if (e.key === 'Enter') {
+                refreshSprite(i);
+                saveState();
+                closeSuggestions(suggestions);
+            } else if (e.key === 'ArrowDown') navigateSuggestions(suggestions, 1);
             else if (e.key === 'ArrowUp')   navigateSuggestions(suggestions, -1);
         });
         moteInput.addEventListener('input', () => { team[i].mote = moteInput.value; saveState(); });
@@ -704,8 +707,10 @@ function navigateSuggestions(list, dir) {
     items[idx].classList.add('active');
     const row = list.closest('.pokemon-row');
     const input = row.querySelector('.name-input');
+    const rowIndex = parseInt(row.dataset.index);
     input.value = items[idx].dataset.value;
-    team[parseInt(row.dataset.index)].name = input.value;
+    team[rowIndex].name = input.value;
+    refreshSprite(rowIndex);
 }
 
 // ── Icons ───────────────────────────────────────────────────────
