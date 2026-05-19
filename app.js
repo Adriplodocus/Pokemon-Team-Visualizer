@@ -516,10 +516,11 @@ function buildSpriteUrl(name, props) {
 function buildOverlayHTML(layout, showShadows, showBg) {
     const dataBlock = JSON.stringify({ team, layout, shadows: showShadows, bg: showBg });
     const entries = team.map(slot => {
-        if (!slot.name.trim()) return null;
+        const name = slot.name.trim().toLowerCase();
+        if (!name || !pokemonNames.includes(name)) return null;
         return {
             mote: (slot.mote || slot.name).toUpperCase(),
-            url:  buildSpriteUrl(slot.name.trim(), slot.properties)
+            url:  buildSpriteUrl(name, slot.properties)
         };
     });
 
