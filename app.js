@@ -616,14 +616,8 @@ function updatePreview() {
     const msg     = document.getElementById('preview-msg');
     const wrapper = document.getElementById('preview-wrapper');
 
-    if (layout === 'vertical') {
-        msg.textContent    = t('previewVertical');
-        msg.style.display  = '';
-        wrapper.style.display = 'none';
-        return;
-    }
-
-    msg.style.display     = 'none';
+    msg.textContent   = layout === 'vertical' ? t('previewVertical') : '';
+    msg.style.display = layout === 'vertical' ? '' : 'none';
     wrapper.style.display = '';
 
     const shadows    = document.getElementById('shadows-check').checked;
@@ -639,7 +633,7 @@ function updatePreview() {
     wrapper.style.height   = Math.round(265  * scale) + 'px';
     wrapper.style.margin   = '0';
 
-    iframe.srcdoc = buildOverlayHTML(layout, shadows, bg);
+    iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg);
 }
 
 // ── Persistence ─────────────────────────────────────────────────
