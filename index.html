@@ -76,10 +76,7 @@ h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6
     letter-spacing: 0.5px;
     transition: background 0.15s, color 0.15s;
 }
-.lang-toggle button.active {
-    background: var(--btn-hover);
-    color: var(--text);
-}
+.lang-toggle button.active { background: var(--btn-hover); color: var(--text); }
 
 #app { width: 100%; max-width: 680px; }
 
@@ -101,12 +98,40 @@ h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6
     gap: 8px;
     padding: 9px 0;
     border-bottom: 1px solid var(--border);
+    transition: outline 0.1s;
 }
 .pokemon-row:last-child { border-bottom: none; }
-.row-label { min-width: 88px; font-size: 13px; color: var(--text-2); font-weight: 500; white-space: nowrap; }
+.pokemon-row.dragging  { opacity: 0.35; }
+.pokemon-row.drag-over { outline: 1px solid rgba(0,204,255,0.45); border-radius: 6px; }
+
+/* Drag handle */
+.drag-handle {
+    flex-shrink: 0;
+    cursor: grab;
+    color: var(--dimmed);
+    font-size: 15px;
+    line-height: 1;
+    padding: 0 2px;
+    user-select: none;
+    transition: color 0.15s;
+}
+.drag-handle:hover { color: var(--text-2); }
+.drag-handle:active { cursor: grabbing; }
+
+/* Sprite preview */
+.sprite-preview {
+    flex: 0 0 40px;
+    height: 40px;
+    object-fit: contain;
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.sprite-preview.visible { opacity: 1; }
+
+.row-label { min-width: 76px; font-size: 13px; color: var(--text-2); font-weight: 500; white-space: nowrap; }
 
 /* Autocomplete */
-.ac-wrapper { position: relative; flex: 0 0 175px; }
+.ac-wrapper { position: relative; flex: 0 0 162px; }
 .name-input, .mote-input {
     background: var(--input-bg);
     border: 1px solid var(--border);
@@ -120,7 +145,7 @@ h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6
     transition: border-color 0.15s;
 }
 .name-input:focus, .mote-input:focus { border-color: var(--border-focus); }
-.mote-input { flex: 0 0 140px; }
+.mote-input { flex: 0 0 120px; }
 .suggestions {
     position: absolute;
     top: calc(100% + 2px);
@@ -163,7 +188,7 @@ button {
     white-space: nowrap;
 }
 button:hover { background: var(--btn-hover); }
-.props-btn { flex: 0 0 84px; font-size: 12px; }
+.props-btn { flex: 0 0 80px; font-size: 12px; }
 .clear-btn  { flex: 0 0 30px; background: var(--reset); border-color: transparent; padding: 6px 0; }
 .clear-btn:hover { background: var(--reset-hover); }
 
@@ -351,6 +376,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
         <p data-i18n="madeBy"></p>
         <div class="social-links">
             <a href="https://www.twitch.tv/MrKlypp" target="_blank">Twitch</a>
+            <a href="https://www.youtube.com/@MrKlypp" target="_blank">YouTube</a>
             <a href="https://www.instagram.com/MrKlypp_/" target="_blank">Instagram</a>
             <a href="https://www.tiktok.com/@mrklypp" target="_blank">TikTok</a>
             <a href="https://x.com/MrKlypp" target="_blank">X</a>
@@ -382,7 +408,7 @@ const STRINGS = {
         showBg:        'Mostrar fondo de pokéball',
         generateBtn:   '⬇ Generar y descargar',
         previewBtn:    'Vista previa en el navegador',
-        resetBtn:      'Reiniciar equipo',
+        resetBtn:      'Resetear datos',
         madeBy:        'Hecho por @MrKlypp',
         modalSet:      'Aplicar',
         modalTitle:    'propiedades',
@@ -397,7 +423,7 @@ const STRINGS = {
         errWriteFirst: 'Escribe primero un nombre de Pokémon.',
         errNoData:     'No se encontraron datos en este archivo.',
         errRead:       'Error al leer el archivo.',
-        successReset:  'Equipo reiniciado correctamente.',
+        successReset:  'Datos reseteados correctamente.',
         successDl:     '¡TeamVisualizer.html descargado!',
         successImport: '¡Equipo importado correctamente!',
         obsHint:       dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong>`,
@@ -482,11 +508,15 @@ const team = Array.from({ length: 6 }, () => ({
 let pokemonNames = [];
 let modalIndex   = -1;
 let modalVars    = {};
+let dragSrcIndex = -1;
 
 // ── Load autocomplete list ──────────────────────────────────────
 fetch('pokemon-list.json')
     .then(r => r.json())
-    .then(names => { pokemonNames = names; })
+    .then(names => {
+        pokemonNames = names;
+        for (let i = 0; i < 6; i++) refreshSprite(i);
+    })
     .catch(() => {});
 
 // ── Build UI rows ───────────────────────────────────────────────
@@ -498,6 +528,8 @@ function buildRows() {
         row.className = 'pokemon-row';
         row.dataset.index = i;
         row.innerHTML = `
+            <span class="drag-handle" title="Drag to reorder">⠿</span>
+            <img class="sprite-preview" src="" alt="" onerror="this.classList.remove('visible')">
             <span class="row-label">Pokémon ${i + 1}:</span>
             <div class="ac-wrapper">
                 <input class="name-input" type="text" data-i18n-ph="namePh" autocomplete="off" spellcheck="false">
@@ -514,8 +546,8 @@ function buildRows() {
         `;
         container.appendChild(row);
 
-        const nameInput  = row.querySelector('.name-input');
-        const moteInput  = row.querySelector('.mote-input');
+        const nameInput   = row.querySelector('.name-input');
+        const moteInput   = row.querySelector('.mote-input');
         const suggestions = row.querySelector('.suggestions');
 
         nameInput.addEventListener('input', () => {
@@ -523,6 +555,7 @@ function buildRows() {
             team[i].properties = { ...DEFAULT_PROPS };
             updateSuggestions(nameInput, suggestions, i);
             refreshIcons(i);
+            refreshSprite(i);
             saveState();
         });
         nameInput.addEventListener('keydown', e => {
@@ -538,8 +571,44 @@ function buildRows() {
             nameInput.value = li.dataset.value;
             team[i].name = li.dataset.value;
             closeSuggestions(suggestions);
+            refreshSprite(i);
             saveState();
         });
+
+        // ── Drag & drop ─────────────────────────────────────────
+        row.addEventListener('dragstart', e => {
+            const tag = e.target.tagName.toLowerCase();
+            if (tag === 'input' || tag === 'button' || tag === 'select') { e.preventDefault(); return; }
+            if (!e.target.closest('.drag-handle')) { e.preventDefault(); return; }
+            dragSrcIndex = i;
+            e.dataTransfer.effectAllowed = 'move';
+            setTimeout(() => row.classList.add('dragging'), 0);
+        });
+        row.addEventListener('dragend', () => {
+            row.classList.remove('dragging');
+            document.querySelectorAll('.pokemon-row').forEach(r => r.classList.remove('drag-over'));
+        });
+        row.addEventListener('dragover', e => {
+            e.preventDefault();
+            e.dataTransfer.dropEffect = 'move';
+            document.querySelectorAll('.pokemon-row').forEach(r => r.classList.remove('drag-over'));
+            if (dragSrcIndex !== i) row.classList.add('drag-over');
+        });
+        row.addEventListener('dragleave', () => row.classList.remove('drag-over'));
+        row.addEventListener('drop', e => {
+            e.stopPropagation();
+            row.classList.remove('drag-over');
+            if (dragSrcIndex < 0 || dragSrcIndex === i) return;
+            const tmp = { ...team[dragSrcIndex], properties: { ...team[dragSrcIndex].properties } };
+            team[dragSrcIndex] = { ...team[i], properties: { ...team[i].properties } };
+            team[i] = tmp;
+            refreshRow(dragSrcIndex);
+            refreshRow(i);
+            saveState();
+            dragSrcIndex = -1;
+        });
+
+        row.setAttribute('draggable', 'true');
     }
 
     document.addEventListener('click', e => {
@@ -587,6 +656,29 @@ function refreshIcons(i) {
     row.querySelector('.shiny-icon').className = 'icon shiny-icon' + (p.shiny === 'True'   ? ' active' : ' dimmed');
 }
 
+// ── Sprite preview ──────────────────────────────────────────────
+function refreshSprite(i) {
+    const row  = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    const img  = row.querySelector('.sprite-preview');
+    const name = team[i].name.trim().toLowerCase();
+    if (name && pokemonNames.includes(name)) {
+        img.src = buildSpriteUrl(name, team[i].properties);
+        img.classList.add('visible');
+    } else {
+        img.classList.remove('visible');
+        img.src = '';
+    }
+}
+
+// ── Refresh full row ─────────────────────────────────────────────
+function refreshRow(i) {
+    const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    row.querySelector('.name-input').value = team[i].name;
+    row.querySelector('.mote-input').value = team[i].mote;
+    refreshIcons(i);
+    refreshSprite(i);
+}
+
 // ── Clear slot ──────────────────────────────────────────────────
 function clearSlot(i) {
     team[i] = { name: '', mote: '', properties: { ...DEFAULT_PROPS } };
@@ -594,6 +686,7 @@ function clearSlot(i) {
     row.querySelector('.name-input').value = '';
     row.querySelector('.mote-input').value = '';
     refreshIcons(i);
+    refreshSprite(i);
 }
 
 // ── Reset all ───────────────────────────────────────────────────
@@ -656,6 +749,7 @@ function applyModal() {
     if (modalIndex < 0) return;
     team[modalIndex].properties = { ...modalVars };
     refreshIcons(modalIndex);
+    refreshSprite(modalIndex);
     saveState();
     closeModal();
 }
@@ -859,6 +953,7 @@ function importTeam(input) {
                 row.querySelector('.name-input').value = team[i].name;
                 row.querySelector('.mote-input').value = team[i].mote;
                 refreshIcons(i);
+                refreshSprite(i);
             });
             if (data.layout)               document.getElementById('layout-select').value   = data.layout;
             if (data.shadows !== undefined) document.getElementById('shadows-check').checked = data.shadows;
@@ -892,6 +987,7 @@ function loadState() {
             row.querySelector('.name-input').value = team[i].name;
             row.querySelector('.mote-input').value = team[i].mote;
             refreshIcons(i);
+            refreshSprite(i);
         });
     } catch(e) {}
 
