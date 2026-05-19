@@ -54,7 +54,37 @@ body {
 
 /* ── Header ─────────────────────────────────────────────────── */
 header { text-align: center; margin-bottom: 24px; animation: fade-up 0.5s ease both; }
-h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal; letter-spacing: 0.02em; margin-bottom: 6px; color: var(--cyan); }
+.header-title-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    margin-bottom: 6px;
+}
+h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal; letter-spacing: 0.02em; color: var(--cyan); }
+
+@keyframes avatar-pulse {
+    0%   { box-shadow: 0 0 0 0   rgba(0,204,255,0);    border-color: rgba(0,204,255,0.4); }
+    25%  { box-shadow: 0 0 0 10px rgba(0,204,255,0.2); border-color: rgba(0,204,255,0.7); }
+    50%  { box-shadow: 0 0 0 0   rgba(255,86,180,0);   border-color: rgba(255,86,180,0.4); }
+    75%  { box-shadow: 0 0 0 10px rgba(255,86,180,0.2);border-color: rgba(255,86,180,0.7); }
+    100% { box-shadow: 0 0 0 0   rgba(0,204,255,0);    border-color: rgba(0,204,255,0.4); }
+}
+.avatar-ring {
+    flex-shrink: 0;
+    border-radius: 50%;
+    width: 52px; height: 52px;
+    border: 2px solid rgba(0,204,255,0.4);
+    animation: avatar-pulse 4s ease-in-out infinite;
+    transition: transform 0.2s;
+    display: flex; align-items: center; justify-content: center;
+    overflow: visible;
+}
+.avatar-ring:hover { transform: scale(1.06); }
+.avatar-ring img {
+    width: 66px; height: 66px;
+    border-radius: 50%; object-fit: cover; display: block;
+}
 .subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 4px; }
 .warn { color: var(--error); font-size: 12px; margin-top: 4px; }
 
@@ -342,7 +372,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 </head>
 <body>
 <header>
-    <h1>Pokémon Team Visualizer</h1>
+    <div class="header-title-row">
+        <div class="avatar-ring">
+            <img src="https://mrklypp.com/assets/img/logo.png" alt="MrKlypp">
+        </div>
+        <h1>Pokémon Team Visualizer</h1>
+    </div>
     <p class="subtitle" data-i18n="subtitle1"></p>
     <p class="subtitle" data-i18n="subtitle2"></p>
     <p class="warn" data-i18n="warn"></p>
