@@ -52,6 +52,34 @@ h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6
 .subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 4px; }
 .warn { color: var(--error); font-size: 12px; margin-top: 4px; }
 
+/* ── Lang toggle ─────────────────────────────────────────────── */
+.lang-toggle {
+    display: inline-flex;
+    gap: 2px;
+    margin-top: 12px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 3px;
+}
+.lang-toggle button {
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    color: var(--text-2);
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 4px 10px;
+    letter-spacing: 0.5px;
+    transition: background 0.15s, color 0.15s;
+}
+.lang-toggle button.active {
+    background: var(--btn-hover);
+    color: var(--text);
+}
+
 #app { width: 100%; max-width: 680px; }
 
 /* ── Cards ───────────────────────────────────────────────────── */
@@ -269,11 +297,15 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 <body>
 <header>
     <h1>Pokémon Team Visualizer</h1>
-    <p class="subtitle">Generate your Pokémon team overlay for OBS in seconds.</p>
-    <p class="subtitle">Write Pokémon names exactly as they appear in-game.</p>
-    <p class="warn">If you encounter any error, please let me know.</p>
-    <button class="btn-import-header" onclick="document.getElementById('import-input').click()">⬆ Import team from file</button>
+    <p class="subtitle" data-i18n="subtitle1"></p>
+    <p class="subtitle" data-i18n="subtitle2"></p>
+    <p class="warn" data-i18n="warn"></p>
+    <button class="btn-import-header" onclick="document.getElementById('import-input').click()" data-i18n="importBtn"></button>
     <input type="file" id="import-input" accept=".html" style="display:none" onchange="importTeam(this)">
+    <div class="lang-toggle">
+        <button id="lang-es" onclick="setLang('es')">ES</button>
+        <button id="lang-en" onclick="setLang('en')">EN</button>
+    </div>
 </header>
 <div id="app">
 
@@ -285,14 +317,15 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     <!-- Settings -->
     <div class="card">
         <div class="settings-row">
-            <label>Layout
+            <label>
+                <span data-i18n="layout"></span>
                 <select id="layout-select">
-                    <option value="horizontal">Horizontal</option>
-                    <option value="vertical">Vertical</option>
+                    <option value="horizontal" data-i18n="horizontal"></option>
+                    <option value="vertical" data-i18n="vertical"></option>
                 </select>
             </label>
-            <label><input type="checkbox" id="shadows-check" checked> Show shadows</label>
-            <label><input type="checkbox" id="bg-check" checked> Show pokéball background</label>
+            <label><input type="checkbox" id="shadows-check" checked> <span data-i18n="showShadows"></span></label>
+            <label><input type="checkbox" id="bg-check" checked> <span data-i18n="showBg"></span></label>
         </div>
     </div>
 
@@ -300,16 +333,16 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     <div class="card">
         <div class="actions">
             <p id="obs-hint" class="obs-hint"></p>
-            <button class="btn-generate" onclick="generateAndDownload()">⬇ Generate &amp; Download</button>
-            <button class="btn-preview" onclick="previewOverlay()">Preview in browser</button>
-<button class="btn-reset" onclick="resetAll()">Reset all data</button>
+            <button class="btn-generate" onclick="generateAndDownload()" data-i18n="generateBtn"></button>
+            <button class="btn-preview" onclick="previewOverlay()" data-i18n="previewBtn"></button>
+            <button class="btn-reset" onclick="resetAll()" data-i18n="resetBtn"></button>
             <div id="status"></div>
         </div>
     </div>
 
     <!-- Social -->
     <div class="card social">
-        <p>Made by @MrKlypp</p>
+        <p data-i18n="madeBy"></p>
         <a href="https://www.twitch.tv/MrKlypp" target="_blank">Twitch</a>
         <a href="https://www.instagram.com/MrKlypp_/" target="_blank">Instagram</a>
         <a href="https://www.tiktok.com/@mrklypp" target="_blank">TikTok</a>
@@ -322,15 +355,112 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     <div id="modal">
         <h3 id="modal-title"></h3>
         <div id="modal-props"></div>
-        <button class="modal-apply" onclick="applyModal()">Set</button>
+        <button class="modal-apply" onclick="applyModal()" data-i18n="modalSet"></button>
     </div>
 </div>
 
 <script>
+// ── i18n ────────────────────────────────────────────────────────
+const STRINGS = {
+    es: {
+        subtitle1:     'Genera tu overlay de equipo Pokémon para OBS en segundos.',
+        subtitle2:     'Escribe los nombres exactamente como aparecen en el juego.',
+        warn:          'Si encuentras algún error, por favor házmelo saber.',
+        importBtn:     '⬆ Importar equipo',
+        layout:        'Diseño',
+        horizontal:    'Horizontal',
+        vertical:      'Vertical',
+        showShadows:   'Mostrar sombras',
+        showBg:        'Mostrar fondo de pokéball',
+        generateBtn:   '⬇ Generar y descargar',
+        previewBtn:    'Vista previa en el navegador',
+        resetBtn:      'Reiniciar equipo',
+        madeBy:        'Hecho por @MrKlypp',
+        modalSet:      'Aplicar',
+        modalTitle:    'propiedades',
+        modalGender:   'Género',
+        modalSkin:     'Skin',
+        modalShiny:    'Shiny',
+        namePh:        'Nombre...',
+        notePh:        'Apodo...',
+        propsBtn:      'Propiedades',
+        errNoName:     'Escribe al menos un nombre de Pokémon.',
+        errUnknown:    n => `Pokémon desconocido: ${n}`,
+        errWriteFirst: 'Escribe primero un nombre de Pokémon.',
+        errNoData:     'No se encontraron datos en este archivo.',
+        errRead:       'Error al leer el archivo.',
+        successReset:  'Equipo reiniciado correctamente.',
+        successDl:     '¡TeamVisualizer.html descargado!',
+        successImport: '¡Equipo importado correctamente!',
+        obsHint:       dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong>`,
+    },
+    en: {
+        subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
+        subtitle2:     'Write Pokémon names exactly as they appear in-game.',
+        warn:          'If you encounter any error, please let me know.',
+        importBtn:     '⬆ Import team',
+        layout:        'Layout',
+        horizontal:    'Horizontal',
+        vertical:      'Vertical',
+        showShadows:   'Show shadows',
+        showBg:        'Show pokéball background',
+        generateBtn:   '⬇ Generate & Download',
+        previewBtn:    'Preview in browser',
+        resetBtn:      'Reset all data',
+        madeBy:        'Made by @MrKlypp',
+        modalSet:      'Set',
+        modalTitle:    'properties',
+        modalGender:   'Gender',
+        modalSkin:     'Skin',
+        modalShiny:    'Shiny',
+        namePh:        'Name...',
+        notePh:        'Nickname...',
+        propsBtn:      'Properties',
+        errNoName:     'Write at least one Pokémon name.',
+        errUnknown:    n => `Unknown Pokémon: ${n}`,
+        errWriteFirst: 'Write a Pokémon name first.',
+        errNoData:     'No team data found in this file.',
+        errRead:       'Error reading file.',
+        successReset:  'Team data was reset successfully.',
+        successDl:     'TeamVisualizer.html downloaded!',
+        successImport: 'Team imported successfully!',
+        obsHint:       dims => `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>Recommended size: <strong>${dims}</strong>`,
+    }
+};
+
+let currentLang = localStorage.getItem('ptv_lang') || 'es';
+
+function t(key, arg) {
+    const val = STRINGS[currentLang][key];
+    return typeof val === 'function' ? val(arg) : val;
+}
+
+function setLang(lang) {
+    currentLang = lang;
+    localStorage.setItem('ptv_lang', lang);
+    document.documentElement.lang = lang;
+    document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    applyLang();
+}
+
+function applyLang() {
+    const s = STRINGS[currentLang];
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.dataset.i18n;
+        if (typeof s[key] === 'string') el.textContent = s[key];
+    });
+    document.querySelectorAll('[data-i18n-ph]').forEach(el => {
+        const key = el.dataset.i18nPh;
+        if (typeof s[key] === 'string') el.placeholder = s[key];
+    });
+    updateObsHint();
+}
+
 // ── Constants ───────────────────────────────────────────────────
-const BASE_URL    = 'https://pokemonteamvisualizer.pages.dev/Python/Resources/AnimatedSprites/';
-const SHADOW_URL  = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
-const POKEBALL_URL= 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
+const BASE_URL     = 'https://pokemonteamvisualizer.pages.dev/Python/Resources/AnimatedSprites/';
+const SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
+const POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
 
 // ── State ───────────────────────────────────────────────────────
 const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
@@ -342,8 +472,8 @@ const team = Array.from({ length: 6 }, () => ({
 }));
 
 let pokemonNames = [];
-let modalIndex = -1;
-let modalVars  = {};
+let modalIndex   = -1;
+let modalVars    = {};
 
 // ── Load autocomplete list ──────────────────────────────────────
 fetch('pokemon-list.json')
@@ -362,22 +492,22 @@ function buildRows() {
         row.innerHTML = `
             <span class="row-label">Pokémon ${i + 1}:</span>
             <div class="ac-wrapper">
-                <input class="name-input" type="text" placeholder="Name..." autocomplete="off" spellcheck="false">
+                <input class="name-input" type="text" data-i18n-ph="namePh" autocomplete="off" spellcheck="false">
                 <ul class="suggestions"></ul>
             </div>
-            <input class="mote-input" type="text" placeholder="Nickname...">
+            <input class="mote-input" type="text" data-i18n-ph="notePh">
             <div class="icons">
                 <span class="icon gender-icon" title="Gender">♂</span>
                 <span class="icon skin-icon dimmed" title="Skin">◆</span>
                 <span class="icon shiny-icon dimmed" title="Shiny">★</span>
             </div>
-            <button class="props-btn" onclick="openModal(${i})">Properties</button>
+            <button class="props-btn" data-i18n="propsBtn" onclick="openModal(${i})"></button>
             <button class="clear-btn" onclick="clearSlot(${i})">✕</button>
         `;
         container.appendChild(row);
 
-        const nameInput = row.querySelector('.name-input');
-        const moteInput = row.querySelector('.mote-input');
+        const nameInput  = row.querySelector('.name-input');
+        const moteInput  = row.querySelector('.mote-input');
         const suggestions = row.querySelector('.suggestions');
 
         nameInput.addEventListener('input', () => {
@@ -430,7 +560,6 @@ function navigateSuggestions(list, dir) {
     idx = Math.max(0, Math.min(items.length - 1, idx));
     items.forEach(li => li.classList.remove('active'));
     items[idx].classList.add('active');
-    // Set value on the parent row's name input
     const row = list.closest('.pokemon-row');
     const input = row.querySelector('.name-input');
     input.value = items[idx].dataset.value;
@@ -439,15 +568,15 @@ function navigateSuggestions(list, dir) {
 
 // ── Icons ───────────────────────────────────────────────────────
 function refreshIcons(i) {
-    const row  = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-    const p    = team[i].properties;
+    const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    const p   = team[i].properties;
 
     const gIcon = row.querySelector('.gender-icon');
     gIcon.textContent = p.gender === 'female' ? '♀' : '♂';
     gIcon.className = 'icon gender-icon' + (p.gender === 'female' ? ' female' : '');
 
-    row.querySelector('.skin-icon').className  = 'icon skin-icon'  + (p.skin  !== 'common'  ? ' active' : ' dimmed');
-    row.querySelector('.shiny-icon').className = 'icon shiny-icon' + (p.shiny === 'True'    ? ' active' : ' dimmed');
+    row.querySelector('.skin-icon').className  = 'icon skin-icon'  + (p.skin  !== 'common' ? ' active' : ' dimmed');
+    row.querySelector('.shiny-icon').className = 'icon shiny-icon' + (p.shiny === 'True'   ? ' active' : ' dimmed');
 }
 
 // ── Clear slot ──────────────────────────────────────────────────
@@ -462,7 +591,7 @@ function clearSlot(i) {
 // ── Reset all ───────────────────────────────────────────────────
 function resetAll() {
     for (let i = 0; i < 6; i++) clearSlot(i);
-    setStatus('Team data was reset successfully.', 'var(--success)');
+    setStatus(t('successReset'), 'var(--success)');
 }
 
 // ── Properties modal ────────────────────────────────────────────
@@ -470,10 +599,10 @@ function openModal(i) {
     modalIndex = i;
     const name = team[i].name.trim();
     if (!name) {
-        setStatus('Write a Pokémon name first.', 'var(--error)');
+        setStatus(t('errWriteFirst'), 'var(--error)');
         return;
     }
-    document.getElementById('modal-title').textContent = capitalize(name) + ' properties';
+    document.getElementById('modal-title').textContent = capitalize(name) + ' ' + t('modalTitle');
 
     const catalog = POKEMON_CATALOG[name.toLowerCase()] || {};
     const skins   = ['common', ...(catalog.skin || [])];
@@ -483,32 +612,29 @@ function openModal(i) {
     const propsEl = document.getElementById('modal-props');
     propsEl.innerHTML = '';
 
-    // Gender
     modalVars.gender = props.gender;
     propsEl.innerHTML += `
         <div class="modal-row">
-            <label>Gender</label>
+            <label>${t('modalGender')}</label>
             <select id="mp-gender" onchange="modalVars.gender=this.value">
                 <option value="male"   ${props.gender==='male'   ? 'selected':''}>male</option>
                 <option value="female" ${props.gender==='female' ? 'selected':''}>female</option>
             </select>
         </div>`;
 
-    // Skin
     modalVars.skin = props.skin;
     propsEl.innerHTML += `
         <div class="modal-row">
-            <label>Skin</label>
+            <label>${t('modalSkin')}</label>
             <select id="mp-skin" onchange="modalVars.skin=this.value">
                 ${skins.map(s => `<option value="${s}" ${props.skin===s?'selected':''}>${s}</option>`).join('')}
             </select>
         </div>`;
 
-    // Shiny
     modalVars.shiny = props.shiny;
     propsEl.innerHTML += `
         <div class="modal-row">
-            <label>Shiny</label>
+            <label>${t('modalShiny')}</label>
             <select id="mp-shiny" onchange="modalVars.shiny=this.value">
                 <option value="False" ${props.shiny==='False'?'selected':''}>False</option>
                 <option value="True"  ${props.shiny==='True' ?'selected':''}>True</option>
@@ -578,7 +704,7 @@ function buildOverlayHTML(layout, showShadows, showBg) {
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
         let c = `<p>${e.mote}</p>`;
-        if (showBg)     c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}">`;
+        if (showBg) c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}">`;
         c += `<img id="img${i+1}" src="${e.url}">`;
         return c;
     });
@@ -662,7 +788,7 @@ function validateTeam() {
         .filter(s => s.name.trim())
         .filter(s => !pokemonNames.includes(s.name.trim().toLowerCase()));
     if (invalid.length) {
-        setStatus('Unknown Pokémon: ' + invalid.map(s => s.name).join(', '), 'var(--error)');
+        setStatus(t('errUnknown', invalid.map(s => s.name).join(', ')), 'var(--error)');
         return false;
     }
     return true;
@@ -671,7 +797,7 @@ function validateTeam() {
 // ── Download ────────────────────────────────────────────────────
 function generateAndDownload() {
     const hasAny = team.some(s => s.name.trim());
-    if (!hasAny) { setStatus('Write at least one Pokémon name.', 'var(--error)'); return; }
+    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
     if (!validateTeam()) return;
 
     const html = buildOverlayHTML(
@@ -680,12 +806,12 @@ function generateAndDownload() {
         document.getElementById('bg-check').checked
     );
     triggerDownload(html, 'TeamVisualizer.html');
-    setStatus('TeamVisualizer.html downloaded!', 'var(--success)');
+    setStatus(t('successDl'), 'var(--success)');
 }
 
 function previewOverlay() {
     const hasAny = team.some(s => s.name.trim());
-    if (!hasAny) { setStatus('Write at least one Pokémon name.', 'var(--error)'); return; }
+    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
     if (!validateTeam()) return;
 
     const html = buildOverlayHTML(
@@ -715,7 +841,7 @@ function importTeam(input) {
     const reader = new FileReader();
     reader.onload = e => {
         const match = e.target.result.match(/<script type="application\/json" id="ptv-data">([\s\S]*?)<\/script>/);
-        if (!match) { setStatus('No team data found in this file.', 'var(--error)'); return; }
+        if (!match) { setStatus(t('errNoData'), 'var(--error)'); return; }
         try {
             const data = JSON.parse(match[1]);
             data.team.forEach((slot, i) => {
@@ -726,13 +852,13 @@ function importTeam(input) {
                 row.querySelector('.mote-input').value = team[i].mote;
                 refreshIcons(i);
             });
-            if (data.layout)             document.getElementById('layout-select').value   = data.layout;
+            if (data.layout)               document.getElementById('layout-select').value   = data.layout;
             if (data.shadows !== undefined) document.getElementById('shadows-check').checked = data.shadows;
             if (data.bg      !== undefined) document.getElementById('bg-check').checked      = data.bg;
             updateObsHint();
             saveState();
-            setStatus('Team imported successfully!', 'var(--success)');
-        } catch(_) { setStatus('Error reading file.', 'var(--error)'); }
+            setStatus(t('successImport'), 'var(--success)');
+        } catch(_) { setStatus(t('errRead'), 'var(--error)'); }
         input.value = '';
     };
     reader.readAsText(file);
@@ -740,7 +866,7 @@ function importTeam(input) {
 
 // ── Persistence ─────────────────────────────────────────────────
 function saveState() {
-    localStorage.setItem('ptv_team', JSON.stringify(team));
+    localStorage.setItem('ptv_team',    JSON.stringify(team));
     localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
     localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
     localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
@@ -785,9 +911,7 @@ function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 function updateObsHint() {
     const layout = document.getElementById('layout-select').value;
     const dims   = layout === 'horizontal' ? '1350x265' : '265x1350';
-    document.getElementById('obs-hint').innerHTML =
-        `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>
-         Recommended size: <strong>${dims}</strong>`;
+    document.getElementById('obs-hint').innerHTML = t('obsHint', dims);
 }
 
 document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
@@ -797,7 +921,7 @@ document.getElementById('bg-check').addEventListener('change', saveState);
 // ── Init ─────────────────────────────────────────────────────────
 buildRows();
 loadState();
-updateObsHint();
+setLang(currentLang);
 </script>
 </body>
 </html>
