@@ -32,6 +32,7 @@ const STRINGS = {
         obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong><br>Puedes reemplazar el archivo directamente.`,
         livePreviewOn:    '👁 Vista previa en vivo',
         livePreviewOff:   '👁 Ocultar vista previa',
+        previewVertical:  'La vista previa solo está disponible en modo horizontal.',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -65,6 +66,7 @@ const STRINGS = {
         obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>Recommended size: <strong>${dims}</strong><br>You can replace the file directly.`,
         livePreviewOn:    '👁 Live preview',
         livePreviewOff:   '👁 Hide live preview',
+        previewVertical:  'Live preview is only available in horizontal mode.',
     }
 };
 
@@ -611,30 +613,31 @@ function schedulePreviewUpdate() {
 function updatePreview() {
     if (!previewVisible) return;
     const layout  = document.getElementById('layout-select').value;
-    const shadows = document.getElementById('shadows-check').checked;
-    const bg      = document.getElementById('bg-check').checked;
+    const msg     = document.getElementById('preview-msg');
+    const wrapper = document.getElementById('preview-wrapper');
 
-    const wrapper    = document.getElementById('preview-wrapper');
-    const iframe     = document.getElementById('preview-iframe');
-    // subtract card's horizontal padding (16px each side)
-    const containerW = wrapper.parentElement.clientWidth - 32;
-
-    let nativeW, nativeH, scale;
-    if (layout === 'horizontal') {
-        nativeW = 1350; nativeH = 265;
-        scale   = containerW / nativeW;
-        wrapper.style.margin = '0';
-    } else {
-        nativeW = 265; nativeH = 1350;
-        scale   = 400 / nativeH;  // exactly fits 6 slots in 400px
-        wrapper.style.margin = '0 auto';
+    if (layout === 'vertical') {
+        msg.textContent    = t('previewVertical');
+        msg.style.display  = '';
+        wrapper.style.display = 'none';
+        return;
     }
 
-    iframe.style.width     = nativeW + 'px';
-    iframe.style.height    = nativeH + 'px';
+    msg.style.display     = 'none';
+    wrapper.style.display = '';
+
+    const shadows    = document.getElementById('shadows-check').checked;
+    const bg         = document.getElementById('bg-check').checked;
+    const iframe     = document.getElementById('preview-iframe');
+    const containerW = wrapper.parentElement.clientWidth - 32;
+
+    const scale = containerW / 1350;
+    iframe.style.width     = '1350px';
+    iframe.style.height    = '265px';
     iframe.style.transform = `scale(${scale})`;
-    wrapper.style.width    = Math.round(nativeW * scale) + 'px';
-    wrapper.style.height   = Math.round(nativeH * scale) + 'px';
+    wrapper.style.width    = Math.round(1350 * scale) + 'px';
+    wrapper.style.height   = Math.round(265  * scale) + 'px';
+    wrapper.style.margin   = '0';
 
     iframe.srcdoc = buildOverlayHTML(layout, shadows, bg);
 }
