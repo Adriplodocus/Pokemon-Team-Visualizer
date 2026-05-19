@@ -1,0 +1,17 @@
+{
+    "name": "Pokémon Team Visualizer",
+    "short_name": "PTV",
+    "description": "Generate your Pokémon team overlay for OBS in seconds.",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#1a1a1a",
+    "theme_color": "#00CCFF",
+    "icons": [
+        {
+            "src": "icon.svg",
+            "sizes": "any",
+            "type": "image/svg+xml",
+            "purpose": "any"
+        }
+    ]
+}

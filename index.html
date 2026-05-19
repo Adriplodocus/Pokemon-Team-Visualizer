@@ -6,6 +6,10 @@
 <title>Pokémon Team Visualizer</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='white'/><path d='M2,16 A14,14 0 0,1 30,16 Z' fill='%23EE1515'/><circle cx='16' cy='16' r='14' fill='none' stroke='%231a1a1a' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%231a1a1a' stroke-width='2'/><circle cx='16' cy='16' r='5' fill='%231a1a1a'/><circle cx='16' cy='16' r='3' fill='white'/></svg>">
 <link rel="stylesheet" href="style.css">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#00CCFF">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Pokémon TV">
 <script src="pokemon-catalog.js"></script>
 </head>
 <body>
@@ -31,6 +35,11 @@
     <!-- Team -->
     <div class="card card--team">
         <div id="team-rows"></div>
+    </div>
+
+    <!-- Presets -->
+    <div class="card card--presets">
+        <div class="presets-bar" id="presets-bar"></div>
     </div>
 
     <!-- Settings -->
@@ -62,6 +71,7 @@
             <p id="obs-hint" class="obs-hint"></p>
             <button class="btn-generate" onclick="generateAndDownload()" data-i18n="generateBtn"></button>
             <button class="btn-live-preview" id="btn-live-preview" onclick="togglePreview()"></button>
+            <button class="btn-share" onclick="shareTeam()" data-i18n="shareBtn"></button>
             <button class="btn-reset" onclick="resetAll()" data-i18n="resetBtn"></button>
             <div id="status"></div>
         </div>

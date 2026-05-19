@@ -123,6 +123,9 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
 .card:nth-child(2) { animation-delay: 0.10s; }
 .card:nth-child(3) { animation-delay: 0.15s; }
 .card:nth-child(4) { animation-delay: 0.20s; }
+.card:nth-child(5) { animation-delay: 0.25s; }
+.card:nth-child(6) { animation-delay: 0.30s; }
+.card:nth-child(7) { animation-delay: 0.35s; }
 .card.card--team    { border-left: 3px solid var(--accent); position: relative; z-index: 1; }
 .card.card--actions { border-left: 3px solid var(--cyan); }
 
@@ -378,6 +381,66 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     color: #fff;
 }
 .modal-apply:hover { background: #e04aa0; }
+
+/* ── Presets ─────────────────────────────────────────────────── */
+.card--presets { padding: 10px 20px; }
+.presets-bar { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+.preset-label { font-size: 12px; color: var(--text-2); font-weight: 600; margin-right: 2px; white-space: nowrap; }
+.preset-slot { display: flex; gap: 2px; flex: 1; min-width: 140px; max-width: 220px; }
+.preset-load {
+    flex: 1;
+    font-size: 12px;
+    padding: 5px 8px;
+    text-align: left;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.preset-load.empty { color: var(--dimmed); font-style: italic; cursor: default; }
+.preset-save {
+    flex: 0 0 26px;
+    width: 26px;
+    padding: 5px 0;
+    font-size: 13px;
+    text-align: center;
+    border-radius: 0;
+    border-left: none;
+}
+.preset-del {
+    flex: 0 0 26px;
+    width: 26px;
+    padding: 5px 0;
+    font-size: 11px;
+    text-align: center;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    border-left: none;
+    background: var(--reset);
+    border-color: transparent;
+    color: #fca5a5;
+    display: none;
+}
+.preset-del.visible { display: block; }
+
+/* ── Share ────────────────────────────────────────────────────── */
+.btn-share { width: 100%; padding: 9px; border-color: var(--accent); color: var(--accent); }
+
+/* ── Tooltip popup ────────────────────────────────────────────── */
+.tooltip-popup {
+    position: fixed;
+    background: var(--surface-2);
+    border: 1px solid var(--border-focus);
+    border-radius: var(--radius-sm);
+    padding: 4px 10px;
+    font-size: 12px;
+    color: var(--text);
+    z-index: 300;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    white-space: nowrap;
+}
+.tooltip-popup.show { opacity: 1; }
 
 /* ── Mobile ──────────────────────────────────────────────────── */
 @media (max-width: 600px) {

@@ -34,6 +34,24 @@ const STRINGS = {
         livePreviewOn:    '👁 Vista previa en vivo',
         livePreviewOff:   '👁 Ocultar vista previa',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
+        shareBtn:         '🔗 Compartir equipo',
+        shareCopied:      '¡Enlace copiado!',
+        sharePromptCopy:  'Copia este enlace:',
+        urlTeamLoaded:    '¡Equipo cargado desde el enlace compartido!',
+        presets:          'Presets',
+        presetSavePrompt: 'Nombre del preset:',
+        presetDefault:    n => `Equipo ${n}`,
+        presetEmpty:      '(vacío)',
+        presetLoaded:     'Preset cargado.',
+        presetSaved:      'Preset guardado.',
+        presetDeleted:    'Preset eliminado.',
+        tooltipGender:    'Género',
+        tooltipMale:      'Macho',
+        tooltipFemale:    'Hembra',
+        tooltipSkin:      'Skin',
+        tooltipShiny:     'Shiny',
+        tooltipYes:       'Sí',
+        tooltipNo:        'No',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -69,6 +87,24 @@ const STRINGS = {
         livePreviewOn:    '👁 Live preview',
         livePreviewOff:   '👁 Hide live preview',
         previewVertical:  'Live preview is only available in horizontal mode.',
+        shareBtn:         '🔗 Share team',
+        shareCopied:      'Link copied!',
+        sharePromptCopy:  'Copy this link:',
+        urlTeamLoaded:    'Team loaded from shared link!',
+        presets:          'Presets',
+        presetSavePrompt: 'Preset name:',
+        presetDefault:    n => `Team ${n}`,
+        presetEmpty:      '(empty)',
+        presetLoaded:     'Preset loaded.',
+        presetSaved:      'Preset saved.',
+        presetDeleted:    'Preset deleted.',
+        tooltipGender:    'Gender',
+        tooltipMale:      'Male',
+        tooltipFemale:    'Female',
+        tooltipSkin:      'Skin',
+        tooltipShiny:     'Shiny',
+        tooltipYes:       'Yes',
+        tooltipNo:        'No',
     }
 };
 
@@ -101,6 +137,8 @@ function applyLang() {
     updateObsHint();
     const btn = document.getElementById('btn-live-preview');
     if (btn) btn.textContent = t(previewVisible ? 'livePreviewOff' : 'livePreviewOn');
+    for (let i = 0; i < 6; i++) refreshIcons(i);
+    renderPresets();
 }
 
 // ── Constants ───────────────────────────────────────────────────
@@ -252,6 +290,13 @@ function buildRows() {
             for (let k = 0; k < 6; k++) refreshRow(k);
             saveState();
         });
+
+        row.querySelectorAll('.icon').forEach(icon => {
+            icon.addEventListener('click', e => {
+                e.stopPropagation();
+                showTooltip(icon);
+            });
+        });
     }
 
     document.addEventListener('click', e => {
@@ -275,14 +320,21 @@ function closeSuggestions(list) { list.innerHTML = ''; list.style.display = 'non
 // ── Icons ───────────────────────────────────────────────────────
 function refreshIcons(i) {
     const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+    if (!row) return;
     const p   = team[i].properties;
 
     const gIcon = row.querySelector('.gender-icon');
     gIcon.textContent = p.gender === 'female' ? '♀' : '♂';
     gIcon.className = 'icon gender-icon' + (p.gender === 'female' ? ' female' : '');
+    gIcon.dataset.tooltip = t('tooltipGender') + ': ' + (p.gender === 'female' ? t('tooltipFemale') : t('tooltipMale'));
 
-    row.querySelector('.skin-icon').className  = 'icon skin-icon'  + (p.skin  !== 'common' ? ' active' : ' dimmed');
-    row.querySelector('.shiny-icon').className = 'icon shiny-icon' + (p.shiny === 'True'   ? ' active' : ' dimmed');
+    const sIcon = row.querySelector('.skin-icon');
+    sIcon.className = 'icon skin-icon' + (p.skin !== 'common' ? ' active' : ' dimmed');
+    sIcon.dataset.tooltip = t('tooltipSkin') + ': ' + (p.skin || 'common');
+
+    const shIcon = row.querySelector('.shiny-icon');
+    shIcon.className = 'icon shiny-icon' + (p.shiny === 'True' ? ' active' : ' dimmed');
+    shIcon.dataset.tooltip = t('tooltipShiny') + ': ' + (p.shiny === 'True' ? t('tooltipYes') : t('tooltipNo'));
 }
 
 // ── Sprite preview ──────────────────────────────────────────────
@@ -699,7 +751,146 @@ document.getElementById('layout-select').addEventListener('change', () => { save
 document.getElementById('shadows-check').addEventListener('change', saveState);
 document.getElementById('bg-check').addEventListener('change', saveState);
 
+// ── Tooltip ──────────────────────────────────────────────────────
+const tooltipEl = document.createElement('div');
+tooltipEl.className = 'tooltip-popup';
+document.body.appendChild(tooltipEl);
+let tooltipTimer = null;
+
+function showTooltip(el) {
+    clearTimeout(tooltipTimer);
+    const text = el.dataset.tooltip || '';
+    if (!text) return;
+    tooltipEl.textContent = text;
+    const rect = el.getBoundingClientRect();
+    tooltipEl.style.left = rect.left + rect.width / 2 + 'px';
+    tooltipEl.style.top  = rect.top + 'px';
+    tooltipEl.style.transform = 'translate(-50%, calc(-100% - 6px))';
+    tooltipEl.classList.add('show');
+    tooltipTimer = setTimeout(() => tooltipEl.classList.remove('show'), 1500);
+}
+
+// ── Presets ───────────────────────────────────────────────────────
+function getPreset(slot) {
+    try { return JSON.parse(localStorage.getItem('ptv_preset_' + slot)); } catch(_) { return null; }
+}
+function setPreset(slot, data) {
+    localStorage.setItem('ptv_preset_' + slot, JSON.stringify(data));
+}
+
+function savePreset(slot) {
+    const existing = getPreset(slot);
+    const defaultName = existing ? existing.name : t('presetDefault', slot + 1);
+    const name = prompt(t('presetSavePrompt'), defaultName);
+    if (name === null) return;
+    setPreset(slot, {
+        name: name.trim() || defaultName,
+        team: JSON.parse(JSON.stringify(team)),
+        layout: document.getElementById('layout-select').value,
+        shadows: document.getElementById('shadows-check').checked,
+        bg: document.getElementById('bg-check').checked
+    });
+    renderPresets();
+    setStatus(t('presetSaved'), 'var(--success)');
+}
+
+function loadPreset(slot) {
+    const preset = getPreset(slot);
+    if (!preset) return;
+    preset.team.forEach((s, i) => {
+        if (i >= 6) return;
+        team[i] = { name: s.name || '', mote: s.mote || '', properties: { ...DEFAULT_PROPS, ...(s.properties || {}) } };
+        const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+        if (!row) return;
+        row.querySelector('.name-input').value = team[i].name;
+        row.querySelector('.mote-input').value = team[i].mote;
+        refreshIcons(i);
+        refreshSprite(i);
+    });
+    if (preset.layout) document.getElementById('layout-select').value = preset.layout;
+    if (preset.shadows !== undefined) document.getElementById('shadows-check').checked = preset.shadows;
+    if (preset.bg !== undefined) document.getElementById('bg-check').checked = preset.bg;
+    updateObsHint();
+    saveState();
+    setStatus(t('presetLoaded'), 'var(--success)');
+}
+
+function deletePreset(slot) {
+    localStorage.removeItem('ptv_preset_' + slot);
+    renderPresets();
+    setStatus(t('presetDeleted'), 'var(--success)');
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function renderPresets() {
+    const bar = document.getElementById('presets-bar');
+    if (!bar) return;
+    bar.innerHTML = `<span class="preset-label">${t('presets')}:</span>`;
+    for (let s = 0; s < 3; s++) {
+        const preset = getPreset(s);
+        const name = preset ? preset.name : t('presetEmpty');
+        const slot = document.createElement('div');
+        slot.className = 'preset-slot';
+        slot.innerHTML = `
+            <button class="preset-load${preset ? '' : ' empty'}" onclick="loadPreset(${s})">${escapeHtml(name)}</button>
+            <button class="preset-save" onclick="savePreset(${s})" title="💾">💾</button>
+            <button class="preset-del${preset ? ' visible' : ''}" onclick="deletePreset(${s})">✕</button>`;
+        bar.appendChild(slot);
+    }
+}
+
+// ── URL sharing ───────────────────────────────────────────────────
+function encodeTeam() {
+    const data = team.map(s => [s.name, s.mote, s.properties.gender, s.properties.skin, s.properties.shiny]);
+    const bytes = new TextEncoder().encode(JSON.stringify(data));
+    return btoa(String.fromCharCode(...bytes));
+}
+
+function decodeTeam(str) {
+    const binary = atob(str);
+    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
+    return JSON.parse(new TextDecoder().decode(bytes));
+}
+
+function shareTeam() {
+    const hasAny = team.some(s => s.name.trim());
+    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
+    const url = location.href.split('#')[0] + '#team=' + encodeTeam();
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => {
+            setStatus(t('shareCopied'), 'var(--success)');
+        }).catch(() => prompt(t('sharePromptCopy'), url));
+    } else {
+        prompt(t('sharePromptCopy'), url);
+    }
+}
+
+function loadFromUrl() {
+    const hash = location.hash;
+    if (!hash.startsWith('#team=')) return;
+    try {
+        const data = decodeTeam(hash.slice(6));
+        if (!Array.isArray(data) || data.length !== 6) return;
+        data.forEach(([name, mote, gender, skin, shiny], i) => {
+            if (i >= 6) return;
+            team[i] = { name: name || '', mote: mote || '', properties: { gender: gender || 'male', skin: skin || 'common', shiny: shiny || 'False' } };
+            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+            if (!row) return;
+            row.querySelector('.name-input').value = team[i].name;
+            row.querySelector('.mote-input').value = team[i].mote;
+            refreshIcons(i);
+            refreshSprite(i);
+        });
+        saveState();
+        setStatus(t('urlTeamLoaded'), 'var(--success)');
+    } catch(_) {}
+}
+
 // ── Init ─────────────────────────────────────────────────────────
 buildRows();
 loadState();
+loadFromUrl();
 setLang(currentLang);
