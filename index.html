@@ -96,7 +96,7 @@ h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 9px 0;
+    padding: 13px 0;
     border-bottom: 1px solid var(--border);
     transition: outline 0.1s;
 }
@@ -120,8 +120,8 @@ h1 { font-size: 26px; font-weight: 600; letter-spacing: -0.5px; margin-bottom: 6
 
 /* Sprite preview */
 .sprite-preview {
-    flex: 0 0 40px;
-    height: 40px;
+    flex: 0 0 48px;
+    height: 48px;
     object-fit: contain;
     opacity: 0;
     transition: opacity 0.2s;
@@ -836,7 +836,7 @@ function buildOverlayHTML(layout, showShadows, showBg) {
 .pkDiv{width:225px;height:150px;float:left;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
-img{width:100%;max-width:100%;max-height:100%;object-fit:contain;}
+img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 p{height:25px;color:white;text-align:center;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:35px;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
 .container{clear:both;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
@@ -871,7 +871,7 @@ ${entries.map((_, i) => `<div class="shadowDiv">${shadowContent[i]}</div>`).join
 .pkDiv{width:225px;}
 .shadowDiv{width:150px;margin-top:-15px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
-img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;}
+img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;pointer-events:none;user-select:none;}
 p{margin:0;padding:0;height:25px;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:25px;text-align:center;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
