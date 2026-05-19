@@ -11,7 +11,6 @@ const STRINGS = {
         showShadows:   'Mostrar sombras',
         showBg:        'Mostrar fondo de pokéball',
         generateBtn:   '⬇ Generar y descargar',
-        previewBtn:    'Vista previa en el navegador',
         resetBtn:      'Resetear datos',
         madeBy:        'Hecho por @MrKlypp',
         modalSet:      'Aplicar',
@@ -45,7 +44,6 @@ const STRINGS = {
         showShadows:   'Show shadows',
         showBg:        'Show pokéball background',
         generateBtn:   '⬇ Generate & Download',
-        previewBtn:    'Preview in browser',
         resetBtn:      'Reset all data',
         madeBy:        'Made by @MrKlypp',
         modalSet:      'Set',
@@ -461,6 +459,7 @@ function buildOverlayHTML(layout, showShadows, showBg) {
 <script type="application/json" id="ptv-data">${dataBlock}<${'/script>'}
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <style>
+body,html{margin:0;padding:0;}
 .pkDiv{width:225px;height:150px;float:left;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
@@ -493,6 +492,7 @@ ${entries.map((_, i) => `<div class="shadowDiv">${shadowContent[i]}</div>`).join
 <script type="application/json" id="ptv-data">${dataBlock}<${'/script>'}
 <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <style>
+body,html{margin:0;padding:0;}
 .wrapper{display:flex;flex-direction:column;}
 .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
 .pkDiv,.shadowDiv{margin:0;padding:0;}
@@ -548,21 +548,6 @@ function generateAndDownload() {
     );
     triggerDownload(html, 'TeamVisualizer.html');
     setStatus(t('successDl'), 'var(--success)');
-}
-
-function previewOverlay() {
-    const hasAny = team.some(s => s.name.trim());
-    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
-    if (!validateTeam()) return;
-
-    const html = buildOverlayHTML(
-        document.getElementById('layout-select').value,
-        document.getElementById('shadows-check').checked,
-        document.getElementById('bg-check').checked
-    );
-    const blob = new Blob([html], { type: 'text/html' });
-    const url  = URL.createObjectURL(blob);
-    window.open(url, '_blank');
 }
 
 function triggerDownload(content, filename) {
@@ -629,17 +614,20 @@ function updatePreview() {
     const shadows = document.getElementById('shadows-check').checked;
     const bg      = document.getElementById('bg-check').checked;
 
-    const wrapper     = document.getElementById('preview-wrapper');
-    const iframe      = document.getElementById('preview-iframe');
-    const containerW  = wrapper.parentElement.clientWidth;
+    const wrapper    = document.getElementById('preview-wrapper');
+    const iframe     = document.getElementById('preview-iframe');
+    // subtract card's horizontal padding (16px each side)
+    const containerW = wrapper.parentElement.clientWidth - 32;
 
     let nativeW, nativeH, scale;
     if (layout === 'horizontal') {
         nativeW = 1350; nativeH = 265;
         scale   = containerW / nativeW;
+        wrapper.style.margin = '0';
     } else {
         nativeW = 265; nativeH = 1350;
-        scale   = 480 / nativeH;
+        scale   = 400 / nativeH;  // exactly fits 6 slots in 400px
+        wrapper.style.margin = '0 auto';
     }
 
     iframe.style.width     = nativeW + 'px';
