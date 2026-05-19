@@ -657,7 +657,7 @@ function importTeam(input) {
 }
 
 // ── Live preview ─────────────────────────────────────────────────
-let previewVisible = false;
+let previewVisible = true;
 let previewTimeout = null;
 
 function togglePreview() {
@@ -901,4 +901,5 @@ buildRows();
 loadState();
 loadFromUrl();
 setLang(currentLang);
+updatePreview();
 window.addEventListener('hashchange', loadFromUrl);
