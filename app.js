@@ -894,3 +894,4 @@ buildRows();
 loadState();
 loadFromUrl();
 setLang(currentLang);
+window.addEventListener('hashchange', loadFromUrl);
