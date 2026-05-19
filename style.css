@@ -27,8 +27,8 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 @keyframes fade-up {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: none; }
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 body {
@@ -369,7 +369,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 @media (max-width: 600px) {
     body { padding: 16px 8px 32px; overflow-x: hidden; }
     .card { padding: 14px; }
-    .header-title-row { flex-direction: column; gap: 8px; }
     h1 { font-size: 22px; }
     .pokemon-row { gap: 5px; }
     .row-label { display: none; }
