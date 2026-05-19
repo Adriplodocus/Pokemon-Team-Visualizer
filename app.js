@@ -165,7 +165,7 @@ function buildRows() {
         nameInput.addEventListener('keydown', e => {
             if (e.key === 'Tab' && suggestions.style.display === 'block') {
                 e.preventDefault();
-                const first = suggestions.querySelector('li');
+                const first = suggestions.querySelector('li.active') || suggestions.querySelector('li');
                 if (first) {
                     nameInput.value = first.dataset.value;
                     team[i].name = first.dataset.value;
