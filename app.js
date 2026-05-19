@@ -146,6 +146,26 @@ const BASE_URL     = 'https://pokemonteamvisualizer.pages.dev/sprites/';
 const SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
 const POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
 
+const FEMALE_VARIANTS = new Set([
+    'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
+    'bibarel','bidoof','blaziken','buizel','butterfree','cacturne',
+    'camerupt','combee','combusken','croagunk','dodrio','doduo',
+    'donphan','dustox','finneon','floatzel','frillish','gabite',
+    'garchomp','gible','girafarig','gligar','gloom','golbat','goldeen',
+    'gulpin','gyarados','heracross','hippopotas','hippowdon','houndoom',
+    'hypno','indeedee','jellicent','kadabra','kricketot','kricketune',
+    'ledian','ledyba','ludicolo','lumineon','luxio','luxray','magikarp',
+    'mamoswine','medicham','meditite','meganium','meowstic','milotic',
+    'murkrow','nidoran','numel','nuzleaf','octillery','oinkologne',
+    'pachirisu','pikachu','piloswine','politoed','pyroar','quagsire',
+    'raichu','raticate','rattata','relicanth','rhydon','rhyhorn',
+    'rhyperior','roselia','roserade','scizor','scyther','seaking',
+    'shiftry','shinx','sneasel','snover','staraptor','staravia','starly',
+    'steelix','sudowoodo','swalot','tangrowth','torchic','toxicroak',
+    'unfezant','ursaring','venusaur','vileplume','weavile','wobbuffet',
+    'wooper','xatu','zubat',
+]);
+
 // ── State ───────────────────────────────────────────────────────
 const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
 
@@ -478,14 +498,15 @@ function buildSpriteUrl(name, props) {
     let fileName = lower;
     let folder   = BASE_URL;
 
+    const hasFemale = FEMALE_VARIANTS.has(lower);
     if (shiny) {
         if (skin !== 'common' && skins.includes(skin)) fileName += '-' + skin;
-        if (gender === 'female') fileName += '-f';
+        if (gender === 'female' && hasFemale) fileName += '-f';
         fileName += ' (1)';
         folder += 'Shiny/';
     } else if (skin !== 'common' && skins.includes(skin)) {
         fileName += '-' + skin;
-    } else if (gender === 'female') {
+    } else if (gender === 'female' && hasFemale) {
         fileName += '-f';
     }
 
