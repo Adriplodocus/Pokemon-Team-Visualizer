@@ -624,7 +624,10 @@ function updatePreview() {
     const shadows    = document.getElementById('shadows-check').checked;
     const bg         = document.getElementById('bg-check').checked;
     const iframe     = document.getElementById('preview-iframe');
-    const containerW = wrapper.parentElement.clientWidth - 32;
+    const cardStyle  = getComputedStyle(wrapper.parentElement);
+    const containerW = wrapper.parentElement.clientWidth
+        - parseFloat(cardStyle.paddingLeft)
+        - parseFloat(cardStyle.paddingRight);
 
     const scale = containerW / 1350;
     iframe.style.width     = '1350px';
