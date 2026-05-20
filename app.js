@@ -196,6 +196,7 @@ Promise.all([
     const allAliases = Object.values(aliases).flat();
     pokemonNames = [...names, ...allAliases].sort();
     for (let i = 0; i < 6; i++) refreshSprite(i);
+    updatePreview();
 })
 .catch(() => {});
 
