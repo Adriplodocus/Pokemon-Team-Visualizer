@@ -395,7 +395,10 @@ function refreshSprite(i) {
     const name = team[i].name.trim().toLowerCase();
     if (name && pokemonNames.includes(name)) {
         const url         = buildSpriteUrl(name, team[i].properties);
-        const fallbackUrl = BASE_URL + encodeURIComponent(name) + '.gif';
+        const canonical   = ALIAS_TO_CANONICAL[name];
+        const fallbackUrl = canonical
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
+            : BASE_URL + encodeURIComponent(name) + '.gif';
         img.onerror = () => {
             if (img.src !== fallbackUrl) {
                 img.src = fallbackUrl;
