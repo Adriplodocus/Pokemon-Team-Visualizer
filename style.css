@@ -137,11 +137,29 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
     gap: 8px;
     padding: 13px 0;
     border-bottom: 1px solid var(--border);
-    transition: outline 0.1s;
+    position: relative;
 }
 .pokemon-row:last-child { border-bottom: none; }
-.pokemon-row.dragging  { opacity: 0.35; }
-.pokemon-row.drag-over { outline: 1px solid rgba(0,204,255,0.45); border-radius: 6px; }
+.pokemon-row.dragging {
+    opacity: 0.4;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    transform: scale(1.01);
+    z-index: 10;
+    border-radius: var(--radius-sm);
+}
+.pokemon-row.drag-over-top::before,
+.pokemon-row.drag-over-bottom::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--cyan);
+    border-radius: 2px;
+    pointer-events: none;
+}
+.pokemon-row.drag-over-top::before    { top: -2px; }
+.pokemon-row.drag-over-bottom::after  { bottom: -2px; }
 
 /* Drag handle */
 .drag-handle {

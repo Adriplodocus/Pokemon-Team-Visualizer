@@ -178,7 +178,8 @@ const team = Array.from({ length: 6 }, () => ({
 let pokemonNames = [];
 let modalIndex   = -1;
 let modalVars    = {};
-let dragSrcIndex = -1;
+let dragSrcIndex    = -1;
+let dragInsertBefore = true;
 
 // ── Load autocomplete list ──────────────────────────────────────
 fetch('pokemon-list.json')
@@ -296,22 +297,36 @@ function buildRows() {
         handle.addEventListener('dragend', () => {
             dragSrcIndex = -1;
             row.classList.remove('dragging');
-            document.querySelectorAll('.pokemon-row').forEach(r => r.classList.remove('drag-over'));
+            document.querySelectorAll('.pokemon-row').forEach(r => {
+                r.classList.remove('drag-over-top', 'drag-over-bottom');
+            });
         });
         row.addEventListener('dragover', e => {
             e.preventDefault();
-            if (dragSrcIndex !== i) row.classList.add('drag-over');
+            if (dragSrcIndex === i) return;
+            const rect = row.getBoundingClientRect();
+            const insertBefore = e.clientY < rect.top + rect.height / 2;
+            dragInsertBefore = insertBefore;
+            document.querySelectorAll('.pokemon-row').forEach(r => {
+                r.classList.remove('drag-over-top', 'drag-over-bottom');
+            });
+            row.classList.add(insertBefore ? 'drag-over-top' : 'drag-over-bottom');
         });
         row.addEventListener('dragleave', e => {
-            if (!row.contains(e.relatedTarget)) row.classList.remove('drag-over');
+            if (!row.contains(e.relatedTarget)) {
+                row.classList.remove('drag-over-top', 'drag-over-bottom');
+            }
         });
         row.addEventListener('drop', e => {
             e.preventDefault();
-            row.classList.remove('drag-over');
+            row.classList.remove('drag-over-top', 'drag-over-bottom');
             const src = dragSrcIndex;
             if (src < 0 || src === i) return;
             const [item] = team.splice(src, 1);
-            team.splice(i, 0, item);
+            let dest = i;
+            if (!dragInsertBefore) dest = i + 1;
+            if (src < i) dest -= 1;
+            team.splice(dest, 0, item);
             for (let k = 0; k < 6; k++) refreshRow(k);
             saveState();
         });
