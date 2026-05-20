@@ -533,7 +533,7 @@ function buildSpriteUrl(name, props) {
     if (shiny) {
         folder += 'shiny/';
     }
-    if (gender === 'female' && hasFemale) {
+    if (gender === 'female' && hasFemale && skin === 'common') {
         folder += 'female/';
     }
 
