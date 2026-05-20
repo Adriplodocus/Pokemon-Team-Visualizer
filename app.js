@@ -176,19 +176,28 @@ const team = Array.from({ length: 6 }, () => ({
 }));
 
 let pokemonNames = [];
+const ALIAS_TO_CANONICAL = {};
 let modalIndex   = -1;
 let modalVars    = {};
 let dragSrcIndex    = -1;
 let dragInsertBefore = true;
 
 // ── Load autocomplete list ──────────────────────────────────────
-fetch('pokemon-list.json')
-    .then(r => r.json())
-    .then(names => {
-        pokemonNames = names;
-        for (let i = 0; i < 6; i++) refreshSprite(i);
-    })
-    .catch(() => {});
+Promise.all([
+    fetch('pokemon-list.json').then(r => r.json()),
+    fetch('pokemon-aliases.json').then(r => r.json()),
+])
+.then(([names, aliases]) => {
+    for (const [canonical, aliasList] of Object.entries(aliases)) {
+        for (const alias of aliasList) {
+            ALIAS_TO_CANONICAL[alias] = canonical;
+        }
+    }
+    const allAliases = Object.values(aliases).flat();
+    pokemonNames = [...names, ...allAliases];
+    for (let i = 0; i < 6; i++) refreshSprite(i);
+})
+.catch(() => {});
 
 // ── Build UI rows ───────────────────────────────────────────────
 function buildRows() {
