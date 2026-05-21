@@ -10,7 +10,6 @@ const STRINGS = {
         vertical:      'Vertical',
         showShadows:   'Mostrar sombras',
         showBg:        'Mostrar fondo de pokéball',
-        generateBtn:   '⬇ Generar y descargar',
         resetBtn:      'Resetear datos',
         madeBy:        'Hecho por @MrKlypp',
         modalSet:      'Aplicar',
@@ -28,7 +27,6 @@ const STRINGS = {
         errRead:       'Error al leer el archivo.',
         confirmReset:  '¿Seguro que quieres resetear todos los datos?',
         successReset:  'Datos reseteados correctamente.',
-        successDl:     '¡TeamVisualizer.html descargado!',
         successImport:    '¡Equipo importado correctamente!',
         obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
         obsUrlLabel:      'URL fija para OBS (cópiala una vez):',
@@ -37,8 +35,6 @@ const STRINGS = {
         publishBtn:       '📡 Publicar en OBS',
         publishOk:        '¡Overlay actualizado en OBS!',
         publishErr:       'Error al publicar. ¿Está configurado Ably?',
-        autoReload:       'Auto-reload OBS',
-        autoReloadSec:    's',
         livePreviewOn:    '👁 Vista previa en vivo',
         livePreviewOff:   '👁 Ocultar vista previa',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
@@ -71,7 +67,6 @@ const STRINGS = {
         vertical:      'Vertical',
         showShadows:   'Show shadows',
         showBg:        'Show pokéball background',
-        generateBtn:   '⬇ Generate & Download',
         resetBtn:      'Reset all data',
         madeBy:        'Made by @MrKlypp',
         modalSet:      'Set',
@@ -89,7 +84,6 @@ const STRINGS = {
         errRead:       'Error reading file.',
         confirmReset:  'Are you sure you want to reset all data?',
         successReset:  'Team data was reset successfully.',
-        successDl:     'TeamVisualizer.html downloaded!',
         successImport:    'Team imported successfully!',
         obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
         obsUrlLabel:      'Fixed OBS URL (copy it once):',
@@ -98,8 +92,6 @@ const STRINGS = {
         publishBtn:       '📡 Publish to OBS',
         publishOk:        'Overlay updated in OBS!',
         publishErr:       'Publish error. Is Ably configured?',
-        autoReload:       'Auto-reload OBS',
-        autoReloadSec:    's',
         livePreviewOn:    '👁 Live preview',
         livePreviewOff:   '👁 Hide live preview',
         previewVertical:  'Live preview is only available in horizontal mode.',
@@ -557,8 +549,8 @@ function buildSpriteUrl(name, props) {
     return folder + encodeURIComponent(fileName) + '.gif';
 }
 
-// ── Generate HTML ───────────────────────────────────────────────
-function buildOverlayHTML(layout, showShadows, showBg, autoReloadMs = 0) {
+// ── Generate HTML (used by live preview) ────────────────────────
+function buildOverlayHTML(layout, showShadows, showBg) {
     const dataBlock = JSON.stringify({ team, layout, shadows: showShadows, bg: showBg });
     const entries = team.map(slot => {
         const name = slot.name.trim().toLowerCase();
@@ -582,9 +574,6 @@ function buildOverlayHTML(layout, showShadows, showBg, autoReloadMs = 0) {
     const shadowContent = entries.map((e, i) =>
         e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}">` : `<img id="shadow${i+1}">`
     );
-
-    const reloadScript = autoReloadMs > 0
-        ? `<script>setTimeout(function(){location.reload();},${autoReloadMs});<${'/script>'}` : '';
 
     if (isHorizontal) {
         return `<html>
@@ -617,7 +606,6 @@ ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').
 <div class="container">
 ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
 </div>
-${reloadScript}
 </body>
 </html>`;
     } else {
@@ -653,7 +641,6 @@ ${entries.map((e, i) => e ? `<div class="pair">
   <div class="shadowDiv">${shadowContent[i]}</div>
 </div>` : '').join('\n')}
 </div>
-${reloadScript}
 </body>
 </html>`;
     }
@@ -669,34 +656,6 @@ function validateTeam() {
         return false;
     }
     return true;
-}
-
-// ── Download ────────────────────────────────────────────────────
-function generateAndDownload() {
-    const hasAny = team.some(s => s.name.trim());
-    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
-    if (!validateTeam()) return;
-
-    const autoReloadEnabled = document.getElementById('autoreload-check').checked;
-    const autoReloadSecs    = parseInt(document.getElementById('autoreload-secs').value, 10) || 5;
-    const html = buildOverlayHTML(
-        document.getElementById('layout-select').value,
-        document.getElementById('shadows-check').checked,
-        document.getElementById('bg-check').checked,
-        autoReloadEnabled ? autoReloadSecs * 1000 : 0
-    );
-    triggerDownload(html, 'TeamVisualizer.html');
-    setStatus(t('successDl'), 'var(--success)');
-}
-
-function triggerDownload(content, filename) {
-    const blob = new Blob([content], { type: 'text/html' });
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href     = url;
-    a.download = filename;
-    a.click();
-    URL.revokeObjectURL(url);
 }
 
 // ── Import ───────────────────────────────────────────────────────
@@ -778,12 +737,10 @@ function updatePreview() {
 
 // ── Persistence ─────────────────────────────────────────────────
 function saveState(updatePreview = true) {
-    localStorage.setItem('ptv_team',              JSON.stringify(team));
-    localStorage.setItem('ptv_layout',            document.getElementById('layout-select').value);
-    localStorage.setItem('ptv_shadows',           document.getElementById('shadows-check').checked);
-    localStorage.setItem('ptv_bg',                document.getElementById('bg-check').checked);
-    localStorage.setItem('ptv_autoreload',        document.getElementById('autoreload-check').checked);
-    localStorage.setItem('ptv_autoreload_secs',   document.getElementById('autoreload-secs').value);
+    localStorage.setItem('ptv_team',    JSON.stringify(team));
+    localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
+    localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
+    localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
     if (updatePreview) schedulePreviewUpdate();
 }
 
@@ -811,20 +768,6 @@ function loadState() {
 
     const bg = localStorage.getItem('ptv_bg');
     if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
-
-    const autoReload = localStorage.getItem('ptv_autoreload');
-    if (autoReload !== null) document.getElementById('autoreload-check').checked = autoReload === 'true';
-
-    const autoReloadSecs = localStorage.getItem('ptv_autoreload_secs');
-    if (autoReloadSecs !== null) document.getElementById('autoreload-secs').value = autoReloadSecs;
-
-    syncAutoReloadInput();
-}
-
-function syncAutoReloadInput() {
-    const enabled = document.getElementById('autoreload-check').checked;
-    document.getElementById('autoreload-secs').style.display = enabled ? '' : 'none';
-    document.getElementById('autoreload-sec-label').style.display = enabled ? '' : 'none';
 }
 
 // ── Helpers ─────────────────────────────────────────────────────
@@ -902,8 +845,6 @@ async function publishToObs() {
 document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
 document.getElementById('shadows-check').addEventListener('change', saveState);
 document.getElementById('bg-check').addEventListener('change', saveState);
-document.getElementById('autoreload-check').addEventListener('change', () => { syncAutoReloadInput(); saveState(); });
-document.getElementById('autoreload-secs').addEventListener('change', saveState);
 
 // ── Tooltip ──────────────────────────────────────────────────────
 const tooltipEl = document.createElement('div');

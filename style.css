@@ -271,18 +271,6 @@ button:hover { background: var(--btn-hover); }
     color: var(--text-2);
     font-weight: 500;
 }
-#autoreload-secs {
-    background: var(--input-bg);
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--text);
-    font-family: inherit;
-    font-size: 13px;
-    padding: 4px 6px;
-    text-align: center;
-    outline: none;
-}
-#autoreload-secs:focus { border-color: var(--border-focus); }
 select {
     background: var(--input-bg);
     border: 1px solid var(--border);
@@ -353,20 +341,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .btn-publish:hover { background: #e0409e; }
 
-.btn-generate {
-    width: 100%;
-    padding: 11px;
-    font-size: 14px;
-    font-weight: 700;
-    background: var(--cyan);
-    border-color: transparent;
-    border-radius: 50px;
-    color: #000;
-    letter-spacing: 0.5px;
-    text-transform: uppercase;
-    font-family: 'Russo One', sans-serif;
-}
-.btn-generate:hover { background: #00b8e6; }
 
 .btn-preview { width: 100%; padding: 9px; }
 .btn-import-header {
