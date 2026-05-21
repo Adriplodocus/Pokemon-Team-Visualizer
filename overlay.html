@@ -128,9 +128,16 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
     }
 
     var ably = new Ably.Realtime({ authUrl: '/api/token' });
-    var channel = ably.channels.get('[?rewind=1]ptv-' + id);
+    var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('update', function (msg) {
         try { renderTeam(JSON.parse(msg.data)); } catch (e) {}
+    });
+
+    ably.connection.on('failed', function (stateChange) {
+        console.error('[PTV] Ably connection failed:', stateChange.reason);
+    });
+    channel.on('failed', function (stateChange) {
+        console.error('[PTV] Channel failed:', stateChange.reason);
     });
 })();
 </script>
