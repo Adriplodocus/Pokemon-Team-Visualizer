@@ -51,6 +51,8 @@ const STRINGS = {
         tooltipShiny:     'Shiny',
         tooltipYes:       'Sí',
         tooltipNo:        'No',
+        cookieMsg:        'Esta app usa <strong>localStorage</strong> para guardar tu equipo y ajustes en tu navegador. No hay cookies de seguimiento ni publicidad.',
+        cookieOk:         'Entendido',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -103,6 +105,8 @@ const STRINGS = {
         tooltipShiny:     'Shiny',
         tooltipYes:       'Yes',
         tooltipNo:        'No',
+        cookieMsg:        'This app uses <strong>localStorage</strong> to save your team and settings in your browser. No tracking cookies or ads.',
+        cookieOk:         'Got it',
     }
 };
 
@@ -916,6 +920,21 @@ function renderPresets() {
     }
 }
 
+// ── Cookie notice ────────────────────────────────────────────────
+function initCookieNotice() {
+    if (localStorage.getItem('ptv_cookie_ok')) return;
+    const bar = document.createElement('div');
+    bar.id = 'cookie-bar';
+    bar.innerHTML = `<span>${t('cookieMsg')}</span><button onclick="dismissCookie()">${t('cookieOk')}</button>`;
+    document.body.appendChild(bar);
+}
+
+function dismissCookie() {
+    localStorage.setItem('ptv_cookie_ok', '1');
+    const bar = document.getElementById('cookie-bar');
+    if (bar) bar.remove();
+}
+
 // ── Init ─────────────────────────────────────────────────────────
 function initChannelId() {
     channelId = localStorage.getItem('ptv_channel_id');
@@ -930,3 +949,4 @@ buildRows();
 loadState();
 setLang(currentLang);
 updatePreview();
+initCookieNotice();

@@ -522,6 +522,34 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     .mote-input { display: none; }
 }
 
+/* ── Cookie notice ───────────────────────────────────────────── */
+#cookie-bar {
+    position: fixed;
+    bottom: 0; left: 0; right: 0;
+    background: var(--surface-2);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    font-size: 12px;
+    color: var(--text-2);
+    z-index: 999;
+}
+#cookie-bar button {
+    flex-shrink: 0;
+    padding: 5px 14px;
+    font-size: 12px;
+    background: var(--btn);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text);
+    cursor: pointer;
+    white-space: nowrap;
+}
+#cookie-bar button:hover { background: var(--btn-hover); }
+
 /* ── Live preview ────────────────────────────────────────────── */
 .card--preview { padding: 12px 16px; overflow: hidden; }
 #preview-msg { text-align: center; color: var(--text-2); font-size: 13px; padding: 16px 0; margin: 0; }
