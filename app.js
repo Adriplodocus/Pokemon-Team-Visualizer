@@ -4,7 +4,6 @@ const STRINGS = {
         subtitle1:     'Genera tu overlay de equipo Pokémon para OBS en segundos.',
         subtitle2:     'Escribe los nombres exactamente como aparecen en el juego.',
         warn:          'Si encuentras algún error, por favor házmelo saber.',
-        importBtn:     '⬆ Importar equipo',
         layout:        'Diseño',
         horizontal:    'Horizontal',
         vertical:      'Vertical',
@@ -23,11 +22,8 @@ const STRINGS = {
         errNoName:     'Escribe al menos un nombre de Pokémon.',
         errUnknown:    n => `Pokémon desconocido: ${n}`,
         errWriteFirst: 'Escribe primero un nombre de Pokémon.',
-        errNoData:     'No se encontraron datos en este archivo.',
-        errRead:       'Error al leer el archivo.',
         confirmReset:  '¿Seguro que quieres resetear todos los datos?',
         successReset:  'Datos reseteados correctamente.',
-        successImport:    '¡Equipo importado correctamente!',
         obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
         obsUrlLabel:      'URL fija para OBS (cópiala una vez):',
         obsUrlCopy:       'Copiar',
@@ -35,20 +31,12 @@ const STRINGS = {
         publishBtn:       '📡 Publicar en OBS',
         publishOk:        '¡Overlay actualizado en OBS!',
         publishErr:          'Error al publicar. ¿Está configurado Ably?',
-        importChannel:       '📥 Usar canal existente',
-        importChannelPrompt: 'Pega tu URL de overlay o el ID del canal:',
-        importChannelOk:     '¡Canal importado correctamente!',
-        importChannelErr:    'No se encontró equipo en ese canal. ¿Has publicado al menos una vez?',
-        importChannelErrUrl: 'URL o ID no válido.',
         newChannel:          '🔄 Nuevo canal',
         newChannelConfirm:   '¿Generar un nuevo canal? Tendrás que actualizar la URL en OBS.',
         livePreviewOn:    '👁 Vista previa en vivo',
         livePreviewOff:   '👁 Ocultar vista previa',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
-        shareBtn:         '🔗 Compartir equipo',
-        shareCopied:      '¡Enlace copiado!',
         sharePromptCopy:  'Copia este enlace:',
-        urlTeamLoaded:    '¡Equipo cargado desde el enlace compartido!',
         presets:          'Presets',
         presetSavePrompt: 'Nombre del preset:',
         presetDefault:    n => `Equipo ${n}`,
@@ -68,7 +56,6 @@ const STRINGS = {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
         subtitle2:     'Write Pokémon names exactly as they appear in-game.',
         warn:          'If you encounter any error, please let me know.',
-        importBtn:     '⬆ Import team',
         layout:        'Layout',
         horizontal:    'Horizontal',
         vertical:      'Vertical',
@@ -87,11 +74,8 @@ const STRINGS = {
         errNoName:     'Write at least one Pokémon name.',
         errUnknown:    n => `Unknown Pokémon: ${n}`,
         errWriteFirst: 'Write a Pokémon name first.',
-        errNoData:     'No team data found in this file.',
-        errRead:       'Error reading file.',
         confirmReset:  'Are you sure you want to reset all data?',
         successReset:  'Team data was reset successfully.',
-        successImport:    'Team imported successfully!',
         obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
         obsUrlLabel:      'Fixed OBS URL (copy it once):',
         obsUrlCopy:       'Copy',
@@ -99,20 +83,12 @@ const STRINGS = {
         publishBtn:       '📡 Publish to OBS',
         publishOk:        'Overlay updated in OBS!',
         publishErr:          'Publish error. Is Ably configured?',
-        importChannel:       '📥 Use existing channel',
-        importChannelPrompt: 'Paste your overlay URL or channel ID:',
-        importChannelOk:     'Channel imported successfully!',
-        importChannelErr:    'No team found in that channel. Have you published at least once?',
-        importChannelErrUrl: 'Invalid URL or ID.',
         newChannel:          '🔄 New channel',
         newChannelConfirm:   'Generate a new channel? You will need to update the URL in OBS.',
         livePreviewOn:    '👁 Live preview',
         livePreviewOff:   '👁 Hide live preview',
         previewVertical:  'Live preview is only available in horizontal mode.',
-        shareBtn:         '🔗 Share team',
-        shareCopied:      'Link copied!',
         sharePromptCopy:  'Copy this link:',
-        urlTeamLoaded:    'Team loaded from shared link!',
         presets:          'Presets',
         presetSavePrompt: 'Preset name:',
         presetDefault:    n => `Team ${n}`,
@@ -672,37 +648,6 @@ function validateTeam() {
     return true;
 }
 
-// ── Import ───────────────────────────────────────────────────────
-function importTeam(input) {
-    const file = input.files[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = e => {
-        const match = e.target.result.match(/<script type="application\/json" id="ptv-data">([\s\S]*?)<\/script>/);
-        if (!match) { setStatus(t('errNoData'), 'var(--error)'); return; }
-        try {
-            const data = JSON.parse(match[1]);
-            data.team.forEach((slot, i) => {
-                if (i >= 6) return;
-                team[i] = { name: slot.name || '', mote: slot.mote || '', properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) } };
-                const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-                row.querySelector('.name-input').value = team[i].name;
-                row.querySelector('.mote-input').value = team[i].mote;
-                refreshIcons(i);
-                refreshSprite(i);
-            });
-            if (data.layout)               document.getElementById('layout-select').value   = data.layout;
-            if (data.shadows !== undefined) document.getElementById('shadows-check').checked = data.shadows;
-            if (data.bg      !== undefined) document.getElementById('bg-check').checked      = data.bg;
-            updateObsHint();
-            saveState();
-            setStatus(t('successImport'), 'var(--success)');
-        } catch(_) { setStatus(t('errRead'), 'var(--error)'); }
-        input.value = '';
-    };
-    reader.readAsText(file);
-}
-
 // ── Live preview ─────────────────────────────────────────────────
 let previewVisible = true;
 let previewTimeout = null;
@@ -807,7 +752,6 @@ function updateObsHint() {
         `<button class="btn-copy-url" onclick="copyOverlayUrl()">${t('obsUrlCopy')}</button>` +
         `</div>` +
         `<div class="obs-channel-actions">` +
-        `<button class="btn-channel-action" onclick="importChannel()">${t('importChannel')}</button>` +
         `<button class="btn-channel-action" onclick="newChannel()">${t('newChannel')}</button>` +
         `</div>`;
 }
@@ -868,40 +812,6 @@ async function publishToObs() {
     } catch {
         setStatus(t('publishErr'), 'var(--error)');
     }
-}
-
-async function importChannel() {
-    const input = prompt(t('importChannelPrompt'));
-    if (input === null) return;
-    const match = input.trim().match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
-    if (!match) { setStatus(t('importChannelErrUrl'), 'var(--error)'); return; }
-    const id = match[0].toLowerCase();
-    try {
-        const resp = await fetch(`/api/load?id=${id}`);
-        if (resp.status === 404) { setStatus(t('importChannelErr'), 'var(--error)'); return; }
-        if (!resp.ok)            { setStatus(t('publishErr'),       'var(--error)'); return; }
-        const data = await resp.json();
-        const raw  = data.raw;
-        if (!raw?.team) { setStatus(t('importChannelErr'), 'var(--error)'); return; }
-        raw.team.forEach((slot, i) => {
-            if (i >= 6) return;
-            team[i] = { name: slot.name || '', mote: slot.mote || '', properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) } };
-            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-            if (!row) return;
-            row.querySelector('.name-input').value = team[i].name;
-            row.querySelector('.mote-input').value = team[i].mote;
-            refreshIcons(i);
-            refreshSprite(i);
-        });
-        if (raw.layout)              document.getElementById('layout-select').value   = raw.layout;
-        if (raw.shadows !== undefined) document.getElementById('shadows-check').checked = raw.shadows;
-        if (raw.bg      !== undefined) document.getElementById('bg-check').checked      = raw.bg;
-        channelId = id;
-        localStorage.setItem('ptv_channel_id', channelId);
-        updateObsHint();
-        saveState();
-        setStatus(t('importChannelOk'), 'var(--success)');
-    } catch { setStatus(t('publishErr'), 'var(--error)'); }
 }
 
 function newChannel() {
@@ -1006,53 +916,6 @@ function renderPresets() {
     }
 }
 
-// ── URL sharing ───────────────────────────────────────────────────
-function encodeTeam() {
-    const data = team.map(s => [s.name, s.mote, s.properties.gender, s.properties.skin, s.properties.shiny]);
-    const bytes = new TextEncoder().encode(JSON.stringify(data));
-    return btoa(String.fromCharCode(...bytes));
-}
-
-function decodeTeam(str) {
-    const binary = atob(str);
-    const bytes = Uint8Array.from(binary, c => c.charCodeAt(0));
-    return JSON.parse(new TextDecoder().decode(bytes));
-}
-
-function shareTeam() {
-    const hasAny = team.some(s => s.name.trim());
-    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
-    const url = location.href.split('#')[0] + '#team=' + encodeTeam();
-    if (navigator.clipboard) {
-        navigator.clipboard.writeText(url).then(() => {
-            setStatus(t('shareCopied'), 'var(--success)');
-        }).catch(() => prompt(t('sharePromptCopy'), url));
-    } else {
-        prompt(t('sharePromptCopy'), url);
-    }
-}
-
-function loadFromUrl() {
-    const hash = location.hash;
-    if (!hash.startsWith('#team=')) return;
-    try {
-        const data = decodeTeam(hash.slice(6));
-        if (!Array.isArray(data) || data.length !== 6) return;
-        data.forEach(([name, mote, gender, skin, shiny], i) => {
-            if (i >= 6) return;
-            team[i] = { name: name || '', mote: mote || '', properties: { gender: gender || 'male', skin: skin || 'common', shiny: shiny || 'False' } };
-            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-            if (!row) return;
-            row.querySelector('.name-input').value = team[i].name;
-            row.querySelector('.mote-input').value = team[i].mote;
-            refreshIcons(i);
-            refreshSprite(i);
-        });
-        saveState();
-        setStatus(t('urlTeamLoaded'), 'var(--success)');
-    } catch(_) {}
-}
-
 // ── Init ─────────────────────────────────────────────────────────
 function initChannelId() {
     channelId = localStorage.getItem('ptv_channel_id');
@@ -1065,7 +928,5 @@ function initChannelId() {
 initChannelId();
 buildRows();
 loadState();
-loadFromUrl();
 setLang(currentLang);
 updatePreview();
-window.addEventListener('hashchange', loadFromUrl);

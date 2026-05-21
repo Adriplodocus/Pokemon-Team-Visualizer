@@ -485,8 +485,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .preset-del.visible { display: block; }
 
-/* ── Share ────────────────────────────────────────────────────── */
-.btn-share { width: 100%; padding: 9px; border-color: var(--accent); color: var(--accent); }
 
 /* ── Tooltip popup ────────────────────────────────────────────── */
 .tooltip-popup {
