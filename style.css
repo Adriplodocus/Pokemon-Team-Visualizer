@@ -298,7 +298,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-left: 3px solid var(--accent);
 }
 .obs-hint strong { color: var(--text); font-weight: 600; }
-.obs-url-label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--text); }
+.obs-url-label { display: block; margin-bottom: 2px; font-weight: 600; color: var(--text); }
+.obs-url-sub { display: block; margin-bottom: 6px; font-size: 0.72rem; color: var(--muted); }
 .obs-url-row { display: flex; align-items: center; gap: 8px; }
 .obs-url-display {
     flex: 1;

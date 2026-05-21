@@ -25,7 +25,8 @@ const STRINGS = {
         confirmReset:  '¿Seguro que quieres resetear todos los datos?',
         successReset:  'Datos reseteados correctamente.',
         obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
-        obsUrlLabel:      'URL fija para OBS (cópiala una vez):',
+        obsUrlLabel:      'URL para la fuente de navegador',
+        obsUrlSub:        'No tienes que cambiarla salvo si creas una nueva.',
         obsUrlCopy:       'Copiar',
         obsUrlCopied:     '¡URL copiada!',
         publishBtn:       '📡 Publicar en OBS',
@@ -79,7 +80,8 @@ const STRINGS = {
         confirmReset:  'Are you sure you want to reset all data?',
         successReset:  'Team data was reset successfully.',
         obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
-        obsUrlLabel:      'Fixed OBS URL (copy it once):',
+        obsUrlLabel:      'Browser source URL',
+        obsUrlSub:        'No need to change it unless you create a new one.',
         obsUrlCopy:       'Copy',
         obsUrlCopied:     'URL copied!',
         publishBtn:       '📡 Publish to OBS',
@@ -757,7 +759,7 @@ function updateObsHint() {
     const url    = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
     document.getElementById('obs-hint').innerHTML =
         t('obsHint', dims) +
-        `<br><br><span class="obs-url-label">${t('obsUrlLabel')}</span>` +
+        `<br><br><span class="obs-url-label">${t('obsUrlLabel')}</span><span class="obs-url-sub">${t('obsUrlSub')}</span>` +
         `<div class="obs-url-row">` +
         `<span class="obs-url-display">${url}</span>` +
         `<button class="btn-copy-url" onclick="copyOverlayUrl()">${t('obsUrlCopy')}</button>` +
