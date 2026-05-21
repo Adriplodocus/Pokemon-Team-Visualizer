@@ -309,6 +309,49 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-left: 3px solid var(--accent);
 }
 .obs-hint strong { color: var(--text); font-weight: 600; }
+.obs-url-label { display: block; margin-bottom: 6px; font-weight: 600; color: var(--text); }
+.obs-url-row { display: flex; align-items: center; gap: 8px; }
+.obs-url-display {
+    flex: 1;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 5px 8px;
+    font-size: 11px;
+    color: var(--cyan);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    font-family: monospace;
+}
+.btn-copy-url {
+    flex-shrink: 0;
+    padding: 5px 12px;
+    font-size: 12px;
+    font-weight: 600;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    cursor: pointer;
+    white-space: nowrap;
+}
+.btn-copy-url:hover { background: var(--btn-hover); border-color: var(--cyan); }
+
+.btn-publish {
+    width: 100%;
+    padding: 11px;
+    font-size: 14px;
+    font-weight: 700;
+    background: var(--accent);
+    border-color: transparent;
+    border-radius: 50px;
+    color: #fff;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    font-family: 'Russo One', sans-serif;
+}
+.btn-publish:hover { background: #e0409e; }
 
 .btn-generate {
     width: 100%;

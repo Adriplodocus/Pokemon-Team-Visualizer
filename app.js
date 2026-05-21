@@ -30,7 +30,13 @@ const STRINGS = {
         successReset:  'Datos reseteados correctamente.',
         successDl:     '¡TeamVisualizer.html descargado!',
         successImport:    '¡Equipo importado correctamente!',
-        obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong><br>Puedes reemplazar el archivo directamente.`,
+        obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
+        obsUrlLabel:      'URL fija para OBS (cópiala una vez):',
+        obsUrlCopy:       'Copiar',
+        obsUrlCopied:     '¡URL copiada!',
+        publishBtn:       '📡 Publicar en OBS',
+        publishOk:        '¡Overlay actualizado en OBS!',
+        publishErr:       'Error al publicar. ¿Está configurado Ably?',
         autoReload:       'Auto-reload OBS',
         autoReloadSec:    's',
         livePreviewOn:    '👁 Vista previa en vivo',
@@ -85,7 +91,13 @@ const STRINGS = {
         successReset:  'Team data was reset successfully.',
         successDl:     'TeamVisualizer.html downloaded!',
         successImport:    'Team imported successfully!',
-        obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>Recommended size: <strong>${dims}</strong><br>You can replace the file directly.`,
+        obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
+        obsUrlLabel:      'Fixed OBS URL (copy it once):',
+        obsUrlCopy:       'Copy',
+        obsUrlCopied:     'URL copied!',
+        publishBtn:       '📡 Publish to OBS',
+        publishOk:        'Overlay updated in OBS!',
+        publishErr:       'Publish error. Is Ably configured?',
         autoReload:       'Auto-reload OBS',
         autoReloadSec:    's',
         livePreviewOn:    '👁 Live preview',
@@ -181,6 +193,7 @@ const team = Array.from({ length: 6 }, () => ({
 
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
+let channelId    = null;
 let modalIndex   = -1;
 let modalVars    = {};
 let dragSrcIndex    = -1;
@@ -828,7 +841,62 @@ function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 function updateObsHint() {
     const layout = document.getElementById('layout-select').value;
     const dims   = layout === 'horizontal' ? '1350x265' : '265x1350';
-    document.getElementById('obs-hint').innerHTML = t('obsHint', dims);
+    const url    = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
+    document.getElementById('obs-hint').innerHTML =
+        t('obsHint', dims) +
+        `<br><br><span class="obs-url-label">${t('obsUrlLabel')}</span>` +
+        `<div class="obs-url-row">` +
+        `<span class="obs-url-display">${url}</span>` +
+        `<button class="btn-copy-url" onclick="copyOverlayUrl()">${t('obsUrlCopy')}</button>` +
+        `</div>`;
+}
+
+function copyOverlayUrl() {
+    const url = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => setStatus(t('obsUrlCopied'), 'var(--success)'));
+    } else {
+        prompt(t('sharePromptCopy'), url);
+    }
+}
+
+// ── Publish to OBS via Ably ──────────────────────────────────────
+async function publishToObs() {
+    const hasAny = team.some(s => s.name.trim());
+    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
+    if (!validateTeam()) return;
+
+    const entries = team.map(slot => {
+        const name = slot.name.trim().toLowerCase();
+        if (!name || !pokemonNames.includes(name)) return null;
+        const url      = buildSpriteUrl(name, slot.properties);
+        const canonical = ALIAS_TO_CANONICAL[name];
+        const fallback  = canonical
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
+            : BASE_URL + encodeURIComponent(name) + '.gif';
+        return {
+            mote:     (slot.mote || slot.name).toUpperCase(),
+            url,
+            fallback: fallback !== url ? fallback : null,
+        };
+    });
+
+    try {
+        const resp = await fetch('/api/publish', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                id:      channelId,
+                team:    entries,
+                layout:  document.getElementById('layout-select').value,
+                shadows: document.getElementById('shadows-check').checked,
+                bg:      document.getElementById('bg-check').checked,
+            }),
+        });
+        setStatus(resp.ok ? t('publishOk') : t('publishErr'), resp.ok ? 'var(--success)' : 'var(--error)');
+    } catch {
+        setStatus(t('publishErr'), 'var(--error)');
+    }
 }
 
 document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
@@ -976,6 +1044,15 @@ function loadFromUrl() {
 }
 
 // ── Init ─────────────────────────────────────────────────────────
+function initChannelId() {
+    channelId = localStorage.getItem('ptv_channel_id');
+    if (!channelId) {
+        channelId = crypto.randomUUID();
+        localStorage.setItem('ptv_channel_id', channelId);
+    }
+}
+
+initChannelId();
 buildRows();
 loadState();
 loadFromUrl();

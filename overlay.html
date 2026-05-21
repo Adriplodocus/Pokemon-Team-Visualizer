@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+body,html{margin:0;padding:0;background:transparent;}
+
+/* ── Horizontal ── */
+body.layout-horizontal .pkDiv{width:225px;height:150px;float:left;}
+body.layout-horizontal .shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
+body.layout-horizontal .container{clear:both;}
+body.layout-horizontal img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
+body.layout-horizontal p{height:25px;color:white;text-align:center;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:35px;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
+
+/* ── Vertical ── */
+body.layout-vertical .wrapper{display:flex;flex-direction:column;}
+body.layout-vertical .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
+body.layout-vertical .pkDiv{width:225px;}
+body.layout-vertical .shadowDiv{width:150px;margin-top:-15px;}
+body.layout-vertical img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;pointer-events:none;user-select:none;}
+body.layout-vertical p{margin:0;padding:0;height:25px;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:25px;text-align:center;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
+
+/* ── Animations ── */
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+body.layout-horizontal .pkDiv,
+body.layout-horizontal .shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
+body.layout-horizontal .pkDiv:nth-child(1),body.layout-horizontal .shadowDiv:nth-child(1){animation-delay:0.00s;}
+body.layout-horizontal .pkDiv:nth-child(2),body.layout-horizontal .shadowDiv:nth-child(2){animation-delay:0.12s;}
+body.layout-horizontal .pkDiv:nth-child(3),body.layout-horizontal .shadowDiv:nth-child(3){animation-delay:0.24s;}
+body.layout-horizontal .pkDiv:nth-child(4),body.layout-horizontal .shadowDiv:nth-child(4){animation-delay:0.36s;}
+body.layout-horizontal .pkDiv:nth-child(5),body.layout-horizontal .shadowDiv:nth-child(5){animation-delay:0.48s;}
+body.layout-horizontal .pkDiv:nth-child(6),body.layout-horizontal .shadowDiv:nth-child(6){animation-delay:0.60s;}
+
+body.layout-vertical .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
+body.layout-vertical .pair:nth-child(1){animation-delay:0.00s;}
+body.layout-vertical .pair:nth-child(2){animation-delay:0.12s;}
+body.layout-vertical .pair:nth-child(3){animation-delay:0.24s;}
+body.layout-vertical .pair:nth-child(4){animation-delay:0.36s;}
+body.layout-vertical .pair:nth-child(5){animation-delay:0.48s;}
+body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.ably.com/lib/ably.min-2.js"></script>
+<script>
+(function () {
+    var SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
+    var POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
+
+    var id = new URLSearchParams(location.search).get('id');
+    if (!id) return;
+
+    function renderTeam(data) {
+        var team    = data.team    || [];
+        var layout  = data.layout  || 'horizontal';
+        var shadows = data.shadows !== false;
+        var bg      = data.bg      !== false;
+        var root    = document.getElementById('root');
+
+        root.innerHTML = '';
+        document.body.className = 'layout-' + layout;
+
+        function makeImg(src, fallback, style) {
+            var img = document.createElement('img');
+            img.src = src;
+            if (style) img.style.cssText = style;
+            if (fallback && fallback !== src) {
+                img.onerror = function () {
+                    if (img.src !== fallback) { img.src = fallback; img.onerror = null; }
+                };
+            }
+            return img;
+        }
+
+        if (layout === 'vertical') {
+            var wrapper = document.createElement('div');
+            wrapper.className = 'wrapper';
+            team.forEach(function (slot) {
+                if (!slot || !slot.url) return;
+                var pair = document.createElement('div');
+                pair.className = 'pair';
+
+                var pk = document.createElement('div');
+                pk.className = 'pkDiv';
+                var p = document.createElement('p');
+                p.textContent = slot.mote || '';
+                pk.appendChild(p);
+                if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
+                pk.appendChild(makeImg(slot.url, slot.fallback, null));
+
+                var sh = document.createElement('div');
+                sh.className = 'shadowDiv';
+                if (shadows) sh.appendChild(makeImg(SHADOW_URL, null, null));
+
+                pair.appendChild(pk);
+                pair.appendChild(sh);
+                wrapper.appendChild(pair);
+            });
+            root.appendChild(wrapper);
+        } else {
+            var top = document.createElement('div');
+            top.className = 'container';
+            var bot = document.createElement('div');
+            bot.className = 'container';
+            team.forEach(function (slot) {
+                if (!slot || !slot.url) return;
+                var pk = document.createElement('div');
+                pk.className = 'pkDiv';
+                var p = document.createElement('p');
+                p.textContent = slot.mote || '';
+                pk.appendChild(p);
+                if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
+                pk.appendChild(makeImg(slot.url, slot.fallback, null));
+                top.appendChild(pk);
+
+                var sh = document.createElement('div');
+                sh.className = 'shadowDiv';
+                if (shadows) sh.appendChild(makeImg(SHADOW_URL, null, null));
+                bot.appendChild(sh);
+            });
+            root.appendChild(top);
+            root.appendChild(bot);
+        }
+    }
+
+    var ably = new Ably.Realtime({ authUrl: '/api/token' });
+    var channel = ably.channels.get('[?rewind=1]ptv-' + id);
+    channel.subscribe('update', function (msg) {
+        try { renderTeam(JSON.parse(msg.data)); } catch (e) {}
+    });
+})();
+</script>
+</body>
+</html>
