@@ -29,8 +29,8 @@ html { scrollbar-gutter: stable; }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 @keyframes fade-up {
-    from { opacity: 0; }
-    to   { opacity: 1; }
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
 }
 
 body {
@@ -206,7 +206,7 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
     outline: none;
     transition: border-color 0.15s;
 }
-.name-input:focus, .mote-input:focus { border-color: var(--border-focus); }
+.name-input:focus, .mote-input:focus { border-color: var(--border-focus); box-shadow: 0 0 0 3px rgba(255,86,180,0.12); }
 .mote-input { flex: 0 0 120px; }
 .suggestions {
     position: absolute;
@@ -555,4 +555,4 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #preview-msg { text-align: center; color: var(--text-2); font-size: 13px; padding: 16px 0; margin: 0; }
 #preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; }
 #preview-iframe  { border: none; display: block; transform-origin: top left; }
-.btn-live-preview { width: 100%; padding: 9px; border-color: var(--cyan); color: var(--cyan); }
+.btn-live-preview { width: 100%; padding: 9px; background: rgba(0,204,255,0.06); border-color: var(--cyan); color: var(--cyan); }
