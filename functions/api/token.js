@@ -11,6 +11,7 @@ export async function onRequestGet(context) {
                 'Content-Type':  'application/json',
             },
             body: JSON.stringify({
+                keyName:     keyName,
                 capability:  JSON.stringify({ '*': ['subscribe'] }),
                 ttl:         3600000,
                 timestamp:   Date.now(),
