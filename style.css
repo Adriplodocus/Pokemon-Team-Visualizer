@@ -345,7 +345,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     padding: 11px;
     font-size: 14px;
     font-weight: 700;
-    background: var(--accent);
+    background: var(--cyan);
     border-color: transparent;
     border-radius: 50px;
     color: #fff;
@@ -353,7 +353,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     text-transform: uppercase;
     font-family: 'Russo One', sans-serif;
 }
-.btn-publish:hover { background: #e0409e; }
+.btn-publish:hover { background: #00aadd; }
 
 
 .btn-preview { width: 100%; padding: 9px; }
