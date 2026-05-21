@@ -11,8 +11,9 @@ export async function onRequestGet(context) {
                 'Content-Type':  'application/json',
             },
             body: JSON.stringify({
-                capability: JSON.stringify({ '*': ['subscribe'] }),
-                ttl: 3600000,
+                capability:  JSON.stringify({ '*': ['subscribe'] }),
+                ttl:         3600000,
+                timestamp:   Date.now(),
             }),
         });
         const text = await resp.text();
