@@ -549,9 +549,15 @@ function buildOverlayHTML(layout, showShadows, showBg) {
     const entries = team.map(slot => {
         const name = slot.name.trim().toLowerCase();
         if (!name || !pokemonNames.includes(name)) return null;
+        const url      = buildSpriteUrl(name, slot.properties);
+        const canonical = ALIAS_TO_CANONICAL[name];
+        const fallback  = canonical
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
+            : BASE_URL + encodeURIComponent(name) + '.gif';
         return {
             mote: (slot.mote || slot.name).toUpperCase(),
-            url:  buildSpriteUrl(name, slot.properties)
+            url,
+            fallback: fallback !== url ? fallback : null,
         };
     });
 
@@ -561,7 +567,8 @@ function buildOverlayHTML(layout, showShadows, showBg) {
         if (!e) return '';
         let c = `<p>${e.mote}</p>`;
         if (showBg) c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}">`;
-        c += `<img id="img${i+1}" src="${e.url}">`;
+        const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
+        c += `<img id="img${i+1}" src="${e.url}"${onerr}>`;
         return c;
     });
 
