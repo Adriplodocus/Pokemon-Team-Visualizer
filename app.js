@@ -34,7 +34,14 @@ const STRINGS = {
         obsUrlCopied:     '¡URL copiada!',
         publishBtn:       '📡 Publicar en OBS',
         publishOk:        '¡Overlay actualizado en OBS!',
-        publishErr:       'Error al publicar. ¿Está configurado Ably?',
+        publishErr:          'Error al publicar. ¿Está configurado Ably?',
+        importChannel:       '📥 Usar canal existente',
+        importChannelPrompt: 'Pega tu URL de overlay o el ID del canal:',
+        importChannelOk:     '¡Canal importado correctamente!',
+        importChannelErr:    'No se encontró equipo en ese canal. ¿Has publicado al menos una vez?',
+        importChannelErrUrl: 'URL o ID no válido.',
+        newChannel:          '🔄 Nuevo canal',
+        newChannelConfirm:   '¿Generar un nuevo canal? Tendrás que actualizar la URL en OBS.',
         livePreviewOn:    '👁 Vista previa en vivo',
         livePreviewOff:   '👁 Ocultar vista previa',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
@@ -91,7 +98,14 @@ const STRINGS = {
         obsUrlCopied:     'URL copied!',
         publishBtn:       '📡 Publish to OBS',
         publishOk:        'Overlay updated in OBS!',
-        publishErr:       'Publish error. Is Ably configured?',
+        publishErr:          'Publish error. Is Ably configured?',
+        importChannel:       '📥 Use existing channel',
+        importChannelPrompt: 'Paste your overlay URL or channel ID:',
+        importChannelOk:     'Channel imported successfully!',
+        importChannelErr:    'No team found in that channel. Have you published at least once?',
+        importChannelErrUrl: 'Invalid URL or ID.',
+        newChannel:          '🔄 New channel',
+        newChannelConfirm:   'Generate a new channel? You will need to update the URL in OBS.',
         livePreviewOn:    '👁 Live preview',
         livePreviewOff:   '👁 Hide live preview',
         previewVertical:  'Live preview is only available in horizontal mode.',
@@ -791,6 +805,10 @@ function updateObsHint() {
         `<div class="obs-url-row">` +
         `<span class="obs-url-display">${url}</span>` +
         `<button class="btn-copy-url" onclick="copyOverlayUrl()">${t('obsUrlCopy')}</button>` +
+        `</div>` +
+        `<div class="obs-channel-actions">` +
+        `<button class="btn-channel-action" onclick="importChannel()">${t('importChannel')}</button>` +
+        `<button class="btn-channel-action" onclick="newChannel()">${t('newChannel')}</button>` +
         `</div>`;
 }
 
@@ -824,6 +842,10 @@ async function publishToObs() {
         };
     });
 
+    const layout  = document.getElementById('layout-select').value;
+    const shadows = document.getElementById('shadows-check').checked;
+    const bg      = document.getElementById('bg-check').checked;
+
     try {
         const resp = await fetch('/api/publish', {
             method:  'POST',
@@ -831,15 +853,62 @@ async function publishToObs() {
             body:    JSON.stringify({
                 id:      channelId,
                 team:    entries,
-                layout:  document.getElementById('layout-select').value,
-                shadows: document.getElementById('shadows-check').checked,
-                bg:      document.getElementById('bg-check').checked,
+                layout,
+                shadows,
+                bg,
+                raw: {
+                    team: team.map(s => ({ name: s.name, mote: s.mote, properties: { ...s.properties } })),
+                    layout,
+                    shadows,
+                    bg,
+                },
             }),
         });
         setStatus(resp.ok ? t('publishOk') : t('publishErr'), resp.ok ? 'var(--success)' : 'var(--error)');
     } catch {
         setStatus(t('publishErr'), 'var(--error)');
     }
+}
+
+async function importChannel() {
+    const input = prompt(t('importChannelPrompt'));
+    if (input === null) return;
+    const match = input.trim().match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+    if (!match) { setStatus(t('importChannelErrUrl'), 'var(--error)'); return; }
+    const id = match[0].toLowerCase();
+    try {
+        const resp = await fetch(`/api/load?id=${id}`);
+        if (resp.status === 404) { setStatus(t('importChannelErr'), 'var(--error)'); return; }
+        if (!resp.ok)            { setStatus(t('publishErr'),       'var(--error)'); return; }
+        const data = await resp.json();
+        const raw  = data.raw;
+        if (!raw?.team) { setStatus(t('importChannelErr'), 'var(--error)'); return; }
+        raw.team.forEach((slot, i) => {
+            if (i >= 6) return;
+            team[i] = { name: slot.name || '', mote: slot.mote || '', properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) } };
+            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+            if (!row) return;
+            row.querySelector('.name-input').value = team[i].name;
+            row.querySelector('.mote-input').value = team[i].mote;
+            refreshIcons(i);
+            refreshSprite(i);
+        });
+        if (raw.layout)              document.getElementById('layout-select').value   = raw.layout;
+        if (raw.shadows !== undefined) document.getElementById('shadows-check').checked = raw.shadows;
+        if (raw.bg      !== undefined) document.getElementById('bg-check').checked      = raw.bg;
+        channelId = id;
+        localStorage.setItem('ptv_channel_id', channelId);
+        updateObsHint();
+        saveState();
+        setStatus(t('importChannelOk'), 'var(--success)');
+    } catch { setStatus(t('publishErr'), 'var(--error)'); }
+}
+
+function newChannel() {
+    if (!confirm(t('newChannelConfirm'))) return;
+    channelId = crypto.randomUUID();
+    localStorage.setItem('ptv_channel_id', channelId);
+    updateObsHint();
 }
 
 document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });

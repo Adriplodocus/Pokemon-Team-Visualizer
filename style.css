@@ -325,6 +325,20 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     white-space: nowrap;
 }
 .btn-copy-url:hover { background: var(--btn-hover); border-color: var(--cyan); }
+.obs-channel-actions { display: flex; gap: 8px; margin-top: 8px; }
+.btn-channel-action {
+    flex: 1;
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-2);
+    cursor: pointer;
+    white-space: nowrap;
+}
+.btn-channel-action:hover { background: var(--btn-hover); color: var(--text); }
 
 .btn-publish {
     width: 100%;
