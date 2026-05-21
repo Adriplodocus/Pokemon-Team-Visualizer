@@ -271,6 +271,18 @@ button:hover { background: var(--btn-hover); }
     color: var(--text-2);
     font-weight: 500;
 }
+#autoreload-secs {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 13px;
+    padding: 4px 6px;
+    text-align: center;
+    outline: none;
+}
+#autoreload-secs:focus { border-color: var(--border-focus); }
 select {
     background: var(--input-bg);
     border: 1px solid var(--border);

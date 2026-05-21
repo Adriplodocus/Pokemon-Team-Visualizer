@@ -6,7 +6,7 @@ Genera tu overlay de equipo Pokémon para OBS en segundos, directamente desde el
 
 ### ¿Cómo usarlo?
 
-1. Abre [pokemonteamvisualizer.pages.dev](https://pokemonteamvisualizer.pages.dev) en tu navegador.
+1. Abre [pokemon.mrklypp.com](https://pokemon.mrklypp.com) en tu navegador.
 2. Escribe los nombres de tus Pokémon exactamente como aparecen en el juego.
 3. Escribe el mote deseado; si lo dejas vacío, se usará el nombre original.
 4. Selecciona las propiedades (género, skin, shiny), layout y opciones gráficas.
@@ -31,7 +31,7 @@ Generate your Pokémon team overlay for OBS in seconds, directly from your brows
 
 ### Setup
 
-1. Open [pokemonteamvisualizer.pages.dev](https://pokemonteamvisualizer.pages.dev) in your browser.
+1. Open [pokemon.mrklypp.com](https://pokemon.mrklypp.com) in your browser.
 2. Enter your Pokémon names exactly as they appear in-game.
 3. Enter a nickname; if left empty, the original name will be used.
 4. Select properties (gender, skin, shiny), layout, and graphic options.

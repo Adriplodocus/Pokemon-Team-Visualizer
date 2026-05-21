@@ -31,6 +31,8 @@ const STRINGS = {
         successDl:     '¡TeamVisualizer.html descargado!',
         successImport:    '¡Equipo importado correctamente!',
         obsHint:          dims => `Añade un <strong>Browser Source</strong> en OBS y selecciona <strong>TeamVisualizer.html</strong> como archivo local.<br>Tamaño recomendado: <strong>${dims}</strong><br>Puedes reemplazar el archivo directamente.`,
+        autoReload:       'Auto-reload OBS',
+        autoReloadSec:    's',
         livePreviewOn:    '👁 Vista previa en vivo',
         livePreviewOff:   '👁 Ocultar vista previa',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
@@ -84,6 +86,8 @@ const STRINGS = {
         successDl:     'TeamVisualizer.html downloaded!',
         successImport:    'Team imported successfully!',
         obsHint:          dims => `Add a <strong>Browser Source</strong> in OBS and select <strong>TeamVisualizer.html</strong> as a local file.<br>Recommended size: <strong>${dims}</strong><br>You can replace the file directly.`,
+        autoReload:       'Auto-reload OBS',
+        autoReloadSec:    's',
         livePreviewOn:    '👁 Live preview',
         livePreviewOff:   '👁 Hide live preview',
         previewVertical:  'Live preview is only available in horizontal mode.',
@@ -541,7 +545,7 @@ function buildSpriteUrl(name, props) {
 }
 
 // ── Generate HTML ───────────────────────────────────────────────
-function buildOverlayHTML(layout, showShadows, showBg) {
+function buildOverlayHTML(layout, showShadows, showBg, autoReloadMs = 0) {
     const dataBlock = JSON.stringify({ team, layout, shadows: showShadows, bg: showBg });
     const entries = team.map(slot => {
         const name = slot.name.trim().toLowerCase();
@@ -565,6 +569,9 @@ function buildOverlayHTML(layout, showShadows, showBg) {
     const shadowContent = entries.map((e, i) =>
         e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}">` : `<img id="shadow${i+1}">`
     );
+
+    const reloadScript = autoReloadMs > 0
+        ? `<script>setTimeout(function(){location.reload();},${autoReloadMs});<${'/script>'}` : '';
 
     if (isHorizontal) {
         return `<html>
@@ -597,6 +604,7 @@ ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').
 <div class="container">
 ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
 </div>
+${reloadScript}
 </body>
 </html>`;
     } else {
@@ -632,6 +640,7 @@ ${entries.map((e, i) => e ? `<div class="pair">
   <div class="shadowDiv">${shadowContent[i]}</div>
 </div>` : '').join('\n')}
 </div>
+${reloadScript}
 </body>
 </html>`;
     }
@@ -655,10 +664,13 @@ function generateAndDownload() {
     if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
     if (!validateTeam()) return;
 
+    const autoReloadEnabled = document.getElementById('autoreload-check').checked;
+    const autoReloadSecs    = parseInt(document.getElementById('autoreload-secs').value, 10) || 5;
     const html = buildOverlayHTML(
         document.getElementById('layout-select').value,
         document.getElementById('shadows-check').checked,
-        document.getElementById('bg-check').checked
+        document.getElementById('bg-check').checked,
+        autoReloadEnabled ? autoReloadSecs * 1000 : 0
     );
     triggerDownload(html, 'TeamVisualizer.html');
     setStatus(t('successDl'), 'var(--success)');
@@ -753,10 +765,12 @@ function updatePreview() {
 
 // ── Persistence ─────────────────────────────────────────────────
 function saveState(updatePreview = true) {
-    localStorage.setItem('ptv_team',    JSON.stringify(team));
-    localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
-    localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
-    localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
+    localStorage.setItem('ptv_team',              JSON.stringify(team));
+    localStorage.setItem('ptv_layout',            document.getElementById('layout-select').value);
+    localStorage.setItem('ptv_shadows',           document.getElementById('shadows-check').checked);
+    localStorage.setItem('ptv_bg',                document.getElementById('bg-check').checked);
+    localStorage.setItem('ptv_autoreload',        document.getElementById('autoreload-check').checked);
+    localStorage.setItem('ptv_autoreload_secs',   document.getElementById('autoreload-secs').value);
     if (updatePreview) schedulePreviewUpdate();
 }
 
@@ -784,6 +798,20 @@ function loadState() {
 
     const bg = localStorage.getItem('ptv_bg');
     if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
+
+    const autoReload = localStorage.getItem('ptv_autoreload');
+    if (autoReload !== null) document.getElementById('autoreload-check').checked = autoReload === 'true';
+
+    const autoReloadSecs = localStorage.getItem('ptv_autoreload_secs');
+    if (autoReloadSecs !== null) document.getElementById('autoreload-secs').value = autoReloadSecs;
+
+    syncAutoReloadInput();
+}
+
+function syncAutoReloadInput() {
+    const enabled = document.getElementById('autoreload-check').checked;
+    document.getElementById('autoreload-secs').style.display = enabled ? '' : 'none';
+    document.getElementById('autoreload-sec-label').style.display = enabled ? '' : 'none';
 }
 
 // ── Helpers ─────────────────────────────────────────────────────
@@ -806,6 +834,8 @@ function updateObsHint() {
 document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
 document.getElementById('shadows-check').addEventListener('change', saveState);
 document.getElementById('bg-check').addEventListener('change', saveState);
+document.getElementById('autoreload-check').addEventListener('change', () => { syncAutoReloadInput(); saveState(); });
+document.getElementById('autoreload-secs').addEventListener('change', saveState);
 
 // ── Tooltip ──────────────────────────────────────────────────────
 const tooltipEl = document.createElement('div');
