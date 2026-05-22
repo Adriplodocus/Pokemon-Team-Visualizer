@@ -69,6 +69,13 @@ Stored under `sprites/` as animated GIFs. Subdirectories:
 
 Skin variants are encoded in the filename: `<name>_<skin>.gif` (e.g., `charizard_gmax.gif`).
 
-## Design system
+## Sistema de diseño
 
-Follow the MrKlypp brand system defined in `~/.claude/CLAUDE.md` (global instructions). Key tokens: `--pink: #FF56B4`, `--blue: #00CCFF`, `--bg: #1E1E1E`. Fonts: Russo One (titles), Syne (UI), JetBrains Mono (stats/counters).
+Este proyecto implementa el design system de MrKlypp en `style.css`.
+Fuente de verdad: `C:/Proyectos/MrKlypp-design-system`
+
+- Tokens (colores, spacing, shadows): `src/css/tokens.css`
+- Clases de componentes: `src/css/components.css` (`.card`, `.btn`, `.badge`, `.input`, `.live-dot`)
+- Animaciones: `src/css/animations.css` (`card-in`, `fade-up`, `pulse`, `shimmer`, `avatar-pulse`)
+
+Al añadir estilos usar siempre custom properties del sistema (`--pink`, `--blue`, `--bg`, etc.) en lugar de valores hardcodeados. Fuentes: Russo One (títulos), Syne (UI), JetBrains Mono (stats).
