@@ -556,4 +556,3 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #preview-msg { text-align: center; color: var(--text-2); font-size: 13px; padding: 16px 0; margin: 0; }
 #preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; }
 #preview-iframe  { border: none; display: block; transform-origin: top left; }
-.btn-live-preview { width: 100%; padding: 9px; background: rgba(0,204,255,0.06); border-color: var(--cyan); color: var(--cyan); }

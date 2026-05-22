@@ -34,8 +34,6 @@ const STRINGS = {
         publishErr:          'Error al publicar. ¿Está configurado Ably?',
         newChannel:          '🔄 Nuevo enlace',
         newChannelConfirm:   '¿Generar un nuevo enlace? Tendrás que actualizar la URL en OBS.',
-        livePreviewOn:    '👁 Vista previa en vivo',
-        livePreviewOff:   '👁 Ocultar vista previa',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
         sharePromptCopy:  'Copia este enlace:',
         presets:          'Presets',
@@ -89,8 +87,6 @@ const STRINGS = {
         publishErr:          'Publish error. Is Ably configured?',
         newChannel:          '🔄 New link',
         newChannelConfirm:   'Generate a new link? You will need to update the URL in OBS.',
-        livePreviewOn:    '👁 Live preview',
-        livePreviewOff:   '👁 Hide live preview',
         previewVertical:  'Live preview is only available in horizontal mode.',
         sharePromptCopy:  'Copy this link:',
         presets:          'Presets',
@@ -139,8 +135,6 @@ function applyLang() {
         if (typeof s[key] === 'string') el.placeholder = s[key];
     });
     updateObsHint();
-    const btn = document.getElementById('btn-live-preview');
-    if (btn) btn.textContent = t(previewVisible ? 'livePreviewOff' : 'livePreviewOn');
     for (let i = 0; i < 6; i++) refreshIcons(i);
     renderPresets();
 }
@@ -662,24 +656,14 @@ function validateTeam() {
 }
 
 // ── Live preview ─────────────────────────────────────────────────
-let previewVisible = true;
 let previewTimeout = null;
 
-function togglePreview() {
-    previewVisible = !previewVisible;
-    document.getElementById('preview-card').style.display = previewVisible ? '' : 'none';
-    document.getElementById('btn-live-preview').textContent = t(previewVisible ? 'livePreviewOff' : 'livePreviewOn');
-    if (previewVisible) updatePreview();
-}
-
 function schedulePreviewUpdate() {
-    if (!previewVisible) return;
     clearTimeout(previewTimeout);
     previewTimeout = setTimeout(updatePreview, 300);
 }
 
 function updatePreview() {
-    if (!previewVisible) return;
     const layout  = document.getElementById('layout-select').value;
     const msg     = document.getElementById('preview-msg');
     const wrapper = document.getElementById('preview-wrapper');
