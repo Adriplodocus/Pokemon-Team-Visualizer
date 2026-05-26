@@ -11,6 +11,7 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Pokémon TV">
 <script src="pokemon-catalog.js"></script>
+<script src="lang.js"></script>
 </head>
 <body>
 <header>
@@ -25,8 +26,8 @@
     <p class="warn" data-i18n="warn"></p>
     <div class="header-controls-row">
         <div class="mode-toggle">
-            <button id="mode-btn-pokemon" class="mode-btn active" onclick="setMode('pokemon')" data-i18n-badge="pokemonMode">Pokémon</button>
-            <button id="mode-btn-badges" class="mode-btn" onclick="setMode('badges')" data-i18n-badge="badgeMode">Medallas</button>
+            <a href="index.html" id="mode-btn-pokemon" class="mode-btn active" data-i18n-badge="pokemonMode">Pokémon</a>
+            <a href="badges.html" id="mode-btn-badges" class="mode-btn" data-i18n-badge="badgeMode">Medallas</a>
         </div>
         <div class="lang-toggle">
             <button id="lang-es" onclick="setLang('es')">ES</button>
