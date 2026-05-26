@@ -756,7 +756,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 /* ── Cemetery ─────────────────────────────────────────────────────── */
-.card--cemetery-add { z-index: 2; }
+.card.card--cemetery-add { z-index: 2; }
 .cemetery-add-row {
     display: flex;
     align-items: center;
