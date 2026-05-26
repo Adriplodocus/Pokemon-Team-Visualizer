@@ -754,3 +754,74 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     height: 14px;
     flex-shrink: 0;
 }
+
+/* ── Cemetery ─────────────────────────────────────────────────────── */
+.cemetery-add-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.cemetery-add-row .ac-wrapper {
+    position: relative;
+    flex: 1;
+    min-width: 140px;
+}
+.cemetery-pending-sprite {
+    width: 48px;
+    height: 48px;
+    object-fit: contain;
+    flex-shrink: 0;
+}
+.cemetery-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+    gap: 12px;
+}
+.cemetery-entry {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    position: relative;
+}
+.cemetery-entry img {
+    width: 64px;
+    height: 64px;
+    object-fit: contain;
+}
+.cemetery-entry-name {
+    font-size: 0.7rem;
+    color: var(--muted);
+    text-align: center;
+    max-width: 80px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.cemetery-remove-btn {
+    position: absolute;
+    top: -4px;
+    right: -4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--muted);
+    font-size: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+}
+.cemetery-remove-btn:hover { color: var(--error, #f44); border-color: var(--error, #f44); }
+.cemetery-empty {
+    color: var(--muted);
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 20px 0;
+    display: none;
+}
