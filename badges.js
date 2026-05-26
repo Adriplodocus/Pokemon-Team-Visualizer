@@ -215,3 +215,44 @@ function buildBadgeLayoutSelect() {
         schedulePreviewBadgeUpdate();
     };
 }
+
+// ── Badge checkboxes ─────────────────────────────────────────────
+function buildBadgeCheckboxes() {
+    const count     = REGION_DATA[badgeRegion].count;
+    const container = document.getElementById('badge-checkboxes');
+    container.innerHTML = '';
+    for (let i = 0; i < count; i++) {
+        const item = document.createElement('div');
+        item.className = 'badge-check-item';
+
+        const img = document.createElement('img');
+        img.src       = `badges/${badgeRegion}/${i + 1}.webp`;
+        img.alt       = `Badge ${i + 1}`;
+        img.className = 'badge-thumb';
+        if (!badgeActive[i]) img.style.filter = `brightness(${badgeBrightness / 100})`;
+
+        const cb  = document.createElement('input');
+        cb.type    = 'checkbox';
+        cb.checked = badgeActive[i];
+        cb.addEventListener('change', () => {
+            badgeActive[i] = cb.checked;
+            img.style.filter = cb.checked ? '' : `brightness(${badgeBrightness / 100})`;
+            saveBadgeState();
+            schedulePreviewBadgeUpdate();
+        });
+
+        item.appendChild(img);
+        item.appendChild(cb);
+        container.appendChild(item);
+    }
+}
+
+function updateBadgeBrightness(val) {
+    badgeBrightness = Number(val);
+    document.getElementById('badge-brightness-val').textContent = val + '%';
+    document.querySelectorAll('#badge-checkboxes .badge-thumb').forEach((img, i) => {
+        if (!badgeActive[i]) img.style.filter = `brightness(${badgeBrightness / 100})`;
+    });
+    saveBadgeState();
+    schedulePreviewBadgeUpdate();
+}
