@@ -317,3 +317,113 @@ function updateBadgePreview() {
 
     iframe.srcdoc = buildBadgeOverlayHTML();
 }
+
+// ── OBS hint ─────────────────────────────────────────────────────
+function updateBadgeObsHint() {
+    const [cols, rows] = badgeLayout.split('x').map(Number);
+    const dims = `${cols * 80}×${rows * 80}`;
+    const url  = `https://pokemon.mrklypp.com/badge-overlay.html?id=${badgeChannelId}`;
+    document.getElementById('badge-obs-hint').innerHTML =
+        tB('badgeObsHint', dims) +
+        `<br><br><span class="obs-url-label">${tB('badgeUrlLabel')}</span>` +
+        `<span class="obs-url-sub">${tB('badgeUrlSub')}</span>` +
+        `<div class="obs-url-row">` +
+        `<span class="obs-url-display">${url}</span>` +
+        `<button class="btn-copy-url" onclick="copyBadgeOverlayUrl()">${tB('badgeUrlCopy')}</button>` +
+        `</div>` +
+        `<div class="obs-channel-actions">` +
+        `<button class="btn-channel-action" onclick="newBadgeChannel()">${tB('badgeNewChannel')}</button>` +
+        `</div>`;
+}
+
+function copyBadgeOverlayUrl() {
+    const url = `https://pokemon.mrklypp.com/badge-overlay.html?id=${badgeChannelId}`;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => setBadgeStatus(tB('badgeUrlCopied'), 'var(--success)'));
+    } else {
+        prompt(tB('badgeCopyPrompt'), url);
+    }
+}
+
+function newBadgeChannel() {
+    if (!confirm(tB('badgeNewChannelConfirm'))) return;
+    badgeChannelId = crypto.randomUUID();
+    localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+    updateBadgeObsHint();
+}
+
+// ── Publish ───────────────────────────────────────────────────────
+async function publishBadgesToObs() {
+    try {
+        const resp = await fetch('/api/publish', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({
+                id:         badgeChannelId,
+                region:     badgeRegion,
+                layout:     badgeLayout,
+                active:     badgeActive,
+                brightness: badgeBrightness,
+            }),
+        });
+        setBadgeStatus(tB(resp.ok ? 'badgePublishOk' : 'badgePublishErr'), resp.ok ? 'var(--success)' : 'var(--error)');
+    } catch {
+        setBadgeStatus(tB('badgePublishErr'), 'var(--error)');
+    }
+}
+
+// ── Reset ─────────────────────────────────────────────────────────
+function resetBadges() {
+    if (!confirm(tB('badgeConfirmReset'))) return;
+    const count = REGION_DATA[badgeRegion].count;
+    badgeActive     = Array(count).fill(true);
+    badgeBrightness = 20;
+    buildBadgeCheckboxes();
+    document.getElementById('badge-brightness').value     = 20;
+    document.getElementById('badge-brightness-val').textContent = '20%';
+    saveBadgeState();
+    schedulePreviewBadgeUpdate();
+    setBadgeStatus(tB('badgeSuccessReset'), 'var(--success)');
+}
+
+function setBadgeStatus(msg, color) {
+    const el = document.getElementById('badge-status');
+    el.textContent = msg;
+    el.style.color = color;
+    setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
+}
+
+// ── Persistence ───────────────────────────────────────────────────
+function saveBadgeState() {
+    localStorage.setItem('ptv_badge_game',       badgeGame);
+    localStorage.setItem('ptv_badge_layout',     badgeLayout);
+    localStorage.setItem('ptv_badge_active',     JSON.stringify(badgeActive));
+    localStorage.setItem('ptv_badge_brightness', String(badgeBrightness));
+}
+
+function loadBadgeState() {
+    const game = localStorage.getItem('ptv_badge_game');
+    if (game && GAME_TO_REGION[game]) {
+        badgeGame   = game;
+        badgeRegion = GAME_TO_REGION[game];
+    }
+    const count  = REGION_DATA[badgeRegion].count;
+    const layout = localStorage.getItem('ptv_badge_layout');
+    if (layout && getLayouts(count).some(l => l.value === layout)) badgeLayout = layout;
+    else badgeLayout = getLayouts(count)[0].value;
+
+    const active = localStorage.getItem('ptv_badge_active');
+    if (active) {
+        try {
+            const parsed = JSON.parse(active);
+            badgeActive = (Array.isArray(parsed) && parsed.length === count)
+                ? parsed.map(Boolean)
+                : Array(count).fill(true);
+        } catch { badgeActive = Array(count).fill(true); }
+    } else {
+        badgeActive = Array(count).fill(true);
+    }
+
+    const brightness = localStorage.getItem('ptv_badge_brightness');
+    if (brightness !== null) badgeBrightness = Math.min(50, Math.max(0, Number(brightness)));
+}
