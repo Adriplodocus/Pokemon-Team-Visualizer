@@ -7,6 +7,7 @@ const GAME_TO_REGION = {
     'pokemon-verde-hoja':         'Kanto',
     'pokemon-lets-go-pikachu':    'Kanto',
     'pokemon-lets-go-eevee':      'Kanto',
+    'pokemon-anil':               'Kanto',
     'pokemon-oro':                'Johto',
     'pokemon-plata':              'Johto',
     'pokemon-cristal':            'Johto',
@@ -55,6 +56,7 @@ const BADGE_GAMES = [
         ['pokemon-verde-hoja',      { es: 'Pokémon Verde Hoja', en: 'Pokémon LeafGreen' }],
         ['pokemon-lets-go-pikachu', { es: "Pokémon: Let's Go, Pikachu!", en: "Pokémon: Let's Go, Pikachu!" }],
         ['pokemon-lets-go-eevee',   { es: "Pokémon: Let's Go, Eevee!",   en: "Pokémon: Let's Go, Eevee!" }],
+        ['pokemon-anil',            { es: 'Pokémon Añil',                 en: 'Pokémon Añil' }],
     ]},
     { region: 'Johto', labels: { es: 'Johto', en: 'Johto' }, games: [
         ['pokemon-oro',        { es: 'Pokémon Oro',       en: 'Pokémon Gold' }],
@@ -181,7 +183,7 @@ function defaultLayout(count) {
 let badgeGame       = 'pokemon-rojo';
 let badgeRegion     = 'Kanto';
 let badgeLayout     = '4x2';
-let badgeActive     = Array(8).fill(true);
+let badgeActive     = Array(8).fill(false);
 let badgeBrightness = 20;
 let badgeChannelId  = null;
 
@@ -197,7 +199,7 @@ function buildBadgeGameSelect() {
         badgeGame   = sel.value;
         badgeRegion = GAME_TO_REGION[badgeGame];
         const count = REGION_DATA[badgeRegion].count;
-        badgeActive = Array(count).fill(true);
+        badgeActive = Array(count).fill(false);
         badgeLayout = defaultLayout(count);
         buildBadgeLayoutSelect();
         buildBadgeCheckboxes();
@@ -382,7 +384,7 @@ async function publishBadgesToObs() {
 function resetBadges() {
     if (!confirm(tB('badgeConfirmReset'))) return;
     const count = REGION_DATA[badgeRegion].count;
-    badgeActive     = Array(count).fill(true);
+    badgeActive     = Array(count).fill(false);
     badgeBrightness = 20;
     buildBadgeCheckboxes();
     document.getElementById('badge-brightness').value     = 20;
@@ -424,10 +426,10 @@ function loadBadgeState() {
             const parsed = JSON.parse(active);
             badgeActive = (Array.isArray(parsed) && parsed.length === count)
                 ? parsed.map(Boolean)
-                : Array(count).fill(true);
-        } catch { badgeActive = Array(count).fill(true); }
+                : Array(count).fill(false);
+        } catch { badgeActive = Array(count).fill(false); }
     } else {
-        badgeActive = Array(count).fill(true);
+        badgeActive = Array(count).fill(false);
     }
 
     const brightness = localStorage.getItem('ptv_badge_brightness');
