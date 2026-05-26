@@ -47,55 +47,55 @@ const REGION_DATA = {
 };
 
 const BADGE_GAMES = [
-    { region: 'Kanto', label: 'Kanto', games: [
-        ['pokemon-rojo',            'Pokémon Rojo'],
-        ['pokemon-azul',            'Pokémon Azul'],
-        ['pokemon-amarillo',        'Pokémon Amarillo'],
-        ['pokemon-rojo-fuego',      'Pokémon Rojo Fuego'],
-        ['pokemon-verde-hoja',      'Pokémon Verde Hoja'],
-        ['pokemon-lets-go-pikachu', "Pokémon: Let's Go, Pikachu!"],
-        ['pokemon-lets-go-eevee',   "Pokémon: Let's Go, Eevee!"],
+    { region: 'Kanto', labels: { es: 'Kanto', en: 'Kanto' }, games: [
+        ['pokemon-rojo',            { es: 'Pokémon Rojo',       en: 'Pokémon Red' }],
+        ['pokemon-azul',            { es: 'Pokémon Azul',       en: 'Pokémon Blue' }],
+        ['pokemon-amarillo',        { es: 'Pokémon Amarillo',   en: 'Pokémon Yellow' }],
+        ['pokemon-rojo-fuego',      { es: 'Pokémon Rojo Fuego', en: 'Pokémon FireRed' }],
+        ['pokemon-verde-hoja',      { es: 'Pokémon Verde Hoja', en: 'Pokémon LeafGreen' }],
+        ['pokemon-lets-go-pikachu', { es: "Pokémon: Let's Go, Pikachu!", en: "Pokémon: Let's Go, Pikachu!" }],
+        ['pokemon-lets-go-eevee',   { es: "Pokémon: Let's Go, Eevee!",   en: "Pokémon: Let's Go, Eevee!" }],
     ]},
-    { region: 'Johto', label: 'Johto', games: [
-        ['pokemon-oro',        'Pokémon Oro'],
-        ['pokemon-plata',      'Pokémon Plata'],
-        ['pokemon-cristal',    'Pokémon Cristal'],
-        ['pokemon-soulsilver', 'Pokémon SoulSilver'],
-        ['pokemon-heartgold',  'Pokémon HeartGold'],
+    { region: 'Johto', labels: { es: 'Johto', en: 'Johto' }, games: [
+        ['pokemon-oro',        { es: 'Pokémon Oro',       en: 'Pokémon Gold' }],
+        ['pokemon-plata',      { es: 'Pokémon Plata',     en: 'Pokémon Silver' }],
+        ['pokemon-cristal',    { es: 'Pokémon Cristal',   en: 'Pokémon Crystal' }],
+        ['pokemon-soulsilver', { es: 'Pokémon SoulSilver', en: 'Pokémon SoulSilver' }],
+        ['pokemon-heartgold',  { es: 'Pokémon HeartGold',  en: 'Pokémon HeartGold' }],
     ]},
-    { region: 'Hoenn', label: 'Hoenn', games: [
-        ['pokemon-rubi',        'Pokémon Rubí'],
-        ['pokemon-zafiro',      'Pokémon Zafiro'],
-        ['pokemon-esmeralda',   'Pokémon Esmeralda'],
-        ['pokemon-rubi-omega',  'Pokémon Rubí Omega'],
-        ['pokemon-zafiro-alfa', 'Pokémon Zafiro Alfa'],
+    { region: 'Hoenn', labels: { es: 'Hoenn', en: 'Hoenn' }, games: [
+        ['pokemon-rubi',        { es: 'Pokémon Rubí',         en: 'Pokémon Ruby' }],
+        ['pokemon-zafiro',      { es: 'Pokémon Zafiro',       en: 'Pokémon Sapphire' }],
+        ['pokemon-esmeralda',   { es: 'Pokémon Esmeralda',    en: 'Pokémon Emerald' }],
+        ['pokemon-rubi-omega',  { es: 'Pokémon Rubí Omega',   en: 'Pokémon Omega Ruby' }],
+        ['pokemon-zafiro-alfa', { es: 'Pokémon Zafiro Alfa',  en: 'Pokémon Alpha Sapphire' }],
     ]},
-    { region: 'Sinnoh', label: 'Sinnoh', games: [
-        ['pokemon-diamante',           'Pokémon Diamante'],
-        ['pokemon-perla',              'Pokémon Perla'],
-        ['pokemon-platino',            'Pokémon Platino'],
-        ['pokemon-diamante-brillante', 'Pokémon Diamante Brillante'],
-        ['pokemon-perla-reluciente',   'Pokémon Perla Reluciente'],
+    { region: 'Sinnoh', labels: { es: 'Sinnoh', en: 'Sinnoh' }, games: [
+        ['pokemon-diamante',           { es: 'Pokémon Diamante',           en: 'Pokémon Diamond' }],
+        ['pokemon-perla',              { es: 'Pokémon Perla',              en: 'Pokémon Pearl' }],
+        ['pokemon-platino',            { es: 'Pokémon Platino',            en: 'Pokémon Platinum' }],
+        ['pokemon-diamante-brillante', { es: 'Pokémon Diamante Brillante', en: 'Pokémon Brilliant Diamond' }],
+        ['pokemon-perla-reluciente',   { es: 'Pokémon Perla Reluciente',   en: 'Pokémon Shining Pearl' }],
     ]},
-    { region: 'Unova1', label: 'Teselia', games: [
-        ['pokemon-negro',  'Pokémon Edición Negra'],
-        ['pokemon-blanco', 'Pokémon Edición Blanca'],
+    { region: 'Unova1', labels: { es: 'Teselia', en: 'Unova' }, games: [
+        ['pokemon-negro',  { es: 'Pokémon Edición Negra',  en: 'Pokémon Black' }],
+        ['pokemon-blanco', { es: 'Pokémon Edición Blanca', en: 'Pokémon White' }],
     ]},
-    { region: 'Unova2', label: 'Teselia 2', games: [
-        ['pokemon-negro-2',  'Pokémon Edición Negra 2'],
-        ['pokemon-blanco-2', 'Pokémon Edición Blanca 2'],
+    { region: 'Unova2', labels: { es: 'Teselia 2', en: 'Unova 2' }, games: [
+        ['pokemon-negro-2',  { es: 'Pokémon Edición Negra 2',  en: 'Pokémon Black 2' }],
+        ['pokemon-blanco-2', { es: 'Pokémon Edición Blanca 2', en: 'Pokémon White 2' }],
     ]},
-    { region: 'Kalos', label: 'Kalos', games: [
-        ['pokemon-x', 'Pokémon X'],
-        ['pokemon-y', 'Pokémon Y'],
+    { region: 'Kalos', labels: { es: 'Kalos', en: 'Kalos' }, games: [
+        ['pokemon-x', { es: 'Pokémon X', en: 'Pokémon X' }],
+        ['pokemon-y', { es: 'Pokémon Y', en: 'Pokémon Y' }],
     ]},
-    { region: 'Galar', label: 'Galar', games: [
-        ['pokemon-espada', 'Pokémon Espada'],
-        ['pokemon-escudo', 'Pokémon Escudo'],
+    { region: 'Galar', labels: { es: 'Galar', en: 'Galar' }, games: [
+        ['pokemon-espada', { es: 'Pokémon Espada', en: 'Pokémon Sword' }],
+        ['pokemon-escudo', { es: 'Pokémon Escudo', en: 'Pokémon Shield' }],
     ]},
-    { region: 'Paldea', label: 'Paldea', games: [
-        ['pokemon-escarlata', 'Pokémon Escarlata'],
-        ['pokemon-purpura',   'Pokémon Púrpura'],
+    { region: 'Paldea', labels: { es: 'Paldea', en: 'Paldea' }, games: [
+        ['pokemon-escarlata', { es: 'Pokémon Escarlata', en: 'Pokémon Scarlet' }],
+        ['pokemon-purpura',   { es: 'Pokémon Púrpura',   en: 'Pokémon Violet' }],
     ]},
 ];
 
@@ -157,6 +157,7 @@ function applyBadgeLang() {
         const s = BADGE_STRINGS[currentLang];
         if (typeof s[key] === 'string') el.textContent = s[key];
     });
+    buildBadgeGameSelect();
     if (badgeChannelId) updateBadgeObsHint();
 }
 
@@ -171,10 +172,15 @@ function getLayouts(count) {
     return layouts;
 }
 
+function defaultLayout(count) {
+    const layouts = getLayouts(count);
+    return (layouts.find(l => l.rows === 2) || layouts[0]).value;
+}
+
 // ── State ─────────────────────────────────────────────────────────
 let badgeGame       = 'pokemon-rojo';
 let badgeRegion     = 'Kanto';
-let badgeLayout     = '8x1';
+let badgeLayout     = '4x2';
 let badgeActive     = Array(8).fill(true);
 let badgeBrightness = 20;
 let badgeChannelId  = null;
@@ -183,8 +189,8 @@ let badgeChannelId  = null;
 function buildBadgeGameSelect() {
     const sel = document.getElementById('badge-game-select');
     sel.innerHTML = BADGE_GAMES.map(g =>
-        `<optgroup label="${g.label}">${g.games.map(([val, label]) =>
-            `<option value="${val}"${val === badgeGame ? ' selected' : ''}>${label}</option>`
+        `<optgroup label="${g.labels[currentLang]}">${g.games.map(([val, names]) =>
+            `<option value="${val}"${val === badgeGame ? ' selected' : ''}>${names[currentLang]}</option>`
         ).join('')}</optgroup>`
     ).join('');
     sel.onchange = () => {
@@ -192,7 +198,7 @@ function buildBadgeGameSelect() {
         badgeRegion = GAME_TO_REGION[badgeGame];
         const count = REGION_DATA[badgeRegion].count;
         badgeActive = Array(count).fill(true);
-        badgeLayout = getLayouts(count)[0].value;
+        badgeLayout = defaultLayout(count);
         buildBadgeLayoutSelect();
         buildBadgeCheckboxes();
         saveBadgeState();
@@ -313,7 +319,7 @@ function updateBadgePreview() {
     iframe.style.transform      = `scale(${scale})`;
     wrapper.style.width         = Math.round(nativeW * scale) + 'px';
     wrapper.style.height        = Math.round(nativeH * scale) + 'px';
-    wrapper.style.margin        = '0';
+    wrapper.style.margin        = '0 auto';
 
     iframe.srcdoc = buildBadgeOverlayHTML();
 }
@@ -410,7 +416,7 @@ function loadBadgeState() {
     const count  = REGION_DATA[badgeRegion].count;
     const layout = localStorage.getItem('ptv_badge_layout');
     if (layout && getLayouts(count).some(l => l.value === layout)) badgeLayout = layout;
-    else badgeLayout = getLayouts(count)[0].value;
+    else badgeLayout = defaultLayout(count);
 
     const active = localStorage.getItem('ptv_badge_active');
     if (active) {

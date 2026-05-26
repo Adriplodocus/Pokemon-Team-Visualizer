@@ -600,6 +600,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 0.75rem;
     flex-wrap: wrap;
     align-items: flex-start;
+    justify-content: center;
 }
 .badge-check-item {
     display: flex;
@@ -630,7 +631,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .badge-brightness-row input[type="range"] {
     accent-color: var(--pink);
-    width: 160px;
+    flex: 1;
 }
 #badge-brightness-val {
     color: var(--muted);
@@ -641,6 +642,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #badge-preview-wrapper {
     position: relative;
     overflow: hidden;
+    background: #111;
+    border-radius: 6px;
 }
 #badge-preview-iframe {
     transform-origin: top left;
