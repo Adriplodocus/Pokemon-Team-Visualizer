@@ -102,7 +102,7 @@ const BADGE_GAMES = [
 ];
 
 // ── i18n ─────────────────────────────────────────────────────────
-// currentLang is a global defined in app.js (loaded before badges.js)
+// currentLang is a global defined in lang.js (loaded before badges.js)
 const BADGE_STRINGS = {
     es: {
         pokemonMode:            'Pokémon',
@@ -436,16 +436,6 @@ function loadBadgeState() {
     if (brightness !== null) badgeBrightness = Math.min(50, Math.max(0, Number(brightness)));
 }
 
-// ── Mode toggle ───────────────────────────────────────────────────
-function setMode(mode) {
-    localStorage.setItem('ptv_mode', mode);
-    document.getElementById('section-pokemon').classList.toggle('hidden', mode !== 'pokemon');
-    document.getElementById('section-badges').classList.toggle('hidden',  mode !== 'badges');
-    document.getElementById('mode-btn-pokemon').classList.toggle('active', mode === 'pokemon');
-    document.getElementById('mode-btn-badges').classList.toggle('active',  mode === 'badges');
-    if (mode === 'badges') schedulePreviewBadgeUpdate();
-}
-
 // ── Init ──────────────────────────────────────────────────────────
 function initBadges() {
     badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
@@ -464,7 +454,7 @@ function initBadges() {
     applyBadgeLang();
 
     const savedMode = localStorage.getItem('ptv_mode') || 'pokemon';
-    setMode(savedMode);
+    if (typeof setMode === 'function') setMode(savedMode);
     updateBadgePreview();
 }
 
