@@ -556,3 +556,94 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #preview-msg { text-align: center; color: var(--text-2); font-size: 13px; padding: 16px 0; margin: 0; }
 #preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; }
 #preview-iframe  { border: none; display: block; transform-origin: top left; }
+
+/* ── Mode toggle ─────────────────────────────────────────────── */
+.header-controls-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+.mode-toggle {
+    display: flex;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 3px;
+    gap: 2px;
+}
+.mode-btn {
+    padding: 0.3rem 0.9rem;
+    border-radius: 100px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    font-weight: 700;
+    border: 1px solid transparent;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--text);
+    background: transparent;
+}
+.mode-btn.active {
+    background: var(--surface);
+    color: var(--text-em);
+    border-color: rgba(0, 204, 255, 0.3);
+    box-shadow: 0 0 12px rgba(0, 204, 255, 0.15);
+}
+
+/* ── Badge section ───────────────────────────────────────────── */
+.hidden { display: none !important; }
+
+.badge-checkboxes {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    align-items: flex-start;
+}
+.badge-check-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+}
+.badge-check-item input[type="checkbox"] {
+    accent-color: var(--pink);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+.badge-thumb {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    display: block;
+    transition: filter 0.2s;
+}
+
+.badge-brightness-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.82rem;
+    color: var(--text-em);
+}
+.badge-brightness-row input[type="range"] {
+    accent-color: var(--pink);
+    width: 160px;
+}
+#badge-brightness-val {
+    color: var(--muted);
+    font-size: 0.78rem;
+    min-width: 2.5rem;
+}
+
+#badge-preview-wrapper {
+    position: relative;
+    overflow: hidden;
+}
+#badge-preview-iframe {
+    transform-origin: top left;
+    display: block;
+    border: none;
+}
