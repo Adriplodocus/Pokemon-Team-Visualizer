@@ -441,7 +441,7 @@ function loadBadgeState() {
     }
 
     const brightness = localStorage.getItem('ptv_badge_brightness');
-    if (brightness !== null) badgeBrightness = Math.min(50, Math.max(0, Number(brightness)));
+    if (brightness !== null) badgeBrightness = Math.min(100, Math.max(0, Number(brightness)));
 }
 
 // ── Init ──────────────────────────────────────────────────────────
