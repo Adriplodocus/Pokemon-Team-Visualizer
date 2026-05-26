@@ -5,7 +5,7 @@ export async function onRequestPost(context) {
     let body;
     try { body = await context.request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
 
-    const { id, ...data } = body;
+    const { id, event, ...data } = body;
     if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
 
     const resp = await fetch(`https://rest.ably.io/channels/ptv-${id}/messages`, {
@@ -14,7 +14,7 @@ export async function onRequestPost(context) {
             'Authorization': 'Basic ' + btoa(context.env.ABLY_API_KEY),
             'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ name: 'update', data: JSON.stringify(data) }),
+        body: JSON.stringify({ name: event || 'update', data: JSON.stringify(data) }),
     });
 
     return resp.ok ? json({ ok: true }) : json({ error: 'Ably error' }, 502);
