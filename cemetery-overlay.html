@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body, html { background: transparent; }
+body { padding: 8px; }
+#root {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 96px);
+    gap: 8px;
+    overflow-y: auto;
+    max-height: 100vh;
+}
+.pk-entry img {
+    width: 96px;
+    height: 96px;
+    object-fit: contain;
+    pointer-events: none;
+    user-select: none;
+    display: block;
+    animation: fadeSlideUp 0.35s ease forwards;
+    opacity: 0;
+}
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.ably.com/lib/ably.min-2.js"></script>
+<script>
+(function () {
+    var id = new URLSearchParams(location.search).get('id');
+    if (!id) return;
+
+    function renderCemetery(pokemon) {
+        var root = document.getElementById('root');
+        root.innerHTML = '';
+        pokemon.forEach(function (entry) {
+            if (!entry || !entry.url) return;
+            var div = document.createElement('div');
+            div.className = 'pk-entry';
+            var img = document.createElement('img');
+            img.src = entry.url;
+            if (entry.fallback) {
+                img.onerror = function () {
+                    if (img.src !== entry.fallback) { img.src = entry.fallback; img.onerror = null; }
+                };
+            }
+            div.appendChild(img);
+            root.appendChild(div);
+        });
+        var last = root.lastElementChild;
+        if (last) last.scrollIntoView({ behavior: 'smooth', block: 'end' });
+    }
+
+    var ably    = new Ably.Realtime({ authUrl: '/api/token' });
+    var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
+    channel.subscribe('cemetery-update', function (msg) {
+        try {
+            var data = JSON.parse(msg.data);
+            renderCemetery(data.pokemon || []);
+        } catch (e) {}
+    });
+
+    ably.connection.on('failed', function (s) { console.error('[PTV] Ably failed:', s.reason); });
+    channel.on('failed', function (s)         { console.error('[PTV] Channel failed:', s.reason); });
+})();
+</script>
+</body>
+</html>
