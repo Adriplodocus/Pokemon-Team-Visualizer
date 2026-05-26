@@ -2,6 +2,26 @@ const BASE_URL      = 'https://pokemonteamvisualizer.pages.dev/sprites/';
 const CEMETERY_KEY  = 'ptv_cemetery';
 const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
 
+const FEMALE_VARIANTS = new Set([
+    'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
+    'bibarel','bidoof','blaziken','buizel','butterfree','cacturne',
+    'camerupt','combee','combusken','croagunk','dodrio','doduo',
+    'donphan','dustox','finneon','floatzel','frillish','gabite',
+    'garchomp','gible','girafarig','gligar','gloom','golbat','goldeen',
+    'gulpin','gyarados','heracross','hippopotas','hippowdon','houndoom',
+    'hypno','indeedee','jellicent','kadabra','kricketot','kricketune',
+    'ledian','ledyba','ludicolo','lumineon','luxio','luxray','magikarp',
+    'mamoswine','medicham','meditite','meganium','meowstic','milotic',
+    'murkrow','nidoran','numel','nuzleaf','octillery','oinkologne',
+    'pachirisu','pikachu','piloswine','politoed','pyroar','quagsire',
+    'raichu','raticate','rattata','relicanth','rhydon','rhyhorn',
+    'rhyperior','roselia','roserade','scizor','scyther','seaking',
+    'shiftry','shinx','sneasel','snover','staraptor','staravia','starly',
+    'steelix','sudowoodo','swalot','tangrowth','torchic','toxicroak',
+    'unfezant','ursaring','venusaur','vileplume','weavile','wobbuffet',
+    'wooper','xatu','zubat',
+]);
+
 // ── i18n ──────────────────────────────────────────────────────────
 const CEMETERY_STRINGS = {
     es: {
@@ -197,6 +217,7 @@ function initInput() {
 
 function updatePendingSprite() {
     const img  = document.getElementById('cemetery-pending-sprite');
+    if (!img) return;
     const name = pendingEntry.name.toLowerCase().trim();
     if (name && pokemonNames.includes(name)) {
         img.src = buildSpriteUrl(name, pendingEntry.props);
