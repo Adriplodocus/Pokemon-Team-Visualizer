@@ -698,7 +698,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .types-placeholder {
-    color: var(--dim);
+    color: var(--dimmed);
     font-size: 0.8rem;
     padding-top: 0.5rem;
 }
@@ -716,7 +716,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .mult-label {
     font-size: 0.85rem;
     font-weight: 700;
-    color: var(--text-em);
+    color: var(--text);
     min-width: 3rem;
     padding-top: 0.15rem;
     flex-shrink: 0;
