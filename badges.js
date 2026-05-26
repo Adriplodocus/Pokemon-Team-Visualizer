@@ -453,8 +453,7 @@ function initBadges() {
     updateBadgeObsHint();
     applyBadgeLang();
 
-    const savedMode = localStorage.getItem('ptv_mode') || 'pokemon';
-    if (typeof setMode === 'function') setMode(savedMode);
+    if (typeof setMode === 'function') setMode('pokemon');
     updateBadgePreview();
 }
 
