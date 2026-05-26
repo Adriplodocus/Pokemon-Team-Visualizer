@@ -178,3 +178,40 @@ let badgeLayout     = '8x1';
 let badgeActive     = Array(8).fill(true);
 let badgeBrightness = 20;
 let badgeChannelId  = null;
+
+// ── Selectors ────────────────────────────────────────────────────
+function buildBadgeGameSelect() {
+    const sel = document.getElementById('badge-game-select');
+    sel.innerHTML = BADGE_GAMES.map(g =>
+        `<optgroup label="${g.label}">${g.games.map(([val, label]) =>
+            `<option value="${val}"${val === badgeGame ? ' selected' : ''}>${label}</option>`
+        ).join('')}</optgroup>`
+    ).join('');
+    sel.onchange = () => {
+        badgeGame   = sel.value;
+        badgeRegion = GAME_TO_REGION[badgeGame];
+        const count = REGION_DATA[badgeRegion].count;
+        badgeActive = Array(count).fill(true);
+        badgeLayout = getLayouts(count)[0].value;
+        buildBadgeLayoutSelect();
+        buildBadgeCheckboxes();
+        saveBadgeState();
+        updateBadgeObsHint();
+        schedulePreviewBadgeUpdate();
+    };
+}
+
+function buildBadgeLayoutSelect() {
+    const count   = REGION_DATA[badgeRegion].count;
+    const layouts = getLayouts(count);
+    const sel     = document.getElementById('badge-layout-select');
+    sel.innerHTML = layouts.map(l =>
+        `<option value="${l.value}"${l.value === badgeLayout ? ' selected' : ''}>${l.cols}×${l.rows} — ${l.cols * 80}×${l.rows * 80} px</option>`
+    ).join('');
+    sel.onchange = () => {
+        badgeLayout = sel.value;
+        saveBadgeState();
+        updateBadgeObsHint();
+        schedulePreviewBadgeUpdate();
+    };
+}
