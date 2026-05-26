@@ -133,7 +133,7 @@ function renderTable() {
         html += `<div class="mult-row">
             <span class="mult-label">×${mult}</span>
             <div class="mult-chips">${types.map(t =>
-                `<span class="type-chip" style="background:${TYPE_COLORS[t]}"><img src="sprites/types/${t}.png" alt="" class="type-icon">${TYPE_NAMES[currentLang][t]}</span>`
+                `<span class="type-chip" style="background:${TYPE_COLORS[t]}"><img src="sprites/types/${t}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][t]}</span>`
             ).join('')}</div>
         </div>`;
     }
