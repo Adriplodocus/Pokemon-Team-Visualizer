@@ -142,6 +142,7 @@ function initInput() {
     const nameInput   = document.getElementById('cemetery-name-input');
     const suggestions = document.getElementById('cemetery-suggestions');
     const moteInput   = document.getElementById('cemetery-mote-input');
+    if (!nameInput || !suggestions || !moteInput) return;
     let activeSuggIdx = -1;
 
     nameInput.addEventListener('input', () => {
@@ -253,9 +254,12 @@ function closeModal() {
     document.getElementById('modal-backdrop').classList.remove('open');
 }
 
-document.getElementById('modal-backdrop').addEventListener('click', e => {
-    if (e.target === document.getElementById('modal-backdrop')) closeModal();
-});
+const backdropEl = document.getElementById('modal-backdrop');
+if (backdropEl) {
+    backdropEl.addEventListener('click', e => {
+        if (e.target === backdropEl) closeModal();
+    });
+}
 
 // ── Add / Remove / Reset ──────────────────────────────────────────
 function addToCemetery() {
@@ -305,7 +309,7 @@ function renderCemetery() {
             : BASE_URL + encodeURIComponent(name) + '.gif';
         const label = entry.mote || entry.name;
         const fbAttr = fallback !== url
-            ? `onerror="if(this.src!=='${fallback}'){this.src='${fallback}';this.onerror=null;}"`
+            ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
             : '';
         return `
             <div class="cemetery-entry">
