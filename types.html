@@ -67,7 +67,7 @@ function setLang(lang) {
     applyBadgeLang();
     applyTypeLang();
 }
-setLang(currentLang);
+Promise.all(TYPES.map(sampleIconColor)).then(() => setLang(currentLang));
 </script>
 </body>
 </html>

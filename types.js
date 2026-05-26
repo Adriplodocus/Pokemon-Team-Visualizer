@@ -80,6 +80,31 @@ function tT(key) {
 }
 
 let selectedTypes = [];
+const TYPE_ICON_COLORS = {};
+
+function sampleIconColor(type) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const data = ctx.getImageData(0, 0, img.width, img.height).data;
+            let r = 0, g = 0, b = 0, count = 0;
+            for (let i = 0; i < data.length; i += 4) {
+                if (data[i + 3] > 128) { r += data[i]; g += data[i+1]; b += data[i+2]; count++; }
+            }
+            TYPE_ICON_COLORS[type] = count > 0
+                ? `rgb(${Math.round(r/count)},${Math.round(g/count)},${Math.round(b/count)})`
+                : TYPE_COLORS[type];
+            resolve();
+        };
+        img.onerror = () => { TYPE_ICON_COLORS[type] = TYPE_COLORS[type]; resolve(); };
+        img.src = `sprites/types/${type}.webp`;
+    });
+}
 
 function calcDefense(types) {
     const result = { 0: [], 0.25: [], 0.5: [], 1: [], 2: [], 4: [] };
@@ -112,7 +137,7 @@ function renderTypeSelector() {
         const btn = document.createElement('button');
         btn.className = 'type-btn' + (selectedTypes.includes(type) ? ' selected' : '');
         btn.innerHTML = `<img src="sprites/types/${type}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][type]}`;
-        btn.style.background = TYPE_COLORS[type];
+        btn.style.background = TYPE_ICON_COLORS[type] || TYPE_COLORS[type];
         btn.onclick = () => toggleType(type);
         grid.appendChild(btn);
     }
@@ -133,7 +158,7 @@ function renderTable() {
         html += `<div class="mult-row">
             <span class="mult-label">×${mult}</span>
             <div class="mult-chips">${types.map(t =>
-                `<span class="type-chip" style="background:${TYPE_COLORS[t]}"><img src="sprites/types/${t}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][t]}</span>`
+                `<span class="type-chip" style="background:${TYPE_ICON_COLORS[t] || TYPE_COLORS[t]}"><img src="sprites/types/${t}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][t]}</span>`
             ).join('')}</div>
         </div>`;
     }
