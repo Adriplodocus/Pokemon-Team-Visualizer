@@ -91,13 +91,9 @@ function sampleIconColor(type) {
             canvas.height = img.height;
             const ctx = canvas.getContext('2d');
             ctx.drawImage(img, 0, 0);
-            const data = ctx.getImageData(0, 0, img.width, img.height).data;
-            let r = 0, g = 0, b = 0, count = 0;
-            for (let i = 0; i < data.length; i += 4) {
-                if (data[i + 3] > 128) { r += data[i]; g += data[i+1]; b += data[i+2]; count++; }
-            }
-            TYPE_ICON_COLORS[type] = count > 0
-                ? `rgb(${Math.round(r/count)},${Math.round(g/count)},${Math.round(b/count)})`
+            const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+            TYPE_ICON_COLORS[type] = a > 128
+                ? `rgb(${r},${g},${b})`
                 : TYPE_COLORS[type];
             resolve();
         };
