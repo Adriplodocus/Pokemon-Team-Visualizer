@@ -256,3 +256,64 @@ function updateBadgeBrightness(val) {
     saveBadgeState();
     schedulePreviewBadgeUpdate();
 }
+
+// ── Overlay HTML builder ─────────────────────────────────────────
+function buildBadgeOverlayHTML() {
+    const [cols, rows] = badgeLayout.split('x').map(Number);
+    const count        = REGION_DATA[badgeRegion].count;
+    const bv           = (badgeBrightness / 100).toFixed(2);
+
+    const imgs = Array.from({ length: count }, (_, i) => {
+        const filter = badgeActive[i] ? '' : `filter:brightness(${bv});`;
+        const delay  = (i * 0.08).toFixed(2);
+        return `<img src="badges/${badgeRegion}/${i + 1}.webp" style="width:80px;height:80px;object-fit:contain;display:block;animation:fadeSlideUp 0.45s ${delay}s ease forwards;opacity:0;${filter}" alt="">`;
+    }).join('\n');
+
+    return `<html>
+<head>
+<meta charset="UTF-8">
+<style>
+body,html{margin:0;padding:0;background:transparent;}
+.grid{display:grid;grid-template-columns:repeat(${cols},80px);gap:0;width:${cols * 80}px;}
+@keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+</style>
+</head>
+<body>
+<div class="grid">
+${imgs}
+</div>
+</body>
+</html>`;
+}
+
+// ── Live preview ──────────────────────────────────────────────────
+let badgePreviewTimeout = null;
+
+function schedulePreviewBadgeUpdate() {
+    clearTimeout(badgePreviewTimeout);
+    badgePreviewTimeout = setTimeout(updateBadgePreview, 300);
+}
+
+function updateBadgePreview() {
+    const iframe  = document.getElementById('badge-preview-iframe');
+    const wrapper = document.getElementById('badge-preview-wrapper');
+    const [cols, rows] = badgeLayout.split('x').map(Number);
+    const nativeW = cols * 80;
+    const nativeH = rows * 80;
+
+    const card       = wrapper.parentElement;
+    const cardStyle  = getComputedStyle(card);
+    const containerW = card.clientWidth
+        - parseFloat(cardStyle.paddingLeft)
+        - parseFloat(cardStyle.paddingRight);
+
+    const scale = Math.min(1, containerW / nativeW);
+    iframe.style.width          = nativeW + 'px';
+    iframe.style.height         = nativeH + 'px';
+    iframe.style.transform      = `scale(${scale})`;
+    wrapper.style.width         = Math.round(nativeW * scale) + 'px';
+    wrapper.style.height        = Math.round(nativeH * scale) + 'px';
+    wrapper.style.margin        = '0';
+
+    iframe.srcdoc = buildBadgeOverlayHTML();
+}
