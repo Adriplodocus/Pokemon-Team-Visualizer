@@ -108,16 +108,13 @@ const STRINGS = {
     }
 };
 
-let currentLang = localStorage.getItem('ptv_lang') || 'es';
-
 function t(key, arg) {
     const val = STRINGS[currentLang][key];
     return typeof val === 'function' ? val(arg) : val;
 }
 
 function setLang(lang) {
-    currentLang = lang;
-    localStorage.setItem('ptv_lang', lang);
+    setLangBase(lang);
     document.documentElement.lang = lang;
     document.getElementById('lang-es').classList.toggle('active', lang === 'es');
     document.getElementById('lang-en').classList.toggle('active', lang === 'en');
@@ -936,6 +933,16 @@ function initChannelId() {
         channelId = crypto.randomUUID();
         localStorage.setItem('ptv_channel_id', channelId);
     }
+}
+
+// ── Mode toggle ───────────────────────────────────────────────────
+function setMode(mode) {
+    localStorage.setItem('ptv_mode', mode);
+    document.getElementById('section-pokemon').classList.toggle('hidden', mode !== 'pokemon');
+    document.getElementById('section-badges').classList.toggle('hidden',  mode !== 'badges');
+    document.getElementById('mode-btn-pokemon').classList.toggle('active', mode === 'pokemon');
+    document.getElementById('mode-btn-badges').classList.toggle('active',  mode === 'badges');
+    if (mode === 'badges') schedulePreviewBadgeUpdate();
 }
 
 initChannelId();
