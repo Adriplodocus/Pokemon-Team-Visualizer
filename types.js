@@ -68,10 +68,12 @@ const TYPE_STRINGS = {
     es: {
         noTypeSelected: 'Selecciona uno o dos tipos para ver la efectividad.',
         resetBtn:       'Resetear',
+        selectorHint:   'Elige el tipo del que quieres ver las debilidades.',
     },
     en: {
         noTypeSelected: 'Select one or two types to see effectiveness.',
         resetBtn:       'Reset',
+        selectorHint:   'Choose the type whose weaknesses you want to see.',
     }
 };
 
