@@ -107,6 +107,7 @@ const BADGE_STRINGS = {
     es: {
         pokemonMode:            'Pokémon',
         badgeMode:              'Medallas',
+        typesMode:              'Tabla de tipos',
         badgeGame:              'Juego',
         badgeLayout:            'Diseño',
         badgeBrightness:        'Brillo inactivas',
@@ -128,6 +129,7 @@ const BADGE_STRINGS = {
     en: {
         pokemonMode:            'Pokémon',
         badgeMode:              'Badges',
+        typesMode:              'Types table',
         badgeGame:              'Game',
         badgeLayout:            'Layout',
         badgeBrightness:        'Inactive brightness',
@@ -190,6 +192,7 @@ let badgeChannelId  = null;
 // ── Selectors ────────────────────────────────────────────────────
 function buildBadgeGameSelect() {
     const sel = document.getElementById('badge-game-select');
+    if (!sel) return;
     sel.innerHTML = BADGE_GAMES.map(g =>
         `<optgroup label="${g.labels[currentLang]}">${g.games.map(([val, names]) =>
             `<option value="${val}"${val === badgeGame ? ' selected' : ''}>${names[currentLang]}</option>`
