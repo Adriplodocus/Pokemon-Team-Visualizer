@@ -562,6 +562,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     justify-content: center;
     gap: 12px;
+    margin-top: 10px;
     margin-bottom: 8px;
 }
 .mode-toggle {
