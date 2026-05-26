@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cementerio — Pokémon Stream Visualizer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='white'/><path d='M2,16 A14,14 0 0,1 30,16 Z' fill='%23EE1515'/><circle cx='16' cy='16' r='14' fill='none' stroke='%231a1a1a' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%231a1a1a' stroke-width='2'/><circle cx='16' cy='16' r='5' fill='%231a1a1a'/><circle cx='16' cy='16' r='3' fill='white'/></svg>">
+<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#00CCFF">
+<script src="pokemon-catalog.js"></script>
+<script src="lang.js"></script>
+</head>
+<body>
+<header>
+    <div class="header-title-row">
+        <a href="https://mrklypp.com/" target="_blank" rel="noopener" class="avatar-ring">
+            <img src="https://mrklypp.com/assets/img/logo.png" alt="MrKlypp">
+        </a>
+        <h1>Pokémon Stream Visualizer</h1>
+    </div>
+    <div class="header-controls-row">
+        <div class="mode-toggle">
+            <a href="index.html"    id="mode-btn-pokemon"   class="mode-btn" data-i18n-badge="pokemonMode">Pokémon</a>
+            <a href="cemetery.html" id="mode-btn-cemetery"  class="mode-btn active" data-i18n-badge="cemeteryMode">Cementerio</a>
+            <a href="badges.html"   id="mode-btn-badges"    class="mode-btn" data-i18n-badge="badgeMode">Medallas</a>
+            <a href="types.html"    id="mode-btn-types"     class="mode-btn" data-i18n-badge="typesMode">Tabla de tipos</a>
+        </div>
+        <div class="lang-toggle">
+            <button id="lang-es" onclick="setLang('es')">ES</button>
+            <button id="lang-en" onclick="setLang('en')">EN</button>
+        </div>
+    </div>
+</header>
+<div id="app">
+
+    <!-- Add Pokémon -->
+    <div class="card card--team">
+        <div class="cemetery-add-row">
+            <img id="cemetery-pending-sprite" class="cemetery-pending-sprite" src="" alt="" style="display:none">
+            <div class="ac-wrapper" id="cemetery-ac-wrapper">
+                <input id="cemetery-name-input" type="text" class="name-input" autocomplete="off" spellcheck="false" placeholder="Nombre...">
+                <ul id="cemetery-suggestions" class="suggestions"></ul>
+            </div>
+            <input id="cemetery-mote-input" type="text" class="mote-input" placeholder="Mote...">
+            <button id="cemetery-props-btn" class="props-btn" onclick="openModal()">Propiedades</button>
+            <button id="cemetery-add-btn" class="btn-publish" onclick="addToCemetery()">Añadir al cementerio</button>
+        </div>
+    </div>
+
+    <!-- Cemetery list -->
+    <div class="card card--team">
+        <p id="cemetery-empty" class="cemetery-empty" style="display:none">Ningún Pokémon en el cementerio.</p>
+        <div id="cemetery-list" class="cemetery-list"></div>
+    </div>
+
+    <!-- OBS URL -->
+    <div class="card card--actions">
+        <div class="actions">
+            <span id="cemetery-url-label" class="obs-url-label">URL para la fuente de navegador</span>
+            <span id="cemetery-url-sub" class="obs-url-sub">No tienes que cambiarla salvo si creas una nueva.</span>
+            <div class="obs-url-row">
+                <input id="cemetery-obs-url-display" class="obs-url-display" type="text" readonly>
+                <button id="cemetery-copy-btn" class="btn-copy-url" onclick="copyObsUrl()">Copiar</button>
+            </div>
+            <div class="obs-channel-actions">
+                <button id="cemetery-new-channel-btn" class="btn-reset" onclick="newChannel()">🔄 Nuevo enlace</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Publish / Reset -->
+    <div class="card card--actions">
+        <div class="actions">
+            <button id="cemetery-publish-btn" class="btn-publish" onclick="publishCemetery()">📡 Publicar cementerio en OBS</button>
+            <button id="cemetery-reset-btn" class="btn-reset" onclick="resetCemetery()">Vaciar cementerio</button>
+            <div id="cemetery-status"></div>
+        </div>
+    </div>
+
+    <!-- Social -->
+    <div class="card social">
+        <p id="made-by">Hecho por @MrKlypp</p>
+        <a href="https://paypal.me/MrKlypp" target="_blank" rel="noopener" class="donate-btn">💜 Donar</a>
+        <div class="social-links">
+            <a href="https://mrklypp.com" target="_blank">Home</a>
+            <a href="https://www.twitch.tv/MrKlypp" target="_blank">Twitch</a>
+            <a href="https://www.youtube.com/@MrKlypp" target="_blank">YouTube</a>
+            <a href="https://www.instagram.com/MrKlypp_/" target="_blank">Instagram</a>
+            <a href="https://www.tiktok.com/@mrklypp" target="_blank">TikTok</a>
+            <a href="https://x.com/MrKlypp" target="_blank">X</a>
+        </div>
+    </div>
+
+</div>
+
+<!-- Properties modal (same structure as index.html) -->
+<div id="modal-backdrop">
+    <div id="modal">
+        <h3 id="modal-title"></h3>
+        <div id="modal-props"></div>
+        <button class="modal-apply" onclick="applyModal()">Aplicar</button>
+    </div>
+</div>
+
+<script src="badges.js"></script>
+<script src="cemetery.js"></script>
+<script>
+function setLang(lang) {
+    setLangBase(lang);
+    document.documentElement.lang = lang;
+    document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    applyBadgeLang();
+    applyCemeteryLang();
+}
+setLang(currentLang);
+</script>
+</body>
+</html>
