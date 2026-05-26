@@ -47,8 +47,9 @@ body { padding: 8px; }
             var img = document.createElement('img');
             img.src = entry.url;
             if (entry.fallback) {
+                var fallback = entry.fallback;
                 img.onerror = function () {
-                    if (img.src !== entry.fallback) { img.src = entry.fallback; img.onerror = null; }
+                    if (img.src !== fallback) { img.src = fallback; img.onerror = null; }
                 };
             }
             div.appendChild(img);
