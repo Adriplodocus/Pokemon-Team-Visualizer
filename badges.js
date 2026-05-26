@@ -216,6 +216,7 @@ function buildBadgeLayoutSelect() {
     const count   = REGION_DATA[badgeRegion].count;
     const layouts = getLayouts(count);
     const sel     = document.getElementById('badge-layout-select');
+    if (!sel) return;
     sel.innerHTML = layouts.map(l =>
         `<option value="${l.value}"${l.value === badgeLayout ? ' selected' : ''}>${l.cols}×${l.rows} — ${l.cols * 80}×${l.rows * 80} px</option>`
     ).join('');
@@ -231,6 +232,7 @@ function buildBadgeLayoutSelect() {
 function buildBadgeCheckboxes() {
     const count     = REGION_DATA[badgeRegion].count;
     const container = document.getElementById('badge-checkboxes');
+    if (!container) return;
     container.innerHTML = '';
     for (let i = 0; i < count; i++) {
         const item = document.createElement('div');
@@ -260,7 +262,8 @@ function buildBadgeCheckboxes() {
 
 function updateBadgeBrightness(val) {
     badgeBrightness = Number(val);
-    document.getElementById('badge-brightness-val').textContent = val + '%';
+    const brVal = document.getElementById('badge-brightness-val');
+    if (brVal) brVal.textContent = val + '%';
     document.querySelectorAll('#badge-checkboxes .badge-thumb').forEach((img, i) => {
         if (!badgeActive[i]) img.style.filter = `brightness(${badgeBrightness / 100})`;
     });
@@ -308,6 +311,7 @@ function schedulePreviewBadgeUpdate() {
 function updateBadgePreview() {
     const iframe  = document.getElementById('badge-preview-iframe');
     const wrapper = document.getElementById('badge-preview-wrapper');
+    if (!iframe || !wrapper) return;
     const [cols, rows] = badgeLayout.split('x').map(Number);
     const nativeW = cols * 80;
     const nativeH = rows * 80;
@@ -331,10 +335,12 @@ function updateBadgePreview() {
 
 // ── OBS hint ─────────────────────────────────────────────────────
 function updateBadgeObsHint() {
+    const hint = document.getElementById('badge-obs-hint');
+    if (!hint) return;
     const [cols, rows] = badgeLayout.split('x').map(Number);
     const dims = `${cols * 80}×${rows * 80}`;
     const url  = `https://pokemon.mrklypp.com/badge-overlay.html?id=${badgeChannelId}`;
-    document.getElementById('badge-obs-hint').innerHTML =
+    hint.innerHTML =
         tB('badgeObsHint', dims) +
         `<br><br><span class="obs-url-label">${tB('badgeUrlLabel')}</span>` +
         `<span class="obs-url-sub">${tB('badgeUrlSub')}</span>` +
@@ -390,8 +396,10 @@ function resetBadges() {
     badgeActive     = Array(count).fill(false);
     badgeBrightness = 20;
     buildBadgeCheckboxes();
-    document.getElementById('badge-brightness').value     = 20;
-    document.getElementById('badge-brightness-val').textContent = '20%';
+    const br = document.getElementById('badge-brightness');
+    const brVal = document.getElementById('badge-brightness-val');
+    if (br) br.value = 20;
+    if (brVal) brVal.textContent = '20%';
     saveBadgeState();
     schedulePreviewBadgeUpdate();
     setBadgeStatus(tB('badgeSuccessReset'), 'var(--success)');
@@ -399,6 +407,7 @@ function resetBadges() {
 
 function setBadgeStatus(msg, color) {
     const el = document.getElementById('badge-status');
+    if (!el) return;
     el.textContent = msg;
     el.style.color = color;
     setTimeout(() => { if (el.textContent === msg) el.textContent = ''; }, 4000);
