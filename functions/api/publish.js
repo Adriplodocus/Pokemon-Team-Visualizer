@@ -7,6 +7,7 @@ export async function onRequestPost(context) {
 
     const { id, event, ...data } = body;
     if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
+    if (event && !/^[a-z-]+$/.test(event)) return json({ error: 'Invalid event name' }, 400);
 
     const resp = await fetch(`https://rest.ably.io/channels/ptv-${id}/messages`, {
         method: 'POST',
