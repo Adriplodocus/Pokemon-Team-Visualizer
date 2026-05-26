@@ -125,23 +125,14 @@ function renderTable() {
         return;
     }
     const groups = calcDefense(selectedTypes);
-    const MULT_ORDER = [4, 2, 0.5, 0.25, 0];
+    const MULT_ORDER = [4, 2, 1, 0.5, 0.25, 0];
     let html = '';
     for (const mult of MULT_ORDER) {
         const types = groups[mult];
-        if (types.length === 0) continue;
+        if (!types || types.length === 0) continue;
         html += `<div class="mult-row">
             <span class="mult-label">×${mult}</span>
             <div class="mult-chips">${types.map(t =>
-                `<span class="type-chip" style="background:${TYPE_COLORS[t]}">${TYPE_NAMES[currentLang][t]}</span>`
-            ).join('')}</div>
-        </div>`;
-    }
-    const neutral = groups[1];
-    if (neutral.length > 0) {
-        html += `<div class="mult-row mult-row--neutral">
-            <span class="mult-label">×1</span>
-            <div class="mult-chips">${neutral.map(t =>
                 `<span class="type-chip" style="background:${TYPE_COLORS[t]}">${TYPE_NAMES[currentLang][t]}</span>`
             ).join('')}</div>
         </div>`;
