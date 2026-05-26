@@ -676,6 +676,9 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .type-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
     padding: 0.4rem 0.5rem;
     border-radius: 8px;
     font-family: 'JetBrains Mono', monospace;

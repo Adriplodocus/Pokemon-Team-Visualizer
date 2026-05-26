@@ -111,7 +111,7 @@ function renderTypeSelector() {
     for (const type of TYPES) {
         const btn = document.createElement('button');
         btn.className = 'type-btn' + (selectedTypes.includes(type) ? ' selected' : '');
-        btn.textContent = TYPE_NAMES[currentLang][type];
+        btn.innerHTML = `<img src="sprites/types/${type}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][type]}`;
         btn.style.background = TYPE_COLORS[type];
         btn.onclick = () => toggleType(type);
         grid.appendChild(btn);
