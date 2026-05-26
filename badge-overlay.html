@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<style>
+*, *::before, *::after { box-sizing: border-box; }
+body, html { margin: 0; padding: 0; background: transparent; }
+.grid { display: grid; gap: 0; }
+@keyframes fadeSlideUp {
+    from { opacity: 0; transform: translateY(12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://cdn.ably.com/lib/ably.min-2.js"></script>
+<script>
+(function () {
+    var id = new URLSearchParams(location.search).get('id');
+    if (!id) return;
+
+    function render(data) {
+        var region     = data.region     || 'Kanto';
+        var layout     = data.layout     || '8x1';
+        var active     = data.active     || [];
+        var brightness = typeof data.brightness === 'number' ? data.brightness : 20;
+
+        var parts = layout.split('x').map(Number);
+        var cols  = parts[0];
+        var count = active.length;
+
+        var grid = document.createElement('div');
+        grid.className = 'grid';
+        grid.style.gridTemplateColumns = 'repeat(' + cols + ', 80px)';
+        grid.style.width = (cols * 80) + 'px';
+
+        for (var i = 0; i < count; i++) {
+            var img = document.createElement('img');
+            img.src    = 'badges/' + region + '/' + (i + 1) + '.webp';
+            img.alt    = '';
+            img.width  = 80;
+            img.height = 80;
+            img.style.cssText = 'display:block;object-fit:contain;'
+                + 'animation:fadeSlideUp 0.45s ' + (i * 0.08).toFixed(2) + 's ease forwards;opacity:0;'
+                + (active[i] ? '' : 'filter:brightness(' + (brightness / 100).toFixed(2) + ');');
+            grid.appendChild(img);
+        }
+
+        var root = document.getElementById('root');
+        root.innerHTML = '';
+        root.appendChild(grid);
+    }
+
+    var ably    = new Ably.Realtime({ authUrl: '/api/token' });
+    var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
+    channel.subscribe('update', function (msg) {
+        try { render(JSON.parse(msg.data)); } catch (e) {}
+    });
+
+    ably.connection.on('failed', function (s) {
+        console.error('[Badge Overlay] Ably connection failed:', s.reason);
+    });
+})();
+</script>
+</body>
+</html>
