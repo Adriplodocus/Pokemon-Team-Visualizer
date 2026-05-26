@@ -441,6 +441,7 @@ function setMode(mode) {
     document.getElementById('section-badges').classList.toggle('hidden',  mode !== 'badges');
     document.getElementById('mode-btn-pokemon').classList.toggle('active', mode === 'pokemon');
     document.getElementById('mode-btn-badges').classList.toggle('active',  mode === 'badges');
+    if (mode === 'badges') schedulePreviewBadgeUpdate();
 }
 
 // ── Init ──────────────────────────────────────────────────────────
@@ -459,10 +460,10 @@ function initBadges() {
     document.getElementById('badge-brightness-val').textContent  = badgeBrightness + '%';
     updateBadgeObsHint();
     applyBadgeLang();
-    updateBadgePreview();
 
     const savedMode = localStorage.getItem('ptv_mode') || 'pokemon';
     setMode(savedMode);
+    updateBadgePreview();
 }
 
 initBadges();
