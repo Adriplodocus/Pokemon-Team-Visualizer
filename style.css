@@ -597,10 +597,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .hidden { display: none !important; }
 
 .badge-checkboxes {
-    display: flex;
+    display: grid;
     gap: 0.75rem;
-    flex-wrap: wrap;
-    align-items: flex-start;
     justify-content: center;
 }
 .badge-check-item {

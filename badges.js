@@ -234,6 +234,7 @@ function buildBadgeCheckboxes() {
     const container = document.getElementById('badge-checkboxes');
     if (!container) return;
     container.innerHTML = '';
+    container.style.gridTemplateColumns = `repeat(${Math.ceil(count / 2)}, auto)`;
     for (let i = 0; i < count; i++) {
         const item = document.createElement('div');
         item.className = 'badge-check-item';
@@ -242,14 +243,12 @@ function buildBadgeCheckboxes() {
         img.src       = `badges/${badgeRegion}/${i + 1}.webp`;
         img.alt       = `Badge ${i + 1}`;
         img.className = 'badge-thumb';
-        if (!badgeActive[i]) img.style.filter = `brightness(${badgeBrightness / 100})`;
 
         const cb  = document.createElement('input');
         cb.type    = 'checkbox';
         cb.checked = badgeActive[i];
         cb.addEventListener('change', () => {
             badgeActive[i] = cb.checked;
-            img.style.filter = cb.checked ? '' : `brightness(${badgeBrightness / 100})`;
             saveBadgeState();
             schedulePreviewBadgeUpdate();
         });
@@ -264,9 +263,6 @@ function updateBadgeBrightness(val) {
     badgeBrightness = Number(val);
     const brVal = document.getElementById('badge-brightness-val');
     if (brVal) brVal.textContent = val + '%';
-    document.querySelectorAll('#badge-checkboxes .badge-thumb').forEach((img, i) => {
-        if (!badgeActive[i]) img.style.filter = `brightness(${badgeBrightness / 100})`;
-    });
     saveBadgeState();
     schedulePreviewBadgeUpdate();
 }
