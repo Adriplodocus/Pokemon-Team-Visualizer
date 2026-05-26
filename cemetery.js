@@ -289,7 +289,7 @@ function addToCemetery() {
     if (pokemonNames.length && !pokemonNames.includes(name)) {
         setStatus(tC('errUnknown', name), 'var(--error)'); return;
     }
-    cemetery.push({ name, mote: pendingEntry.mote.trim(), props: { ...pendingEntry.props } });
+    cemetery.unshift({ name, mote: pendingEntry.mote.trim(), props: { ...pendingEntry.props } });
     saveCemetery();
     renderCemetery();
     document.getElementById('cemetery-name-input').value = '';
