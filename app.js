@@ -122,6 +122,7 @@ function setLang(lang) {
     document.getElementById('lang-es').classList.toggle('active', lang === 'es');
     document.getElementById('lang-en').classList.toggle('active', lang === 'en');
     applyLang();
+    if (typeof applyBadgeLang === 'function') applyBadgeLang();
 }
 
 function applyLang() {

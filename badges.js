@@ -427,3 +427,36 @@ function loadBadgeState() {
     const brightness = localStorage.getItem('ptv_badge_brightness');
     if (brightness !== null) badgeBrightness = Math.min(50, Math.max(0, Number(brightness)));
 }
+
+// ── Mode toggle ───────────────────────────────────────────────────
+function setMode(mode) {
+    localStorage.setItem('ptv_mode', mode);
+    document.getElementById('section-pokemon').classList.toggle('hidden', mode !== 'pokemon');
+    document.getElementById('section-badges').classList.toggle('hidden',  mode !== 'badges');
+    document.getElementById('mode-btn-pokemon').classList.toggle('active', mode === 'pokemon');
+    document.getElementById('mode-btn-badges').classList.toggle('active',  mode === 'badges');
+}
+
+// ── Init ──────────────────────────────────────────────────────────
+function initBadges() {
+    badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
+    if (!badgeChannelId) {
+        badgeChannelId = crypto.randomUUID();
+        localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+    }
+
+    loadBadgeState();
+    buildBadgeGameSelect();
+    buildBadgeLayoutSelect();
+    buildBadgeCheckboxes();
+    document.getElementById('badge-brightness').value            = badgeBrightness;
+    document.getElementById('badge-brightness-val').textContent  = badgeBrightness + '%';
+    updateBadgeObsHint();
+    applyBadgeLang();
+    updateBadgePreview();
+
+    const savedMode = localStorage.getItem('ptv_mode') || 'pokemon';
+    setMode(savedMode);
+}
+
+initBadges();
