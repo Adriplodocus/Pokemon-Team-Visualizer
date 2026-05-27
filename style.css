@@ -826,3 +826,46 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     padding: 20px 0;
     display: none;
 }
+.cemetery-grid-config {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+.cemetery-grid-label {
+    color: var(--text-em);
+    font-size: 0.85rem;
+    font-weight: 700;
+}
+.cemetery-grid-inputs {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+.cemetery-grid-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+}
+.cemetery-grid-field-label {
+    color: var(--muted);
+    font-size: 0.75rem;
+}
+.cemetery-grid-input {
+    width: 64px;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 0.4rem 0.6rem;
+    color: var(--text-em);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.9rem;
+    text-align: center;
+    transition: border-color 0.18s;
+    outline: none;
+}
+.cemetery-grid-input:focus { border-color: rgba(0, 204, 255, 0.5); }
+.cemetery-grid-sep {
+    color: var(--muted);
+    font-size: 1.1rem;
+    margin-top: 1.25rem;
+}

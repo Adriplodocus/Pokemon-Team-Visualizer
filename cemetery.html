@@ -68,6 +68,26 @@
         </div>
     </div>
 
+    <!-- Grid config -->
+    <div class="card card--actions">
+        <div class="actions">
+            <div class="cemetery-grid-config">
+                <label id="cemetery-grid-label" class="cemetery-grid-label">Cuadrícula del overlay</label>
+                <div class="cemetery-grid-inputs">
+                    <div class="cemetery-grid-field">
+                        <span id="cemetery-cols-label" class="cemetery-grid-field-label">Columnas</span>
+                        <input id="cemetery-cols-input" type="number" class="cemetery-grid-input" min="1" max="10" value="3" onchange="saveGridConfig()">
+                    </div>
+                    <span class="cemetery-grid-sep">×</span>
+                    <div class="cemetery-grid-field">
+                        <span id="cemetery-rows-label" class="cemetery-grid-field-label">Filas</span>
+                        <input id="cemetery-rows-input" type="number" class="cemetery-grid-input" min="1" max="10" value="3" onchange="saveGridConfig()">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <!-- Publish / Reset -->
     <div class="card card--actions">
         <div class="actions">

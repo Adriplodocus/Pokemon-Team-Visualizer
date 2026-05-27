@@ -1,5 +1,7 @@
 const BASE_URL      = 'https://pokemonteamvisualizer.pages.dev/sprites/';
 const CEMETERY_KEY  = 'ptv_cemetery';
+const CEMETERY_COLS_KEY = 'ptv_cemetery_cols';
+const CEMETERY_ROWS_KEY = 'ptv_cemetery_rows';
 const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
 
 const FEMALE_VARIANTS = new Set([
@@ -371,11 +373,12 @@ async function publishCemetery() {
         return { url, fallback: fallback !== url ? fallback : null };
     });
 
+    const { cols, rows } = getGridConfig();
     try {
         const resp = await fetch('/api/publish', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ id: channelId, event: 'cemetery-update', pokemon: entries }),
+            body:    JSON.stringify({ id: channelId, event: 'cemetery-update', pokemon: entries, cols, rows }),
         });
         setStatus(resp.ok ? tC('cemeteryPublishOk') : tC('cemeteryPublishErr'),
                   resp.ok ? 'var(--success)' : 'var(--error)');
@@ -425,8 +428,33 @@ function applyCemeteryLang() {
     if (modalApply) modalApply.textContent = tC('modalSet');
 }
 
+// ── Grid config ────────────────────────────────────────────────────
+function loadGridConfig() {
+    const cols = parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 3;
+    const rows = parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 3;
+    const colsEl = document.getElementById('cemetery-cols-input');
+    const rowsEl = document.getElementById('cemetery-rows-input');
+    if (colsEl) colsEl.value = cols;
+    if (rowsEl) rowsEl.value = rows;
+}
+
+function saveGridConfig() {
+    const cols = parseInt(document.getElementById('cemetery-cols-input').value, 10) || 3;
+    const rows = parseInt(document.getElementById('cemetery-rows-input').value, 10) || 3;
+    localStorage.setItem(CEMETERY_COLS_KEY, cols);
+    localStorage.setItem(CEMETERY_ROWS_KEY, rows);
+}
+
+function getGridConfig() {
+    return {
+        cols: parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 3,
+        rows: parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 3,
+    };
+}
+
 // ── Init ───────────────────────────────────────────────────────────
 initChannelId();
 loadCemetery();
 renderCemetery();
 updateObsUrl();
+loadGridConfig();

@@ -8,18 +8,31 @@ body, html { background: transparent; }
 body { padding: 8px; }
 #root {
     display: grid;
-    grid-template-columns: repeat(auto-fill, 96px);
     gap: 8px;
-    overflow-y: auto;
-    max-height: 100vh;
+}
+.pk-entry {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .pk-entry img {
-    width: 96px;
-    height: 96px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
     pointer-events: none;
     user-select: none;
     display: block;
+    animation: fadeSlideUp 0.35s ease forwards;
+    opacity: 0;
+}
+.pk-overflow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-family: Anton, 'Arial Narrow Bold', sans-serif;
+    font-size: clamp(18px, 4vw, 36px);
+    text-shadow: 2px 2px 0 #000, -2px 2px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000;
     animation: fadeSlideUp 0.35s ease forwards;
     opacity: 0;
 }
@@ -28,6 +41,7 @@ body { padding: 8px; }
     to   { opacity: 1; transform: translateY(0); }
 }
 </style>
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 </head>
 <body>
 <div id="root"></div>
@@ -37,10 +51,24 @@ body { padding: 8px; }
     var id = new URLSearchParams(location.search).get('id');
     if (!id) return;
 
-    function renderCemetery(pokemon) {
-        var root = document.getElementById('root');
+    function renderCemetery(data) {
+        var pokemon  = data.pokemon  || [];
+        var cols     = Math.max(1, parseInt(data.cols, 10) || 3);
+        var rows     = Math.max(1, parseInt(data.rows, 10) || 3);
+        var capacity = cols * rows;
+        var root     = document.getElementById('root');
+
+        root.style.gridTemplateColumns = 'repeat(' + cols + ', 1fr)';
+        root.style.gridTemplateRows    = 'repeat(' + rows + ', 1fr)';
+        root.style.width               = '100%';
+        root.style.height              = 'calc(100vh - 16px)';
+
         root.innerHTML = '';
-        pokemon.forEach(function (entry) {
+
+        var overflow = pokemon.length > capacity;
+        var visible  = overflow ? pokemon.slice(0, capacity - 1) : pokemon;
+
+        visible.forEach(function (entry) {
             if (!entry || !entry.url) return;
             var div = document.createElement('div');
             div.className = 'pk-entry';
@@ -55,16 +83,21 @@ body { padding: 8px; }
             div.appendChild(img);
             root.appendChild(div);
         });
-        var last = root.lastElementChild;
-        if (last) last.scrollIntoView({ behavior: 'smooth', block: 'end' });
+
+        if (overflow) {
+            var extra = pokemon.length - (capacity - 1);
+            var div = document.createElement('div');
+            div.className = 'pk-overflow';
+            div.textContent = '+' + extra;
+            root.appendChild(div);
+        }
     }
 
     var ably    = new Ably.Realtime({ authUrl: '/api/token' });
     var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('cemetery-update', function (msg) {
         try {
-            var data = JSON.parse(msg.data);
-            renderCemetery(data.pokemon || []);
+            renderCemetery(JSON.parse(msg.data));
         } catch (e) {}
     });
 
