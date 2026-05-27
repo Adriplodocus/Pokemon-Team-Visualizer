@@ -311,7 +311,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: 'JetBrains Mono', monospace;
+
 }
 .btn-copy-url {
     flex-shrink: 0;
@@ -388,7 +388,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 20px;
     color: var(--cyan);
     text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 12px;
     font-weight: 500;
     padding: 5px 14px;
@@ -404,7 +404,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 20px;
     color: #a78bfa;
     text-decoration: none;
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 13px;
     font-weight: 600;
     transition: background 0.15s, border-color 0.15s;
@@ -578,7 +578,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .mode-btn {
     padding: 0.3rem 0.9rem;
     border-radius: 100px;
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 0.75rem;
     font-weight: 700;
     border: 1px solid transparent;
@@ -670,7 +670,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .types-selector-hint {
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 0.8rem;
     color: var(--text-muted, rgba(255,255,255,0.5));
     margin: 0;
@@ -688,7 +688,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 0.3rem;
     padding: 0.4rem 0.5rem;
     border-radius: 8px;
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 0.7rem;
     font-weight: 700;
     cursor: pointer;
@@ -725,7 +725,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .mult-row--neutral { opacity: 0.45; }
 
 .mult-label {
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--text);
@@ -746,7 +746,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 0.25rem;
     padding: 0.2rem 0.55rem;
     border-radius: 100px;
-    font-family: 'JetBrains Mono', monospace;
+
     font-size: 0.65rem;
     font-weight: 700;
     color: white;
