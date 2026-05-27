@@ -11,15 +11,15 @@ body { padding: 8px; }
     gap: 8px;
 }
 .pk-entry {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
 }
 .pk-entry img {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     object-fit: contain;
     pointer-events: none;
     user-select: none;
@@ -28,8 +28,8 @@ body { padding: 8px; }
     opacity: 0;
 }
 .pk-overflow {
-    width: 120px;
-    height: 120px;
+    width: 100px;
+    height: 100px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -62,8 +62,8 @@ body { padding: 8px; }
         var capacity = cols * rows;
         var root     = document.getElementById('root');
 
-        root.style.gridTemplateColumns = 'repeat(' + cols + ', 120px)';
-        root.style.gridTemplateRows    = 'repeat(' + rows + ', 120px)';
+        root.style.gridTemplateColumns = 'repeat(' + cols + ', 100px)';
+        root.style.gridTemplateRows    = 'repeat(' + rows + ', 100px)';
 
         root.innerHTML = '';
 

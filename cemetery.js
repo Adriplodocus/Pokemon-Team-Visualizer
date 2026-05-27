@@ -461,8 +461,8 @@ function getGridConfig() {
 function updateCemeteryObsHint(cols, rows) {
     const el = document.getElementById('cemetery-obs-hint');
     if (!el) return;
-    const w = cols * 120 + (cols - 1) * 8 + 16;
-    const h = rows * 120 + (rows - 1) * 8 + 16;
+    const w = cols * 100 + (cols - 1) * 8 + 16;
+    const h = rows * 100 + (rows - 1) * 8 + 16;
     el.innerHTML = tC('obsHint', `${w}x${h}`);
 }
 
