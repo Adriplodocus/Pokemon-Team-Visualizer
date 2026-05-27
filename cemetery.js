@@ -27,6 +27,7 @@ const FEMALE_VARIANTS = new Set([
 // ── i18n ──────────────────────────────────────────────────────────
 const CEMETERY_STRINGS = {
     es: {
+        obsHint:              dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
         cemeteryAdd:          'Añadir al cementerio',
         cemeteryEmpty:        'Ningún Pokémon en el cementerio.',
         cemeteryPublish:      '📡 Publicar cementerio en OBS',
@@ -54,6 +55,7 @@ const CEMETERY_STRINGS = {
         madeBy:               'Hecho por @MrKlypp',
     },
     en: {
+        obsHint:              dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
         cemeteryAdd:          'Add to cemetery',
         cemeteryEmpty:        'No Pokémon in the cemetery.',
         cemeteryPublish:      '📡 Publish cemetery to OBS',
@@ -426,30 +428,42 @@ function applyCemeteryLang() {
     if (moteInput) moteInput.placeholder = tC('notePh');
     const modalApply = document.querySelector('.modal-apply');
     if (modalApply) modalApply.textContent = tC('modalSet');
+    const { cols, rows } = getGridConfig();
+    updateCemeteryObsHint(cols, rows);
 }
 
 // ── Grid config ────────────────────────────────────────────────────
 function loadGridConfig() {
-    const cols = parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 3;
-    const rows = parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 3;
+    const cols = parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 4;
+    const rows = parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 4;
     const colsEl = document.getElementById('cemetery-cols-input');
     const rowsEl = document.getElementById('cemetery-rows-input');
     if (colsEl) colsEl.value = cols;
     if (rowsEl) rowsEl.value = rows;
+    updateCemeteryObsHint(cols, rows);
 }
 
 function saveGridConfig() {
-    const cols = parseInt(document.getElementById('cemetery-cols-input').value, 10) || 3;
-    const rows = parseInt(document.getElementById('cemetery-rows-input').value, 10) || 3;
+    const cols = parseInt(document.getElementById('cemetery-cols-input').value, 10) || 4;
+    const rows = parseInt(document.getElementById('cemetery-rows-input').value, 10) || 4;
     localStorage.setItem(CEMETERY_COLS_KEY, cols);
     localStorage.setItem(CEMETERY_ROWS_KEY, rows);
+    updateCemeteryObsHint(cols, rows);
 }
 
 function getGridConfig() {
     return {
-        cols: parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 3,
-        rows: parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 3,
+        cols: parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 4,
+        rows: parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 4,
     };
+}
+
+function updateCemeteryObsHint(cols, rows) {
+    const el = document.getElementById('cemetery-obs-hint');
+    if (!el) return;
+    const w = cols * 120 + (cols - 1) * 8 + 16;
+    const h = rows * 120 + (rows - 1) * 8 + 16;
+    el.innerHTML = tC('obsHint', `${w}x${h}`);
 }
 
 // ── Init ───────────────────────────────────────────────────────────
