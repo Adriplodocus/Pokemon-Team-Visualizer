@@ -311,7 +311,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    font-family: monospace;
+    font-family: 'JetBrains Mono', monospace;
 }
 .btn-copy-url {
     flex-shrink: 0;
@@ -388,6 +388,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 20px;
     color: var(--cyan);
     text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     font-weight: 500;
     padding: 5px 14px;
@@ -403,6 +404,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 20px;
     color: #a78bfa;
     text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
     font-size: 13px;
     font-weight: 600;
     transition: background 0.15s, border-color 0.15s;
@@ -668,7 +670,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .types-selector-hint {
-    font-family: var(--font-ui);
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.8rem;
     color: var(--text-muted, rgba(255,255,255,0.5));
     margin: 0;
@@ -723,6 +725,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .mult-row--neutral { opacity: 0.45; }
 
 .mult-label {
+    font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     font-weight: 700;
     color: var(--text);
