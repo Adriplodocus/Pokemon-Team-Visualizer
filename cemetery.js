@@ -1,7 +1,7 @@
 const BASE_URL      = 'https://pokemonteamvisualizer.pages.dev/sprites/';
 const CEMETERY_KEY  = 'ptv_cemetery';
-const CEMETERY_COLS_KEY = 'ptv_cemetery_cols';
-const CEMETERY_ROWS_KEY = 'ptv_cemetery_rows';
+const CEMETERY_COLS = 4;
+const CEMETERY_ROWS = 3;
 const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
 
 const FEMALE_VARIANTS = new Set([
@@ -375,12 +375,11 @@ async function publishCemetery() {
         return { url, fallback: fallback !== url ? fallback : null };
     });
 
-    const { cols, rows } = getGridConfig();
     try {
         const resp = await fetch('/api/publish', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ id: channelId, event: 'cemetery-update', pokemon: entries, cols, rows }),
+            body:    JSON.stringify({ id: channelId, event: 'cemetery-update', pokemon: entries, cols: CEMETERY_COLS, rows: CEMETERY_ROWS }),
         });
         setStatus(resp.ok ? tC('cemeteryPublishOk') : tC('cemeteryPublishErr'),
                   resp.ok ? 'var(--success)' : 'var(--error)');
@@ -428,41 +427,15 @@ function applyCemeteryLang() {
     if (moteInput) moteInput.placeholder = tC('notePh');
     const modalApply = document.querySelector('.modal-apply');
     if (modalApply) modalApply.textContent = tC('modalSet');
-    const { cols, rows } = getGridConfig();
-    updateCemeteryObsHint(cols, rows);
+    updateCemeteryObsHint();
 }
 
 // ── Grid config ────────────────────────────────────────────────────
-function loadGridConfig() {
-    const cols = parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 4;
-    const rows = parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 4;
-    const colsEl = document.getElementById('cemetery-cols-input');
-    const rowsEl = document.getElementById('cemetery-rows-input');
-    if (colsEl) colsEl.value = cols;
-    if (rowsEl) rowsEl.value = rows;
-    updateCemeteryObsHint(cols, rows);
-}
-
-function saveGridConfig() {
-    const cols = parseInt(document.getElementById('cemetery-cols-input').value, 10) || 4;
-    const rows = parseInt(document.getElementById('cemetery-rows-input').value, 10) || 4;
-    localStorage.setItem(CEMETERY_COLS_KEY, cols);
-    localStorage.setItem(CEMETERY_ROWS_KEY, rows);
-    updateCemeteryObsHint(cols, rows);
-}
-
-function getGridConfig() {
-    return {
-        cols: parseInt(localStorage.getItem(CEMETERY_COLS_KEY), 10) || 4,
-        rows: parseInt(localStorage.getItem(CEMETERY_ROWS_KEY), 10) || 4,
-    };
-}
-
-function updateCemeteryObsHint(cols, rows) {
+function updateCemeteryObsHint() {
     const el = document.getElementById('cemetery-obs-hint');
     if (!el) return;
-    const w = cols * 100 + (cols - 1) * 8 + 16;
-    const h = rows * 100 + (rows - 1) * 8 + 16;
+    const w = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 8 + 16;
+    const h = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 8 + 16;
     el.innerHTML = tC('obsHint', `${w}x${h}`);
 }
 
@@ -471,4 +444,4 @@ initChannelId();
 loadCemetery();
 renderCemetery();
 updateObsUrl();
-loadGridConfig();
+updateCemeteryObsHint();

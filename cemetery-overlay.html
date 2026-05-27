@@ -58,7 +58,7 @@ body { padding: 8px; }
     function renderCemetery(data) {
         var pokemon  = data.pokemon  || [];
         var cols     = Math.max(1, parseInt(data.cols, 10) || 4);
-        var rows     = Math.max(1, parseInt(data.rows, 10) || 4);
+        var rows     = Math.max(1, parseInt(data.rows, 10) || 3);
         var capacity = cols * rows;
         var root     = document.getElementById('root');
 
