@@ -434,8 +434,8 @@ function applyCemeteryLang() {
 function updateCemeteryObsHint() {
     const el = document.getElementById('cemetery-obs-hint');
     if (!el) return;
-    const w = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 8 + 16;
-    const h = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 8 + 16;
+    const w = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 10 + 10;
+    const h = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 10 + 10;
     el.innerHTML = tC('obsHint', `${w}x${h}`);
 }
 
