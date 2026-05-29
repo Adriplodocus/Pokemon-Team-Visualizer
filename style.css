@@ -325,6 +325,21 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .btn-channel-action:hover { background: var(--btn-hover); color: var(--text); }
 
+.external-banner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 14px;
+    border-radius: 8px;
+    background: rgba(255, 86, 180, 0.10);
+    border: 1px solid rgba(255, 86, 180, 0.30);
+    color: var(--pink);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+}
+
 .btn-publish {
     width: 100%;
     padding: 11px;
