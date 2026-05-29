@@ -51,39 +51,31 @@ body {
 
 /* ── Header ─────────────────────────────────────────────────── */
 header { text-align: center; margin-bottom: 24px; animation: fade-up 0.5s ease both; }
-.header-title-row {
+h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal; letter-spacing: 0.02em; color: var(--cyan); margin-bottom: 4px; }
+.subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 10px; }
+
+.header-social {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px;
-    margin-bottom: 6px;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
 }
-h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal; letter-spacing: 0.02em; color: var(--cyan); }
-
-@keyframes avatar-pulse {
-    0%   { box-shadow: 0 0 0 0   rgba(0,204,255,0);    border-color: rgba(0,204,255,0.4); }
-    25%  { box-shadow: 0 0 0 10px rgba(0,204,255,0.2); border-color: rgba(0,204,255,0.7); }
-    50%  { box-shadow: 0 0 0 0   rgba(255,86,180,0);   border-color: rgba(255,86,180,0.4); }
-    75%  { box-shadow: 0 0 0 10px rgba(255,86,180,0.2);border-color: rgba(255,86,180,0.7); }
-    100% { box-shadow: 0 0 0 0   rgba(0,204,255,0);    border-color: rgba(0,204,255,0.4); }
+.header-author {
+    color: var(--pink);
+    font-size: 13px;
+    font-weight: 700;
+    transition: color 0.18s;
 }
-.avatar-ring {
-    flex-shrink: 0;
-    border-radius: 50%;
-    width: 52px; height: 52px;
-    border: 2px solid rgba(0,204,255,0.4);
-    animation: avatar-pulse 4s ease-in-out infinite;
-    transition: transform 0.2s;
-    display: flex; align-items: center; justify-content: center;
-    overflow: visible;
+.header-author:hover { color: var(--cyan); }
+.header-error {
+    font-size: 12px;
+    color: var(--text-2);
+    margin-bottom: 8px;
 }
-.avatar-ring:hover { transform: scale(1.06); }
-.avatar-ring img {
-    width: 66px; height: 66px;
-    border-radius: 50%; object-fit: cover; display: block;
-}
-.subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 4px; }
-.warn { color: var(--error); font-size: 12px; margin-top: 4px; }
+.header-error a { color: var(--cyan); text-decoration: underline; }
+.header-error a:hover { color: var(--pink); }
 
 /* ── Lang toggle ─────────────────────────────────────────────── */
 .lang-toggle {
@@ -397,7 +389,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .social a:hover { background: var(--btn-hover); border-color: var(--cyan); }
 .donate-btn {
     display: inline-block;
-    margin-bottom: 12px;
     padding: 7px 22px;
     background: var(--surface-2);
     border: 1px solid #7c3aed;
