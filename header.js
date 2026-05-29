@@ -10,6 +10,11 @@
         `<a href="${p.href}" id="mode-btn-${p.id}" class="mode-btn${ACTIVE_PAGE === p.id ? ' active' : ''}" data-i18n-badge="${p.i18n}">${p.label}</a>`
     ).join('\n            ');
 
+    document.body.insertAdjacentHTML('beforeend', `
+<footer class="site-footer">
+    <a href="https://mrklypp.com/" target="_blank" rel="noopener" data-i18n="madeBy">Hecho por @MrKlypp</a>
+</footer>`);
+
     document.body.insertAdjacentHTML('afterbegin', `
 <header>
     <h1>Pokémon Stream Visualizer</h1>
