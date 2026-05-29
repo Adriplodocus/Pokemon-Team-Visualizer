@@ -577,6 +577,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #preview-msg { text-align: center; color: var(--text-2); font-size: 13px; padding: 16px 0; margin: 0; }
 #preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; }
 #preview-iframe  { border: none; display: block; transform-origin: top left; }
+#cemetery-preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; }
+#cemetery-preview-iframe  { border: none; display: block; transform-origin: top left; }
 
 /* ── Mode toggle ─────────────────────────────────────────────── */
 .header-controls-row {

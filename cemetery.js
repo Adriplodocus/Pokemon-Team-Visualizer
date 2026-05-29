@@ -517,10 +517,44 @@ function updateCemeteryObsHint() {
         `</div>`;
 }
 
+// ── Preview ────────────────────────────────────────────────────────
+function updateCemeteryPreview() {
+    const wrapper = document.getElementById('cemetery-preview-wrapper');
+    const iframe  = document.getElementById('cemetery-preview-iframe');
+    if (!wrapper || !iframe) return;
+
+    const card       = wrapper.parentElement;
+    const cardStyle  = getComputedStyle(card);
+    const containerW = card.clientWidth
+        - parseFloat(cardStyle.paddingLeft)
+        - parseFloat(cardStyle.paddingRight);
+    if (!containerW) return;
+
+    const overlayW = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 10 + 10;
+    const overlayH = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 10 + 10;
+    const scale    = containerW / overlayW;
+
+    iframe.style.width     = overlayW + 'px';
+    iframe.style.height    = overlayH + 'px';
+    iframe.style.transform = `scale(${scale})`;
+    wrapper.style.width    = Math.round(overlayW * scale) + 'px';
+    wrapper.style.height   = Math.round(overlayH * scale) + 'px';
+    wrapper.style.margin   = '0';
+}
+
+function initCemeteryPreview() {
+    const iframe = document.getElementById('cemetery-preview-iframe');
+    if (!iframe || !channelId) return;
+    iframe.src = `cemetery-overlay.html?id=${channelId}`;
+    updateCemeteryPreview();
+    window.addEventListener('resize', updateCemeteryPreview);
+}
+
 // ── Init ───────────────────────────────────────────────────────────
 initChannelId();
 loadCemetery();
 renderCemetery();
 updateObsUrl();
 updateCemeteryObsHint();
+initCemeteryPreview();
 hydrateFromAbly();

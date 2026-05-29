@@ -16,36 +16,56 @@
 <div id="app">
 <div id="external-banner" class="external-banner hidden"></div>
 
-    <!-- Add Pokémon -->
-    <div class="card card--team card--cemetery-add">
-        <div class="cemetery-add-row">
-            <img id="cemetery-pending-sprite" class="cemetery-pending-sprite" src="" alt="" style="display:none">
-            <div class="ac-wrapper" id="cemetery-ac-wrapper">
-                <input id="cemetery-name-input" type="text" class="name-input" autocomplete="off" spellcheck="false" placeholder="Nombre...">
-                <ul id="cemetery-suggestions" class="suggestions"></ul>
+<div class="pokemon-desktop-layout">
+
+    <!-- Live preview -->
+    <div class="card card--preview" id="cemetery-preview-card">
+        <div id="cemetery-preview-wrapper">
+            <iframe id="cemetery-preview-iframe" scrolling="no" frameborder="0"></iframe>
+        </div>
+    </div>
+
+    <!-- Bottom row: editor + actions -->
+    <div class="pokemon-bottom-cols">
+    <div class="desktop-col-left">
+
+        <!-- Add Pokémon -->
+        <div class="card card--team card--cemetery-add">
+            <div class="cemetery-add-row">
+                <img id="cemetery-pending-sprite" class="cemetery-pending-sprite" src="" alt="" style="display:none">
+                <div class="ac-wrapper" id="cemetery-ac-wrapper">
+                    <input id="cemetery-name-input" type="text" class="name-input" autocomplete="off" spellcheck="false" placeholder="Nombre...">
+                    <ul id="cemetery-suggestions" class="suggestions"></ul>
+                </div>
+                <input id="cemetery-mote-input" type="text" class="mote-input" placeholder="Mote...">
+                <button id="cemetery-props-btn" class="props-btn" onclick="openModal()">Propiedades</button>
+                <button id="cemetery-add-btn" class="btn-publish" onclick="addToCemetery()">Añadir al cementerio</button>
             </div>
-            <input id="cemetery-mote-input" type="text" class="mote-input" placeholder="Mote...">
-            <button id="cemetery-props-btn" class="props-btn" onclick="openModal()">Propiedades</button>
-            <button id="cemetery-add-btn" class="btn-publish" onclick="addToCemetery()">Añadir al cementerio</button>
         </div>
-    </div>
 
-    <!-- Cemetery list -->
-    <div class="card card--team">
-        <p id="cemetery-empty" class="cemetery-empty" style="display:none">Ningún Pokémon en el cementerio.</p>
-        <div id="cemetery-list" class="cemetery-list"></div>
-    </div>
-
-    <!-- Publish / Reset -->
-    <div class="card card--actions">
-        <div class="actions">
-            <p id="cemetery-obs-hint" class="obs-hint"></p>
-            <button id="cemetery-publish-btn" class="btn-publish" onclick="publishCemetery()">📡 Publicar</button>
-            <button id="cemetery-reset-btn" class="btn-reset" onclick="resetCemetery()">Resetear</button>
-            <div id="cemetery-status"></div>
+        <!-- Cemetery list -->
+        <div class="card card--team">
+            <p id="cemetery-empty" class="cemetery-empty" style="display:none">Ningún Pokémon en el cementerio.</p>
+            <div id="cemetery-list" class="cemetery-list"></div>
         </div>
-    </div>
 
+    </div><!-- /desktop-col-left -->
+    <div class="pokemon-actions-col">
+
+        <!-- Publish / Reset -->
+        <div class="card card--actions">
+            <div class="actions">
+                <p id="cemetery-obs-hint" class="obs-hint"></p>
+                <button id="cemetery-publish-btn" class="btn-publish" onclick="publishCemetery()">📡 Publicar</button>
+                <button id="cemetery-reset-btn" class="btn-reset" onclick="resetCemetery()">Resetear</button>
+                <div id="cemetery-status"></div>
+            </div>
+        </div>
+
+    </div><!-- /pokemon-actions-col -->
+    </div><!-- /pokemon-bottom-cols -->
+
+</div><!-- /pokemon-desktop-layout -->
 
 </div>
 
