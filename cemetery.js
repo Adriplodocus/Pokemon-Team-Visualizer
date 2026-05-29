@@ -129,6 +129,24 @@ function loadCemetery() {
     } catch(_) { cemetery = []; }
 }
 
+async function hydrateFromAbly() {
+    try {
+        const resp = await fetch(`/api/load?id=${channelId}&event=cemetery-update`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (!Array.isArray(data.raw)) return;
+
+        cemetery = data.raw.map(e => ({
+            name:  e.name || '',
+            mote:  e.mote || '',
+            props: { ...DEFAULT_PROPS, ...(e.props || {}) },
+        }));
+
+        if (!externalMode) saveCemetery();
+        renderCemetery();
+    } catch (_) {}
+}
+
 // ── Sprite URL ────────────────────────────────────────────────────
 function buildSpriteUrl(name, props) {
     const lower    = name.toLowerCase();
@@ -484,3 +502,4 @@ loadCemetery();
 renderCemetery();
 updateObsUrl();
 updateCemeteryObsHint();
+hydrateFromAbly();
