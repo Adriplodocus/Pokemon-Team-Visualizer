@@ -32,7 +32,7 @@ const STRINGS = {
         publishOk:        '¡Overlay actualizado en OBS!',
         publishErr:          'Error al publicar. ¿Está configurado Ably?',
         newChannel:          '🔄 Nuevo enlace',
-        newChannelConfirm:   '¿Generar un nuevo enlace? Tendrás que actualizar la URL en OBS.',
+        newChannelConfirm:   '¿Generar un nuevo enlace? Tendrás que actualizar la URL en OBS y el enlace de editor.',
         previewVertical:  'La vista previa solo está disponible en modo horizontal.',
         sharePromptCopy:  'Copia este enlace:',
         presets:          'Presets',

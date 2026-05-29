@@ -397,14 +397,7 @@ function updateObsUrl() {
             `<span>${tC('externalBanner', channelId.slice(0, 8))}</span>` +
             `<button onclick="exitExternalMode()">${tC('exitExternal')}</button>`;
     }
-
-    const newChannelBtn = document.getElementById('cemetery-new-channel-btn');
-    const copyEditorBtn = document.getElementById('cemetery-copy-editor-btn');
-    if (newChannelBtn) newChannelBtn.classList.toggle('hidden', externalMode);
-    if (copyEditorBtn) copyEditorBtn.classList.toggle('hidden', externalMode);
-
-    const el = document.getElementById('cemetery-obs-url-display');
-    if (el) el.value = `https://pokemon.mrklypp.com/cemetery-overlay.html?id=${channelId}`;
+    updateCemeteryObsHint();
 }
 
 function exitExternalMode() {
@@ -488,10 +481,6 @@ function applyCemeteryLang() {
         'cemetery-add-btn':         tC('cemeteryAdd'),
         'cemetery-publish-btn':     tC('cemeteryPublish'),
         'cemetery-reset-btn':       tC('cemeteryReset'),
-        'cemetery-url-label':       tC('obsUrlLabel'),
-        'cemetery-copy-btn':        tC('obsUrlCopy'),
-        'cemetery-new-channel-btn': tC('newChannel'),
-        'cemetery-copy-editor-btn': tC('copyEditorUrl'),
         'cemetery-empty':           tC('cemeteryEmpty'),
         'cemetery-props-btn':       tC('propsBtn'),
         'made-by':                  tC('madeBy'),
@@ -515,7 +504,17 @@ function updateCemeteryObsHint() {
     if (!el) return;
     const w = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 10 + 10;
     const h = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 10 + 10;
-    el.innerHTML = tC('obsHint', `${w}x${h}`);
+    const url = `https://pokemon.mrklypp.com/cemetery-overlay.html?id=${channelId}`;
+    el.innerHTML = tC('obsHint', `${w}x${h}`) +
+        `<br><br><span class="obs-url-label">${tC('obsUrlLabel')}</span>` +
+        `<div class="obs-url-row">` +
+        `<span class="obs-url-display">${url}</span>` +
+        `<button class="btn-copy-url" onclick="copyObsUrl()">${tC('obsUrlCopy')}</button>` +
+        `</div>` +
+        `<div class="obs-channel-actions">` +
+        (externalMode ? '' : `<button class="btn-channel-action" onclick="newChannel()">${tC('newChannel')}</button>`) +
+        (externalMode ? '' : `<button class="btn-channel-action" onclick="copyEditorUrl()">${tC('copyEditorUrl')}</button>`) +
+        `</div>`;
 }
 
 // ── Init ───────────────────────────────────────────────────────────
