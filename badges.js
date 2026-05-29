@@ -512,18 +512,31 @@ function initBadges() {
         if (urlId) {
             badgeChannelId    = urlId;
             badgeExternalMode = true;
+            sessionStorage.setItem('ptv_external_badge_id', urlId);
+        } else {
+            const storedExtBadge = sessionStorage.getItem('ptv_external_badge_id');
+            if (storedExtBadge) {
+                badgeChannelId    = storedExtBadge;
+                badgeExternalMode = true;
+            } else {
+                badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
+                if (!badgeChannelId) {
+                    badgeChannelId = crypto.randomUUID();
+                    localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+                }
+            }
+        }
+    } else {
+        const storedExtBadge = sessionStorage.getItem('ptv_external_badge_id');
+        if (storedExtBadge) {
+            badgeChannelId    = storedExtBadge;
+            badgeExternalMode = true;
         } else {
             badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
             if (!badgeChannelId) {
                 badgeChannelId = crypto.randomUUID();
                 localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
             }
-        }
-    } else {
-        badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
-        if (!badgeChannelId) {
-            badgeChannelId = crypto.randomUUID();
-            localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
         }
     }
 
