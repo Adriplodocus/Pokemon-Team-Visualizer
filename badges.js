@@ -127,6 +127,7 @@ const BADGE_STRINGS = {
         badgeCopyPrompt:        'Copia este enlace:',
         badgeCopyEditorUrl:  '🔗 Copiar link para editor',
         badgeExternalBanner: id => `Controlando canal externo · ${id}`,
+        badgeExitExternal:   'Salir',
     },
     en: {
         pokemonMode:            'Pokémon',
@@ -151,6 +152,7 @@ const BADGE_STRINGS = {
         badgeCopyPrompt:        'Copy this link:',
         badgeCopyEditorUrl:  '🔗 Copy editor link',
         badgeExternalBanner: id => `Controlling external channel · ${id}`,
+        badgeExitExternal:   'Exit',
     },
 };
 
@@ -339,10 +341,14 @@ function updateBadgeObsHint() {
     const hint = document.getElementById('badge-obs-hint');
     if (!hint) return;
 
-    const banner = document.getElementById('external-banner');
-    if (banner) {
-        banner.classList.toggle('hidden', !badgeExternalMode);
-        if (badgeExternalMode) banner.textContent = tB('badgeExternalBanner', badgeChannelId.slice(0, 8));
+    if (typeof externalMode === 'undefined') {
+        const banner = document.getElementById('external-banner');
+        if (banner) {
+            banner.classList.toggle('hidden', !badgeExternalMode);
+            if (badgeExternalMode) banner.innerHTML =
+                `<span>${tB('badgeExternalBanner', badgeChannelId.slice(0, 8))}</span>` +
+                `<button onclick="exitBadgeExternalMode()">${tB('badgeExitExternal')}</button>`;
+        }
     }
 
     const [cols, rows] = badgeLayout.split('x').map(Number);
@@ -359,6 +365,11 @@ function updateBadgeObsHint() {
         (badgeExternalMode ? '' : `<button class="btn-channel-action" onclick="newBadgeChannel()">${tB('badgeNewChannel')}</button>`) +
         (badgeExternalMode ? '' : `<button class="btn-channel-action" onclick="copyBadgeEditorUrl()">${tB('badgeCopyEditorUrl')}</button>`) +
         `</div>`;
+}
+
+function exitBadgeExternalMode() {
+    sessionStorage.removeItem('ptv_external_badge_id');
+    location.href = location.pathname;
 }
 
 function copyBadgeOverlayUrl() {

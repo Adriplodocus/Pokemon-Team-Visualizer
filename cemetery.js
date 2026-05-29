@@ -54,6 +54,7 @@ const CEMETERY_STRINGS = {
         madeBy:               'Hecho por @MrKlypp',
         copyEditorUrl:        '🔗 Copiar link para editor',
         externalBanner:       id => `Controlando canal externo · ${id}`,
+        exitExternal:         'Salir',
         sharePromptCopy:      'Copia este enlace:',
     },
     en: {
@@ -84,6 +85,7 @@ const CEMETERY_STRINGS = {
         madeBy:               'Made by @MrKlypp',
         copyEditorUrl:        '🔗 Copy editor link',
         externalBanner:       id => `Controlling external channel · ${id}`,
+        exitExternal:         'Exit',
         sharePromptCopy:      'Copy this link:',
     },
 };
@@ -391,7 +393,9 @@ function updateObsUrl() {
     const banner = document.getElementById('external-banner');
     if (banner) {
         banner.classList.toggle('hidden', !externalMode);
-        if (externalMode) banner.textContent = tC('externalBanner', channelId.slice(0, 8));
+        if (externalMode) banner.innerHTML =
+            `<span>${tC('externalBanner', channelId.slice(0, 8))}</span>` +
+            `<button onclick="exitExternalMode()">${tC('exitExternal')}</button>`;
     }
 
     const newChannelBtn = document.getElementById('cemetery-new-channel-btn');
@@ -401,6 +405,12 @@ function updateObsUrl() {
 
     const el = document.getElementById('cemetery-obs-url-display');
     if (el) el.value = `https://pokemon.mrklypp.com/cemetery-overlay.html?id=${channelId}`;
+}
+
+function exitExternalMode() {
+    sessionStorage.removeItem('ptv_external_id');
+    sessionStorage.removeItem('ptv_external_badge_id');
+    location.href = location.pathname;
 }
 
 function copyObsUrl() {
