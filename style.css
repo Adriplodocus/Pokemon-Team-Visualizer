@@ -56,26 +56,33 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
 
 .header-social {
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
     gap: 8px;
     margin-bottom: 8px;
+}
+.header-social-top {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 .header-author {
     color: var(--pink);
     font-size: 13px;
     font-weight: 700;
+    text-decoration: none;
     transition: color 0.18s;
 }
 .header-author:hover { color: var(--cyan); }
 .header-error {
     font-size: 12px;
-    color: var(--text-2);
+    color: var(--error);
     margin-bottom: 8px;
 }
-.header-error a { color: var(--cyan); text-decoration: underline; }
-.header-error a:hover { color: var(--pink); }
+.header-error a { color: var(--error); text-decoration: underline; }
+.header-error a:hover { opacity: 0.8; }
 
 /* ── Lang toggle ─────────────────────────────────────────────── */
 .lang-toggle {
@@ -370,23 +377,20 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #status { text-align: center; min-height: 20px; font-size: 13px; margin-top: 2px; }
 
 /* ── Social ───────────────────────────────────────────────────── */
-.social { text-align: center; }
-.social p { font-size: 13px; color: var(--text); font-weight: 600; margin-bottom: 12px; }
 .social-links { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; }
-.social a {
+.social-links a {
     display: inline-block;
     background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 20px;
     color: var(--cyan);
     text-decoration: none;
-
     font-size: 12px;
     font-weight: 500;
     padding: 5px 14px;
     transition: background 0.15s, border-color 0.15s;
 }
-.social a:hover { background: var(--btn-hover); border-color: var(--cyan); }
+.social-links a:hover { background: var(--btn-hover); border-color: var(--cyan); }
 .donate-btn {
     display: inline-block;
     padding: 7px 22px;

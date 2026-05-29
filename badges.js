@@ -114,7 +114,6 @@ const BADGE_STRINGS = {
         badgeBrightness:        'Brillo inactivas',
         badgeObsHint:           dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
         badgeUrlLabel:          'URL para la fuente de navegador',
-        badgeUrlSub:            'No tienes que cambiarla salvo si creas una nueva.',
         badgeUrlCopy:           'Copiar',
         badgeUrlCopied:         '¡URL copiada!',
         badgePublishBtn:        '📡 Publicar medallas en OBS',
@@ -137,7 +136,6 @@ const BADGE_STRINGS = {
         badgeBrightness:        'Inactive brightness',
         badgeObsHint:           dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
         badgeUrlLabel:          'Browser source URL',
-        badgeUrlSub:            'No need to change it unless you create a new one.',
         badgeUrlCopy:           'Copy',
         badgeUrlCopied:         'URL copied!',
         badgePublishBtn:        '📡 Publish badges to OBS',
@@ -341,7 +339,6 @@ function updateBadgeObsHint() {
     hint.innerHTML =
         tB('badgeObsHint', dims) +
         `<br><br><span class="obs-url-label">${tB('badgeUrlLabel')}</span>` +
-        `<span class="obs-url-sub">${tB('badgeUrlSub')}</span>` +
         `<div class="obs-url-row">` +
         `<span class="obs-url-display">${url}</span>` +
         `<button class="btn-copy-url" onclick="copyBadgeOverlayUrl()">${tB('badgeUrlCopy')}</button>` +
