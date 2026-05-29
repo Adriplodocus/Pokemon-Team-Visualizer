@@ -371,7 +371,10 @@ function copyBadgeOverlayUrl() {
 }
 
 function copyBadgeEditorUrl() {
-    const url = `https://pokemon.mrklypp.com/badges.html?id=${badgeChannelId}`;
+    const mainId = sessionStorage.getItem('ptv_external_id');
+    const url = mainId
+        ? `https://pokemon.mrklypp.com/index.html?id=${mainId}&bid=${badgeChannelId}`
+        : `https://pokemon.mrklypp.com/badges.html?id=${badgeChannelId}`;
     if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => setBadgeStatus(tB('badgeUrlCopied'), 'var(--success)'));
     } else {
