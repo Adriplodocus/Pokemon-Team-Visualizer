@@ -51,6 +51,8 @@ const STRINGS = {
         tooltipNo:        'No',
         cookieMsg:        'Esta app usa <strong>localStorage</strong> para guardar tu equipo y ajustes en tu navegador. No hay cookies de seguimiento ni publicidad.',
         cookieOk:         'Entendido',
+        copyEditorUrl:   '🔗 Copiar link de editor',
+        externalBanner:  id => `Controlando canal externo · ${id}`,
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -103,6 +105,8 @@ const STRINGS = {
         tooltipNo:        'No',
         cookieMsg:        'This app uses <strong>localStorage</strong> to save your team and settings in your browser. No tracking cookies or ads.',
         cookieOk:         'Got it',
+        copyEditorUrl:   '🔗 Copy editor link',
+        externalBanner:  id => `Controlling external channel · ${id}`,
     }
 };
 
@@ -172,6 +176,7 @@ const team = Array.from({ length: 6 }, () => ({
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
 let channelId    = null;
+let externalMode = false;
 let modalIndex   = -1;
 let modalVars    = {};
 let dragSrcIndex    = -1;
@@ -734,6 +739,12 @@ function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
 // ── OBS hint ────────────────────────────────────────────────────
 function updateObsHint() {
+    const banner = document.getElementById('external-banner');
+    if (banner) {
+        banner.classList.toggle('hidden', !externalMode);
+        if (externalMode) banner.textContent = t('externalBanner', channelId.slice(0, 8));
+    }
+
     const layout = document.getElementById('layout-select').value;
     const dims   = layout === 'horizontal' ? '1350x265' : '265x1350';
     const url    = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
@@ -745,12 +756,22 @@ function updateObsHint() {
         `<button class="btn-copy-url" onclick="copyOverlayUrl()">${t('obsUrlCopy')}</button>` +
         `</div>` +
         `<div class="obs-channel-actions">` +
-        `<button class="btn-channel-action" onclick="newChannel()">${t('newChannel')}</button>` +
+        (externalMode ? '' : `<button class="btn-channel-action" onclick="newChannel()">${t('newChannel')}</button>`) +
+        (externalMode ? '' : `<button class="btn-channel-action" onclick="copyEditorUrl()">${t('copyEditorUrl')}</button>`) +
         `</div>`;
 }
 
 function copyOverlayUrl() {
     const url = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => setStatus(t('obsUrlCopied'), 'var(--success)'));
+    } else {
+        prompt(t('sharePromptCopy'), url);
+    }
+}
+
+function copyEditorUrl() {
+    const url = `https://pokemon.mrklypp.com/index.html?id=${channelId}`;
     if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => setStatus(t('obsUrlCopied'), 'var(--success)'));
     } else {
@@ -926,10 +947,16 @@ function dismissCookie() {
 
 // ── Init ─────────────────────────────────────────────────────────
 function initChannelId() {
-    channelId = localStorage.getItem('ptv_channel_id');
-    if (!channelId) {
-        channelId = crypto.randomUUID();
-        localStorage.setItem('ptv_channel_id', channelId);
+    const urlId = new URLSearchParams(location.search).get('id');
+    if (urlId) {
+        channelId    = urlId;
+        externalMode = true;
+    } else {
+        channelId = localStorage.getItem('ptv_channel_id');
+        if (!channelId) {
+            channelId = crypto.randomUUID();
+            localStorage.setItem('ptv_channel_id', channelId);
+        }
     }
 }
 
