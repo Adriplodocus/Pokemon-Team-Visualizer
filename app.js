@@ -778,8 +778,8 @@ function subscribeToAblyUpdates() {
         const channel = ably.channels.get(`ptv-${channelId}`);
         channel.subscribe('update', msg => {
             try {
-                const raw = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
-                applyRawState(raw);
+                const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
+                applyRawState(data.raw);
             } catch (_) {}
         });
     } catch (_) {}
