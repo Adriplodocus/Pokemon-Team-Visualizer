@@ -750,7 +750,7 @@ async function hydrateFromAbly() {
             refreshSprite(i);
         });
 
-        if (data.raw.layout) document.getElementById('layout-select').value = data.raw.layout;
+        if (data.raw.layout !== undefined) document.getElementById('layout-select').value = data.raw.layout;
         if (data.raw.shadows !== undefined) document.getElementById('shadows-check').checked = data.raw.shadows;
         if (data.raw.bg      !== undefined) document.getElementById('bg-check').checked      = data.raw.bg;
 
