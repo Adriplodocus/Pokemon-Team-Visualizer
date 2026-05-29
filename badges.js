@@ -467,6 +467,44 @@ function loadBadgeState() {
     if (brightness !== null) badgeBrightness = Math.min(100, Math.max(0, Number(brightness)));
 }
 
+async function hydrateFromAbly() {
+    try {
+        const resp = await fetch(`/api/load?id=${badgeChannelId}`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+
+        if (data.game && GAME_TO_REGION[data.game]) {
+            badgeGame   = data.game;
+            badgeRegion = GAME_TO_REGION[data.game];
+        } else if (data.region && REGION_DATA[data.region]) {
+            badgeRegion = data.region;
+        }
+
+        const count = REGION_DATA[badgeRegion].count;
+
+        if (data.layout) {
+            const layouts = getLayouts(count);
+            if (layouts.some(l => l.value === data.layout)) badgeLayout = data.layout;
+        }
+        if (Array.isArray(data.active) && data.active.length === count) {
+            badgeActive = data.active.map(Boolean);
+        }
+        if (data.brightness !== undefined) {
+            badgeBrightness = Math.min(100, Math.max(0, Number(data.brightness)));
+        }
+
+        if (!badgeExternalMode) saveBadgeState();
+
+        buildBadgeGameSelect();
+        buildBadgeLayoutSelect();
+        buildBadgeCheckboxes();
+        document.getElementById('badge-brightness').value           = badgeBrightness;
+        document.getElementById('badge-brightness-val').textContent = badgeBrightness + '%';
+        updateBadgeObsHint();
+        updateBadgePreview();
+    } catch (_) {}
+}
+
 // ── Init ──────────────────────────────────────────────────────────
 function initBadges() {
     if (typeof ACTIVE_PAGE !== 'undefined' && ACTIVE_PAGE === 'badges') {
@@ -500,6 +538,7 @@ function initBadges() {
 
     if (typeof setMode === 'function') setMode('pokemon');
     updateBadgePreview();
+    hydrateFromAbly();
 }
 
 initBadges();
