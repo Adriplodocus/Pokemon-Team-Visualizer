@@ -848,8 +848,6 @@ function copyEditorUrl() {
 
 // ── Publish to OBS via Ably ──────────────────────────────────────
 async function publishToObs() {
-    const hasAny = team.some(s => s.name.trim());
-    if (!hasAny) { setStatus(t('errNoName'), 'var(--error)'); return; }
     if (!validateTeam()) return;
 
     const entries = team.map(slot => {
