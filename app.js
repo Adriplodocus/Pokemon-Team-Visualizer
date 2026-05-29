@@ -53,6 +53,7 @@ const STRINGS = {
         cookieOk:         'Entendido',
         copyEditorUrl:   '🔗 Copiar link para editor',
         externalBanner:  id => `Controlando canal externo · ${id}`,
+        exitExternal:    'Salir',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -107,6 +108,7 @@ const STRINGS = {
         cookieOk:         'Got it',
         copyEditorUrl:   '🔗 Copy editor link',
         externalBanner:  id => `Controlling external channel · ${id}`,
+        exitExternal:    'Exit',
     }
 };
 
@@ -781,7 +783,9 @@ function updateObsHint() {
     const banner = document.getElementById('external-banner');
     if (banner) {
         banner.classList.toggle('hidden', !externalMode);
-        if (externalMode) banner.textContent = t('externalBanner', channelId.slice(0, 8));
+        if (externalMode) banner.innerHTML =
+            `<span>${t('externalBanner', channelId.slice(0, 8))}</span>` +
+            `<button onclick="exitExternalMode()">${t('exitExternal')}</button>`;
     }
 
     const layout = document.getElementById('layout-select').value;
@@ -798,6 +802,12 @@ function updateObsHint() {
         (externalMode ? '' : `<button class="btn-channel-action" onclick="newChannel()">${t('newChannel')}</button>`) +
         (externalMode ? '' : `<button class="btn-channel-action" onclick="copyEditorUrl()">${t('copyEditorUrl')}</button>`) +
         `</div>`;
+}
+
+function exitExternalMode() {
+    sessionStorage.removeItem('ptv_external_id');
+    sessionStorage.removeItem('ptv_external_badge_id');
+    location.href = location.pathname;
 }
 
 function copyOverlayUrl() {
