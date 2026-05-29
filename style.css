@@ -887,6 +887,9 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     flex-direction: column;
     gap: 20px;
   }
+  .pokemon-desktop-layout > .card--preview {
+    max-width: 1040px;
+  }
   .pokemon-bottom-cols {
     display: grid;
     grid-template-columns: 1fr 300px;
