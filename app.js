@@ -728,6 +728,44 @@ function loadState() {
     if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
 }
 
+async function hydrateFromAbly() {
+    try {
+        const resp = await fetch(`/api/load?id=${channelId}&event=update`);
+        if (!resp.ok) return;
+        const data = await resp.json();
+        if (!data.raw || !Array.isArray(data.raw.team)) return;
+
+        data.raw.team.forEach((slot, i) => {
+            if (i >= 6) return;
+            team[i] = {
+                name:       slot.name || '',
+                mote:       slot.mote || '',
+                properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) },
+            };
+            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+            if (!row) return;
+            row.querySelector('.name-input').value = team[i].name;
+            row.querySelector('.mote-input').value = team[i].mote;
+            refreshIcons(i);
+            refreshSprite(i);
+        });
+
+        if (data.raw.layout) document.getElementById('layout-select').value = data.raw.layout;
+        if (data.raw.shadows !== undefined) document.getElementById('shadows-check').checked = data.raw.shadows;
+        if (data.raw.bg      !== undefined) document.getElementById('bg-check').checked      = data.raw.bg;
+
+        if (!externalMode) {
+            localStorage.setItem('ptv_team', JSON.stringify(team));
+            if (data.raw.layout  !== undefined) localStorage.setItem('ptv_layout',  data.raw.layout);
+            if (data.raw.shadows !== undefined) localStorage.setItem('ptv_shadows', String(data.raw.shadows));
+            if (data.raw.bg      !== undefined) localStorage.setItem('ptv_bg',      String(data.raw.bg));
+        }
+
+        updatePreview();
+        updateObsHint();
+    } catch (_) {}
+}
+
 // ── Helpers ─────────────────────────────────────────────────────
 function setStatus(msg, color) {
     const el = document.getElementById('status');
@@ -978,3 +1016,4 @@ loadState();
 setLang(currentLang);
 updatePreview();
 initCookieNotice();
+hydrateFromAbly();
