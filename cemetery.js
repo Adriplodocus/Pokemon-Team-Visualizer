@@ -532,7 +532,7 @@ function updateCemeteryPreview() {
 
     const overlayW = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 10 + 10;
     const overlayH = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 10 + 10;
-    const scale    = containerW / overlayW;
+    const scale    = Math.min(1, containerW / overlayW);
 
     iframe.style.width     = overlayW + 'px';
     iframe.style.height    = overlayH + 'px';
