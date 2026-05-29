@@ -20,38 +20,9 @@
 <div id="app">
 <div id="external-banner" class="external-banner hidden"></div>
 
-<div id="section-pokemon" class="desktop-layout">
-<div class="desktop-col-left">
+<div id="section-pokemon" class="pokemon-desktop-layout">
 
-    <!-- Team -->
-    <div class="card card--team">
-        <div id="team-rows"></div>
-    </div>
-
-    <!-- Presets -->
-    <div class="card card--presets">
-        <div class="presets-bar" id="presets-bar"></div>
-    </div>
-
-    <!-- Settings -->
-    <div class="card">
-        <div class="settings-row">
-            <label>
-                <span data-i18n="layout"></span>
-                <select id="layout-select">
-                    <option value="horizontal" data-i18n="horizontal"></option>
-                    <option value="vertical" data-i18n="vertical"></option>
-                </select>
-            </label>
-            <label><input type="checkbox" id="shadows-check" checked> <span data-i18n="showShadows"></span></label>
-            <label><input type="checkbox" id="bg-check" checked> <span data-i18n="showBg"></span></label>
-        </div>
-    </div>
-
-</div><!-- /desktop-col-left -->
-<div class="desktop-col-right">
-
-    <!-- Live preview -->
+    <!-- Live preview: full width top -->
     <div class="card card--preview" id="preview-card">
         <p id="preview-msg" style="display:none"></p>
         <div id="preview-wrapper">
@@ -59,17 +30,51 @@
         </div>
     </div>
 
-    <!-- Actions -->
-    <div class="card card--actions">
-        <div class="actions">
-            <p id="obs-hint" class="obs-hint"></p>
-            <button class="btn-publish" onclick="publishToObs()" data-i18n="publishBtn"></button>
-            <button class="btn-reset" onclick="resetAll()" data-i18n="resetBtn"></button>
-            <div id="status"></div>
-        </div>
-    </div>
+    <!-- Bottom row: editor left, actions right -->
+    <div class="pokemon-bottom-cols">
+    <div class="desktop-col-left">
 
-</div><!-- /desktop-col-right -->
+        <!-- Team -->
+        <div class="card card--team">
+            <div id="team-rows"></div>
+        </div>
+
+        <!-- Presets -->
+        <div class="card card--presets">
+            <div class="presets-bar" id="presets-bar"></div>
+        </div>
+
+        <!-- Settings -->
+        <div class="card">
+            <div class="settings-row">
+                <label>
+                    <span data-i18n="layout"></span>
+                    <select id="layout-select">
+                        <option value="horizontal" data-i18n="horizontal"></option>
+                        <option value="vertical" data-i18n="vertical"></option>
+                    </select>
+                </label>
+                <label><input type="checkbox" id="shadows-check" checked> <span data-i18n="showShadows"></span></label>
+                <label><input type="checkbox" id="bg-check" checked> <span data-i18n="showBg"></span></label>
+            </div>
+        </div>
+
+    </div><!-- /desktop-col-left -->
+    <div class="pokemon-actions-col">
+
+        <!-- Actions -->
+        <div class="card card--actions">
+            <div class="actions">
+                <p id="obs-hint" class="obs-hint"></p>
+                <button class="btn-publish" onclick="publishToObs()" data-i18n="publishBtn"></button>
+                <button class="btn-reset" onclick="resetAll()" data-i18n="resetBtn"></button>
+                <div id="status"></div>
+            </div>
+        </div>
+
+    </div><!-- /pokemon-actions-col -->
+    </div><!-- /pokemon-bottom-cols -->
+
 </div><!-- /section-pokemon -->
 
 <div id="section-badges" class="hidden desktop-layout">

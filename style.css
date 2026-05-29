@@ -881,4 +881,21 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     position: sticky;
     top: 20px;
   }
+
+  /* Pokémon page: preview full-width top, editor + actions below */
+  .pokemon-desktop-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .pokemon-bottom-cols {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 20px;
+    align-items: start;
+  }
+  .pokemon-actions-col {
+    position: sticky;
+    top: 20px;
+  }
 }
