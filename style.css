@@ -93,7 +93,7 @@ h1 .header-brand:hover { transform: scale(1.08); }
 }
 .lang-toggle button.active { background: var(--btn-hover); color: var(--text); }
 
-#app { width: 100%; max-width: 680px; }
+#app { width: 100%; max-width: 1120px; }
 
 /* ── Cards ───────────────────────────────────────────────────── */
 .card {
@@ -865,3 +865,17 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     transition: color 0.2s;
 }
 .site-footer a:hover { color: rgba(255,255,255,0.35); }
+
+/* ── Desktop layout ──────────────────────────────────────────── */
+@media (min-width: 900px) {
+  .desktop-layout {
+    display: grid;
+    grid-template-columns: 440px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+  .desktop-col-right {
+    position: sticky;
+    top: 20px;
+  }
+}
