@@ -730,41 +730,58 @@ function loadState() {
     if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
 }
 
+function applyRawState(raw) {
+    if (!raw || !Array.isArray(raw.team)) return;
+
+    raw.team.forEach((slot, i) => {
+        if (i >= 6) return;
+        team[i] = {
+            name:       slot.name || '',
+            mote:       slot.mote || '',
+            properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) },
+        };
+        const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
+        if (!row) return;
+        row.querySelector('.name-input').value = team[i].name;
+        row.querySelector('.mote-input').value = team[i].mote;
+        refreshIcons(i);
+        refreshSprite(i);
+    });
+
+    if (raw.layout  !== undefined) document.getElementById('layout-select').value  = raw.layout;
+    if (raw.shadows !== undefined) document.getElementById('shadows-check').checked = raw.shadows;
+    if (raw.bg      !== undefined) document.getElementById('bg-check').checked      = raw.bg;
+
+    if (!externalMode) {
+        localStorage.setItem('ptv_team', JSON.stringify(team));
+        if (raw.layout  !== undefined) localStorage.setItem('ptv_layout',  raw.layout);
+        if (raw.shadows !== undefined) localStorage.setItem('ptv_shadows', String(raw.shadows));
+        if (raw.bg      !== undefined) localStorage.setItem('ptv_bg',      String(raw.bg));
+    }
+
+    updatePreview();
+    updateObsHint();
+}
+
 async function hydrateFromAbly() {
     try {
         const resp = await fetch(`/api/load?id=${channelId}&event=update`);
         if (!resp.ok) return;
         const data = await resp.json();
-        if (!data.raw || !Array.isArray(data.raw.team)) return;
+        applyRawState(data.raw);
+    } catch (_) {}
+}
 
-        data.raw.team.forEach((slot, i) => {
-            if (i >= 6) return;
-            team[i] = {
-                name:       slot.name || '',
-                mote:       slot.mote || '',
-                properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) },
-            };
-            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-            if (!row) return;
-            row.querySelector('.name-input').value = team[i].name;
-            row.querySelector('.mote-input').value = team[i].mote;
-            refreshIcons(i);
-            refreshSprite(i);
+function subscribeToAblyUpdates() {
+    try {
+        const ably = new Ably.Realtime({ authUrl: '/api/token' });
+        const channel = ably.channels.get(`ptv-${channelId}`);
+        channel.subscribe('update', msg => {
+            try {
+                const raw = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
+                applyRawState(raw);
+            } catch (_) {}
         });
-
-        if (data.raw.layout !== undefined) document.getElementById('layout-select').value = data.raw.layout;
-        if (data.raw.shadows !== undefined) document.getElementById('shadows-check').checked = data.raw.shadows;
-        if (data.raw.bg      !== undefined) document.getElementById('bg-check').checked      = data.raw.bg;
-
-        if (!externalMode) {
-            localStorage.setItem('ptv_team', JSON.stringify(team));
-            if (data.raw.layout  !== undefined) localStorage.setItem('ptv_layout',  data.raw.layout);
-            if (data.raw.shadows !== undefined) localStorage.setItem('ptv_shadows', String(data.raw.shadows));
-            if (data.raw.bg      !== undefined) localStorage.setItem('ptv_bg',      String(data.raw.bg));
-        }
-
-        updatePreview();
-        updateObsHint();
     } catch (_) {}
 }
 
@@ -1039,3 +1056,4 @@ setLang(currentLang);
 updatePreview();
 initCookieNotice();
 hydrateFromAbly();
+subscribeToAblyUpdates();
