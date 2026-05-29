@@ -1,14 +1,21 @@
 export async function onRequestGet(context) {
     if (!context.env.ABLY_API_KEY) return json({ error: 'Not configured' }, 503);
 
-    const id = new URL(context.request.url).searchParams.get('id');
+    const url    = new URL(context.request.url);
+    const id     = url.searchParams.get('id');
+    const event  = url.searchParams.get('event');
+
     if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
+    if (event && !/^[a-z-]+$/.test(event))   return json({ error: 'Invalid event' }, 400);
 
     try {
-        const resp = await fetch(
-            `https://rest.ably.io/channels/ptv-${id}/messages?limit=1`,
-            { headers: { 'Authorization': 'Basic ' + btoa(context.env.ABLY_API_KEY) } }
-        );
+        const ablyUrl = new URL(`https://rest.ably.io/channels/ptv-${id}/messages`);
+        ablyUrl.searchParams.set('limit', '1');
+        if (event) ablyUrl.searchParams.set('name', event);
+
+        const resp = await fetch(ablyUrl.toString(), {
+            headers: { 'Authorization': 'Basic ' + btoa(context.env.ABLY_API_KEY) }
+        });
         if (!resp.ok) return json({ error: 'Ably error' }, 502);
 
         const messages = await resp.json();
