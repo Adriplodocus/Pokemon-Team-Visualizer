@@ -810,7 +810,8 @@ function copyOverlayUrl() {
 }
 
 function copyEditorUrl() {
-    const url = `https://pokemon.mrklypp.com/index.html?id=${channelId}`;
+    const bid = typeof badgeChannelId !== 'undefined' && badgeChannelId ? `&bid=${badgeChannelId}` : '';
+    const url = `https://pokemon.mrklypp.com/index.html?id=${channelId}${bid}`;
     if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => setStatus(t('obsUrlCopied'), 'var(--success)'));
     } else {
@@ -987,15 +988,26 @@ function dismissCookie() {
 
 // ── Init ─────────────────────────────────────────────────────────
 function initChannelId() {
-    const urlId = new URLSearchParams(location.search).get('id');
+    const params = new URLSearchParams(location.search);
+    const urlId  = params.get('id');
+    const bidId  = params.get('bid');
+
     if (urlId) {
         channelId    = urlId;
         externalMode = true;
+        sessionStorage.setItem('ptv_external_id', urlId);
+        if (bidId) sessionStorage.setItem('ptv_external_badge_id', bidId);
     } else {
-        channelId = localStorage.getItem('ptv_channel_id');
-        if (!channelId) {
-            channelId = crypto.randomUUID();
-            localStorage.setItem('ptv_channel_id', channelId);
+        const storedExtId = sessionStorage.getItem('ptv_external_id');
+        if (storedExtId) {
+            channelId    = storedExtId;
+            externalMode = true;
+        } else {
+            channelId = localStorage.getItem('ptv_channel_id');
+            if (!channelId) {
+                channelId = crypto.randomUUID();
+                localStorage.setItem('ptv_channel_id', channelId);
+            }
         }
     }
 }
