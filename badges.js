@@ -340,9 +340,9 @@ function updateBadgeObsHint() {
     if (!hint) return;
 
     const banner = document.getElementById('external-banner');
-    if (banner && badgeExternalMode) {
-        banner.classList.remove('hidden');
-        banner.textContent = tB('badgeExternalBanner', badgeChannelId.slice(0, 8));
+    if (banner) {
+        banner.classList.toggle('hidden', !badgeExternalMode);
+        if (badgeExternalMode) banner.textContent = tB('badgeExternalBanner', badgeChannelId.slice(0, 8));
     }
 
     const [cols, rows] = badgeLayout.split('x').map(Number);
