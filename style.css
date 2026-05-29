@@ -57,12 +57,10 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
 h1 .header-brand {
     color: var(--pink);
     text-decoration: none;
-    transition: color 0.18s, text-shadow 0.18s;
+    display: inline-block;
+    transition: transform 0.18s;
 }
-h1 .header-brand:hover {
-    color: var(--pink);
-    text-shadow: 0 0 12px rgba(255, 86, 180, 0.7), 0 0 28px rgba(255, 86, 180, 0.35);
-}
+h1 .header-brand:hover { transform: scale(1.08); }
 .header-error {
     font-size: 12px;
     color: var(--error);
