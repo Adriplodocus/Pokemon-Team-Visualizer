@@ -54,6 +54,7 @@ const CEMETERY_STRINGS = {
         madeBy:               'Hecho por @MrKlypp',
         copyEditorUrl:        '🔗 Copiar link de editor',
         externalBanner:       id => `Controlando canal externo · ${id}`,
+        sharePromptCopy:      'Copia este enlace:',
     },
     en: {
         obsHint:              dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
@@ -83,6 +84,7 @@ const CEMETERY_STRINGS = {
         madeBy:               'Made by @MrKlypp',
         copyEditorUrl:        '🔗 Copy editor link',
         externalBanner:       id => `Controlling external channel · ${id}`,
+        sharePromptCopy:      'Copy this link:',
     },
 };
 
@@ -378,9 +380,11 @@ function copyObsUrl() {
 
 function copyEditorUrl() {
     const url = `https://pokemon.mrklypp.com/cemetery.html?id=${channelId}`;
-    navigator.clipboard
-        ? navigator.clipboard.writeText(url).then(() => setStatus(tC('obsUrlCopied'), 'var(--success)'))
-        : prompt(tC('obsUrlCopied'), url);
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => setStatus(tC('obsUrlCopied'), 'var(--success)'));
+    } else {
+        prompt(tC('sharePromptCopy'), url);
+    }
 }
 
 function newChannel() {
