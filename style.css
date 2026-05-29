@@ -867,12 +867,15 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .site-footer a:hover { color: rgba(255,255,255,0.35); }
 
 /* ── Desktop layout ──────────────────────────────────────────── */
-@media (min-width: 900px) {
+@media (min-width: 1120px) {
   .desktop-layout {
     display: grid;
-    grid-template-columns: 440px 1fr;
+    grid-template-columns: 1fr 380px;
     gap: 20px;
     align-items: start;
+  }
+  .desktop-col-left {
+    min-width: 0;
   }
   .desktop-col-right {
     position: sticky;
