@@ -411,7 +411,14 @@ async function publishCemetery() {
         const resp = await fetch('/api/publish', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify({ id: channelId, event: 'cemetery-update', pokemon: entries, cols: CEMETERY_COLS, rows: CEMETERY_ROWS }),
+            body: JSON.stringify({
+                id:      channelId,
+                event:   'cemetery-update',
+                pokemon: entries,
+                cols:    CEMETERY_COLS,
+                rows:    CEMETERY_ROWS,
+                raw:     cemetery.map(e => ({ name: e.name, mote: e.mote, props: { ...e.props } })),
+            }),
         });
         setStatus(resp.ok ? tC('cemeteryPublishOk') : tC('cemeteryPublishErr'),
                   resp.ok ? 'var(--success)' : 'var(--error)');
