@@ -255,7 +255,6 @@ function initInput() {
         updatePendingSprite();
     });
 
-    moteInput.addEventListener('input', () => { pendingEntry.mote = moteInput.value; });
 
     document.addEventListener('click', e => {
         if (!e.target.closest('#cemetery-ac-wrapper')) closeSuggestions(suggestions);
@@ -340,7 +339,6 @@ function addToCemetery() {
     saveCemetery();
     renderCemetery();
     document.getElementById('cemetery-name-input').value = '';
-    document.getElementById('cemetery-mote-input').value = '';
     document.getElementById('cemetery-pending-sprite').style.display = 'none';
     pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
 }
@@ -491,8 +489,6 @@ function applyCemeteryLang() {
     }
     const nameInput = document.getElementById('cemetery-name-input');
     if (nameInput) nameInput.placeholder = tC('namePh');
-    const moteInput = document.getElementById('cemetery-mote-input');
-    if (moteInput) moteInput.placeholder = tC('notePh');
     const modalApply = document.querySelector('.modal-apply');
     if (modalApply) modalApply.textContent = tC('modalSet');
     updateCemeteryObsHint();
