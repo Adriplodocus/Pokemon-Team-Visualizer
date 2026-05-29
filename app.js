@@ -51,7 +51,7 @@ const STRINGS = {
         tooltipNo:        'No',
         cookieMsg:        'Esta app usa <strong>localStorage</strong> para guardar tu equipo y ajustes en tu navegador. No hay cookies de seguimiento ni publicidad.',
         cookieOk:         'Entendido',
-        copyEditorUrl:   '🔗 Copiar link de editor',
+        copyEditorUrl:   '🔗 Copiar link para editor',
         externalBanner:  id => `Controlando canal externo · ${id}`,
     },
     en: {

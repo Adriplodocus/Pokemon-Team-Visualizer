@@ -125,7 +125,7 @@ const BADGE_STRINGS = {
         badgeConfirmReset:      '¿Resetear todas las medallas?',
         badgeSuccessReset:      'Medallas reseteadas.',
         badgeCopyPrompt:        'Copia este enlace:',
-        badgeCopyEditorUrl:  '🔗 Copiar link de editor',
+        badgeCopyEditorUrl:  '🔗 Copiar link para editor',
         badgeExternalBanner: id => `Controlando canal externo · ${id}`,
     },
     en: {

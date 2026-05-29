@@ -52,7 +52,7 @@ const CEMETERY_STRINGS = {
         errUnknown:           n => `Pokémon desconocido: ${n}`,
         errWriteFirst:        'Escribe primero un nombre de Pokémon.',
         madeBy:               'Hecho por @MrKlypp',
-        copyEditorUrl:        '🔗 Copiar link de editor',
+        copyEditorUrl:        '🔗 Copiar link para editor',
         externalBanner:       id => `Controlando canal externo · ${id}`,
         sharePromptCopy:      'Copia este enlace:',
     },
