@@ -10,36 +10,8 @@
 <script src="lang.js"></script>
 </head>
 <body>
-<header>
-    <h1>Pokémon Stream Visualizer</h1>
-    <p class="subtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
-    <div class="header-social">
-        <div class="header-social-top">
-            <a href="https://mrklypp.com/" target="_blank" rel="noopener" class="header-author">Hecho por MrKlypp</a>
-            <a href="https://paypal.me/MrKlypp" target="_blank" rel="noopener" class="donate-btn">💜 Donar</a>
-        </div>
-        <div class="social-links">
-            <a href="https://www.twitch.tv/MrKlypp" target="_blank">Twitch</a>
-            <a href="https://www.youtube.com/@MrKlypp" target="_blank">YouTube</a>
-            <a href="https://www.instagram.com/MrKlypp_/" target="_blank">Instagram</a>
-            <a href="https://www.tiktok.com/@mrklypp" target="_blank">TikTok</a>
-            <a href="https://x.com/MrKlypp" target="_blank">X</a>
-        </div>
-    </div>
-    <p class="header-error">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
-    <div class="header-controls-row">
-        <div class="mode-toggle">
-            <a href="index.html" id="mode-btn-pokemon" class="mode-btn" data-i18n-badge="pokemonMode">Pokémon</a>
-            <a href="cemetery.html" id="mode-btn-cemetery" class="mode-btn" data-i18n-badge="cemeteryMode">Cementerio</a>
-            <a href="badges.html" id="mode-btn-badges" class="mode-btn active" data-i18n-badge="badgeMode">Medallas</a>
-            <a href="types.html" id="mode-btn-types" class="mode-btn" data-i18n-badge="typesMode">Tabla de tipos</a>
-        </div>
-        <div class="lang-toggle">
-            <button id="lang-es" onclick="setLang('es')">ES</button>
-            <button id="lang-en" onclick="setLang('en')">EN</button>
-        </div>
-    </div>
-</header>
+<script>const ACTIVE_PAGE = 'badges';</script>
+<script src="header.js"></script>
 <div id="app">
 
     <!-- Settings -->
