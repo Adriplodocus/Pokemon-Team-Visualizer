@@ -892,6 +892,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     grid-template-columns: 1fr 300px;
     gap: 20px;
     align-items: start;
+    max-width: 1040px;
   }
   .pokemon-actions-col {
     position: sticky;
