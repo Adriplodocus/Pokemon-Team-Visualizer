@@ -395,6 +395,7 @@ async function publishBadgesToObs() {
             body:    JSON.stringify({
                 id:         badgeChannelId,
                 region:     badgeRegion,
+                game:       badgeGame,
                 layout:     badgeLayout,
                 active:     badgeActive,
                 brightness: badgeBrightness,
