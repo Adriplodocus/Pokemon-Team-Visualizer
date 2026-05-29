@@ -536,8 +536,8 @@ function updateCemeteryPreview() {
 
     iframe.style.width     = overlayW + 'px';
     iframe.style.height    = overlayH + 'px';
-    iframe.style.transform = `scale(${scale})`;
-    wrapper.style.width    = Math.round(overlayW * scale) + 'px';
+    iframe.style.transform = `translateX(-50%) scale(${scale})`;
+    wrapper.style.width    = containerW + 'px';
     wrapper.style.height   = Math.round(overlayH * scale) + 'px';
     wrapper.style.margin   = '0';
 }
