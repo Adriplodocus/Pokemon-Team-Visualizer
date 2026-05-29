@@ -52,6 +52,8 @@ const CEMETERY_STRINGS = {
         errUnknown:           n => `Pokémon desconocido: ${n}`,
         errWriteFirst:        'Escribe primero un nombre de Pokémon.',
         madeBy:               'Hecho por @MrKlypp',
+        copyEditorUrl:        '🔗 Copiar link de editor',
+        externalBanner:       id => `Controlando canal externo · ${id}`,
     },
     en: {
         obsHint:              dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
@@ -79,6 +81,8 @@ const CEMETERY_STRINGS = {
         errUnknown:           n => `Unknown Pokémon: ${n}`,
         errWriteFirst:        'Write a Pokémon name first.',
         madeBy:               'Made by @MrKlypp',
+        copyEditorUrl:        '🔗 Copy editor link',
+        externalBanner:       id => `Controlling external channel · ${id}`,
     },
 };
 
@@ -90,6 +94,7 @@ function tC(key, arg) {
 // ── State ─────────────────────────────────────────────────────────
 let cemetery = [];
 let channelId = null;
+let externalMode = false;
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
 let pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
@@ -97,10 +102,16 @@ let modalProps   = { ...DEFAULT_PROPS };
 
 // ── Channel ID ────────────────────────────────────────────────────
 function initChannelId() {
-    channelId = localStorage.getItem('ptv_channel_id');
-    if (!channelId) {
-        channelId = crypto.randomUUID();
-        localStorage.setItem('ptv_channel_id', channelId);
+    const urlId = new URLSearchParams(location.search).get('id');
+    if (urlId) {
+        channelId    = urlId;
+        externalMode = true;
+    } else {
+        channelId = localStorage.getItem('ptv_channel_id');
+        if (!channelId) {
+            channelId = crypto.randomUUID();
+            localStorage.setItem('ptv_channel_id', channelId);
+        }
     }
 }
 
@@ -345,6 +356,17 @@ function renderCemetery() {
 
 // ── OBS URL ────────────────────────────────────────────────────────
 function updateObsUrl() {
+    const banner = document.getElementById('external-banner');
+    if (banner) {
+        banner.classList.toggle('hidden', !externalMode);
+        if (externalMode) banner.textContent = tC('externalBanner', channelId.slice(0, 8));
+    }
+
+    const newChannelBtn = document.getElementById('cemetery-new-channel-btn');
+    const copyEditorBtn = document.getElementById('cemetery-copy-editor-btn');
+    if (newChannelBtn) newChannelBtn.classList.toggle('hidden', externalMode);
+    if (copyEditorBtn) copyEditorBtn.classList.toggle('hidden', externalMode);
+
     const el = document.getElementById('cemetery-obs-url-display');
     if (el) el.value = `https://pokemon.mrklypp.com/cemetery-overlay.html?id=${channelId}`;
 }
@@ -352,6 +374,13 @@ function updateObsUrl() {
 function copyObsUrl() {
     const url = `https://pokemon.mrklypp.com/cemetery-overlay.html?id=${channelId}`;
     navigator.clipboard.writeText(url).then(() => setStatus(tC('obsUrlCopied'), 'var(--success)'));
+}
+
+function copyEditorUrl() {
+    const url = `https://pokemon.mrklypp.com/cemetery.html?id=${channelId}`;
+    navigator.clipboard
+        ? navigator.clipboard.writeText(url).then(() => setStatus(tC('obsUrlCopied'), 'var(--success)'))
+        : prompt(tC('obsUrlCopied'), url);
 }
 
 function newChannel() {
@@ -410,6 +439,7 @@ function applyCemeteryLang() {
         'cemetery-url-label':       tC('obsUrlLabel'),
         'cemetery-copy-btn':        tC('obsUrlCopy'),
         'cemetery-new-channel-btn': tC('newChannel'),
+        'cemetery-copy-editor-btn': tC('copyEditorUrl'),
         'cemetery-empty':           tC('cemeteryEmpty'),
         'cemetery-props-btn':       tC('propsBtn'),
         'made-by':                  tC('madeBy'),
