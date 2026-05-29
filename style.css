@@ -55,7 +55,7 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
 .subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 10px; }
 
 h1 .header-brand {
-    color: var(--pink);
+    color: var(--accent);
     text-decoration: none;
     display: inline-block;
     transition: transform 0.18s;
@@ -333,7 +333,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 8px;
     background: rgba(255, 86, 180, 0.10);
     border: 1px solid rgba(255, 86, 180, 0.30);
-    color: var(--pink);
+    color: var(--accent);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -350,7 +350,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 8px;
     background: rgba(255, 86, 180, 0.10);
     border: 1px solid rgba(255, 86, 180, 0.30);
-    color: var(--pink);
+    color: var(--accent);
     font-size: 11px;
     font-weight: 700;
     letter-spacing: 0.05em;
@@ -365,7 +365,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     background: rgba(255, 86, 180, 0.15);
     border: 1px solid rgba(255, 86, 180, 0.35);
     border-radius: 5px;
-    color: var(--pink);
+    color: var(--accent);
     font-family: 'JetBrains Mono', monospace;
     font-size: 10px;
     font-weight: 700;
@@ -615,7 +615,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 0.35rem;
 }
 .badge-check-item input[type="checkbox"] {
-    accent-color: var(--pink);
+    accent-color: var(--accent);
     width: 14px;
     height: 14px;
     cursor: pointer;
@@ -636,7 +636,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     color: var(--text-em);
 }
 .badge-brightness-row input[type="range"] {
-    accent-color: var(--pink);
+    accent-color: var(--accent);
     flex: 1;
 }
 #badge-brightness-val {
