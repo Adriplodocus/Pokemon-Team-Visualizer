@@ -125,6 +125,8 @@ const BADGE_STRINGS = {
         badgeConfirmReset:      '¿Resetear todas las medallas?',
         badgeSuccessReset:      'Medallas reseteadas.',
         badgeCopyPrompt:        'Copia este enlace:',
+        badgeCopyEditorUrl:  '🔗 Copiar link de editor',
+        badgeExternalBanner: id => `Controlando canal externo · ${id}`,
     },
     en: {
         pokemonMode:            'Pokémon',
@@ -147,6 +149,8 @@ const BADGE_STRINGS = {
         badgeConfirmReset:      'Reset all badge data?',
         badgeSuccessReset:      'Badges reset.',
         badgeCopyPrompt:        'Copy this link:',
+        badgeCopyEditorUrl:  '🔗 Copy editor link',
+        badgeExternalBanner: id => `Controlling external channel · ${id}`,
     },
 };
 
@@ -188,6 +192,7 @@ let badgeLayout     = '4x2';
 let badgeActive     = Array(8).fill(false);
 let badgeBrightness = 20;
 let badgeChannelId  = null;
+let badgeExternalMode = false;
 
 // ── Selectors ────────────────────────────────────────────────────
 function buildBadgeGameSelect() {
@@ -333,6 +338,13 @@ function updateBadgePreview() {
 function updateBadgeObsHint() {
     const hint = document.getElementById('badge-obs-hint');
     if (!hint) return;
+
+    const banner = document.getElementById('external-banner');
+    if (banner && badgeExternalMode) {
+        banner.classList.remove('hidden');
+        banner.textContent = tB('badgeExternalBanner', badgeChannelId.slice(0, 8));
+    }
+
     const [cols, rows] = badgeLayout.split('x').map(Number);
     const dims = `${cols * 80}×${rows * 80}`;
     const url  = `https://pokemon.mrklypp.com/badge-overlay.html?id=${badgeChannelId}`;
@@ -344,12 +356,22 @@ function updateBadgeObsHint() {
         `<button class="btn-copy-url" onclick="copyBadgeOverlayUrl()">${tB('badgeUrlCopy')}</button>` +
         `</div>` +
         `<div class="obs-channel-actions">` +
-        `<button class="btn-channel-action" onclick="newBadgeChannel()">${tB('badgeNewChannel')}</button>` +
+        (badgeExternalMode ? '' : `<button class="btn-channel-action" onclick="newBadgeChannel()">${tB('badgeNewChannel')}</button>`) +
+        (badgeExternalMode ? '' : `<button class="btn-channel-action" onclick="copyBadgeEditorUrl()">${tB('badgeCopyEditorUrl')}</button>`) +
         `</div>`;
 }
 
 function copyBadgeOverlayUrl() {
     const url = `https://pokemon.mrklypp.com/badge-overlay.html?id=${badgeChannelId}`;
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(url).then(() => setBadgeStatus(tB('badgeUrlCopied'), 'var(--success)'));
+    } else {
+        prompt(tB('badgeCopyPrompt'), url);
+    }
+}
+
+function copyBadgeEditorUrl() {
+    const url = `https://pokemon.mrklypp.com/badges.html?id=${badgeChannelId}`;
     if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => setBadgeStatus(tB('badgeUrlCopied'), 'var(--success)'));
     } else {
@@ -445,18 +467,32 @@ function loadBadgeState() {
 
 // ── Init ──────────────────────────────────────────────────────────
 function initBadges() {
-    badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
-    if (!badgeChannelId) {
-        badgeChannelId = crypto.randomUUID();
-        localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+    if (typeof ACTIVE_PAGE !== 'undefined' && ACTIVE_PAGE === 'badges') {
+        const urlId = new URLSearchParams(location.search).get('id');
+        if (urlId) {
+            badgeChannelId    = urlId;
+            badgeExternalMode = true;
+        } else {
+            badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
+            if (!badgeChannelId) {
+                badgeChannelId = crypto.randomUUID();
+                localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+            }
+        }
+    } else {
+        badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
+        if (!badgeChannelId) {
+            badgeChannelId = crypto.randomUUID();
+            localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+        }
     }
 
     loadBadgeState();
     buildBadgeGameSelect();
     buildBadgeLayoutSelect();
     buildBadgeCheckboxes();
-    document.getElementById('badge-brightness').value            = badgeBrightness;
-    document.getElementById('badge-brightness-val').textContent  = badgeBrightness + '%';
+    document.getElementById('badge-brightness').value           = badgeBrightness;
+    document.getElementById('badge-brightness-val').textContent = badgeBrightness + '%';
     updateBadgeObsHint();
     applyBadgeLang();
 
