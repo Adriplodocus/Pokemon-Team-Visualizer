@@ -845,6 +845,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     font-size: 0.7rem;
     color: var(--dim);
     letter-spacing: 0.04em;
-    transition: color 0.18s;
+    text-decoration: none;
+    transition: color 0.2s;
 }
-.site-footer a:hover { color: var(--muted); }
+.site-footer a:hover { color: var(--text); }
