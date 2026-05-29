@@ -119,6 +119,7 @@ function initChannelId() {
 
 // ── Persist ───────────────────────────────────────────────────────
 function saveCemetery() {
+    if (externalMode) return;
     localStorage.setItem(CEMETERY_KEY, JSON.stringify(cemetery));
 }
 

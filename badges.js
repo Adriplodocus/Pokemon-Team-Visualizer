@@ -432,6 +432,7 @@ function setBadgeStatus(msg, color) {
 
 // ── Persistence ───────────────────────────────────────────────────
 function saveBadgeState() {
+    if (badgeExternalMode) return;
     localStorage.setItem('ptv_badge_game',       badgeGame);
     localStorage.setItem('ptv_badge_layout',     badgeLayout);
     localStorage.setItem('ptv_badge_active',     JSON.stringify(badgeActive));

@@ -694,6 +694,7 @@ function updatePreview() {
 
 // ── Persistence ─────────────────────────────────────────────────
 function saveState(updatePreview = true) {
+    if (externalMode) return;
     localStorage.setItem('ptv_team',    JSON.stringify(team));
     localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
     localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
@@ -867,6 +868,7 @@ function setPreset(slot, data) {
 }
 
 function savePreset(slot) {
+    if (externalMode) return;
     const existing = getPreset(slot);
     const defaultName = existing ? existing.name : t('presetDefault', slot + 1);
     const name = prompt(t('presetSavePrompt'), defaultName);
