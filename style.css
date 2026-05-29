@@ -54,15 +54,22 @@ header { text-align: center; margin-bottom: 24px; animation: fade-up 0.5s ease b
 h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal; letter-spacing: 0.02em; color: var(--cyan); margin-bottom: 4px; }
 .subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 10px; }
 
-h1 .header-brand { color: var(--pink); text-decoration: none; transition: color 0.18s; }
-h1 .header-brand:hover { color: var(--text-em); }
+h1 .header-brand {
+    color: var(--pink);
+    text-decoration: none;
+    transition: color 0.18s, text-shadow 0.18s;
+}
+h1 .header-brand:hover {
+    color: var(--pink);
+    text-shadow: 0 0 12px rgba(255, 86, 180, 0.7), 0 0 28px rgba(255, 86, 180, 0.35);
+}
 .header-error {
     font-size: 12px;
     color: var(--error);
     margin-bottom: 8px;
 }
-.header-error a { color: var(--error); text-decoration: underline; }
-.header-error a:hover { opacity: 0.8; }
+.header-error a { color: var(--cyan); text-decoration: underline; transition: opacity 0.15s; }
+.header-error a:hover { opacity: 0.75; }
 
 /* ── Lang toggle ─────────────────────────────────────────────── */
 .lang-toggle {
