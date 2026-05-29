@@ -10,11 +10,22 @@
         `<a href="${p.href}" id="mode-btn-${p.id}" class="mode-btn${ACTIVE_PAGE === p.id ? ' active' : ''}" data-i18n-badge="${p.i18n}">${p.label}</a>`
     ).join('\n            ');
 
+    const extId    = sessionStorage.getItem('ptv_external_id');
+    const extBadge = sessionStorage.getItem('ptv_external_badge_id');
+    const shortId  = extId ? extId.slice(0, 8) : extBadge ? extBadge.slice(0, 8) : null;
+    const extBar   = shortId
+        ? `<div id="external-mode-bar" class="external-mode-bar">
+        <span>Controlando canal externo &middot; <code>${shortId}</code></span>
+        <button onclick="exitExternalMode()">&#x2715; Salir</button>
+    </div>`
+        : '';
+
     document.body.insertAdjacentHTML('afterbegin', `
 <header>
     <h1>Pokémon Stream Visualizer by <a href="https://mrklypp.com/" target="_blank" rel="noopener" class="header-brand">MrKlypp</a></h1>
     <p class="subtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
     <p class="header-error">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
+    ${extBar}
     <div class="header-controls-row">
         <div class="mode-toggle">
             ${tabs}
@@ -26,3 +37,9 @@
     </div>
 </header>`);
 })();
+
+function exitExternalMode() {
+    sessionStorage.removeItem('ptv_external_id');
+    sessionStorage.removeItem('ptv_external_badge_id');
+    window.location.href = 'index.html';
+}
