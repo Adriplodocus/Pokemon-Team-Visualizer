@@ -12,7 +12,7 @@
 
     document.body.insertAdjacentHTML('afterbegin', `
 <header>
-    <h1>Pokémon Stream Visualizer by <a href="https://mrklypp.com/" target="_blank" rel="noopener" class="header-brand">MrKlypp</a></h1>
+    <h1>Pokémon Stream Visualizer</h1>
     <p class="subtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
     <p class="header-error">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
     <div class="header-controls-row">

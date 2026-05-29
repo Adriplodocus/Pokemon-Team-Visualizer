@@ -834,3 +834,17 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     padding: 20px 0;
     display: none;
 }
+
+/* Footer */
+.site-footer {
+    text-align: center;
+    padding: 2rem 1rem;
+    margin-top: 1rem;
+}
+.site-footer a {
+    font-size: 0.7rem;
+    color: var(--dim);
+    letter-spacing: 0.04em;
+    transition: color 0.18s;
+}
+.site-footer a:hover { color: var(--muted); }
