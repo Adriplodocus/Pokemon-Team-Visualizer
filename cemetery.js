@@ -104,11 +104,15 @@ let modalProps   = { ...DEFAULT_PROPS };
 
 // ── Channel ID ────────────────────────────────────────────────────
 function initChannelId() {
-    const urlId = new URLSearchParams(location.search).get('id');
+    const params = new URLSearchParams(location.search);
+    const urlId  = params.get('id');
+    const bidId  = params.get('bid');
+
     if (urlId) {
         channelId    = urlId;
         externalMode = true;
         sessionStorage.setItem('ptv_external_id', urlId);
+        if (bidId) sessionStorage.setItem('ptv_external_badge_id', bidId);
     } else {
         const storedExtId = sessionStorage.getItem('ptv_external_id');
         if (storedExtId) {
