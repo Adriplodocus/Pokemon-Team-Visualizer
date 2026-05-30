@@ -209,8 +209,7 @@ function closeSuggestions(list) { list.innerHTML = ''; list.style.display = 'non
 function initInput() {
     const nameInput   = document.getElementById('cemetery-name-input');
     const suggestions = document.getElementById('cemetery-suggestions');
-    const moteInput   = document.getElementById('cemetery-mote-input');
-    if (!nameInput || !suggestions || !moteInput) return;
+    if (!nameInput || !suggestions) return;
     let activeSuggIdx = -1;
 
     nameInput.addEventListener('input', () => {
