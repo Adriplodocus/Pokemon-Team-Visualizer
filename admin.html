@@ -205,7 +205,7 @@ function esc(s) {
   return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
-// Restore saved key on load
+// Restore saved key on load + UX guard: redirect to home if not logged in
 window.addEventListener('DOMContentLoaded', () => {
   const saved = sessionStorage.getItem('ptv_admin_key');
   if (saved) {
@@ -213,6 +213,10 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('key-status').textContent = 'Key cargada de sesión.';
     document.getElementById('key-status').className   = 'status-msg ok';
   }
+  // UX guard: redirect to home if not logged in
+  fetch('/api/auth/me').then(r => {
+    if (r.status === 401) window.location.href = '/';
+  }).catch(() => {});
 });
 </script>
 </body>

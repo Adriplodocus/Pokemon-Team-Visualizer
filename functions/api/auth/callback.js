@@ -64,6 +64,11 @@ export async function onRequestGet(context) {
   const clientSecret = provider === 'twitch' ? context.env.TWITCH_CLIENT_SECRET  : context.env.GOOGLE_CLIENT_SECRET;
   const redirectUri  = `${url.protocol}//${url.host}/api/auth/callback`;
 
+  if (!clientId || !clientSecret) {
+    console.error('Missing OAuth credentials for provider:', provider);
+    return new Response('OAuth provider not configured', { status: 500 });
+  }
+
   const tokenRes = await fetch(TOKEN_URLS[provider], {
     method:  'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -115,6 +120,12 @@ export async function onRequestGet(context) {
   }
 
   const { id: userId, tier } = rows[0];
+
+  if (!context.env.JWT_SECRET) {
+    console.error('JWT_SECRET not configured');
+    return new Response('Server configuration error', { status: 500 });
+  }
+
   const iat   = Math.floor(Date.now() / 1000);
   const exp   = iat + 7 * 24 * 3600;
   const token = await signJWT({ userId, tier, iat, exp }, context.env.JWT_SECRET);

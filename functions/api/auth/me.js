@@ -15,10 +15,16 @@ export async function onRequestGet(context) {
 
   if (!payload) return json({ error: 'Unauthorized' }, 401);
 
-  const sql  = getDB(context.env);
-  const rows = await sql`
-    SELECT username, avatar_url, tier FROM users WHERE id = ${payload.userId}
-  `;
+  let rows;
+  try {
+    const sql = getDB(context.env);
+    rows = await sql`
+      SELECT username, avatar_url, tier FROM users WHERE id = ${payload.userId}
+    `;
+  } catch (e) {
+    console.error('DB error in /me', e);
+    return json({ error: 'Service unavailable' }, 503);
+  }
 
   if (!rows.length) return json({ error: 'User not found' }, 401);
 

@@ -27,18 +27,22 @@ export async function signJWT(payload, secret) {
 }
 
 export async function verifyJWT(token, secret) {
-  if (!token) return null;
-  const parts = token.split('.');
-  if (parts.length !== 3) return null;
-  const [header, body, sig] = parts;
-  const headerObj = JSON.parse(decodeB64url(header));
-  if (headerObj.alg !== 'HS256') return null;
-  const unsigned = `${header}.${body}`;
-  const key      = await getKey(secret, 'verify');
-  const sigBytes = Uint8Array.from(decodeB64url(sig), c => c.charCodeAt(0));
-  const valid    = await crypto.subtle.verify('HMAC', key, sigBytes, ENC.encode(unsigned));
-  if (!valid) return null;
-  const payload  = JSON.parse(decodeB64url(body));
-  if (payload.exp <= Math.floor(Date.now() / 1000)) return null;
-  return payload;
+  try {
+    if (!token) return null;
+    const parts = token.split('.');
+    if (parts.length !== 3) return null;
+    const [header, body, sig] = parts;
+    const unsigned = `${header}.${body}`;
+    const key      = await getKey(secret, 'verify');
+    const sigBytes = Uint8Array.from(decodeB64url(sig), c => c.charCodeAt(0));
+    const valid    = await crypto.subtle.verify('HMAC', key, sigBytes, ENC.encode(unsigned));
+    if (!valid) return null;
+    const headerObj = JSON.parse(decodeB64url(header));
+    if (headerObj.alg !== 'HS256') return null;
+    const payload  = JSON.parse(decodeB64url(body));
+    if (payload.exp <= Math.floor(Date.now() / 1000)) return null;
+    return payload;
+  } catch {
+    return null;
+  }
 }

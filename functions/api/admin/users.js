@@ -17,14 +17,20 @@ export async function onRequestGet(context) {
   const q   = url.searchParams.get('q')?.trim();
   if (!q) return json({ error: 'Missing q param' }, 400);
 
-  const sql  = getDB(context.env);
-  const rows = await sql`
-    SELECT id, provider, username, email, avatar_url, tier, created_at
-    FROM users
-    WHERE username ILIKE ${'%' + q + '%'} OR email ILIKE ${'%' + q + '%'}
-    ORDER BY created_at DESC
-    LIMIT 10
-  `;
+  let rows;
+  try {
+    const sql  = getDB(context.env);
+    rows = await sql`
+      SELECT id, provider, username, email, avatar_url, tier, created_at
+      FROM users
+      WHERE username ILIKE ${'%' + q + '%'} OR email ILIKE ${'%' + q + '%'}
+      ORDER BY created_at DESC
+      LIMIT 10
+    `;
+  } catch (e) {
+    console.error('DB error in /admin/users', e);
+    return json({ error: 'Database error' }, 500);
+  }
 
   return json({ users: rows });
 }
