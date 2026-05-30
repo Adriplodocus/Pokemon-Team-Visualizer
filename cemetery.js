@@ -179,6 +179,8 @@ function buildSpriteUrl(name, props) {
 }
 
 // ── Autocomplete ──────────────────────────────────────────────────
+initInput();
+
 Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
@@ -188,7 +190,6 @@ Promise.all([
         for (const alias of aliasList) ALIAS_TO_CANONICAL[alias] = canonical;
     }
     pokemonNames = [...names, ...Object.values(aliases).flat()].sort();
-    initInput();
 })
 .catch(() => {});
 
