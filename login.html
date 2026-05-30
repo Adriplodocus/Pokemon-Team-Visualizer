@@ -70,11 +70,21 @@
 </div>
 <script>
 const params = new URLSearchParams(location.search);
+
 const err = params.get('error');
 if (err) {
   const el = document.getElementById('login-error');
   el.textContent = `Error al iniciar sesión: ${err}`;
   el.style.display = '';
+}
+
+const next = params.get('next');
+if (next && next.startsWith('/') && !next.includes('://') && next.length <= 200) {
+  document.querySelectorAll('.login-btn').forEach(btn => {
+    const u = new URL(btn.href, location.origin);
+    u.searchParams.set('next', next);
+    btn.href = u.toString();
+  });
 }
 </script>
 </body>
