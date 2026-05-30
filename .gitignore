@@ -3,3 +3,5 @@ __pycache__/
 *.pyc
 *.pyo
 .superpowers/
+.dev.vars
+node_modules/
