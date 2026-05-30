@@ -3,7 +3,7 @@ import { verifyJWT } from './api/_lib/jwt.js';
 
 const PUBLIC_EXTENSIONS = new Set([
   '.css', '.js', '.gif', '.png', '.svg', '.json',
-  '.ico', '.webmanifest', '.txt',
+  '.ico', '.webmanifest',
 ]);
 
 const PUBLIC_PATHS = new Set([
