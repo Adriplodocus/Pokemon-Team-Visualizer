@@ -1,0 +1,51 @@
+import { setCookie } from '../_lib/cookies.js';
+
+const PROVIDERS = {
+  twitch: {
+    authUrl: 'https://id.twitch.tv/oauth2/authorize',
+    scope:   'user:read:email',
+  },
+  google: {
+    authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
+    scope:   'openid email profile',
+  },
+};
+
+export async function onRequestGet(context) {
+  const url      = new URL(context.request.url);
+  const provider = url.searchParams.get('provider');
+
+  if (!PROVIDERS[provider]) {
+    return new Response('Invalid provider', { status: 400 });
+  }
+
+  const cfg       = PROVIDERS[provider];
+  const clientId  = provider === 'twitch' ? context.env.TWITCH_CLIENT_ID : context.env.GOOGLE_CLIENT_ID;
+  const redirectUri = `${url.protocol}//${url.host}/api/auth/callback`;
+
+  // CSRF state encodes provider so the callback knows which provider to use
+  const randomBytes = crypto.getRandomValues(new Uint8Array(16));
+  const randomHex   = Array.from(randomBytes, b => b.toString(16).padStart(2, '0')).join('');
+  const state       = `${provider}:${randomHex}`;
+
+  const params = new URLSearchParams({
+    client_id:     clientId,
+    redirect_uri:  redirectUri,
+    scope:         cfg.scope,
+    state,
+    response_type: 'code',
+  });
+
+  if (provider === 'google') {
+    params.set('access_type', 'offline');
+    params.set('prompt', 'select_account');
+  }
+
+  const isSecure   = url.protocol === 'https:';
+  const stateCookie = setCookie('oauth_state', state, isSecure, { maxAge: 600 });
+
+  return new Response(null, {
+    status: 302,
+    headers: { Location: `${cfg.authUrl}?${params}`, 'Set-Cookie': stateCookie },
+  });
+}
