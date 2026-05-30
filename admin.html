@@ -176,6 +176,7 @@ const TIERS = ['guest', 'vip'];
 let listPage  = 1;
 let listLimit = 20;
 let listSort  = 'asc';
+let listPages = 1;
 
 async function loadUsers() {
   const key      = getKey();
@@ -204,6 +205,7 @@ async function loadUsers() {
   }
 
   const { users, total, page, pages } = await res.json();
+  listPages = pages;
 
   statusEl.textContent = '';
   countEl.textContent  = `${total} usuario${total !== 1 ? 's' : ''}`;
@@ -250,8 +252,7 @@ function onPagePrev() {
 }
 
 function onPageNext() {
-  listPage++;
-  loadUsers();
+  if (listPage < listPages) { listPage++; loadUsers(); }
 }
 
 function getKey() {
