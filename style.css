@@ -666,6 +666,68 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     box-shadow: 0 0 12px rgba(0, 204, 255, 0.15);
 }
 
+/* ── User widget ─────────────────────────────────────────────── */
+.user-widget {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+}
+.user-avatar {
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+.user-name {
+    color: var(--text);
+    font-weight: 600;
+    max-width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.user-badge {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 100px;
+    border: 1px solid;
+    flex-shrink: 0;
+}
+.user-badge--guest {
+    background: rgba(255,255,255,0.05);
+    color: var(--text-2);
+    border-color: var(--border);
+}
+.user-badge--vip {
+    background: rgba(255,86,180,0.15);
+    color: var(--accent);
+    border-color: rgba(255,86,180,0.35);
+}
+.user-logout,
+.user-login-link {
+    font-size: 12px;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 3px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    transition: color 0.15s, border-color 0.15s;
+    cursor: pointer;
+    white-space: nowrap;
+}
+.user-logout:hover,
+.user-login-link:hover {
+    color: var(--text);
+    border-color: rgba(0, 204, 255, 0.3);
+}
+
 /* ── Badge section ───────────────────────────────────────────── */
 .hidden { display: none !important; }
 

@@ -22,6 +22,7 @@
 <footer class="site-footer">
     <a href="https://mrklypp.com/" target="_blank" rel="noopener" data-i18n="madeBy">Hecho por @MrKlypp</a>
 </footer>`);
+        initUserWidget();
     });
 
     document.body.insertAdjacentHTML('afterbegin', `
@@ -37,9 +38,36 @@
             <button id="lang-es" onclick="setLang('es')">ES</button>
             <button id="lang-en" onclick="setLang('en')">EN</button>
         </div>
+        <div class="user-widget" id="user-widget"></div>
     </div>
 </header>`);
 })();
+
+function esc(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+async function initUserWidget() {
+    const el = document.getElementById('user-widget');
+    if (!el) return;
+    try {
+        const res = await fetch('/api/auth/me');
+        if (res.ok) {
+            const { username, avatarUrl, tier } = await res.json();
+            const badgeClass = tier === 'vip' ? 'user-badge--vip' : 'user-badge--guest';
+            const badgeLabel = tier === 'vip' ? 'VIP' : 'GUEST';
+            el.innerHTML =
+                (avatarUrl ? `<img class="user-avatar" src="${esc(avatarUrl)}" alt="${esc(username)}">` : '') +
+                `<span class="user-name">${esc(username)}</span>` +
+                `<span class="user-badge ${badgeClass}">${badgeLabel}</span>` +
+                `<a href="/api/auth/logout" class="user-logout">Salir</a>`;
+        } else {
+            el.innerHTML = `<a href="/login.html" class="user-login-link">Login</a>`;
+        }
+    } catch {
+        el.innerHTML = `<a href="/login.html" class="user-login-link">Login</a>`;
+    }
+}
 
 function exitExternalMode() {
     sessionStorage.removeItem('ptv_external_id');
