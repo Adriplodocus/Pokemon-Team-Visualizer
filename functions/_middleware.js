@@ -14,7 +14,7 @@ const PUBLIC_PATHS = new Set([
   '/cemetery-overlay.html',
 ]);
 
-const PUBLIC_PREFIXES = ['/api/auth/', '/sprites/'];
+const PUBLIC_PREFIXES = ['/api/', '/sprites/'];
 
 function isPublic(pathname) {
   if (PUBLIC_PATHS.has(pathname)) return true;
