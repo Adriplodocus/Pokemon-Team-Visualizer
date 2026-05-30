@@ -504,11 +504,10 @@ function updateCemeteryObsHint() {
     el.innerHTML = tC('obsHint', `${w}x${h}`) +
         `<br><br><span class="obs-url-label">${tC('obsUrlLabel')}</span>` +
         `<div class="obs-url-row">` +
-        `<span class="obs-url-display">${url}</span>` +
         `<button class="btn-copy-url" onclick="copyObsUrl()">${tC('obsUrlCopy')}</button>` +
+        (externalMode ? '' : `<button class="btn-new-channel" onclick="newChannel()" aria-label="${tC('newChannel')}"><svg viewBox="0 0 20 20" fill="none"><path d="M16.5 3.5v4h-4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16.5 7.5A7 7 0 1 0 14 14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>`) +
         `</div>` +
         `<div class="obs-channel-actions">` +
-        (externalMode ? '' : `<button class="btn-channel-action" onclick="newChannel()">${tC('newChannel')}</button>`) +
         (externalMode ? '' : `<button class="btn-channel-action" onclick="copyEditorUrl()">${tC('copyEditorUrl')}</button>`) +
         `</div>`;
 }

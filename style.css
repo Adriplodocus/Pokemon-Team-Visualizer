@@ -310,6 +310,23 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     white-space: nowrap;
 }
 .btn-copy-url:hover { background: var(--btn-hover); border-color: var(--cyan); }
+.btn-new-channel {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: all 0.18s;
+}
+.btn-new-channel:hover { background: var(--btn-hover); color: var(--text); border-color: rgba(255, 86, 180, 0.35); }
+.btn-new-channel svg { width: 14px; height: 14px; }
 .obs-channel-actions { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
 .btn-channel-action {
     flex: 1;
