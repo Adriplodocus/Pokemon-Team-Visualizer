@@ -9,10 +9,12 @@ const TOKEN_URLS = {
 
 async function fetchProfile(provider, accessToken, clientId) {
   if (provider === 'twitch') {
-    const res      = await fetch('https://api.twitch.tv/helix/users', {
+    const res = await fetch('https://api.twitch.tv/helix/users', {
       headers: { Authorization: `Bearer ${accessToken}`, 'Client-Id': clientId },
     });
+    if (!res.ok) throw new Error(`Twitch profile fetch failed: ${res.status}`);
     const { data } = await res.json();
+    if (!data || !data[0]) throw new Error('Twitch returned empty user data');
     const u = data[0];
     return {
       providerId: u.id,
@@ -24,6 +26,7 @@ async function fetchProfile(provider, accessToken, clientId) {
   const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
     headers: { Authorization: `Bearer ${accessToken}` },
   });
+  if (!res.ok) throw new Error(`Google profile fetch failed: ${res.status}`);
   const u = await res.json();
   return {
     providerId: u.sub,
@@ -48,6 +51,10 @@ export async function onRequestGet(context) {
     return new Response('Invalid state — possible CSRF attack. Please try logging in again.', { status: 403 });
   }
 
+  if (!code) {
+    return new Response('Missing authorization code', { status: 400 });
+  }
+
   const [provider] = state.split(':');
   if (!['twitch', 'google'].includes(provider)) {
     return new Response('Invalid provider', { status: 400 });
@@ -70,24 +77,42 @@ export async function onRequestGet(context) {
   });
 
   if (!tokenRes.ok) {
-    const txt = await tokenRes.text();
-    return new Response(`Token exchange failed: ${txt}`, { status: 502 });
+    console.error('Token exchange failed', tokenRes.status, await tokenRes.text());
+    return new Response('Authentication failed. Please try again.', { status: 502 });
   }
 
-  const { access_token } = await tokenRes.json();
-  const profile = await fetchProfile(provider, access_token, clientId);
+  let access_token;
+  try { ({ access_token } = await tokenRes.json()); }
+  catch { return new Response('Invalid token response from provider', { status: 502 }); }
 
-  const sql  = getDB(context.env);
-  const rows = await sql`
-    INSERT INTO users (provider, provider_id, username, email, avatar_url)
-    VALUES (${provider}, ${profile.providerId}, ${profile.username}, ${profile.email}, ${profile.avatarUrl})
-    ON CONFLICT (provider, provider_id)
-    DO UPDATE SET
-      username   = EXCLUDED.username,
-      email      = EXCLUDED.email,
-      avatar_url = EXCLUDED.avatar_url
-    RETURNING id, tier
-  `;
+  let profile;
+  try { profile = await fetchProfile(provider, access_token, clientId); }
+  catch (e) {
+    console.error('fetchProfile error', e);
+    return new Response('Failed to fetch user profile. Please try again.', { status: 502 });
+  }
+
+  let rows;
+  try {
+    const sql = getDB(context.env);
+    rows = await sql`
+      INSERT INTO users (provider, provider_id, username, email, avatar_url)
+      VALUES (${provider}, ${profile.providerId}, ${profile.username}, ${profile.email}, ${profile.avatarUrl})
+      ON CONFLICT (provider, provider_id)
+      DO UPDATE SET
+        username   = EXCLUDED.username,
+        email      = EXCLUDED.email,
+        avatar_url = EXCLUDED.avatar_url
+      RETURNING id, tier
+    `;
+  } catch (e) {
+    console.error('DB upsert error', e);
+    return new Response('Database error. Please try again.', { status: 500 });
+  }
+
+  if (!rows || !rows[0]) {
+    return new Response('Database error: no user returned', { status: 500 });
+  }
 
   const { id: userId, tier } = rows[0];
   const iat   = Math.floor(Date.now() / 1000);
