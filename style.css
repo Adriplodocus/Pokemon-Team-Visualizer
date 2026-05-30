@@ -540,11 +540,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     .props-btn { flex: 0 0 60px; font-size: 11px; padding: 6px 4px; }
     .clear-btn { flex: 0 0 26px; }
 
-    /* Page selector: icons replace words */
-    .mode-toggle { gap: 4px; }
-    .mode-btn { padding: 0.4rem 0.7rem; }
-    .mode-btn-text { display: none; }
-    .mode-btn-icon { display: block; }
 }
 @media (max-width: 400px) {
     .mote-input { display: none; }
@@ -620,6 +615,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     text-decoration: none;
 }
 .mode-btn-icon { width: 1rem; height: 1rem; flex-shrink: 0; display: none; }
+@media (max-width: 600px) {
+    .mode-toggle { gap: 4px; }
+    .mode-btn { padding: 0.4rem 0.7rem; }
+    .mode-btn-text { display: none; }
+    .mode-btn-icon { display: block; }
+}
 .mode-btn.active {
     background: var(--surface);
     color: var(--text-em);
