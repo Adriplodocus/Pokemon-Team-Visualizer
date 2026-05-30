@@ -5,7 +5,8 @@ export function parseCookies(req) {
     const eq = part.indexOf('=');
     if (eq < 0) continue;
     const name     = part.slice(0, eq).trim();
-    cookies[name]  = decodeURIComponent(part.slice(eq + 1).trim());
+    try { cookies[name] = decodeURIComponent(part.slice(eq + 1).trim()); }
+    catch { cookies[name] = part.slice(eq + 1).trim(); }
   }
   return cookies;
 }
