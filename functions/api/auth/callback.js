@@ -130,10 +130,15 @@ export async function onRequestGet(context) {
   const exp   = iat + 7 * 24 * 3600;
   const token = await signJWT({ userId, tier, iat, exp }, context.env.JWT_SECRET);
 
-  const isSecure = url.protocol === 'https:';
-  const headers  = new Headers({ Location: `${url.protocol}//${url.host}/` });
-  headers.append('Set-Cookie', setCookie('auth', token, isSecure, { maxAge: 7 * 24 * 3600 }));
-  headers.append('Set-Cookie', setCookie('oauth_state', '', isSecure, { maxAge: 0 }));
+  const isSecure  = url.protocol === 'https:';
+  const loginNext = cookies.login_next || '';
+  const validNext = loginNext && loginNext.startsWith('/') && !loginNext.includes('://') && loginNext.length <= 200;
+  const dest      = validNext ? loginNext : '/';
+
+  const headers = new Headers({ Location: `${url.protocol}//${url.host}${dest}` });
+  headers.append('Set-Cookie', setCookie('auth',        token, isSecure, { maxAge: 7 * 24 * 3600 }));
+  headers.append('Set-Cookie', setCookie('oauth_state', '',    isSecure, { maxAge: 0 }));
+  headers.append('Set-Cookie', setCookie('login_next',  '',    isSecure, { maxAge: 0 }));
 
   return new Response(null, { status: 302, headers });
 }
