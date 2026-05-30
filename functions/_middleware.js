@@ -18,6 +18,8 @@ const PUBLIC_PREFIXES = ['/api/', '/sprites/'];
 
 function isPublic(pathname) {
   if (PUBLIC_PATHS.has(pathname)) return true;
+  // CF Pages serves .html files at extensionless URLs too
+  if (!pathname.includes('.') && PUBLIC_PATHS.has(`${pathname}.html`)) return true;
   if (PUBLIC_PREFIXES.some(p => pathname.startsWith(p))) return true;
   const dot = pathname.lastIndexOf('.');
   if (dot !== -1 && PUBLIC_EXTENSIONS.has(pathname.slice(dot))) return true;
@@ -37,7 +39,7 @@ export async function onRequest(context) {
 
   const next = encodeURIComponent(pathname);
   return Response.redirect(
-    `${url.protocol}//${url.host}/login.html?next=${next}`,
+    `${url.protocol}//${url.host}/login?next=${next}`,
     302,
   );
 }
