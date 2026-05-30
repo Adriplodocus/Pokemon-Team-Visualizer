@@ -70,6 +70,47 @@
 .status-msg.ok  { color: var(--success); }
 .status-msg.err { color: var(--error); }
 #search-results { display: flex; flex-direction: column; gap: 0.5rem; }
+.list-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+.list-count {
+  margin-left: auto;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--cyan);
+  background: rgba(0,204,255,0.10);
+  border: 1px solid rgba(0,204,255,0.25);
+  border-radius: 100px;
+  padding: 0.2rem 0.65rem;
+  letter-spacing: 0.03em;
+}
+.pagination {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  justify-content: center;
+  margin-top: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--text-2);
+}
+.pagination button {
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s;
+}
+.pagination button:hover:not(:disabled) { border-color: rgba(0,204,255,0.3); }
+.pagination button:disabled { opacity: 0.35; cursor: default; }
+#list-results { display: flex; flex-direction: column; gap: 0.5rem; }
 </style>
 </head>
 <body>
@@ -101,6 +142,30 @@
     </div>
     <div id="search-status" class="status-msg"></div>
     <div id="search-results"></div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="admin-section">
+    <div class="list-toolbar">
+      <label class="admin-label" style="margin:0">Por página:</label>
+      <select class="tier-select" id="list-limit" onchange="onLimitChange()">
+        <option value="10">10</option>
+        <option value="20" selected>20</option>
+        <option value="25">25</option>
+        <option value="50">50</option>
+        <option value="0">Todos</option>
+      </select>
+      <button class="admin-btn" id="sort-btn" onclick="onSortToggle()">A→Z</button>
+      <span class="list-count" id="list-count" style="display:none">— usuarios</span>
+    </div>
+    <div id="list-status" class="status-msg"></div>
+    <div id="list-results"></div>
+    <div class="pagination" id="list-pagination" style="display:none">
+      <button id="page-prev" onclick="onPagePrev()">← Anterior</button>
+      <span id="page-info">Página 1 de 1</span>
+      <button id="page-next" onclick="onPageNext()">Siguiente →</button>
+    </div>
   </div>
 </div>
 
