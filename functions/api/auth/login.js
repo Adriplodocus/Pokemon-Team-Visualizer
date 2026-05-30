@@ -16,11 +16,22 @@ export async function onRequestGet(context) {
   const provider = url.searchParams.get('provider');
 
   if (!PROVIDERS[provider]) {
-    return new Response('Invalid provider', { status: 400 });
+    return new Response(JSON.stringify({ error: 'Invalid provider' }), {
+      status: 400,
+      headers: { 'Content-Type': 'application/json' },
+    });
   }
 
   const cfg       = PROVIDERS[provider];
   const clientId  = provider === 'twitch' ? context.env.TWITCH_CLIENT_ID : context.env.GOOGLE_CLIENT_ID;
+
+  if (!clientId) {
+    return new Response(JSON.stringify({ error: 'OAuth provider not configured' }), {
+      status: 500,
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   const redirectUri = `${url.protocol}//${url.host}/api/auth/callback`;
 
   // CSRF state encodes provider so the callback knows which provider to use
