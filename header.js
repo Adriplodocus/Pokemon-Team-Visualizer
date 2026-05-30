@@ -62,9 +62,12 @@ async function initUserWidget() {
                 `<span class="user-badge ${badgeClass}">${badgeLabel}</span>` +
                 `<a href="/api/auth/logout" class="user-logout">Salir</a>`;
         } else {
+            const body = await res.text().catch(() => '(no body)');
+            console.error('[auth] /api/auth/me failed:', res.status, body);
             el.innerHTML = `<a href="/login.html" class="user-login-link">Login</a>`;
         }
-    } catch {
+    } catch (err) {
+        console.error('[auth] /api/auth/me error:', err);
         el.innerHTML = `<a href="/login.html" class="user-login-link">Login</a>`;
     }
 }
