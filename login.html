@@ -79,7 +79,7 @@ if (err) {
 }
 
 const next = params.get('next');
-if (next && next.startsWith('/') && !next.includes('://') && next.length <= 200) {
+if (next && next.startsWith('/') && !next.startsWith('//') && !next.includes('://') && next.length <= 200) {
   document.querySelectorAll('.login-btn').forEach(btn => {
     const u = new URL(btn.href, location.origin);
     u.searchParams.set('next', next);

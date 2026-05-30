@@ -56,7 +56,7 @@ export async function onRequestGet(context) {
   const stateCookie = setCookie('oauth_state', state, isSecure, { maxAge: 600 });
 
   const next        = url.searchParams.get('next') || '';
-  const validNext   = next && next.startsWith('/') && !next.includes('://') && next.length <= 200;
+  const validNext   = next && next.startsWith('/') && !next.startsWith('//') && !next.includes('://') && next.length <= 200;
 
   const headers = new Headers({ Location: `${cfg.authUrl}?${params}` });
   headers.append('Set-Cookie', stateCookie);

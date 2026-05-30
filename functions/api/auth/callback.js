@@ -132,7 +132,7 @@ export async function onRequestGet(context) {
 
   const isSecure  = url.protocol === 'https:';
   const loginNext = cookies.login_next || '';
-  const validNext = loginNext && loginNext.startsWith('/') && !loginNext.includes('://') && loginNext.length <= 200;
+  const validNext = loginNext && loginNext.startsWith('/') && !loginNext.startsWith('//') && !loginNext.includes('://') && loginNext.length <= 200;
   const dest      = validNext ? loginNext : '/';
 
   const headers = new Headers({ Location: `${url.protocol}//${url.host}${dest}` });
