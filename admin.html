@@ -173,6 +173,87 @@
 <script>
 const TIERS = ['guest', 'vip'];
 
+let listPage  = 1;
+let listLimit = 20;
+let listSort  = 'asc';
+
+async function loadUsers() {
+  const key      = getKey();
+  const statusEl = document.getElementById('list-status');
+  const countEl  = document.getElementById('list-count');
+
+  if (!key) return;
+
+  statusEl.textContent = 'Cargando...';
+  statusEl.className   = 'status-msg';
+
+  const params = new URLSearchParams({
+    page:  listPage,
+    limit: listLimit,
+    sort:  listSort,
+  });
+  const res = await fetch(`/api/admin/users?${params}`, {
+    headers: { 'X-Admin-Key': key },
+  }).catch(() => null);
+
+  if (!res || !res.ok) {
+    const data = res ? await res.json().catch(() => ({})) : {};
+    statusEl.textContent = `Error: ${data.error || 'Sin respuesta'}`;
+    statusEl.className   = 'status-msg err';
+    return;
+  }
+
+  const { users, total, page, pages } = await res.json();
+
+  statusEl.textContent = '';
+  countEl.textContent  = `${total} usuario${total !== 1 ? 's' : ''}`;
+  countEl.style.display = '';
+
+  document.getElementById('list-results').innerHTML =
+    users.length ? users.map(u => renderUserRow(u)).join('') : '<div class="status-msg">Sin usuarios.</div>';
+
+  renderPagination(page, pages);
+}
+
+function renderPagination(page, pages) {
+  const bar      = document.getElementById('list-pagination');
+  const prevBtn  = document.getElementById('page-prev');
+  const nextBtn  = document.getElementById('page-next');
+  const infoEl   = document.getElementById('page-info');
+
+  if (pages <= 1 || listLimit === 0) {
+    bar.style.display = 'none';
+    return;
+  }
+
+  bar.style.display    = '';
+  infoEl.textContent   = `Página ${page} de ${pages}`;
+  prevBtn.disabled     = page <= 1;
+  nextBtn.disabled     = page >= pages;
+}
+
+function onSortToggle() {
+  listSort = listSort === 'asc' ? 'desc' : 'asc';
+  document.getElementById('sort-btn').textContent = listSort === 'asc' ? 'A→Z' : 'Z→A';
+  listPage = 1;
+  loadUsers();
+}
+
+function onLimitChange() {
+  listLimit = parseInt(document.getElementById('list-limit').value, 10);
+  listPage  = 1;
+  loadUsers();
+}
+
+function onPagePrev() {
+  if (listPage > 1) { listPage--; loadUsers(); }
+}
+
+function onPageNext() {
+  listPage++;
+  loadUsers();
+}
+
 function getKey() {
   return sessionStorage.getItem('ptv_admin_key') || '';
 }
@@ -277,8 +358,8 @@ window.addEventListener('DOMContentLoaded', () => {
     document.getElementById('admin-key-input').value = saved;
     document.getElementById('key-status').textContent = 'Key cargada de sesión.';
     document.getElementById('key-status').className   = 'status-msg ok';
+    loadUsers();
   }
-  // UX guard: redirect to home if not logged in
   fetch('/api/auth/me').then(r => {
     if (r.status === 401) window.location.href = '/';
   }).catch(() => {});
