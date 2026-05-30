@@ -52,11 +52,17 @@ export async function onRequestGet(context) {
     params.set('prompt', 'select_account');
   }
 
-  const isSecure   = url.protocol === 'https:';
+  const isSecure    = url.protocol === 'https:';
   const stateCookie = setCookie('oauth_state', state, isSecure, { maxAge: 600 });
 
-  return new Response(null, {
-    status: 302,
-    headers: { Location: `${cfg.authUrl}?${params}`, 'Set-Cookie': stateCookie },
-  });
+  const next        = url.searchParams.get('next') || '';
+  const validNext   = next && next.startsWith('/') && !next.includes('://') && next.length <= 200;
+
+  const headers = new Headers({ Location: `${cfg.authUrl}?${params}` });
+  headers.append('Set-Cookie', stateCookie);
+  if (validNext) {
+    headers.append('Set-Cookie', setCookie('login_next', next, isSecure, { maxAge: 600 }));
+  }
+
+  return new Response(null, { status: 302, headers });
 }
