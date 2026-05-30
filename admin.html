@@ -265,6 +265,7 @@ function saveKey() {
   sessionStorage.setItem('ptv_admin_key', val);
   document.getElementById('key-status').textContent = 'Guardada en sesión.';
   document.getElementById('key-status').className = 'status-msg ok';
+  loadUsers();
 }
 
 async function search() {
