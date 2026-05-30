@@ -28,8 +28,8 @@
     document.body.insertAdjacentHTML('afterbegin', `
 <header>
     <h1>Pokémon Stream Visualizer</h1>
-    <p class="subtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
-    <p class="header-error">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
+    <p class="subtitle" data-i18n-header="headerSubtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
+    <p class="header-error" data-i18n-header="headerError">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
     <div class="header-controls-row">
         <div class="mode-toggle">
             ${tabs}
@@ -42,6 +42,25 @@
     </div>
 </header>`);
 })();
+
+const HEADER_STRINGS = {
+    es: {
+        headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
+        headerError: 'Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.',
+    },
+    en: {
+        headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
+        headerError: 'Found a bug? <a href="mailto:MrKlypp@gmail.com">Drop me a line</a>.',
+    },
+};
+
+function applyHeaderLang() {
+    const s = HEADER_STRINGS[currentLang] || HEADER_STRINGS.es;
+    document.querySelectorAll('[data-i18n-header]').forEach(el => {
+        const key = el.dataset.i18nHeader;
+        if (typeof s[key] === 'string') el.innerHTML = s[key];
+    });
+}
 
 function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
