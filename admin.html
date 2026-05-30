@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Pokémon Stream Visualizer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='white'/><path d='M2,16 A14,14 0 0,1 30,16 Z' fill='%23EE1515'/><circle cx='16' cy='16' r='14' fill='none' stroke='%231a1a1a' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%231a1a1a' stroke-width='2'/><circle cx='16' cy='16' r='5' fill='%231a1a1a'/><circle cx='16' cy='16' r='3' fill='white'/></svg>">
+<link rel="stylesheet" href="style.css">
+<style>
+#admin-app { width: 100%; max-width: 680px; }
+.admin-section { display: flex; flex-direction: column; gap: 0.75rem; }
+.admin-row     { display: flex; gap: 0.5rem; align-items: center; }
+.admin-label   { font-size: 0.75rem; color: var(--text-2); margin-bottom: 0.25rem; }
+.admin-input {
+  flex: 1;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 0.45rem 0.75rem;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.admin-input:focus { border-color: rgba(0,204,255,0.4); }
+.admin-btn {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface-2);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: border-color 0.15s, background 0.15s;
+}
+.admin-btn:hover { border-color: rgba(0,204,255,0.3); background: var(--btn-hover); }
+.admin-btn--primary { background: rgba(0,204,255,0.15); border-color: rgba(0,204,255,0.35); color: var(--cyan); }
+.admin-btn--primary:hover { background: rgba(0,204,255,0.22); }
+.admin-divider { border: none; border-top: 1px solid var(--border); margin: 0.5rem 0; }
+.user-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+}
+.user-row img { width: 32px; height: 32px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+.user-row-info { flex: 1; min-width: 0; }
+.user-row-name  { font-weight: 700; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-row-meta  { color: var(--text-2); font-size: 0.75rem; margin-top: 1px; }
+.user-row-actions { display: flex; gap: 0.5rem; align-items: center; flex-shrink: 0; }
+.tier-select {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  padding: 0.3rem 0.5rem;
+  cursor: pointer;
+}
+.status-msg { font-size: 0.78rem; min-height: 1.1em; }
+.status-msg.ok  { color: var(--success); }
+.status-msg.err { color: var(--error); }
+#search-results { display: flex; flex-direction: column; gap: 0.5rem; }
+</style>
+</head>
+<body>
+<script>const ACTIVE_PAGE = '';</script>
+<script src="header.js"></script>
+<div id="admin-app">
+
+<div class="card">
+  <div class="admin-section">
+    <div>
+      <div class="admin-label">Admin Key</div>
+      <div class="admin-row">
+        <input type="password" id="admin-key-input" class="admin-input" placeholder="X-Admin-Key" autocomplete="off">
+        <button class="admin-btn admin-btn--primary" onclick="saveKey()">Guardar</button>
+      </div>
+      <div id="key-status" class="status-msg" style="margin-top:4px"></div>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <div class="admin-section">
+    <div>
+      <div class="admin-label">Buscar usuario</div>
+      <div class="admin-row">
+        <input type="text" id="search-input" class="admin-input" placeholder="username o email" onkeydown="if(event.key==='Enter')search()">
+        <button class="admin-btn" onclick="search()">Buscar</button>
+      </div>
+    </div>
+    <div id="search-status" class="status-msg"></div>
+    <div id="search-results"></div>
+  </div>
+</div>
+
+</div>
+<script>
+const TIERS = ['guest', 'vip'];
+
+function getKey() {
+  return sessionStorage.getItem('ptv_admin_key') || '';
+}
+
+function saveKey() {
+  const val = document.getElementById('admin-key-input').value.trim();
+  if (!val) return;
+  sessionStorage.setItem('ptv_admin_key', val);
+  document.getElementById('key-status').textContent = 'Guardada en sesión.';
+  document.getElementById('key-status').className = 'status-msg ok';
+}
+
+async function search() {
+  const q   = document.getElementById('search-input').value.trim();
+  const key = getKey();
+  const statusEl  = document.getElementById('search-status');
+  const resultsEl = document.getElementById('search-results');
+
+  if (!key) { statusEl.textContent = 'Falta Admin Key.'; statusEl.className = 'status-msg err'; return; }
+  if (!q)   { statusEl.textContent = 'Escribe un nombre o email.'; statusEl.className = 'status-msg err'; return; }
+
+  statusEl.textContent = 'Buscando...';
+  statusEl.className   = 'status-msg';
+  resultsEl.innerHTML  = '';
+
+  const res = await fetch(`/api/admin/users?q=${encodeURIComponent(q)}`, {
+    headers: { 'X-Admin-Key': key },
+  });
+
+  if (!res.ok) {
+    const { error } = await res.json().catch(() => ({ error: res.statusText }));
+    statusEl.textContent = `Error: ${error}`;
+    statusEl.className   = 'status-msg err';
+    return;
+  }
+
+  const { users } = await res.json();
+  if (!users.length) {
+    statusEl.textContent = 'Sin resultados.';
+    statusEl.className   = 'status-msg';
+    return;
+  }
+
+  statusEl.textContent = `${users.length} usuario(s) encontrado(s).`;
+  statusEl.className   = 'status-msg ok';
+  resultsEl.innerHTML  = users.map(u => renderUserRow(u)).join('');
+}
+
+function renderUserRow(u) {
+  const img = u.avatar_url
+    ? `<img src="${esc(u.avatar_url)}" alt="${esc(u.username)}">`
+    : `<div style="width:32px;height:32px;border-radius:50%;background:var(--surface);flex-shrink:0"></div>`;
+  const opts = TIERS.map(t => `<option value="${t}"${u.tier === t ? ' selected' : ''}>${t.toUpperCase()}</option>`).join('');
+  return `
+<div class="user-row" id="row-${esc(u.id)}">
+  ${img}
+  <div class="user-row-info">
+    <div class="user-row-name">${esc(u.username || '—')}</div>
+    <div class="user-row-meta">${esc(u.provider)} · ${esc(u.email || 'sin email')} · <span id="status-${esc(u.id)}" class="status-msg"></span></div>
+  </div>
+  <div class="user-row-actions">
+    <select class="tier-select" id="tier-${esc(u.id)}">${opts}</select>
+    <button class="admin-btn admin-btn--primary" onclick="setTier('${esc(u.id)}')">Guardar</button>
+  </div>
+</div>`;
+}
+
+async function setTier(userId) {
+  const key      = getKey();
+  const tier     = document.getElementById(`tier-${userId}`).value;
+  const statusEl = document.getElementById(`status-${userId}`);
+
+  if (!key) { statusEl.textContent = 'Sin Admin Key.'; statusEl.className = 'status-msg err'; return; }
+
+  statusEl.textContent = '...';
+  statusEl.className   = 'status-msg';
+
+  const res = await fetch('/api/admin/set-tier', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key },
+    body:    JSON.stringify({ userId, tier }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (res.ok) {
+    statusEl.textContent = `✓ ${data.tier}`;
+    statusEl.className   = 'status-msg ok';
+  } else {
+    statusEl.textContent = `Error: ${data.error || res.statusText}`;
+    statusEl.className   = 'status-msg err';
+  }
+}
+
+function esc(s) {
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+}
+
+// Restore saved key on load
+window.addEventListener('DOMContentLoaded', () => {
+  const saved = sessionStorage.getItem('ptv_admin_key');
+  if (saved) {
+    document.getElementById('admin-key-input').value = saved;
+    document.getElementById('key-status').textContent = 'Key cargada de sesión.';
+    document.getElementById('key-status').className   = 'status-msg ok';
+  }
+});
+</script>
+</body>
+</html>
