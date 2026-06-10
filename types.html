@@ -42,7 +42,7 @@ function setLang(lang) {
 }
 TYPES.forEach(t => TYPE_ICON_COLORS[t] = TYPE_COLORS[t]);
 setLang(currentLang);
-TYPES.forEach(t => sampleIconColor(t).then(() => renderTypeSelector()));
+Promise.all(TYPES.map(t => sampleIconColor(t))).then(() => renderTypeSelector());
 </script>
 </body>
 </html>
