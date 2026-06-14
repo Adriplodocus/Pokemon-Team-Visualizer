@@ -627,6 +627,7 @@ body,html{margin:0;padding:0;}
 .pkDiv{flex:0 0 225px;width:225px;height:150px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
+.sprite-row{position:relative;z-index:1;}
 .shadow-row{margin-top:-15px;}
 img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 p{height:25px;text-align:center;}
@@ -644,7 +645,7 @@ p{height:25px;text-align:center;}
 </style>
 </head>
 <body>
-<div class="container">
+<div class="container sprite-row">
 ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
 <div class="container shadow-row">
@@ -824,7 +825,7 @@ function updatePreview() {
         - parseFloat(cardStyle.paddingRight);
 
     const nameBelow = typography.namePosition === 'below';
-    const overlayH  = nameBelow ? 200 : 175;
+    const overlayH  = nameBelow ? 220 : 175;
     const scale = containerW / 1350;
     iframe.style.width     = '1350px';
     iframe.style.height    = overlayH + 'px';
