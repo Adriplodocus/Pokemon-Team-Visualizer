@@ -164,8 +164,8 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
         var root = document.getElementById('root');
         root.style.transform = 'none';
         root.style.transformOrigin = 'top left';
-        var rw = root.offsetWidth;
-        var rh = root.offsetHeight;
+        var rw = root.scrollWidth;
+        var rh = root.scrollHeight;
         if (!rw || !rh) return;
         var scale = Math.min(window.innerWidth / rw, window.innerHeight / rh);
         if (scale !== 1) root.style.transform = 'scale(' + scale + ')';
