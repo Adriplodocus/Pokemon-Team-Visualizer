@@ -628,7 +628,7 @@ body,html{margin:0;padding:0;}
 .sprite-row{position:relative;z-index:1;}
 .shadow-row{margin-top:-15px;}
 img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
-p{height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
+p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
 .container{display:flex;flex-wrap:nowrap;}
 .nameDiv{flex:0 0 225px;width:225px;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
