@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link id="overlay-font-link" href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;}
 body,html{margin:0;padding:0;background:transparent;}
@@ -12,7 +12,7 @@ body.layout-horizontal .pkDiv{width:225px;height:150px;float:left;}
 body.layout-horizontal .shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
 body.layout-horizontal .container{clear:both;}
 body.layout-horizontal img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
-body.layout-horizontal p{height:25px;color:white;text-align:center;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:35px;-webkit-text-stroke:3px #000;paint-order:stroke fill;}
+body.layout-horizontal p{height:25px;text-align:center;}
 
 /* ── Vertical ── */
 body.layout-vertical .wrapper{display:flex;flex-direction:column;}
@@ -20,7 +20,7 @@ body.layout-vertical .pair{display:flex;flex-direction:column;margin:0;padding:0
 body.layout-vertical .pkDiv{width:225px;}
 body.layout-vertical .shadowDiv{width:150px;margin-top:-15px;}
 body.layout-vertical img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;pointer-events:none;user-select:none;}
-body.layout-vertical p{margin:0;padding:0;height:25px;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:25px;text-align:center;-webkit-text-stroke:3px #000;paint-order:stroke fill;}
+body.layout-vertical p{margin:0;padding:0;height:25px;text-align:center;}
 
 /* ── Animations ── */
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
@@ -59,6 +59,25 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
         var layout  = data.layout  || 'horizontal';
         var shadows = data.shadows !== false;
         var bg      = data.bg      !== false;
+        var typo = data.typography || {
+            font: 'Anton', size: 35, textColor: '#ffffff',
+            strokeWidth: 3, strokeColor: '#000000'
+        };
+
+        var fontLink = document.getElementById('overlay-font-link');
+        var gfFamily = typo.font.replace(/ /g, '+');
+        var newHref  = 'https://fonts.googleapis.com/css2?family=' + gfFamily + ':wght@400;700&display=swap';
+        if (fontLink.href !== newHref) fontLink.href = newHref;
+
+        var strokePx = typo.strokeWidth > 0 ? typo.strokeWidth + 'px' : '0';
+        var pStyle = [
+            'color:' + typo.textColor,
+            "font-family:'" + typo.font + "',Anton,'Arial Narrow Bold',sans-serif",
+            'font-size:' + typo.size + 'px',
+            '-webkit-text-stroke:' + strokePx + ' ' + typo.strokeColor,
+            'paint-order:stroke fill',
+        ].join(';');
+
         var root    = document.getElementById('root');
 
         root.innerHTML = '';
@@ -87,6 +106,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 var pk = document.createElement('div');
                 pk.className = 'pkDiv';
                 var p = document.createElement('p');
+                p.style.cssText = pStyle;
                 p.textContent = slot.mote || '';
                 pk.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
@@ -111,6 +131,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 var pk = document.createElement('div');
                 pk.className = 'pkDiv';
                 var p = document.createElement('p');
+                p.style.cssText = pStyle;
                 p.textContent = slot.mote || '';
                 pk.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));

@@ -1238,7 +1238,8 @@ function savePreset(slot) {
         team: JSON.parse(JSON.stringify(team)),
         layout: document.getElementById('layout-select').value,
         shadows: document.getElementById('shadows-check').checked,
-        bg: document.getElementById('bg-check').checked
+        bg: document.getElementById('bg-check').checked,
+        typography: JSON.parse(JSON.stringify(typography))
     });
     renderPresets();
     setStatus(t('presetSaved'), 'var(--success)');
@@ -1260,6 +1261,11 @@ function loadPreset(slot) {
     if (preset.layout) document.getElementById('layout-select').value = preset.layout;
     if (preset.shadows !== undefined) document.getElementById('shadows-check').checked = preset.shadows;
     if (preset.bg !== undefined) document.getElementById('bg-check').checked = preset.bg;
+    if (preset.typography) {
+        typography = { ...DEFAULT_TYPOGRAPHY, ...preset.typography };
+        saveTypography();
+        syncTypographyUI();
+    }
     updateObsHint();
     saveState();
     setStatus(t('presetLoaded'), 'var(--success)');

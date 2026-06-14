@@ -747,7 +747,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--text);
-    font-family: 'JetBrains Mono', monospace;
+    font-family: monospace;
     font-size: 12px;
     padding: 5px 8px;
     width: 100%;
