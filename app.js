@@ -567,8 +567,19 @@ function buildSpriteUrl(name, props) {
 }
 
 // ── Generate HTML (used by live preview) ────────────────────────
-function buildOverlayHTML(layout, showShadows, showBg) {
-    const dataBlock = JSON.stringify({ team, layout, shadows: showShadows, bg: showBg });
+function buildOverlayHTML(layout, showShadows, showBg, typo) {
+    typo = typo || typography;
+    const dataBlock = JSON.stringify({ team, layout, shadows: showShadows, bg: showBg, typography: typo });
+    const gfFamily = typo.font.replace(/ /g, '+');
+    const gfLink   = `<link href="https://fonts.googleapis.com/css2?family=${gfFamily}:wght@400;700&display=swap" rel="stylesheet">`;
+    const strokePx = typo.strokeWidth > 0 ? `${typo.strokeWidth}px` : '0';
+    const pStyle   = [
+        `color:${typo.textColor}`,
+        `font-family:'${typo.font}',Anton,'Arial Narrow Bold',sans-serif`,
+        `font-size:${typo.size}px`,
+        `-webkit-text-stroke:${strokePx} ${typo.strokeColor}`,
+        `paint-order:stroke fill`,
+    ].join(';');
     const entries = team.map(slot => {
         const name = slot.name.trim().toLowerCase();
         if (!name || !pokemonNames.includes(name)) return null;
@@ -588,7 +599,7 @@ function buildOverlayHTML(layout, showShadows, showBg) {
 
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
-        let c = `<p>${e.mote}</p>`;
+        let c = `<p style="${pStyle}">${e.mote}</p>`;
         if (showBg) c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">`;
         const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
         c += `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
@@ -604,14 +615,14 @@ function buildOverlayHTML(layout, showShadows, showBg) {
 <head>
 <meta charset="UTF-8">
 <script type="application/json" id="ptv-data">${dataBlock}<${'/script>'}
-<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+${gfLink}
 <style>
 body,html{margin:0;padding:0;}
 .pkDiv{width:225px;height:150px;float:left;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
 img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
-p{height:25px;color:white;text-align:center;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:35px;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
+p{height:25px;text-align:center;}
 .container{clear:both;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pkDiv,.shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
@@ -637,7 +648,7 @@ ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` :
 <head>
 <meta charset="UTF-8">
 <script type="application/json" id="ptv-data">${dataBlock}<${'/script>'}
-<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+${gfLink}
 <style>
 body,html{margin:0;padding:0;}
 .wrapper{display:flex;flex-direction:column;}
@@ -647,7 +658,7 @@ body,html{margin:0;padding:0;}
 .shadowDiv{width:150px;margin-top:-15px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;pointer-events:none;user-select:none;}
-p{margin:0;padding:0;height:25px;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:25px;text-align:center;text-shadow:3px 3px 0 #000,-3px 3px 0 #000,-3px -3px 0 #000,3px -3px 0 #000;}
+p{margin:0;padding:0;height:25px;text-align:center;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
 .pair:nth-child(1){animation-delay:0.00s;}
@@ -793,7 +804,170 @@ function updatePreview() {
     wrapper.style.height   = Math.round(265  * scale) + 'px';
     wrapper.style.margin   = '0';
 
-    iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg);
+    iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg, typography);
+}
+
+// ── Color picker ──────────────────────────────────────────────────
+let cpTarget = null;   // 'text' | 'stroke'
+let cpH = 0, cpS = 1, cpB = 1;   // hue 0-360, sat 0-1, bri 0-1
+
+function drawCpCanvas() {
+    const canvas = document.getElementById('cp-canvas');
+    const ctx    = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.fillStyle = `hsl(${cpH},100%,50%)`;
+    ctx.fillRect(0, 0, W, H);
+    const wg = ctx.createLinearGradient(0, 0, W, 0);
+    wg.addColorStop(0, 'rgba(255,255,255,1)');
+    wg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = wg; ctx.fillRect(0, 0, W, H);
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, 'rgba(0,0,0,0)');
+    bg.addColorStop(1, 'rgba(0,0,0,1)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+}
+
+function drawHueBar() {
+    const canvas = document.getElementById('cp-hue');
+    const ctx    = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const g = ctx.createLinearGradient(0, 0, W, 0);
+    for (let i = 0; i <= 6; i++) g.addColorStop(i / 6, `hsl(${i * 60},100%,50%)`);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+function hsbToRgb(h, s, b) {
+    const i = Math.floor(h / 60) % 6;
+    const f = h / 60 - Math.floor(h / 60);
+    const p = b * (1 - s), q = b * (1 - f * s), t = b * (1 - (1 - f) * s);
+    const maps = [[b,t,p],[q,b,p],[p,b,t],[p,q,b],[t,p,b],[b,p,q]];
+    return maps[i].map(v => Math.round(v * 255));
+}
+
+function hsbToHex(h, s, b) {
+    return '#' + hsbToRgb(h, s, b).map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+function hexToHsb(hex) {
+    const r = parseInt(hex.slice(1,3),16)/255;
+    const g = parseInt(hex.slice(3,5),16)/255;
+    const b = parseInt(hex.slice(5,7),16)/255;
+    const max = Math.max(r,g,b), min = Math.min(r,g,b), d = max - min;
+    let h = 0;
+    if (d) {
+        if      (max === r) h = ((g - b) / d + 6) % 6 * 60;
+        else if (max === g) h = ((b - r) / d + 2) * 60;
+        else                h = ((r - g) / d + 4) * 60;
+    }
+    return { h, s: max ? d / max : 0, b: max };
+}
+
+function updateCpThumb() {
+    const canvas = document.getElementById('cp-canvas');
+    const thumb  = document.getElementById('cp-thumb');
+    const picker = document.getElementById('color-picker');
+    const pr     = picker.getBoundingClientRect();
+    const cr     = canvas.getBoundingClientRect();
+    const x = cpS * canvas.width;
+    const y = (1 - cpB) * canvas.height;
+    thumb.style.left = (cr.left - pr.left + x) + 'px';
+    thumb.style.top  = (cr.top  - pr.top  + y) + 'px';
+}
+
+function updateHueThumb() {
+    const canvas = document.getElementById('cp-hue');
+    const thumb  = document.getElementById('cp-hue-thumb');
+    const picker = document.getElementById('color-picker');
+    const pr     = picker.getBoundingClientRect();
+    const cr     = canvas.getBoundingClientRect();
+    thumb.style.left = (cr.left - pr.left + (cpH / 360) * canvas.width) + 'px';
+    thumb.style.top  = (cr.top  - pr.top) + 'px';
+}
+
+function applyPickerColor() {
+    const hex = hsbToHex(cpH, cpS, cpB);
+    document.getElementById('cp-hex').value = hex.toUpperCase();
+    if (cpTarget === 'text') {
+        typography.textColor = hex;
+        document.getElementById('text-swatch').style.background = hex;
+    } else {
+        typography.strokeColor = hex;
+        document.getElementById('stroke-swatch').style.background = hex;
+    }
+    saveTypography();
+    schedulePreviewUpdate();
+}
+
+function openPicker(target) {
+    cpTarget = target;
+    const hex = target === 'text' ? typography.textColor : typography.strokeColor;
+    const hsb = hexToHsb(hex);
+    cpH = hsb.h; cpS = hsb.s; cpB = hsb.b;
+
+    const picker = document.getElementById('color-picker');
+    picker.classList.remove('hidden');
+
+    drawCpCanvas();
+    drawHueBar();
+    document.getElementById('cp-hex').value = hex.toUpperCase();
+
+    requestAnimationFrame(() => { updateCpThumb(); updateHueThumb(); });
+
+    setTimeout(() => document.addEventListener('click', closePickerOutside, { once: true }), 0);
+}
+
+function closePickerOutside(e) {
+    const picker   = document.getElementById('color-picker');
+    const swatches = document.querySelectorAll('.color-swatch');
+    const clickedSwatch = [...swatches].some(s => s.contains(e.target));
+    if (!picker.contains(e.target) && !clickedSwatch) {
+        picker.classList.add('hidden');
+    } else {
+        setTimeout(() => document.addEventListener('click', closePickerOutside, { once: true }), 0);
+    }
+}
+
+function initColorPicker() {
+    const canvas    = document.getElementById('cp-canvas');
+    const hueCanvas = document.getElementById('cp-hue');
+    const hexInput  = document.getElementById('cp-hex');
+
+    function onCanvasPointer(e) {
+        const rect = canvas.getBoundingClientRect();
+        cpS = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        cpB = Math.max(0, Math.min(1, 1 - (e.clientY - rect.top) / rect.height));
+        updateCpThumb();
+        applyPickerColor();
+    }
+
+    function onHuePointer(e) {
+        const rect = hueCanvas.getBoundingClientRect();
+        cpH = Math.max(0, Math.min(360, ((e.clientX - rect.left) / rect.width) * 360));
+        updateHueThumb();
+        drawCpCanvas();
+        applyPickerColor();
+    }
+
+    let draggingCanvas = false, draggingHue = false;
+    canvas.addEventListener('mousedown',    e => { draggingCanvas = true; onCanvasPointer(e); });
+    hueCanvas.addEventListener('mousedown', e => { draggingHue = true;   onHuePointer(e); });
+    document.addEventListener('mousemove',  e => {
+        if (draggingCanvas) onCanvasPointer(e);
+        if (draggingHue)    onHuePointer(e);
+    });
+    document.addEventListener('mouseup', () => { draggingCanvas = false; draggingHue = false; });
+
+    hexInput.addEventListener('change', () => {
+        const val = hexInput.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+            const hsb = hexToHsb(val);
+            cpH = hsb.h; cpS = hsb.s; cpB = hsb.b;
+            drawCpCanvas();
+            updateCpThumb();
+            updateHueThumb();
+            applyPickerColor();
+        }
+    });
 }
 
 // ── Persistence ─────────────────────────────────────────────────
@@ -866,6 +1040,12 @@ function applyRawState(raw) {
     if (raw.layout  !== undefined) document.getElementById('layout-select').value  = raw.layout;
     if (raw.shadows !== undefined) document.getElementById('shadows-check').checked = raw.shadows;
     if (raw.bg      !== undefined) document.getElementById('bg-check').checked      = raw.bg;
+
+    if (raw.typography) {
+        typography = { ...DEFAULT_TYPOGRAPHY, ...raw.typography };
+        saveTypography();
+        syncTypographyUI();
+    }
 
     if (!externalMode) {
         localStorage.setItem('ptv_team', JSON.stringify(team));
@@ -993,11 +1173,13 @@ async function publishToObs() {
                 layout,
                 shadows,
                 bg,
+                typography,
                 raw: {
                     team: team.map(s => ({ name: s.name, mote: s.mote, properties: { ...s.properties } })),
                     layout,
                     shadows,
                     bg,
+                    typography,
                 },
             }),
         });
@@ -1166,6 +1348,7 @@ buildRows();
 loadState();
 buildFontDropdown();
 syncTypographyUI();
+initColorPicker();
 setLang(currentLang);
 updatePreview();
 initCookieNotice();
