@@ -602,13 +602,14 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 
     // pTagsArr kept separate so vertical layout can place <p> outside pkDiv when nameBelow
     const pTagsArr = entries.map(e => e ? `<p style="${pStyle}">${e.mote}</p>` : '');
+    // horizontal nameBelow: pkDiv contains only sprite (no name); name goes in a third row after shadows
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
         const pTag  = pTagsArr[i];
         const bgTag = showBg ? `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">` : '';
         const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
         const sprTag = `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
-        return nameAbove ? (pTag + bgTag + sprTag) : (bgTag + sprTag + pTag);
+        return nameAbove ? (pTag + bgTag + sprTag) : (bgTag + sprTag);
     });
 
     const shadowContent = entries.map((e, i) =>
@@ -637,6 +638,7 @@ p{height:25px;text-align:center;}
 .pkDiv:nth-child(4),.shadowDiv:nth-child(4){animation-delay:0.36s;}
 .pkDiv:nth-child(5),.shadowDiv:nth-child(5){animation-delay:0.48s;}
 .pkDiv:nth-child(6),.shadowDiv:nth-child(6){animation-delay:0.60s;}
+.nameDiv{width:225px;float:left;}
 </style>
 </head>
 <body>
@@ -646,6 +648,7 @@ ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').
 <div class="container">
 ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
 </div>
+${nameAbove ? '' : `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>`}
 </body>
 </html>`;
     } else {

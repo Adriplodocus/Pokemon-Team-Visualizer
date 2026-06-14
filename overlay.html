@@ -10,6 +10,7 @@ body,html{margin:0;padding:0;background:transparent;}
 /* ── Horizontal ── */
 body.layout-horizontal .pkDiv{width:225px;height:150px;float:left;}
 body.layout-horizontal .shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
+body.layout-horizontal .nameDiv{width:225px;float:left;}
 body.layout-horizontal .container{clear:both;}
 body.layout-horizontal img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 body.layout-horizontal p{height:25px;text-align:center;}
@@ -127,6 +128,8 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
             top.className = 'container';
             var bot = document.createElement('div');
             bot.className = 'container';
+            var nameRow = typo.namePosition === 'below' ? document.createElement('div') : null;
+            if (nameRow) nameRow.className = 'container';
             team.forEach(function (slot) {
                 if (!slot || !slot.url) return;
                 var pk = document.createElement('div');
@@ -137,16 +140,23 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 if (typo.namePosition !== 'below') pk.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
                 pk.appendChild(makeImg(slot.url, slot.fallback, null));
-                if (typo.namePosition === 'below') pk.appendChild(p);
                 top.appendChild(pk);
 
                 var sh = document.createElement('div');
                 sh.className = 'shadowDiv';
                 if (shadows) sh.appendChild(makeImg(SHADOW_URL, null, null));
                 bot.appendChild(sh);
+
+                if (nameRow) {
+                    var nd = document.createElement('div');
+                    nd.className = 'nameDiv';
+                    nd.appendChild(p);
+                    nameRow.appendChild(nd);
+                }
             });
             root.appendChild(top);
             root.appendChild(bot);
+            if (nameRow) root.appendChild(nameRow);
         }
     }
 
