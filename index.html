@@ -64,6 +64,52 @@
     </div><!-- /desktop-col-left -->
     <div class="pokemon-actions-col">
 
+        <!-- Typography -->
+        <div class="card card--typography">
+
+            <!-- Font -->
+            <div class="typo-row">
+                <span class="typo-label">Font</span>
+                <div class="font-dropdown" id="font-dropdown">
+                    <div class="font-dropdown__trigger" id="font-trigger" onclick="toggleFontDropdown()">
+                        <span id="font-selected-label">Anton</span>
+                        <svg class="font-dropdown__caret" viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                    </div>
+                    <div class="font-dropdown__panel" id="font-panel"></div>
+                </div>
+            </div>
+
+            <!-- Size -->
+            <div class="typo-row">
+                <span class="typo-label">Size</span>
+                <input type="range" id="typo-size" min="20" max="50" value="35"
+                       oninput="onTypoSize(this.value)">
+                <span class="typo-val" id="typo-size-val">35px</span>
+            </div>
+
+            <!-- Colors + Stroke -->
+            <div class="typo-row typo-row--colors">
+                <span class="typo-label">Text</span>
+                <div class="color-swatch" id="text-swatch" onclick="openPicker('text')" style="background:#ffffff"></div>
+
+                <span class="typo-label typo-label--gap">Stroke</span>
+                <div class="color-swatch" id="stroke-swatch" onclick="openPicker('stroke')" style="background:#000000"></div>
+                <input type="range" id="typo-stroke" min="0" max="10" value="3" step="0.5"
+                       oninput="onTypoStroke(this.value)">
+                <span class="typo-val" id="typo-stroke-val">3px</span>
+            </div>
+
+        </div>
+
+        <!-- Color picker popover (shared) -->
+        <div class="color-picker-popover hidden" id="color-picker">
+            <canvas id="cp-canvas" width="220" height="140"></canvas>
+            <div class="cp-thumb" id="cp-thumb"></div>
+            <canvas id="cp-hue" width="220" height="14"></canvas>
+            <div class="cp-hue-thumb" id="cp-hue-thumb"></div>
+            <input type="text" class="cp-hex" id="cp-hex" maxlength="7" spellcheck="false">
+        </div>
+
         <!-- Actions -->
         <div class="card card--actions">
             <div class="actions">
