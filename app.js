@@ -830,7 +830,7 @@ function updatePreview() {
     const wrapperH  = Math.round(overlayH * scale);
     iframe.style.width     = '1350px';
     iframe.style.height    = overlayH + 'px';
-    iframe.style.transform = `scale(${scale})`;
+    iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
     wrapper.style.width    = '';
     wrapper.style.height   = '';
     wrapper.style.margin   = '0';
