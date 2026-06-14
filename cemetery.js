@@ -1,4 +1,4 @@
-const BASE_URL      = 'https://pokemonteamvisualizer.pages.dev/sprites/';
+const BASE_URL      = 'https://pokemon.mrklypp.com/sprites/';
 const CEMETERY_KEY  = 'ptv_cemetery';
 const CEMETERY_COLS = 4;
 const CEMETERY_ROWS = 3;
