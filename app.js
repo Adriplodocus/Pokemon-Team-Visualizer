@@ -831,8 +831,8 @@ function updatePreview() {
     iframe.style.width     = '1350px';
     iframe.style.height    = overlayH + 'px';
     iframe.style.transform = `scale(${scale})`;
-    wrapper.style.width    = wrapperW + 'px';
-    wrapper.style.height   = wrapperH + 'px';
+    wrapper.style.width    = '';
+    wrapper.style.height   = '';
     wrapper.style.margin   = '0';
 
     iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg, typography);
