@@ -1,8 +1,8 @@
-const BASE_URL      = 'https://pokemon.mrklypp.com/sprites/';
-const CEMETERY_KEY  = 'ptv_cemetery';
-const CEMETERY_COLS = 4;
-const CEMETERY_ROWS = 3;
-const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
+const BASE_URL            = 'https://pokemon.mrklypp.com/sprites/';
+const CEMETERY_KEY        = 'ptv_cemetery';
+const CEMETERY_CONFIG_KEY = 'ptv_cemetery_config';
+const DEFAULT_PROPS       = { gender: 'male', skin: 'common', shiny: 'False' };
+let cemeteryConfig = { cols: 4, rows: 3, overflow: true };
 
 const FEMALE_VARIANTS = new Set([
     'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
@@ -27,6 +27,10 @@ const FEMALE_VARIANTS = new Set([
 // ── i18n ──────────────────────────────────────────────────────────
 const CEMETERY_STRINGS = {
     es: {
+        gridCols:             'Cols',
+        gridRows:             'Filas',
+        gridOverflow:         'Overflow',
+        gridOverflowTip:      'No disponible en grid 1×1',
         obsHint:              dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
         cemeteryAdd:          'Añadir al cementerio',
         cemeteryEmpty:        'Ningún Pokémon en el cementerio.',
@@ -58,6 +62,10 @@ const CEMETERY_STRINGS = {
         sharePromptCopy:      'Copia este enlace:',
     },
     en: {
+        gridCols:             'Cols',
+        gridRows:             'Rows',
+        gridOverflow:         'Overflow',
+        gridOverflowTip:      'Not available on 1×1 grid',
         obsHint:              dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
         cemeteryAdd:          'Add to cemetery',
         cemeteryEmpty:        'No Pokémon in the cemetery.',
@@ -140,6 +148,20 @@ function loadCemetery() {
     try {
         cemetery = JSON.parse(localStorage.getItem(CEMETERY_KEY) || '[]');
     } catch(_) { cemetery = []; }
+}
+
+function saveCemeteryConfig() {
+    if (externalMode) return;
+    localStorage.setItem(CEMETERY_CONFIG_KEY, JSON.stringify(cemeteryConfig));
+}
+
+function loadCemeteryConfig() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(CEMETERY_CONFIG_KEY) || '{}');
+        cemeteryConfig.cols     = Math.min(10, Math.max(1, parseInt(saved.cols) || 4));
+        cemeteryConfig.rows     = Math.min(10, Math.max(1, parseInt(saved.rows) || 3));
+        cemeteryConfig.overflow = saved.overflow !== false;
+    } catch(_) {}
 }
 
 async function hydrateFromAbly() {
@@ -443,12 +465,13 @@ async function publishCemetery() {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-                id:      channelId,
-                event:   'cemetery-update',
-                pokemon: entries,
-                cols:    CEMETERY_COLS,
-                rows:    CEMETERY_ROWS,
-                raw:     cemetery.map(e => ({ name: e.name, mote: e.mote, props: { ...e.props } })),
+                id:       channelId,
+                event:    'cemetery-update',
+                pokemon:  entries,
+                cols:     cemeteryConfig.cols,
+                rows:     cemeteryConfig.rows,
+                overflow: cemeteryConfig.overflow,
+                raw:      cemetery.map(e => ({ name: e.name, mote: e.mote, props: { ...e.props } })),
             }),
         });
         setStatus(resp.ok ? tC('cemeteryPublishOk') : tC('cemeteryPublishErr'),
@@ -482,6 +505,9 @@ function applyCemeteryLang() {
         'cemetery-empty':           tC('cemeteryEmpty'),
         'cemetery-props-btn':       tC('propsBtn'),
         'made-by':                  tC('madeBy'),
+        'cemetery-cols-label':      tC('gridCols'),
+        'cemetery-rows-label':      tC('gridRows'),
+        'cemetery-overflow-span':   tC('gridOverflow'),
     };
     for (const [id, text] of Object.entries(ids)) {
         const el = document.getElementById(id);
@@ -492,14 +518,15 @@ function applyCemeteryLang() {
     const modalApply = document.querySelector('.modal-apply');
     if (modalApply) modalApply.textContent = tC('modalSet');
     updateCemeteryObsHint();
+    syncOverflowControl();
 }
 
 // ── Grid config ────────────────────────────────────────────────────
 function updateCemeteryObsHint() {
     const el = document.getElementById('cemetery-obs-hint');
     if (!el) return;
-    const w = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 10 + 10;
-    const h = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 10 + 10;
+    const w = cemeteryConfig.cols * 110;
+    const h = cemeteryConfig.rows * 110;
     const url = `https://pokemon.mrklypp.com/cemetery-overlay.html?id=${channelId}`;
     el.innerHTML = tC('obsHint', `${w}x${h}`) +
         `<br><br><span class="obs-url-label">${tC('obsUrlLabel')}</span>` +
@@ -510,6 +537,62 @@ function updateCemeteryObsHint() {
         `<div class="obs-channel-actions">` +
         (externalMode ? '' : `<button class="btn-channel-action" onclick="copyEditorUrl()">${tC('copyEditorUrl')}</button>`) +
         `</div>`;
+}
+
+function syncOverflowControl() {
+    const ck  = document.getElementById('cemetery-overflow-check');
+    const lbl = document.getElementById('cemetery-overflow-label');
+    if (!ck || !lbl) return;
+    const is1x1 = cemeteryConfig.cols === 1 && cemeteryConfig.rows === 1;
+    if (is1x1) { cemeteryConfig.overflow = false; ck.checked = false; }
+    ck.disabled = is1x1;
+    if (is1x1) {
+        lbl.setAttribute('data-tooltip', tC('gridOverflowTip'));
+        lbl.classList.add('overflow-disabled');
+    } else {
+        lbl.removeAttribute('data-tooltip');
+        lbl.classList.remove('overflow-disabled');
+    }
+}
+
+function initGridControls() {
+    const colsSlider = document.getElementById('cemetery-cols-slider');
+    const rowsSlider = document.getElementById('cemetery-rows-slider');
+    const colsVal    = document.getElementById('cemetery-cols-val');
+    const rowsVal    = document.getElementById('cemetery-rows-val');
+    const overflowCk = document.getElementById('cemetery-overflow-check');
+    if (!colsSlider) return;
+
+    colsSlider.value = cemeteryConfig.cols;
+    rowsSlider.value = cemeteryConfig.rows;
+    colsVal.textContent = cemeteryConfig.cols;
+    rowsVal.textContent = cemeteryConfig.rows;
+    overflowCk.checked  = cemeteryConfig.overflow;
+
+    colsSlider.addEventListener('input', () => {
+        cemeteryConfig.cols = parseInt(colsSlider.value);
+        colsVal.textContent = cemeteryConfig.cols;
+        syncOverflowControl();
+        saveCemeteryConfig();
+        updateCemeteryObsHint();
+        updateCemeteryPreview();
+    });
+
+    rowsSlider.addEventListener('input', () => {
+        cemeteryConfig.rows = parseInt(rowsSlider.value);
+        rowsVal.textContent = cemeteryConfig.rows;
+        syncOverflowControl();
+        saveCemeteryConfig();
+        updateCemeteryObsHint();
+        updateCemeteryPreview();
+    });
+
+    overflowCk.addEventListener('change', () => {
+        cemeteryConfig.overflow = overflowCk.checked;
+        saveCemeteryConfig();
+    });
+
+    syncOverflowControl();
 }
 
 // ── Preview ────────────────────────────────────────────────────────
@@ -525,8 +608,8 @@ function updateCemeteryPreview() {
         - parseFloat(cardStyle.paddingRight);
     if (!containerW) return;
 
-    const overlayW = CEMETERY_COLS * 100 + (CEMETERY_COLS - 1) * 10 + 10;
-    const overlayH = CEMETERY_ROWS * 100 + (CEMETERY_ROWS - 1) * 10 + 10;
+    const overlayW = cemeteryConfig.cols * 110;
+    const overlayH = cemeteryConfig.rows * 110;
     const scale    = Math.min(1, containerW / overlayW);
 
     iframe.style.width     = overlayW + 'px';
@@ -547,9 +630,11 @@ function initCemeteryPreview() {
 
 // ── Init ───────────────────────────────────────────────────────────
 initChannelId();
+loadCemeteryConfig();
 loadCemetery();
 renderCemetery();
 updateObsUrl();
 updateCemeteryObsHint();
+initGridControls();
 initCemeteryPreview();
 hydrateFromAbly();

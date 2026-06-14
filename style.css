@@ -1139,6 +1139,36 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     padding: 20px 0;
     display: none;
 }
+#cemetery-overflow-label {
+    position: relative;
+}
+#cemetery-overflow-label[data-tooltip]::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: calc(100% + 6px);
+    left: 0;
+    background: var(--surface2, #2D2D2D);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 4px 8px;
+    font-size: 11px;
+    color: var(--text-em, #F0F0F0);
+    white-space: nowrap;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.15s;
+    z-index: 50;
+}
+#cemetery-overflow-label[data-tooltip]:hover::after {
+    opacity: 1;
+}
+#cemetery-overflow-label.overflow-disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+#cemetery-overflow-label.overflow-disabled input[type="checkbox"] {
+    pointer-events: none;
+}
 
 /* Footer */
 .site-footer {

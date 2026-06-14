@@ -56,19 +56,21 @@ body { padding: 5px; }
     if (!id) return;
 
     function renderCemetery(data) {
-        var pokemon  = data.pokemon  || [];
-        var cols     = Math.max(1, parseInt(data.cols, 10) || 4);
-        var rows     = Math.max(1, parseInt(data.rows, 10) || 3);
-        var capacity = cols * rows;
-        var root     = document.getElementById('root');
+        var pokemon      = data.pokemon  || [];
+        var cols         = Math.max(1, parseInt(data.cols, 10) || 4);
+        var rows         = Math.max(1, parseInt(data.rows, 10) || 3);
+        var showOverflow = data.overflow !== false;
+        var capacity     = cols * rows;
+        var root         = document.getElementById('root');
 
         root.style.gridTemplateColumns = 'repeat(' + cols + ', 100px)';
         root.style.gridTemplateRows    = 'repeat(' + rows + ', 100px)';
 
         root.innerHTML = '';
 
-        var overflow = pokemon.length > capacity;
-        var visible  = overflow ? pokemon.slice(0, capacity - 1) : pokemon;
+        var hasOverflow = showOverflow && (pokemon.length > capacity);
+        var maxVisible  = hasOverflow ? capacity - 1 : capacity;
+        var visible     = pokemon.slice(0, maxVisible);
 
         visible.forEach(function (entry) {
             if (!entry || !entry.url) return;
@@ -86,7 +88,7 @@ body { padding: 5px; }
             root.appendChild(div);
         });
 
-        if (overflow) {
+        if (hasOverflow) {
             var extra = pokemon.length - (capacity - 1);
             var div = document.createElement('div');
             div.className = 'pk-overflow';
