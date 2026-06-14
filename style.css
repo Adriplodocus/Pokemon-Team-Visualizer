@@ -600,7 +600,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     top: 10px;
     right: 12px;
     z-index: 10;
-    background: var(--surface2);
+    background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 6px;
     color: var(--text);
@@ -627,7 +627,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 .typo-label {
     font-size: 11px;
-    color: var(--text);
+    color: var(--text-2);
     white-space: nowrap;
     min-width: 32px;
 }
@@ -635,14 +635,14 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 .typo-val {
     font-size: 11px;
-    color: var(--text);
+    color: var(--text-2);
     min-width: 30px;
     text-align: right;
 }
 
 .typo-row input[type="range"] {
     flex: 1;
-    accent-color: var(--blue);
+    accent-color: var(--cyan);
     min-width: 0;
 }
 
@@ -654,19 +654,19 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     justify-content: space-between;
     padding: 5px 10px;
-    background: var(--surface2);
+    background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 8px;
     cursor: pointer;
     font-size: 13px;
-    color: var(--text-em);
+    color: var(--text);
     transition: border-color 0.15s;
     user-select: none;
 }
 .font-dropdown__trigger:hover { border-color: rgba(0,204,255,0.3); }
 .font-dropdown__trigger.open   { border-color: rgba(0,204,255,0.5); }
 
-.font-dropdown__caret { color: var(--text); flex-shrink: 0; }
+.font-dropdown__caret { color: var(--text-2); flex-shrink: 0; }
 
 .font-dropdown__panel {
     position: absolute;
@@ -674,7 +674,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     left: 0; right: 0;
     max-height: 220px;
     overflow-y: auto;
-    background: var(--surface2);
+    background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 8px;
     z-index: 200;
@@ -686,12 +686,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .font-dropdown__item {
     padding: 8px 12px;
     font-size: 15px;
-    color: var(--text-em);
+    color: var(--text);
     cursor: pointer;
     transition: background 0.1s;
 }
 .font-dropdown__item:hover    { background: var(--surface); }
-.font-dropdown__item.selected { color: var(--blue); }
+.font-dropdown__item.selected { color: var(--cyan); }
 
 /* Color swatch */
 .color-swatch {
@@ -708,7 +708,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 /* Color picker popover */
 .color-picker-popover {
     position: relative;
-    background: var(--surface2);
+    background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 10px;
     padding: 10px;
@@ -746,7 +746,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 6px;
-    color: var(--text-em);
+    color: var(--text);
     font-family: 'JetBrains Mono', monospace;
     font-size: 12px;
     padding: 5px 8px;
@@ -768,7 +768,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .mode-toggle {
     display: flex;
-    background: var(--surface2);
+    background: var(--surface-2);
     border: 1px solid var(--border);
     border-radius: 100px;
     padding: 3px;
@@ -800,7 +800,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     left: 50%;
     transform: translateX(-50%);
     background: var(--surface-2);
-    color: var(--text-em);
+    color: var(--text);
     font-size: 0.65rem;
     font-weight: 600;
     padding: 0.22rem 0.55rem;
@@ -820,7 +820,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .mode-btn.active {
     background: var(--surface);
-    color: var(--text-em);
+    color: var(--text);
     border-color: rgba(0, 204, 255, 0.3);
     box-shadow: 0 0 12px rgba(0, 204, 255, 0.15);
 }
@@ -920,7 +920,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     gap: 0.75rem;
     font-size: 0.82rem;
-    color: var(--text-em);
+    color: var(--text);
 }
 .badge-brightness-row input[type="range"] {
     accent-color: var(--accent);
