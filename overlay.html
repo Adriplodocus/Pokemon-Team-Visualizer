@@ -160,10 +160,22 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
         }
     }
 
+    function fitToViewport() {
+        var root = document.getElementById('root');
+        root.style.transform = 'none';
+        root.style.transformOrigin = 'top left';
+        var rw = root.offsetWidth;
+        var rh = root.offsetHeight;
+        if (!rw || !rh) return;
+        var scale = Math.min(window.innerWidth / rw, window.innerHeight / rh);
+        if (scale !== 1) root.style.transform = 'scale(' + scale + ')';
+    }
+    window.addEventListener('resize', fitToViewport);
+
     var ably = new Ably.Realtime({ authUrl: '/api/token' });
     var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('update', function (msg) {
-        try { renderTeam(JSON.parse(msg.data)); } catch (e) {}
+        try { renderTeam(JSON.parse(msg.data)); fitToViewport(); } catch (e) {}
     });
 
     ably.connection.on('failed', function (stateChange) {
