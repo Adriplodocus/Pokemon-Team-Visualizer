@@ -824,13 +824,14 @@ function updatePreview() {
         - parseFloat(cardStyle.paddingRight);
 
     const overlayH  = 200;
-    const scale = containerW / 1350;
-    iframe.style.width           = '1350px';
-    iframe.style.height          = overlayH + 'px';
-    iframe.style.transformOrigin = 'top left';
-    iframe.style.transform       = `scale(${scale})`;
-    wrapper.style.width    = Math.round(1350 * scale) + 'px';
-    wrapper.style.height   = Math.round(overlayH * scale) + 'px';
+    const scale     = Math.max(containerW / 1350, 0.75);
+    const wrapperW  = Math.min(Math.round(1350 * scale), containerW);
+    const wrapperH  = Math.round(overlayH * scale);
+    iframe.style.width     = '1350px';
+    iframe.style.height    = overlayH + 'px';
+    iframe.style.transform = `scale(${scale})`;
+    wrapper.style.width    = wrapperW + 'px';
+    wrapper.style.height   = wrapperH + 'px';
     wrapper.style.margin   = '0';
 
     iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg, typography);
