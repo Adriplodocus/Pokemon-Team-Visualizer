@@ -9,8 +9,7 @@ body,html{margin:0;padding:0;background:transparent;}
 
 /* ── Horizontal ── */
 body.layout-horizontal .container{display:flex;flex-wrap:nowrap;}
-body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;display:flex;flex-direction:column;}
-body.layout-horizontal .pkDiv img{flex:1;min-height:0;width:100%;object-fit:contain;}
+body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;}
 body.layout-horizontal .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 body.layout-horizontal .sprite-row{position:relative;z-index:1;}
 body.layout-horizontal .shadow-row{margin-top:-15px;}
@@ -127,20 +126,19 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
             });
             root.appendChild(wrapper);
         } else {
+            var nameAbove = typo.namePosition !== 'below';
+            var nameAboveRow = nameAbove ? document.createElement('div') : null;
+            if (nameAboveRow) nameAboveRow.className = 'container';
             var top = document.createElement('div');
             top.className = 'container sprite-row';
             var bot = document.createElement('div');
             bot.className = 'container shadow-row';
-            var nameRow = typo.namePosition === 'below' ? document.createElement('div') : null;
-            if (nameRow) nameRow.className = 'container';
+            var nameBelowRow = !nameAbove ? document.createElement('div') : null;
+            if (nameBelowRow) nameBelowRow.className = 'container';
             team.forEach(function (slot) {
                 if (!slot || !slot.url) return;
                 var pk = document.createElement('div');
                 pk.className = 'pkDiv';
-                var p = document.createElement('p');
-                p.style.cssText = pStyle;
-                p.textContent = slot.mote || '';
-                if (typo.namePosition !== 'below') pk.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
                 pk.appendChild(makeImg(slot.url, slot.fallback, null));
                 top.appendChild(pk);
@@ -150,16 +148,19 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 if (shadows) sh.appendChild(makeImg(SHADOW_URL, null, null));
                 bot.appendChild(sh);
 
-                if (nameRow) {
-                    var nd = document.createElement('div');
-                    nd.className = 'nameDiv';
-                    nd.appendChild(p);
-                    nameRow.appendChild(nd);
-                }
+                var p = document.createElement('p');
+                p.style.cssText = pStyle;
+                p.textContent = slot.mote || '';
+                var nd = document.createElement('div');
+                nd.className = 'nameDiv';
+                nd.appendChild(p);
+                if (nameAboveRow) nameAboveRow.appendChild(nd);
+                if (nameBelowRow) nameBelowRow.appendChild(nd);
             });
+            if (nameAboveRow) root.appendChild(nameAboveRow);
             root.appendChild(top);
             root.appendChild(bot);
-            if (nameRow) root.appendChild(nameRow);
+            if (nameBelowRow) root.appendChild(nameBelowRow);
         }
     }
 

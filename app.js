@@ -600,16 +600,14 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 
     const nameAbove = typo.namePosition !== 'below';
 
-    // pTagsArr kept separate so vertical layout can place <p> outside pkDiv when nameBelow
     const pTagsArr = entries.map(e => e ? `<p style="${pStyle}">${e.mote}</p>` : '');
-    // horizontal nameBelow: pkDiv contains only sprite (no name); name goes in a third row after shadows
+    // pkDiv never contains <p> — names always go in a separate row above or below
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
-        const pTag  = pTagsArr[i];
         const bgTag = showBg ? `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">` : '';
         const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
         const sprTag = `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
-        return nameAbove ? (pTag + bgTag + sprTag) : (bgTag + sprTag);
+        return bgTag + sprTag;
     });
 
     const shadowContent = entries.map((e, i) =>
@@ -624,8 +622,7 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
-.pkDiv{flex:0 0 225px;width:225px;height:150px;display:flex;flex-direction:column;}
-.pkDiv img{flex:1;min-height:0;width:100%;object-fit:contain;}
+.pkDiv{flex:0 0 225px;width:225px;height:150px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
@@ -646,6 +643,7 @@ p{height:25px;text-align:center;}
 </style>
 </head>
 <body>
+${nameAbove ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
 <div class="container sprite-row">
 ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
@@ -825,8 +823,7 @@ function updatePreview() {
         - parseFloat(cardStyle.paddingLeft)
         - parseFloat(cardStyle.paddingRight);
 
-    const nameBelow = typography.namePosition === 'below';
-    const overlayH  = nameBelow ? 220 : 175;
+    const overlayH  = 200;
     const scale = containerW / 1350;
     iframe.style.width     = '1350px';
     iframe.style.height    = overlayH + 'px';
