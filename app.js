@@ -170,6 +170,29 @@ const FEMALE_VARIANTS = new Set([
 // ── State ───────────────────────────────────────────────────────
 const DEFAULT_PROPS = { gender: 'male', skin: 'common', shiny: 'False' };
 
+const GOOGLE_FONTS = [
+    'Abril Fatface','Alfa Slab One','Anton','Bangers','Bebas Neue',
+    'Black Han Sans','Black Ops One','Boogaloo','Carter One','Changa One',
+    'Chewy','Cinzel','Concert One','Creepster','Exo 2',
+    'Fascinate','Fredoka One','Fugaz One','Graduate','Gugi',
+    'Josefin Sans','Knewave','Lilita One','Lobster','Luckiest Guy',
+    'Montserrat','Nunito','Orbitron','Oswald','Oxanium',
+    'Pacifico','Passion One','Patua One','Permanent Marker','Pirata One',
+    'Poller One','Press Start 2P','Racing Sans One','Righteous','Rubik',
+    'Russo One','Sigmar One','Skranji','Squada One','Titan One',
+    'Viga','Yanone Kaffeesatz',
+];
+
+const DEFAULT_TYPOGRAPHY = {
+    font:        'Anton',
+    size:        35,
+    textColor:   '#ffffff',
+    strokeWidth: 3,
+    strokeColor: '#000000',
+};
+
+let typography = { ...DEFAULT_TYPOGRAPHY };
+
 const team = Array.from({ length: 6 }, () => ({
     name: '',
     mote: '',
@@ -660,6 +683,13 @@ function validateTeam() {
 }
 
 // ── Live preview ─────────────────────────────────────────────────
+function togglePreviewBg() {
+    const wrapper = document.getElementById('preview-wrapper');
+    const btn     = document.getElementById('preview-bg-toggle');
+    const isLight = wrapper.classList.toggle('bg-light');
+    btn.textContent = isLight ? '☾' : '☀';
+}
+
 let previewTimeout = null;
 
 function schedulePreviewUpdate() {
@@ -729,6 +759,19 @@ function loadState() {
 
     const bg = localStorage.getItem('ptv_bg');
     if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
+
+    loadTypography();
+}
+
+function saveTypography() {
+    localStorage.setItem('ptv_typography', JSON.stringify(typography));
+}
+
+function loadTypography() {
+    try {
+        const saved = JSON.parse(localStorage.getItem('ptv_typography'));
+        if (saved) typography = { ...DEFAULT_TYPOGRAPHY, ...saved };
+    } catch (_) {}
 }
 
 function applyRawState(raw) {
