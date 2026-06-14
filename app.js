@@ -690,6 +690,77 @@ function togglePreviewBg() {
     btn.textContent = isLight ? '☾' : '☀';
 }
 
+// ── Font dropdown ─────────────────────────────────────────────────
+function buildFontDropdown() {
+    const panel = document.getElementById('font-panel');
+    GOOGLE_FONTS.forEach(font => {
+        const item = document.createElement('div');
+        item.className = 'font-dropdown__item' + (font === typography.font ? ' selected' : '');
+        item.textContent = font;
+        item.style.fontFamily = `'${font}', sans-serif`;
+        item.dataset.font = font;
+        item.onclick = () => selectFont(font);
+        panel.appendChild(item);
+    });
+}
+
+function toggleFontDropdown() {
+    const panel   = document.getElementById('font-panel');
+    const trigger = document.getElementById('font-trigger');
+    const isOpen  = panel.classList.toggle('open');
+    trigger.classList.toggle('open', isOpen);
+    if (isOpen) {
+        setTimeout(() => document.addEventListener('click', closeFontDropdownOutside, { once: true }), 0);
+    }
+}
+
+function closeFontDropdownOutside(e) {
+    const dd = document.getElementById('font-dropdown');
+    if (!dd.contains(e.target)) closeFontDropdown();
+}
+
+function closeFontDropdown() {
+    document.getElementById('font-panel').classList.remove('open');
+    document.getElementById('font-trigger').classList.remove('open');
+}
+
+function selectFont(font) {
+    typography.font = font;
+    document.getElementById('font-selected-label').textContent = font;
+    document.getElementById('font-selected-label').style.fontFamily = `'${font}', sans-serif`;
+    document.querySelectorAll('.font-dropdown__item').forEach(el => {
+        el.classList.toggle('selected', el.dataset.font === font);
+    });
+    closeFontDropdown();
+    saveTypography();
+    schedulePreviewUpdate();
+}
+
+function onTypoSize(val) {
+    typography.size = Number(val);
+    document.getElementById('typo-size-val').textContent = val + 'px';
+    saveTypography();
+    schedulePreviewUpdate();
+}
+
+function onTypoStroke(val) {
+    typography.strokeWidth = Number(val);
+    document.getElementById('typo-stroke-val').textContent = val + 'px';
+    saveTypography();
+    schedulePreviewUpdate();
+}
+
+function syncTypographyUI() {
+    document.getElementById('typo-size').value               = typography.size;
+    document.getElementById('typo-size-val').textContent     = typography.size + 'px';
+    document.getElementById('typo-stroke').value             = typography.strokeWidth;
+    document.getElementById('typo-stroke-val').textContent   = typography.strokeWidth + 'px';
+    document.getElementById('font-selected-label').textContent   = typography.font;
+    document.getElementById('font-selected-label').style.fontFamily = `'${typography.font}', sans-serif`;
+    document.getElementById('text-swatch').style.background   = typography.textColor;
+    document.getElementById('stroke-swatch').style.background = typography.strokeColor;
+}
+
 let previewTimeout = null;
 
 function schedulePreviewUpdate() {
@@ -1093,6 +1164,8 @@ function setMode(mode) {
 initChannelId();
 buildRows();
 loadState();
+buildFontDropdown();
+syncTypographyUI();
 setLang(currentLang);
 updatePreview();
 initCookieNotice();
