@@ -624,12 +624,13 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
-.pkDiv{width:225px;height:150px;float:left;}
+.pkDiv{flex:0 0 225px;width:225px;height:150px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
-.shadowDiv{width:225px;height:150px;float:left;padding-top:80px;}
+.shadowDiv{flex:0 0 225px;width:225px;height:150px;padding-top:80px;}
 img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 p{height:25px;text-align:center;}
-.container{clear:both;}
+.container{display:flex;flex-wrap:nowrap;}
+.nameDiv{flex:0 0 225px;width:225px;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pkDiv,.shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
 .pkDiv:nth-child(1),.shadowDiv:nth-child(1){animation-delay:0.00s;}
@@ -638,7 +639,7 @@ p{height:25px;text-align:center;}
 .pkDiv:nth-child(4),.shadowDiv:nth-child(4){animation-delay:0.36s;}
 .pkDiv:nth-child(5),.shadowDiv:nth-child(5){animation-delay:0.48s;}
 .pkDiv:nth-child(6),.shadowDiv:nth-child(6){animation-delay:0.60s;}
-.nameDiv{width:225px;float:left;}
+
 </style>
 </head>
 <body>
