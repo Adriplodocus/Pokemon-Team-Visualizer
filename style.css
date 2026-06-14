@@ -241,7 +241,7 @@ button:hover { background: var(--btn-hover); }
 .settings-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     gap: 28px;
     flex-wrap: wrap;
 }
