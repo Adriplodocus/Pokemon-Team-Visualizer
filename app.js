@@ -624,7 +624,8 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
-.pkDiv{flex:0 0 225px;width:225px;height:150px;}
+.pkDiv{flex:0 0 225px;width:225px;height:150px;display:flex;flex-direction:column;}
+.pkDiv img{flex:1;min-height:0;width:100%;object-fit:contain;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
