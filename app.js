@@ -626,7 +626,8 @@ ${gfLink}
 body,html{margin:0;padding:0;}
 .pkDiv{flex:0 0 225px;width:225px;height:150px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
-.shadowDiv{flex:0 0 225px;width:225px;height:150px;padding-top:80px;}
+.shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
+.shadow-row{margin-top:-15px;}
 img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 p{height:25px;text-align:center;}
 .container{display:flex;flex-wrap:nowrap;}
@@ -646,7 +647,7 @@ p{height:25px;text-align:center;}
 <div class="container">
 ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
-<div class="container">
+<div class="container shadow-row">
 ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
 </div>
 ${nameAbove ? '' : `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>`}
@@ -822,12 +823,14 @@ function updatePreview() {
         - parseFloat(cardStyle.paddingLeft)
         - parseFloat(cardStyle.paddingRight);
 
+    const nameBelow = typography.namePosition === 'below';
+    const overlayH  = nameBelow ? 200 : 175;
     const scale = containerW / 1350;
     iframe.style.width     = '1350px';
-    iframe.style.height    = '265px';
+    iframe.style.height    = overlayH + 'px';
     iframe.style.transform = `scale(${scale})`;
     wrapper.style.width    = Math.round(1350 * scale) + 'px';
-    wrapper.style.height   = Math.round(265  * scale) + 'px';
+    wrapper.style.height   = Math.round(overlayH * scale) + 'px';
     wrapper.style.margin   = '0';
 
     iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg, typography);
