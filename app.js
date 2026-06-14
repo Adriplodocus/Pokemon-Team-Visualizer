@@ -184,11 +184,12 @@ const GOOGLE_FONTS = [
 ];
 
 const DEFAULT_TYPOGRAPHY = {
-    font:        'Anton',
-    size:        35,
-    textColor:   '#ffffff',
-    strokeWidth: 3,
-    strokeColor: '#000000',
+    font:         'Anton',
+    size:         35,
+    textColor:    '#ffffff',
+    strokeWidth:  3,
+    strokeColor:  '#000000',
+    namePosition: 'above',
 };
 
 let typography = { ...DEFAULT_TYPOGRAPHY };
@@ -597,13 +598,14 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 
     const isHorizontal = layout === 'horizontal';
 
+    const nameAbove = typo.namePosition !== 'below';
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
-        let c = `<p style="${pStyle}">${e.mote}</p>`;
-        if (showBg) c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">`;
+        const pTag  = `<p style="${pStyle}">${e.mote}</p>`;
+        const bgTag = showBg ? `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">` : '';
         const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
-        c += `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
-        return c;
+        const sprTag = `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
+        return nameAbove ? (pTag + bgTag + sprTag) : (bgTag + sprTag + pTag);
     });
 
     const shadowContent = entries.map((e, i) =>
@@ -770,6 +772,17 @@ function syncTypographyUI() {
     document.getElementById('font-selected-label').style.fontFamily = `'${typography.font}', sans-serif`;
     document.getElementById('text-swatch').style.background   = typography.textColor;
     document.getElementById('stroke-swatch').style.background = typography.strokeColor;
+    const pos = typography.namePosition || 'above';
+    document.getElementById('pos-above').classList.toggle('active', pos === 'above');
+    document.getElementById('pos-below').classList.toggle('active', pos === 'below');
+}
+
+function onNamePosition(pos) {
+    typography.namePosition = pos;
+    document.getElementById('pos-above').classList.toggle('active', pos === 'above');
+    document.getElementById('pos-below').classList.toggle('active', pos === 'below');
+    saveTypography();
+    schedulePreviewUpdate();
 }
 
 let previewTimeout = null;

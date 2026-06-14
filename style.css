@@ -757,6 +757,20 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .cp-hex:focus { border-color: rgba(0,204,255,0.5); }
 
+.typo-pos-toggle { display: flex; gap: 4px; }
+.typo-pos-btn {
+    padding: 3px 10px;
+    font-size: 11px;
+    border-radius: 6px;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-2);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+.typo-pos-btn:hover { border-color: rgba(0,204,255,0.3); color: var(--text); }
+.typo-pos-btn.active { background: rgba(0,204,255,0.12); border-color: rgba(0,204,255,0.4); color: var(--cyan); }
+
 /* ── Mode toggle ─────────────────────────────────────────────── */
 .header-controls-row {
     display: flex;
