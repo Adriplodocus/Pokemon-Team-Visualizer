@@ -111,7 +111,6 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 if (typo.namePosition !== 'below') pk.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
                 pk.appendChild(makeImg(slot.url, slot.fallback, null));
-                if (typo.namePosition === 'below') pk.appendChild(p);
 
                 var sh = document.createElement('div');
                 sh.className = 'shadowDiv';
@@ -119,6 +118,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
 
                 pair.appendChild(pk);
                 pair.appendChild(sh);
+                if (typo.namePosition === 'below') pair.appendChild(p);
                 wrapper.appendChild(pair);
             });
             root.appendChild(wrapper);

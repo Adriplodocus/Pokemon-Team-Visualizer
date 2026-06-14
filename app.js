@@ -599,9 +599,12 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
     const isHorizontal = layout === 'horizontal';
 
     const nameAbove = typo.namePosition !== 'below';
+
+    // pTagsArr kept separate so vertical layout can place <p> outside pkDiv when nameBelow
+    const pTagsArr = entries.map(e => e ? `<p style="${pStyle}">${e.mote}</p>` : '');
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
-        const pTag  = `<p style="${pStyle}">${e.mote}</p>`;
+        const pTag  = pTagsArr[i];
         const bgTag = showBg ? `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">` : '';
         const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
         const sprTag = `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
@@ -673,10 +676,16 @@ p{margin:0;padding:0;height:25px;text-align:center;}
 </head>
 <body>
 <div class="wrapper">
-${entries.map((e, i) => e ? `<div class="pair">
-  <div class="pkDiv">${pkDivContent[i]}</div>
-  <div class="shadowDiv">${shadowContent[i]}</div>
-</div>` : '').join('\n')}
+${entries.map((e, i) => {
+    if (!e) return '';
+    const bgTag = showBg ? `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">` : '';
+    const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
+    const sprTag = `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
+    const shTag = shadowContent[i];
+    return nameAbove
+        ? `<div class="pair">\n  <div class="pkDiv">${pTagsArr[i]}${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n</div>`
+        : `<div class="pair">\n  <div class="pkDiv">${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n  ${pTagsArr[i]}\n</div>`;
+}).join('\n')}
 </div>
 </body>
 </html>`;
@@ -881,10 +890,8 @@ function updateCpThumb() {
     const picker = document.getElementById('color-picker');
     const pr     = picker.getBoundingClientRect();
     const cr     = canvas.getBoundingClientRect();
-    const x = cpS * canvas.width;
-    const y = (1 - cpB) * canvas.height;
-    thumb.style.left = (cr.left - pr.left + x) + 'px';
-    thumb.style.top  = (cr.top  - pr.top  + y) + 'px';
+    thumb.style.left = (cr.left - pr.left + cpS * cr.width) + 'px';
+    thumb.style.top  = (cr.top  - pr.top  + (1 - cpB) * cr.height) + 'px';
 }
 
 function updateHueThumb() {
@@ -893,7 +900,7 @@ function updateHueThumb() {
     const picker = document.getElementById('color-picker');
     const pr     = picker.getBoundingClientRect();
     const cr     = canvas.getBoundingClientRect();
-    thumb.style.left = (cr.left - pr.left + (cpH / 360) * canvas.width) + 'px';
+    thumb.style.left = (cr.left - pr.left + (cpH / 360) * cr.width) + 'px';
     thumb.style.top  = (cr.top  - pr.top) + 'px';
 }
 
