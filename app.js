@@ -667,7 +667,7 @@ body,html{margin:0;padding:0;}
 .pkDiv{width:225px;}
 .shadowDiv{width:150px;margin-top:-15px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
-img{display:block;width:100%;height:auto;max-height:100px;object-fit:contain;pointer-events:none;user-select:none;}
+img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;pointer-events:none;user-select:none;}
 p{margin:0;padding:0;height:25px;text-align:center;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
@@ -825,9 +825,10 @@ function updatePreview() {
 
     const overlayH  = 200;
     const scale = containerW / 1350;
-    iframe.style.width     = '1350px';
-    iframe.style.height    = overlayH + 'px';
-    iframe.style.transform = `scale(${scale})`;
+    iframe.style.width           = '1350px';
+    iframe.style.height          = overlayH + 'px';
+    iframe.style.transformOrigin = 'top left';
+    iframe.style.transform       = `scale(${scale})`;
     wrapper.style.width    = Math.round(1350 * scale) + 'px';
     wrapper.style.height   = Math.round(overlayH * scale) + 'px';
     wrapper.style.margin   = '0';
