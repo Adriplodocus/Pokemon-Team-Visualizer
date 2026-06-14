@@ -385,9 +385,11 @@ function renderCemetery() {
     if (!cemetery.length) {
         list.innerHTML = '';
         emptyEl.style.display = 'block';
+        updateCemeteryPreviewContent();
         return;
     }
     emptyEl.style.display = 'none';
+    updateCemeteryPreviewContent();
     list.innerHTML = cemetery.map((entry, idx) => {
         const name      = entry.name.toLowerCase();
         const url       = buildSpriteUrl(name, entry.props);
@@ -576,6 +578,7 @@ function initGridControls() {
         saveCemeteryConfig();
         updateCemeteryObsHint();
         updateCemeteryPreview();
+        updateCemeteryPreviewContent();
     });
 
     rowsSlider.addEventListener('input', () => {
@@ -585,11 +588,13 @@ function initGridControls() {
         saveCemeteryConfig();
         updateCemeteryObsHint();
         updateCemeteryPreview();
+        updateCemeteryPreviewContent();
     });
 
     overflowCk.addEventListener('change', () => {
         cemeteryConfig.overflow = overflowCk.checked;
         saveCemeteryConfig();
+        updateCemeteryPreviewContent();
     });
 
     syncOverflowControl();
@@ -620,11 +625,54 @@ function updateCemeteryPreview() {
     wrapper.style.margin   = '0';
 }
 
-function initCemeteryPreview() {
+function buildCemeteryOverlayHTML() {
+    const cols        = cemeteryConfig.cols;
+    const rows        = cemeteryConfig.rows;
+    const capacity    = cols * rows;
+    const hasOverflow = cemeteryConfig.overflow && (cemetery.length > capacity);
+    const maxVisible  = hasOverflow ? capacity - 1 : capacity;
+    const visible     = cemetery.slice(0, maxVisible);
+
+    const entries = visible.map(entry => {
+        const name      = entry.name.toLowerCase();
+        const url       = buildSpriteUrl(name, entry.props);
+        const canonical = ALIAS_TO_CANONICAL[name];
+        const fallback  = canonical
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
+            : BASE_URL + encodeURIComponent(name) + '.gif';
+        const fbAttr = fallback !== url
+            ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
+            : '';
+        return `<div class="pk-entry"><img src="${url}" ${fbAttr} alt=""></div>`;
+    }).join('');
+
+    const overflowCell = hasOverflow
+        ? `<div class="pk-overflow">+${cemetery.length - (capacity - 1)}</div>`
+        : '';
+
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body,html{background:transparent;}
+body{padding:5px;}
+#root{display:grid;gap:10px;grid-template-columns:repeat(${cols},100px);grid-template-rows:repeat(${rows},100px);}
+.pk-entry{width:100px;height:100px;display:flex;align-items:center;justify-content:center;}
+.pk-entry img{width:100px;height:100px;object-fit:contain;pointer-events:none;user-select:none;display:block;animation:fu .35s ease forwards;opacity:0;}
+.pk-overflow{width:100px;height:100px;display:flex;align-items:center;justify-content:center;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:56px;text-shadow:2px 2px 6px rgba(0,0,0,0.8);animation:fu .35s ease forwards;opacity:0;}
+@keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+</style></head><body><div id="root">${entries}${overflowCell}</div></body></html>`;
+}
+
+function updateCemeteryPreviewContent() {
     const iframe = document.getElementById('cemetery-preview-iframe');
-    if (!iframe || !channelId) return;
-    iframe.src = `cemetery-overlay.html?id=${channelId}`;
+    if (!iframe) return;
+    iframe.srcdoc = buildCemeteryOverlayHTML();
+}
+
+function initCemeteryPreview() {
     updateCemeteryPreview();
+    updateCemeteryPreviewContent();
     window.addEventListener('resize', updateCemeteryPreview);
 }
 
