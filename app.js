@@ -143,7 +143,7 @@ function applyLang() {
 }
 
 // ── Constants ───────────────────────────────────────────────────
-const BASE_URL     = 'https://pokemonteamvisualizer.pages.dev/sprites/';
+const BASE_URL     = 'https://pokemon.mrklypp.com/sprites/';
 const SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
 const POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
 
