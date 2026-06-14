@@ -213,7 +213,7 @@ function buildRows() {
         row.dataset.index = i;
         row.innerHTML = `
             <span class="drag-handle" title="Drag to reorder">⠿</span>
-            <img class="sprite-preview" src="" alt="" onclick="openModal(${i})" style="cursor:pointer">
+            <img class="sprite-preview" src="" alt="" decoding="async" onclick="openModal(${i})" style="cursor:pointer">
             <span class="row-label">Pokémon ${i + 1}:</span>
             <div class="ac-wrapper">
                 <input class="name-input" type="text" data-i18n-ph="namePh" autocomplete="off" spellcheck="false">
@@ -566,14 +566,14 @@ function buildOverlayHTML(layout, showShadows, showBg) {
     const pkDivContent = entries.map((e, i) => {
         if (!e) return '';
         let c = `<p>${e.mote}</p>`;
-        if (showBg) c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}">`;
+        if (showBg) c += `<img id="pokeballBackground${i+1}" src="${POKEBALL_URL}" decoding="async">`;
         const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
-        c += `<img id="img${i+1}" src="${e.url}"${onerr}>`;
+        c += `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
         return c;
     });
 
     const shadowContent = entries.map((e, i) =>
-        e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}">` : `<img id="shadow${i+1}">`
+        e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}" decoding="async">` : `<img id="shadow${i+1}">`
     );
 
     if (isHorizontal) {
