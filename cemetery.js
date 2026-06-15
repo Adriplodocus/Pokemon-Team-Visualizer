@@ -55,6 +55,7 @@ const CEMETERY_STRINGS = {
         gridRows:             'Filas',
         gridOverflow:         'Overflow',
         gridOverflowTip:      'No disponible en grid 1×1',
+        gridOverflowDesc:     'Muestra un contador con los Pokémon que no caben en el grid',
         obsHint:              dims => `Añade un <strong>Browser Source</strong> en OBS.<br>Tamaño recomendado: <strong>${dims}</strong>`,
         cemeteryAdd:          'Añadir al cementerio',
         cemeteryEmpty:        'Ningún Pokémon en el cementerio.',
@@ -94,6 +95,7 @@ const CEMETERY_STRINGS = {
         gridRows:             'Rows',
         gridOverflow:         'Overflow',
         gridOverflowTip:      'Not available on 1×1 grid',
+        gridOverflowDesc:     'Shows a counter for Pokémon that don\'t fit in the grid',
         obsHint:              dims => `Add a <strong>Browser Source</strong> in OBS.<br>Recommended size: <strong>${dims}</strong>`,
         cemeteryAdd:          'Add to cemetery',
         cemeteryEmpty:        'No Pokémon in the cemetery.',
@@ -601,7 +603,7 @@ function syncOverflowControl() {
         lbl.setAttribute('data-tooltip', tC('gridOverflowTip'));
         lbl.classList.add('overflow-disabled');
     } else {
-        lbl.removeAttribute('data-tooltip');
+        lbl.setAttribute('data-tooltip', tC('gridOverflowDesc'));
         lbl.classList.remove('overflow-disabled');
     }
     const typoSection = document.getElementById('cem-typo-section');

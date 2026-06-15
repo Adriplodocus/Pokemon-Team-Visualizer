@@ -1163,10 +1163,11 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     opacity: 1;
 }
 #cemetery-overflow-label.overflow-disabled {
-    opacity: 0.45;
     cursor: not-allowed;
 }
+#cemetery-overflow-label.overflow-disabled span,
 #cemetery-overflow-label.overflow-disabled input[type="checkbox"] {
+    opacity: 0.45;
     pointer-events: none;
 }
 
