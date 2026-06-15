@@ -654,6 +654,14 @@ function initGridControls() {
     syncOverflowControl();
 }
 
+// ── Preview bg toggle ──────────────────────────────────────────────
+function toggleCemeteryPreviewBg() {
+    const wrapper = document.getElementById('cemetery-preview-wrapper');
+    const btn     = document.getElementById('cemetery-preview-bg-toggle');
+    const isLight = wrapper.classList.toggle('bg-light');
+    btn.textContent = isLight ? '☾' : '☀';
+}
+
 // ── Preview ────────────────────────────────────────────────────────
 function updateCemeteryPreview() {
     const wrapper = document.getElementById('cemetery-preview-wrapper');

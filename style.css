@@ -595,7 +595,9 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 #preview-msg { text-align: center; color: var(--text-2); font-size: 13px; padding: 16px 0; margin: 0; }
 #preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; transition: background 0.2s; height: 230px; }
 #preview-wrapper.bg-light { background: #e8e8e8; }
-#preview-bg-toggle {
+#preview-bg-toggle,
+#cemetery-preview-bg-toggle,
+#badge-preview-bg-toggle {
     position: absolute;
     top: 10px;
     right: 12px;
@@ -610,9 +612,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     padding: 4px 7px;
     transition: background 0.15s, border-color 0.15s;
 }
-#preview-bg-toggle:hover { border-color: rgba(0,204,255,0.3); background: var(--surface); }
+#preview-bg-toggle:hover,
+#cemetery-preview-bg-toggle:hover,
+#badge-preview-bg-toggle:hover { border-color: rgba(0,204,255,0.3); background: var(--surface); }
 #preview-iframe  { border: none; display: block; position: absolute; top: 50%; left: 50%; transform-origin: center; }
-#cemetery-preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; }
+#cemetery-preview-wrapper { overflow: hidden; position: relative; background: #111; border-radius: 6px; transition: background 0.2s; }
+#cemetery-preview-wrapper.bg-light { background: #e8e8e8; }
 #cemetery-preview-iframe  { border: none; display: block; transform-origin: top center; position: absolute; top: 0; left: 50%; }
 
 /* ── Typography card ─────────────────────────────────────────── */
@@ -951,7 +956,9 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     overflow: hidden;
     background: #111;
     border-radius: 6px;
+    transition: background 0.2s;
 }
+#badge-preview-wrapper.bg-light { background: #e8e8e8; }
 #badge-preview-iframe {
     transform-origin: top left;
     display: block;

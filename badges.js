@@ -311,6 +311,13 @@ function schedulePreviewBadgeUpdate() {
     badgePreviewTimeout = setTimeout(updateBadgePreview, 300);
 }
 
+function toggleBadgePreviewBg() {
+    const wrapper = document.getElementById('badge-preview-wrapper');
+    const btn     = document.getElementById('badge-preview-bg-toggle');
+    const isLight = wrapper.classList.toggle('bg-light');
+    btn.textContent = isLight ? '☾' : '☀';
+}
+
 function updateBadgePreview() {
     const iframe  = document.getElementById('badge-preview-iframe');
     const wrapper = document.getElementById('badge-preview-wrapper');
