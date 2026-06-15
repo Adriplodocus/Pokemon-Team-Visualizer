@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <linearGradient id="ga" x1="0" y1="0" x2="1200" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF56B4"/>
+      <stop offset="100%" stop-color="#00CCFF"/>
+    </linearGradient>
+    <radialGradient id="gl" cx="0" cy="0" r="620" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#00CCFF" stop-opacity="0.09"/>
+      <stop offset="100%" stop-color="#00CCFF" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gr" cx="1200" cy="630" r="500" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#FF56B4" stop-opacity="0.06"/>
+      <stop offset="100%" stop-color="#FF56B4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#1E1E1E"/>
+  <rect width="1200" height="630" fill="url(#gl)"/>
+  <rect width="1200" height="630" fill="url(#gr)"/>
+
+  <!-- Pokéball outline watermark -->
+  <g transform="translate(982, 318)" opacity="0.08" fill="none" stroke="#D0D0D0" stroke-width="9">
+    <circle cx="0" cy="0" r="268"/>
+    <line x1="-268" y1="0" x2="268" y2="0"/>
+    <circle cx="0" cy="0" r="56"/>
+  </g>
+  <circle cx="982" cy="318" r="32" fill="#D0D0D0" opacity="0.04"/>
+  <!-- Pokéball top half tint -->
+  <path d="M714,318 A268,268 0 0,1 1250,318 Z" fill="#EE1515" opacity="0.04"/>
+
+  <!-- Top accent bar -->
+  <rect width="1200" height="4" fill="url(#ga)"/>
+  <!-- Bottom accent bar -->
+  <rect y="626" width="1200" height="4" fill="url(#ga)"/>
+
+  <!-- Badge -->
+  <rect x="80" y="116" width="278" height="36" rx="18"
+        fill="rgba(255,86,180,0.12)" stroke="rgba(255,86,180,0.40)" stroke-width="1.5"/>
+  <text x="219" y="140" text-anchor="middle"
+        font-family="'Courier New',Courier,monospace" font-size="12" font-weight="700"
+        fill="#FF56B4" letter-spacing="2.5">GRATUITO · OBS · TWITCH</text>
+
+  <!-- Title -->
+  <text x="80" y="264"
+        font-family="Impact,'Arial Black','Helvetica Neue',sans-serif"
+        font-size="82" fill="#F0F0F0">Pokémon Stream</text>
+  <text x="80" y="358"
+        font-family="Impact,'Arial Black','Helvetica Neue',sans-serif"
+        font-size="82" fill="#F0F0F0">Visualizer</text>
+
+  <!-- Gradient underline below title -->
+  <rect x="80" y="374" width="335" height="3" rx="2" fill="url(#ga)"/>
+
+  <!-- Tagline -->
+  <text x="80" y="432"
+        font-family="'Courier New',Courier,monospace" font-size="21" fill="#858585">
+    Overlay para OBS · Twitch · YouTube
+  </text>
+  <text x="80" y="470"
+        font-family="'Courier New',Courier,monospace" font-size="16" fill="#505050">
+    Configura tu equipo · Personaliza · Publica en directo
+  </text>
+
+  <!-- Pokémon slot mockup (bottom right) -->
+  <!-- 3 cards in a row -->
+  <g transform="translate(710, 462)">
+    <!-- Card 1 -->
+    <rect width="118" height="112" rx="10" fill="#252525" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <circle cx="59" cy="52" r="32" fill="#2D2D2D"/>
+    <rect x="14" y="92" width="90" height="10" rx="4" fill="#2D2D2D"/>
+    <!-- Card 2 -->
+    <rect x="128" width="118" height="112" rx="10" fill="#252525" stroke="rgba(255,255,255,0.07)" stroke-width="1"/>
+    <circle cx="187" cy="52" r="32" fill="#2D2D2D"/>
+    <rect x="142" y="92" width="90" height="10" rx="4" fill="#2D2D2D"/>
+    <!-- Card 3 -->
+    <rect x="256" width="118" height="112" rx="10" fill="#252525" stroke="rgba(255,86,180,0.30)" stroke-width="1"/>
+    <circle cx="315" cy="52" r="32" fill="#2D2D2D"/>
+    <!-- pink glow on last card (active state) -->
+    <rect x="256" width="118" height="112" rx="10" fill="none"
+          stroke="rgba(255,86,180,0.30)" stroke-width="1"
+          filter="url(#card-glow)"/>
+    <rect x="270" y="92" width="90" height="10" rx="4" fill="#3D2D35"/>
+    <!-- + slot (4th empty) -->
+    <rect x="384" width="118" height="112" rx="10" fill="#222222" stroke="rgba(255,255,255,0.05)" stroke-width="1" stroke-dasharray="5,4"/>
+    <text x="443" y="62" text-anchor="middle"
+          font-family="'Courier New',monospace" font-size="28" fill="#333333">+</text>
+  </g>
+
+  <!-- URL -->
+  <text x="80" y="550"
+        font-family="'Courier New',Courier,monospace" font-size="20" fill="#00CCFF" opacity="0.85">
+    pokemon.mrklypp.com
+  </text>
+</svg>

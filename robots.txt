@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /overlay.html
+Disallow: /functions/
+
+Sitemap: https://pokemon.mrklypp.com/sitemap.xml
