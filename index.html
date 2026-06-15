@@ -67,7 +67,7 @@
 
             <!-- Font -->
             <div class="typo-row">
-                <span class="typo-label">Font</span>
+                <span class="typo-label" data-i18n="typoFont">Font</span>
                 <div class="font-dropdown" id="font-dropdown">
                     <div class="font-dropdown__trigger" id="font-trigger" onclick="toggleFontDropdown()">
                         <span id="font-selected-label">Anton</span>
@@ -79,7 +79,7 @@
 
             <!-- Size -->
             <div class="typo-row">
-                <span class="typo-label">Size</span>
+                <span class="typo-label" data-i18n="typoSize">Size</span>
                 <input type="range" id="typo-size" min="20" max="35" value="35"
                        oninput="onTypoSize(this.value)">
                 <span class="typo-val" id="typo-size-val">35px</span>
@@ -87,10 +87,10 @@
 
             <!-- Colors + Stroke -->
             <div class="typo-row typo-row--colors">
-                <span class="typo-label">Text</span>
+                <span class="typo-label" data-i18n="typoText">Text</span>
                 <div class="color-swatch" id="text-swatch" onclick="openPicker('text')" style="background:#ffffff"></div>
 
-                <span class="typo-label typo-label--gap">Stroke</span>
+                <span class="typo-label typo-label--gap" data-i18n="typoStroke">Stroke</span>
                 <div class="color-swatch" id="stroke-swatch" onclick="openPicker('stroke')" style="background:#000000"></div>
                 <input type="range" id="typo-stroke" min="0" max="10" value="3" step="0.5"
                        oninput="onTypoStroke(this.value)">
@@ -99,10 +99,10 @@
 
             <!-- Name position -->
             <div class="typo-row">
-                <span class="typo-label">Name</span>
+                <span class="typo-label" data-i18n="typoName">Name</span>
                 <div class="typo-pos-toggle">
-                    <button id="pos-above" class="typo-pos-btn active" onclick="onNamePosition('above')">↑ Above</button>
-                    <button id="pos-below" class="typo-pos-btn" onclick="onNamePosition('below')">↓ Below</button>
+                    <button id="pos-above" class="typo-pos-btn active" onclick="onNamePosition('above')" data-i18n="typoPosAbove">↑ Above</button>
+                    <button id="pos-below" class="typo-pos-btn" onclick="onNamePosition('below')" data-i18n="typoPosBelow">↓ Below</button>
                 </div>
             </div>
 

@@ -54,6 +54,13 @@ const STRINGS = {
         copyEditorUrl:   '🔗 Copiar link para editor',
         externalBanner:  id => `Controlando canal externo · ${id}`,
         exitExternal:    'Salir',
+        typoFont:        'Fuente',
+        typoSize:        'Tamaño',
+        typoText:        'Texto',
+        typoStroke:      'Borde',
+        typoName:        'Nombre',
+        typoPosAbove:    '↑ Arriba',
+        typoPosBelow:    '↓ Abajo',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -83,7 +90,7 @@ const STRINGS = {
         obsUrlLabel:      'Browser source URL',
         obsUrlCopy:       'Copy OBS URL',
         obsUrlCopied:     'URL copied!',
-        publishBtn:       '📡 Publicar',
+        publishBtn:       '📡 Publish',
         publishOk:        'Overlay updated in OBS!',
         publishErr:          'Publish error. Is Ably configured?',
         newChannel:          '🔄 New link',
@@ -109,6 +116,13 @@ const STRINGS = {
         copyEditorUrl:   '🔗 Copy editor link',
         externalBanner:  id => `Controlling external channel · ${id}`,
         exitExternal:    'Exit',
+        typoFont:        'Font',
+        typoSize:        'Size',
+        typoText:        'Text',
+        typoStroke:      'Stroke',
+        typoName:        'Name',
+        typoPosAbove:    '↑ Above',
+        typoPosBelow:    '↓ Below',
     }
 };
 
