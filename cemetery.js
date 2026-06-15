@@ -4,6 +4,30 @@ const CEMETERY_CONFIG_KEY = 'ptv_cemetery_config';
 const DEFAULT_PROPS       = { gender: 'male', skin: 'common', shiny: 'False' };
 let cemeteryConfig = { cols: 4, rows: 3, overflow: true };
 
+const CEMETERY_TYPO_KEY = 'ptv_cemetery_typo';
+
+const CEMETERY_FONTS = [
+    'Abril Fatface','Alfa Slab One','Anton','Bangers','Bebas Neue',
+    'Black Han Sans','Black Ops One','Boogaloo','Carter One','Changa One',
+    'Chewy','Cinzel','Concert One','Creepster','Exo 2',
+    'Fascinate','Fredoka One','Fugaz One','Graduate','Gugi',
+    'Josefin Sans','Knewave','Lilita One','Lobster','Luckiest Guy',
+    'Montserrat','Nunito','Orbitron','Oswald','Oxanium',
+    'Pacifico','Passion One','Patua One','Permanent Marker','Pirata One',
+    'Poller One','Press Start 2P','Racing Sans One','Righteous','Rubik',
+    'Russo One','Sigmar One','Skranji','Squada One','Titan One',
+    'Viga','Yanone Kaffeesatz',
+];
+
+const DEFAULT_CEMETERY_TYPO = {
+    font:        'Anton',
+    size:        56,
+    textColor:   '#ffffff',
+    strokeWidth: 0,
+    strokeColor: '#000000',
+};
+let cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO };
+
 const FEMALE_VARIANTS = new Set([
     'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
     'bibarel','bidoof','blaziken','buizel','butterfree','cacturne',
@@ -60,6 +84,10 @@ const CEMETERY_STRINGS = {
         externalBanner:       id => `Controlando canal externo · ${id}`,
         exitExternal:         'Salir',
         sharePromptCopy:      'Copia este enlace:',
+        typoFont:             'Fuente',
+        typoSize:             'Tamaño',
+        typoText:             'Texto',
+        typoStroke:           'Borde',
     },
     en: {
         gridCols:             'Cols',
@@ -95,6 +123,10 @@ const CEMETERY_STRINGS = {
         externalBanner:       id => `Controlling external channel · ${id}`,
         exitExternal:         'Exit',
         sharePromptCopy:      'Copy this link:',
+        typoFont:             'Font',
+        typoSize:             'Size',
+        typoText:             'Text',
+        typoStroke:           'Stroke',
     },
 };
 
@@ -161,6 +193,18 @@ function loadCemeteryConfig() {
         cemeteryConfig.cols     = Math.min(10, Math.max(1, parseInt(saved.cols) || 4));
         cemeteryConfig.rows     = Math.min(10, Math.max(1, parseInt(saved.rows) || 3));
         cemeteryConfig.overflow = saved.overflow !== false;
+    } catch(_) {}
+}
+
+function saveCemeteryTypo() {
+    if (externalMode) return;
+    localStorage.setItem(CEMETERY_TYPO_KEY, JSON.stringify(cemeteryTypo));
+}
+
+function loadCemeteryTypo() {
+    try {
+        const saved = JSON.parse(localStorage.getItem(CEMETERY_TYPO_KEY) || '{}');
+        if (saved && Object.keys(saved).length) cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO, ...saved };
     } catch(_) {}
 }
 
@@ -474,6 +518,7 @@ async function publishCemetery() {
                 rows:     cemeteryConfig.rows,
                 overflow: cemeteryConfig.overflow,
                 raw:      cemetery.map(e => ({ name: e.name, mote: e.mote, props: { ...e.props } })),
+                typography: cemeteryTypo,
             }),
         });
         setStatus(resp.ok ? tC('cemeteryPublishOk') : tC('cemeteryPublishErr'),
@@ -510,6 +555,10 @@ function applyCemeteryLang() {
         'cemetery-cols-label':      tC('gridCols'),
         'cemetery-rows-label':      tC('gridRows'),
         'cemetery-overflow-span':   tC('gridOverflow'),
+        'cem-typo-font-label':      tC('typoFont'),
+        'cem-typo-size-label':      tC('typoSize'),
+        'cem-typo-text-label':      tC('typoText'),
+        'cem-typo-stroke-label':    tC('typoStroke'),
     };
     for (const [id, text] of Object.entries(ids)) {
         const el = document.getElementById(id);
@@ -555,6 +604,8 @@ function syncOverflowControl() {
         lbl.removeAttribute('data-tooltip');
         lbl.classList.remove('overflow-disabled');
     }
+    const typoSection = document.getElementById('cem-typo-section');
+    if (typoSection) typoSection.style.display = cemeteryConfig.overflow ? 'flex' : 'none';
 }
 
 function initGridControls() {
@@ -594,6 +645,7 @@ function initGridControls() {
     overflowCk.addEventListener('change', () => {
         cemeteryConfig.overflow = overflowCk.checked;
         saveCemeteryConfig();
+        syncOverflowControl();
         updateCemeteryPreviewContent();
     });
 
@@ -653,8 +705,10 @@ function buildCemeteryOverlayHTML() {
         ? `<div class="pk-overflow">+${cemetery.length - (capacity - 1)}</div>`
         : '';
 
+    const gfFamily = cemeteryTypo.font.replace(/ /g, '+');
+    const strokePx = cemeteryTypo.strokeWidth > 0 ? `${cemeteryTypo.strokeWidth}px` : '0';
     return `<!DOCTYPE html><html><head><meta charset="UTF-8">
-<link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=${gfFamily}:wght@400;700&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body,html{background:transparent;}
@@ -662,7 +716,7 @@ body{padding:5px;}
 #root{display:grid;gap:10px;grid-template-columns:repeat(${cols},100px);grid-template-rows:repeat(${rows},100px);}
 .pk-entry{width:100px;height:100px;display:flex;align-items:center;justify-content:center;}
 .pk-entry img{width:100px;height:100px;object-fit:contain;pointer-events:none;user-select:none;display:block;animation:fu .35s ease forwards;opacity:0;}
-.pk-overflow{width:100px;height:100px;display:flex;align-items:center;justify-content:center;color:white;font-family:Anton,'Arial Narrow Bold',sans-serif;font-size:56px;text-shadow:2px 2px 6px rgba(0,0,0,0.8);animation:fu .35s ease forwards;opacity:0;}
+.pk-overflow{width:100px;height:100px;display:flex;align-items:center;justify-content:center;color:${cemeteryTypo.textColor};font-family:'${cemeteryTypo.font}',Anton,'Arial Narrow Bold',sans-serif;font-size:${cemeteryTypo.size}px;-webkit-text-stroke:${strokePx} ${cemeteryTypo.strokeColor};paint-order:stroke fill;animation:fu .35s ease forwards;opacity:0;}
 @keyframes fu{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
 </style></head><body><div id="root">${entries}${overflowCell}</div></body></html>`;
 }
@@ -679,13 +733,270 @@ function initCemeteryPreview() {
     window.addEventListener('resize', updateCemeteryPreview);
 }
 
+// ── Cemetery typography ────────────────────────────────────────────
+function buildCemFontDropdown() {
+    const panel = document.getElementById('cem-font-panel');
+    if (!panel) return;
+    CEMETERY_FONTS.forEach(font => {
+        const item = document.createElement('div');
+        item.className = 'font-dropdown__item' + (font === cemeteryTypo.font ? ' selected' : '');
+        item.textContent = font;
+        item.style.fontFamily = `'${font}', sans-serif`;
+        item.dataset.font = font;
+        item.onclick = () => selectCemFont(font);
+        panel.appendChild(item);
+    });
+}
+
+function toggleCemFontDropdown() {
+    const panel   = document.getElementById('cem-font-panel');
+    const trigger = document.getElementById('cem-font-trigger');
+    const isOpen  = panel.classList.toggle('open');
+    trigger.classList.toggle('open', isOpen);
+    if (isOpen) {
+        setTimeout(() => document.addEventListener('click', closeCemFontDropdownOutside, { once: true }), 0);
+    }
+}
+
+function closeCemFontDropdownOutside(e) {
+    const dd = document.getElementById('cem-font-dropdown');
+    if (!dd || !dd.contains(e.target)) closeCemFontDropdown();
+}
+
+function closeCemFontDropdown() {
+    const panel   = document.getElementById('cem-font-panel');
+    const trigger = document.getElementById('cem-font-trigger');
+    if (panel)   panel.classList.remove('open');
+    if (trigger) trigger.classList.remove('open');
+}
+
+function selectCemFont(font) {
+    cemeteryTypo.font = font;
+    const label = document.getElementById('cem-font-selected-label');
+    if (label) { label.textContent = font; label.style.fontFamily = `'${font}', sans-serif`; }
+    document.querySelectorAll('#cem-font-panel .font-dropdown__item').forEach(el => {
+        el.classList.toggle('selected', el.dataset.font === font);
+    });
+    closeCemFontDropdown();
+    saveCemeteryTypo();
+    updateCemeteryPreviewContent();
+}
+
+function onCemTypoSize(val) {
+    cemeteryTypo.size = Number(val);
+    const el = document.getElementById('cem-typo-size-val');
+    if (el) el.textContent = val + 'px';
+    saveCemeteryTypo();
+    updateCemeteryPreviewContent();
+}
+
+function onCemTypoStroke(val) {
+    cemeteryTypo.strokeWidth = Number(val);
+    const el = document.getElementById('cem-typo-stroke-val');
+    if (el) el.textContent = val + 'px';
+    saveCemeteryTypo();
+    updateCemeteryPreviewContent();
+}
+
+function syncCemTypoUI() {
+    const sizeInput    = document.getElementById('cem-typo-size');
+    const sizeVal      = document.getElementById('cem-typo-size-val');
+    const strokeInput  = document.getElementById('cem-typo-stroke');
+    const strokeVal    = document.getElementById('cem-typo-stroke-val');
+    const label        = document.getElementById('cem-font-selected-label');
+    const textSwatch   = document.getElementById('cem-text-swatch');
+    const strokeSwatch = document.getElementById('cem-stroke-swatch');
+    if (sizeInput)    sizeInput.value        = cemeteryTypo.size;
+    if (sizeVal)      sizeVal.textContent    = cemeteryTypo.size + 'px';
+    if (strokeInput)  strokeInput.value      = cemeteryTypo.strokeWidth;
+    if (strokeVal)    strokeVal.textContent  = cemeteryTypo.strokeWidth + 'px';
+    if (label) { label.textContent = cemeteryTypo.font; label.style.fontFamily = `'${cemeteryTypo.font}', sans-serif`; }
+    if (textSwatch)   textSwatch.style.background   = cemeteryTypo.textColor;
+    if (strokeSwatch) strokeSwatch.style.background = cemeteryTypo.strokeColor;
+    document.querySelectorAll('#cem-font-panel .font-dropdown__item').forEach(el => {
+        el.classList.toggle('selected', el.dataset.font === cemeteryTypo.font);
+    });
+}
+
+// Cemetery color picker
+let cemCpTarget = null;
+let cemCpH = 0, cemCpS = 1, cemCpB = 1;
+
+function drawCemCpCanvas() {
+    const canvas = document.getElementById('cem-cp-canvas');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    ctx.fillStyle = `hsl(${cemCpH},100%,50%)`;
+    ctx.fillRect(0, 0, W, H);
+    const wg = ctx.createLinearGradient(0, 0, W, 0);
+    wg.addColorStop(0, 'rgba(255,255,255,1)');
+    wg.addColorStop(1, 'rgba(255,255,255,0)');
+    ctx.fillStyle = wg; ctx.fillRect(0, 0, W, H);
+    const bg = ctx.createLinearGradient(0, 0, 0, H);
+    bg.addColorStop(0, 'rgba(0,0,0,0)');
+    bg.addColorStop(1, 'rgba(0,0,0,1)');
+    ctx.fillStyle = bg; ctx.fillRect(0, 0, W, H);
+}
+
+function drawCemHueBar() {
+    const canvas = document.getElementById('cem-cp-hue');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    const W = canvas.width, H = canvas.height;
+    const g = ctx.createLinearGradient(0, 0, W, 0);
+    for (let i = 0; i <= 6; i++) g.addColorStop(i / 6, `hsl(${i * 60},100%,50%)`);
+    ctx.fillStyle = g; ctx.fillRect(0, 0, W, H);
+}
+
+function cemHsbToRgb(h, s, b) {
+    const i = Math.floor(h / 60) % 6;
+    const f = h / 60 - Math.floor(h / 60);
+    const p = b * (1 - s), q = b * (1 - f * s), t = b * (1 - (1 - f) * s);
+    const maps = [[b,t,p],[q,b,p],[p,b,t],[p,q,b],[t,p,b],[b,p,q]];
+    return maps[i].map(v => Math.round(v * 255));
+}
+
+function cemHsbToHex(h, s, b) {
+    return '#' + cemHsbToRgb(h, s, b).map(v => v.toString(16).padStart(2, '0')).join('');
+}
+
+function cemHexToHsb(hex) {
+    const r = parseInt(hex.slice(1,3),16)/255;
+    const g = parseInt(hex.slice(3,5),16)/255;
+    const b = parseInt(hex.slice(5,7),16)/255;
+    const max = Math.max(r,g,b), min = Math.min(r,g,b), d = max - min;
+    let h = 0;
+    if (d) {
+        if      (max === r) h = ((g - b) / d + 6) % 6 * 60;
+        else if (max === g) h = ((b - r) / d + 2) * 60;
+        else                h = ((r - g) / d + 4) * 60;
+    }
+    return { h, s: max ? d / max : 0, b: max };
+}
+
+function updateCemCpThumb() {
+    const canvas = document.getElementById('cem-cp-canvas');
+    const thumb  = document.getElementById('cem-cp-thumb');
+    const picker = document.getElementById('cem-color-picker');
+    if (!canvas || !thumb || !picker) return;
+    const pr = picker.getBoundingClientRect();
+    const cr = canvas.getBoundingClientRect();
+    thumb.style.left = (cr.left - pr.left + cemCpS * cr.width) + 'px';
+    thumb.style.top  = (cr.top  - pr.top  + (1 - cemCpB) * cr.height) + 'px';
+}
+
+function updateCemHueThumb() {
+    const canvas = document.getElementById('cem-cp-hue');
+    const thumb  = document.getElementById('cem-cp-hue-thumb');
+    const picker = document.getElementById('cem-color-picker');
+    if (!canvas || !thumb || !picker) return;
+    const pr = picker.getBoundingClientRect();
+    const cr = canvas.getBoundingClientRect();
+    thumb.style.left = (cr.left - pr.left + (cemCpH / 360) * cr.width) + 'px';
+    thumb.style.top  = (cr.top  - pr.top) + 'px';
+}
+
+function applyCemPickerColor() {
+    const hex      = cemHsbToHex(cemCpH, cemCpS, cemCpB);
+    const hexInput = document.getElementById('cem-cp-hex');
+    if (hexInput) hexInput.value = hex.toUpperCase();
+    if (cemCpTarget === 'text') {
+        cemeteryTypo.textColor = hex;
+        const s = document.getElementById('cem-text-swatch');
+        if (s) s.style.background = hex;
+    } else {
+        cemeteryTypo.strokeColor = hex;
+        const s = document.getElementById('cem-stroke-swatch');
+        if (s) s.style.background = hex;
+    }
+    saveCemeteryTypo();
+    updateCemeteryPreviewContent();
+}
+
+function openCemPicker(target) {
+    cemCpTarget = target;
+    const hex = target === 'text' ? cemeteryTypo.textColor : cemeteryTypo.strokeColor;
+    const hsb = cemHexToHsb(hex);
+    cemCpH = hsb.h; cemCpS = hsb.s; cemCpB = hsb.b;
+    const picker = document.getElementById('cem-color-picker');
+    if (!picker) return;
+    picker.classList.remove('hidden');
+    drawCemCpCanvas();
+    drawCemHueBar();
+    const hexInput = document.getElementById('cem-cp-hex');
+    if (hexInput) hexInput.value = hex.toUpperCase();
+    requestAnimationFrame(() => { updateCemCpThumb(); updateCemHueThumb(); });
+    setTimeout(() => document.addEventListener('click', closeCemPickerOutside, { once: true }), 0);
+}
+
+function closeCemPickerOutside(e) {
+    const picker = document.getElementById('cem-color-picker');
+    if (!picker) return;
+    const swatches = document.querySelectorAll('#cem-typo-section .color-swatch');
+    const clickedSwatch = [...swatches].some(s => s.contains(e.target));
+    if (!picker.contains(e.target) && !clickedSwatch) {
+        picker.classList.add('hidden');
+    } else {
+        setTimeout(() => document.addEventListener('click', closeCemPickerOutside, { once: true }), 0);
+    }
+}
+
+function initCemColorPicker() {
+    const canvas    = document.getElementById('cem-cp-canvas');
+    const hueCanvas = document.getElementById('cem-cp-hue');
+    const hexInput  = document.getElementById('cem-cp-hex');
+    if (!canvas) return;
+
+    function onCanvasPointer(e) {
+        const rect = canvas.getBoundingClientRect();
+        cemCpS = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+        cemCpB = Math.max(0, Math.min(1, 1 - (e.clientY - rect.top) / rect.height));
+        updateCemCpThumb();
+        applyCemPickerColor();
+    }
+
+    function onHuePointer(e) {
+        const rect = hueCanvas.getBoundingClientRect();
+        cemCpH = Math.max(0, Math.min(360, ((e.clientX - rect.left) / rect.width) * 360));
+        updateCemHueThumb();
+        drawCemCpCanvas();
+        applyCemPickerColor();
+    }
+
+    let draggingCanvas = false, draggingHue = false;
+    canvas.addEventListener('mousedown',    e => { draggingCanvas = true; onCanvasPointer(e); });
+    hueCanvas.addEventListener('mousedown', e => { draggingHue = true;   onHuePointer(e); });
+    document.addEventListener('mousemove',  e => {
+        if (draggingCanvas) onCanvasPointer(e);
+        if (draggingHue)    onHuePointer(e);
+    });
+    document.addEventListener('mouseup', () => { draggingCanvas = false; draggingHue = false; });
+
+    hexInput.addEventListener('change', () => {
+        const val = hexInput.value.trim();
+        if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+            const hsb = cemHexToHsb(val);
+            cemCpH = hsb.h; cemCpS = hsb.s; cemCpB = hsb.b;
+            drawCemCpCanvas();
+            updateCemCpThumb();
+            updateCemHueThumb();
+            applyCemPickerColor();
+        }
+    });
+}
+
 // ── Init ───────────────────────────────────────────────────────────
 initChannelId();
 loadCemeteryConfig();
+loadCemeteryTypo();
 loadCemetery();
 renderCemetery();
 updateObsUrl();
 updateCemeteryObsHint();
 initGridControls();
+buildCemFontDropdown();
+syncCemTypoUI();
+initCemColorPicker();
 initCemeteryPreview();
 hydrateFromAbly();

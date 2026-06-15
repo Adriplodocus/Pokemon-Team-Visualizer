@@ -69,6 +69,41 @@
                     <span id="cemetery-overflow-span">Overflow</span>
                 </label>
             </div>
+
+            <!-- Typography for overflow counter (shown when overflow is on) -->
+            <div id="cem-typo-section" style="display:none; flex-direction:column; gap:10px;">
+                <div class="typo-row">
+                    <span class="typo-label" id="cem-typo-font-label">Fuente</span>
+                    <div class="font-dropdown" id="cem-font-dropdown">
+                        <div class="font-dropdown__trigger" id="cem-font-trigger" onclick="toggleCemFontDropdown()">
+                            <span id="cem-font-selected-label">Anton</span>
+                            <svg class="font-dropdown__caret" viewBox="0 0 10 6" width="10" height="6"><path d="M1 1l4 4 4-4" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round"/></svg>
+                        </div>
+                        <div class="font-dropdown__panel" id="cem-font-panel"></div>
+                    </div>
+                </div>
+                <div class="typo-row">
+                    <span class="typo-label" id="cem-typo-size-label">Tamaño</span>
+                    <input type="range" id="cem-typo-size" min="20" max="80" value="56" oninput="onCemTypoSize(this.value)">
+                    <span class="typo-val" id="cem-typo-size-val">56px</span>
+                </div>
+                <div class="typo-row typo-row--colors">
+                    <span class="typo-label" id="cem-typo-text-label">Texto</span>
+                    <div class="color-swatch" id="cem-text-swatch" onclick="openCemPicker('text')" style="background:#ffffff"></div>
+                    <span class="typo-label typo-label--gap" id="cem-typo-stroke-label">Borde</span>
+                    <div class="color-swatch" id="cem-stroke-swatch" onclick="openCemPicker('stroke')" style="background:#000000"></div>
+                    <input type="range" id="cem-typo-stroke" min="0" max="10" value="0" step="0.5" oninput="onCemTypoStroke(this.value)">
+                    <span class="typo-val" id="cem-typo-stroke-val">0px</span>
+                </div>
+
+                <div class="color-picker-popover hidden" id="cem-color-picker">
+                    <canvas id="cem-cp-canvas" width="220" height="140"></canvas>
+                    <div class="cp-thumb" id="cem-cp-thumb"></div>
+                    <canvas id="cem-cp-hue" width="220" height="14"></canvas>
+                    <div class="cp-hue-thumb" id="cem-cp-hue-thumb"></div>
+                    <input type="text" class="cp-hex" id="cem-cp-hex" maxlength="7" spellcheck="false">
+                </div>
+            </div>
         </div>
 
         <!-- Publish / Reset -->

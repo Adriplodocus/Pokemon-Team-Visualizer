@@ -55,6 +55,34 @@ body { padding: 5px; }
     var id = new URLSearchParams(location.search).get('id');
     if (!id) return;
 
+    function applyOverlayTypo(data) {
+        var t = data.typography || {};
+        var font        = t.font        || 'Anton';
+        var size        = t.size        || 56;
+        var color       = t.textColor   || '#ffffff';
+        var strokeW     = t.strokeWidth || 0;
+        var strokeColor = t.strokeColor || '#000000';
+
+        var fontLink = document.getElementById('gf-link');
+        var newHref  = 'https://fonts.googleapis.com/css2?family=' + font.replace(/ /g, '+') + ':wght@400;700&display=swap';
+        if (!fontLink) {
+            fontLink    = document.createElement('link');
+            fontLink.id = 'gf-link';
+            fontLink.rel = 'stylesheet';
+            document.head.appendChild(fontLink);
+        }
+        if (fontLink.href !== newHref) fontLink.href = newHref;
+
+        var styleEl = document.getElementById('ov-typo-style');
+        if (!styleEl) {
+            styleEl    = document.createElement('style');
+            styleEl.id = 'ov-typo-style';
+            document.head.appendChild(styleEl);
+        }
+        var sp = strokeW > 0 ? strokeW + 'px' : '0';
+        styleEl.textContent = '.pk-overflow{color:' + color + ';font-family:\'' + font + '\',Anton,\'Arial Narrow Bold\',sans-serif;font-size:' + size + 'px;-webkit-text-stroke:' + sp + ' ' + strokeColor + ';paint-order:stroke fill;}';
+    }
+
     function renderCemetery(data) {
         var pokemon      = data.pokemon  || [];
         var cols         = Math.max(1, parseInt(data.cols, 10) || 4);
@@ -62,6 +90,8 @@ body { padding: 5px; }
         var showOverflow = data.overflow !== false;
         var capacity     = cols * rows;
         var root         = document.getElementById('root');
+
+        if (data.typography) applyOverlayTypo(data);
 
         root.style.gridTemplateColumns = 'repeat(' + cols + ', 100px)';
         root.style.gridTemplateRows    = 'repeat(' + rows + ', 100px)';

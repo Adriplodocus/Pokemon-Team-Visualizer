@@ -720,8 +720,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .color-picker-popover.hidden { display: none; }
 
-#cp-canvas  { border-radius: 6px; display: block; cursor: crosshair; }
-#cp-hue     { border-radius: 4px; display: block; cursor: crosshair; }
+#cp-canvas, #cem-cp-canvas  { border-radius: 6px; display: block; cursor: crosshair; }
+#cp-hue,    #cem-cp-hue     { border-radius: 4px; display: block; cursor: crosshair; }
 
 .cp-thumb {
     position: absolute;
