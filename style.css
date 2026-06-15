@@ -445,7 +445,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 .btn-reset:hover { background: var(--reset-hover); }
 
-#status { text-align: center; min-height: 20px; font-size: 13px; margin-top: 2px; }
+#status, #cemetery-status, #badge-status { text-align: center; min-height: 20px; font-size: 13px; margin-top: 2px; }
 
 
 /* ── Modal ────────────────────────────────────────────────────── */
