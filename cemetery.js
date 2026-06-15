@@ -613,15 +613,18 @@ function updateCemeteryPreview() {
         - parseFloat(cardStyle.paddingRight);
     if (!containerW) return;
 
+    const FIXED_H  = 300;
     const overlayW = cemeteryConfig.cols * 110;
     const overlayH = cemeteryConfig.rows * 110;
-    const scale    = Math.min(1, containerW / overlayW);
+    const scale    = Math.min(1, containerW / overlayW, FIXED_H / overlayH);
+    const topOffset = (FIXED_H - overlayH * scale) / 2;
 
     iframe.style.width     = overlayW + 'px';
     iframe.style.height    = overlayH + 'px';
+    iframe.style.top       = topOffset + 'px';
     iframe.style.transform = `translateX(-50%) scale(${scale})`;
     wrapper.style.width    = containerW + 'px';
-    wrapper.style.height   = Math.round(overlayH * scale) + 'px';
+    wrapper.style.height   = FIXED_H + 'px';
     wrapper.style.margin   = '0';
 }
 
