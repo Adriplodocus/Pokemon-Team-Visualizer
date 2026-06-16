@@ -11,3 +11,20 @@ CREATE TABLE IF NOT EXISTS users (
   created_at   TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(provider, provider_id)
 );
+
+CREATE TABLE IF NOT EXISTS randomlocke_routes (
+  id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  zone_name  TEXT NOT NULL,
+  created_at TIMESTAMPTZ DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_randomlocke_routes_user ON randomlocke_routes(user_id);
+
+-- Single-row table: stores the refreshed global bot token.
+-- Seeded manually; updated by TwitchBotDO on each token refresh.
+CREATE TABLE IF NOT EXISTS bot_global_token (
+  id            SERIAL PRIMARY KEY,
+  access_token  TEXT NOT NULL,
+  refresh_token TEXT NOT NULL,
+  updated_at    TIMESTAMPTZ DEFAULT NOW()
+);
