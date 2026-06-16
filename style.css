@@ -1245,7 +1245,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     justify-content: space-between;
     padding: 0.4rem 0.75rem;
-    background: var(--surface-2);
+    background: var(--surface2);
     border-radius: 8px;
     font-size: 0.85rem;
     color: var(--text-em);
