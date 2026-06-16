@@ -4,78 +4,105 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## What this project is
 
-A static web app that lets streamers build a Pokémon team overlay for OBS. Users enter up to 6 Pokémon names, configure gender/skin/shiny properties, and publish the team live to a browser-source URL via Ably real-time messaging. Deployed on Cloudflare Pages at `https://pokemon.mrklypp.com`.
+A static web app that lets streamers build Pokémon overlays for OBS. Deployed on Cloudflare Pages at `https://pokemon.mrklypp.com`. No build step — vanilla JS + Cloudflare Functions.
 
 ## Running locally
 
-No build step. Open `index.html` directly in a browser, or serve the root with any static server:
+Serve the root with any static server:
 
 ```
 npx serve .
 ```
 
-The Cloudflare Functions (`functions/api/`) require `wrangler` to run locally with the `ABLY_API_KEY` secret:
+Cloudflare Functions (`functions/api/`) require `wrangler` with secrets:
 
 ```
-npx wrangler pages dev . --binding ABLY_API_KEY=<key>
+npx wrangler pages dev . --binding ABLY_API_KEY=<key> --binding DATABASE_URL=<neon-url> --binding TWITCH_CLIENT_ID=<id> --binding TWITCH_CLIENT_SECRET=<secret> --binding GOOGLE_CLIENT_ID=<id> --binding GOOGLE_CLIENT_SECRET=<secret> --binding JWT_SECRET=<secret>
 ```
 
-## Updating Pokémon data
+## Pages
 
-Two Python scripts in `scripts/` maintain the autocomplete and catalog data:
+| File | Purpose |
+|---|---|
+| `index.html` + `app.js` | Team overlay editor (6 Pokémon slots → OBS) |
+| `cemetery.html` + `cemetery.js` | Nuzlocke cemetery overlay |
+| `badges.html` + `badges.js` | Gym badge tracker overlay |
+| `types.html` + `types.js` | Type effectiveness chart |
+| `overlay.html` | OBS Browser Source for team (subscribes to Ably) |
+| `badge-overlay.html` | OBS Browser Source for badges |
+| `cemetery-overlay.html` | OBS Browser Source for cemetery |
+| `login.html` | OAuth login page (Twitch / Google) |
+| `admin.html` | Admin panel (tier management) |
 
-- `generate_pokemon_list.py` — reads `sprites/*.gif` filenames and writes `pokemon-list.json`
-- `pokemon_catalog.py` — source of truth for skin variants per Pokémon (not a runnable script; used as reference when maintaining `pokemon-catalog.js`)
+## Shared modules
 
-Run the list generator after adding new sprites:
-
-```
-python scripts/generate_pokemon_list.py
-```
-
-`pokemon-aliases.json` maps alternate names (regional names, fan names) to canonical sprite filenames. `pokemon-list.json` and `pokemon-aliases.json` are both fetched at runtime by `app.js`.
+- **`lang.js`** — `currentLang` + `setLangBase()`. Loaded first; every page uses it.
+- **`header.js`** — injects `<header>` (nav tabs, lang toggle, user widget) and `<footer>` into every page via `insertAdjacentHTML`. Defines `applyHeaderLang()`, `initUserWidget()`, `exitExternalMode()`. The `ACTIVE_PAGE` global must be declared before loading this script.
 
 ## Architecture
 
-### Frontend (`index.html` + `app.js` + `style.css`)
+### Frontend state (app.js)
 
-- **i18n** — all UI strings live in the `STRINGS` object at the top of `app.js` (ES/EN). Strings accessed via `t(key)`. Elements with `data-i18n` attributes are updated by `applyLang()`.
-- **State** — a 6-element `team` array holds `{ name, mote, properties }` per slot. Persisted to `localStorage` under `ptv_*` keys.
-- **Sprite resolution** — `buildSpriteUrl(name, props)` constructs a GIF URL from `BASE_URL` + subfolder logic (shiny → `shiny/`, female → `female/`, skins → filename suffix). On error, falls back to the canonical sprite.
-- **Live preview** — an `<iframe srcdoc>` rendered by `buildOverlayHTML()` shows a scaled preview of the horizontal overlay directly in the editor.
-- **Presets** — up to 3 named team snapshots stored in `localStorage` as `ptv_preset_0/1/2`.
-- **Channel ID** — a UUID stored in `localStorage` as `ptv_channel_id` identifies the Ably channel. Generates a new one if missing.
+- **i18n** — `STRINGS` object at the top (ES/EN). Access via `t(key)`. Elements with `data-i18n` / `data-i18n-ph` updated by `applyLang()`. Each page with extra strings has its own `STRINGS` extension and `apply*Lang()` function.
+- **Team state** — 6-element `team[]` array `{ name, mote, properties }`. `localStorage` keys prefixed `ptv_*`.
+- **Sprite resolution** — `buildSpriteUrl(name, props)` builds a GIF URL from `BASE_URL` + subdirectory logic (shiny → `shiny/`, female → `female/`, skins → filename suffix). Falls back to canonical sprite on error.
+- **Live preview** — `<iframe srcdoc>` rendered by `buildOverlayHTML()` shows a scaled horizontal overlay inline.
+- **Presets** — 3 named team snapshots in `localStorage` as `ptv_preset_0/1/2`.
+- **Channel ID** — UUID in `localStorage` as `ptv_channel_id`. Identifies the Ably channel.
+- **External editing** — `ptv_external_id` / `ptv_external_badge_id` in `sessionStorage` let a user control someone else's overlay via shared URL.
 
-### OBS overlay (`overlay.html`)
+> `FEMALE_VARIANTS` (Set of Pokémon with female sprites) is duplicated in both `app.js` and `cemetery.js`. Keep both in sync when adding entries.
 
-Loaded as an OBS Browser Source. Connects to Ably with a token from `/api/token` and subscribes to the `ptv-<id>` channel with `rewind: 1` (receives the last published state on connect). Renders the team DOM on each `update` message. Supports `horizontal` and `vertical` layouts via CSS classes on `<body>`.
+### OBS overlays
+
+Connect to Ably with a token from `/api/token`, subscribe to `ptv-<id>` with `rewind: 1` (receives last published state on connect). Render team DOM on each `update` message. Layout (`horizontal`/`vertical`) set via CSS class on `<body>`.
 
 ### Cloudflare Functions (`functions/api/`)
 
 | Route | Purpose |
 |---|---|
-| `POST /api/publish` | Publishes team JSON to the Ably channel via REST API |
-| `GET /api/token` | Issues a subscribe-only Ably token for `overlay.html` |
-| `GET /api/load` | Fetches the last message from a channel (used for debugging) |
+| `POST /api/publish` | Publishes team JSON to Ably channel via REST |
+| `GET /api/token` | Issues subscribe-only Ably token for overlays |
+| `GET /api/load` | Fetches last channel message (debugging) |
+| `GET /api/auth/login` | OAuth redirect (Twitch or Google) |
+| `GET /api/auth/callback` | OAuth callback → sets JWT cookie |
+| `GET /api/auth/logout` | Clears session cookie |
+| `GET /api/auth/me` | Returns current user `{ username, avatarUrl, tier }` |
+| `POST /api/auth/set-tier` | Updates user tier (self or admin) |
+| `GET /api/admin/users` | Admin: list all users |
+| `POST /api/admin/set-tier` | Admin: change any user's tier |
 
-All three require the `ABLY_API_KEY` environment variable.
+Shared utilities in `functions/api/_lib/`: `db.js` (Neon client), `jwt.js` (sign/verify), `cookies.js`.
 
-### Sprites
+Compiled bundles live in `dist-functions/` (Cloudflare deployment artifact — do not edit directly).
 
-Stored under `sprites/` as animated GIFs. Subdirectories:
+### Auth
+
+OAuth 2.0 with Twitch and Google. On callback, user is upserted into Neon `users` table and a signed JWT is set as an HttpOnly cookie. Tier values: `guest` (default) or `vip`.
+
+### Database (Neon / PostgreSQL)
+
+Schema in `db/schema.sql`. Accessed via `@neondatabase/serverless` (HTTP transport, no TCP). One table: `users` (id, provider, provider_id, username, email, avatar_url, tier). Badge images organized by region under `db/` (reference only — not served from DB).
+
+## Updating Pokémon data
+
+- `scripts/generate_pokemon_list.py` — reads `sprites/*.gif` and writes `pokemon-list.json`. Run after adding sprites.
+- `pokemon_catalog.py` — reference for skin variants; drives manual updates to `pokemon-catalog.js`.
+- `pokemon-aliases.json` — alternate → canonical name mapping. Both JSON files fetched at runtime by `app.js`.
+
+```
+python scripts/generate_pokemon_list.py
+```
+
+## Sprites
+
+Animated GIFs under `sprites/`:
 - `sprites/shiny/` — shiny variants
-- `sprites/female/` — female sprite variants
-- `sprites/Mega/` and `sprites/Mega/Shiny/` — Mega Evolution sprites
+- `sprites/female/` — female variants
+- `sprites/Mega/` and `sprites/Mega/Shiny/` — Mega Evolutions
 
-Skin variants are encoded in the filename: `<name>_<skin>.gif` (e.g., `charizard_gmax.gif`).
+Skin variants: `<name>_<skin>.gif` (e.g. `charizard_gmax.gif`).
 
-## Sistema de diseño
+## Design system
 
-Este proyecto implementa el design system de MrKlypp en `style.css`.
-Fuente de verdad: `C:/Proyectos/MrKlypp-design-system`
-
-- Tokens (colores, spacing, shadows): `src/css/tokens.css`
-- Clases de componentes: `src/css/components.css` (`.card`, `.btn`, `.badge`, `.input`, `.live-dot`)
-- Animaciones: `src/css/animations.css` (`card-in`, `fade-up`, `pulse`, `shimmer`, `avatar-pulse`)
-
-Al añadir estilos usar siempre custom properties del sistema (`--pink`, `--blue`, `--bg`, etc.) en lugar de valores hardcodeados. Fuentes: Russo One (títulos), Syne (UI), JetBrains Mono (stats).
+Styles in `style.css`. Always use CSS custom properties (`--pink`, `--blue`, `--bg`, etc.) — never hardcode values. Fonts: Russo One (titles), JetBrains Mono (UI/body/stats). Full token reference in `C:/Proyectos/MrKlypp-design-system`.
