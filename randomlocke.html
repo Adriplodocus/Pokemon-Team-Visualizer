@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Randomlocke — Pokémon Stream Visualizer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='white'/><path d='M2,16 A14,14 0 0,1 30,16 Z' fill='%23EE1515'/><circle cx='16' cy='16' r='14' fill='none' stroke='%231a1a1a' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%231a1a1a' stroke-width='2'/><circle cx='16' cy='16' r='5' fill='%231a1a1a'/><circle cx='16' cy='16' r='3' fill='white'/></svg>">
+<link rel="stylesheet" href="style.css">
+<meta name="theme-color" content="#00CCFF">
+<script src="lang.js"></script>
+</head>
+<body>
+<script>const ACTIVE_PAGE = 'randomlocke';</script>
+<script src="header.js"></script>
+<div id="app">
+
+<div id="auth-gate" class="hidden">
+    <div class="card" style="text-align:center;padding:2rem">
+        <p data-i18n="loginRequired">Inicia sesión para usar esta herramienta.</p>
+        <a href="/login.html" class="btn" style="margin-top:1rem" data-i18n="loginBtn">Iniciar sesión</a>
+    </div>
+</div>
+
+<div id="main-content" class="hidden">
+
+    <!-- Route history -->
+    <div class="card" id="routes-card">
+        <h2 class="card-title" data-i18n="routeHistoryTitle">Historial de rutas</h2>
+
+        <div class="settings-row" style="gap:0.5rem;margin-bottom:0.75rem">
+            <input id="route-search" class="input" type="text"
+                data-i18n-ph="searchZonePh" placeholder="Buscar zona...">
+        </div>
+
+        <div class="settings-row" style="gap:0.5rem;margin-bottom:1rem">
+            <input id="route-input" class="input" type="text"
+                data-i18n-ph="addZonePh" placeholder="Añadir zona...">
+            <button id="route-add-btn" class="btn" data-i18n="addZoneBtn">+ Añadir</button>
+        </div>
+
+        <ul id="route-list" class="route-list"></ul>
+        <p id="route-empty" class="muted-text hidden" data-i18n="noRoutes">Sin rutas registradas.</p>
+    </div>
+
+    <!-- Life counter -->
+    <div class="card" id="counter-card">
+        <h2 class="card-title" data-i18n="lifeCounterTitle">Contador de vidas</h2>
+        <div class="settings-row" style="gap:0.5rem;margin-bottom:0.75rem;align-items:center">
+            <label style="white-space:nowrap" data-i18n="overlayUrlLabel">URL del overlay</label>
+            <input id="counter-url" class="input" type="url"
+                data-i18n-ph="overlayUrlPh" placeholder="https://...">
+        </div>
+        <iframe id="counter-frame" src="" style="width:100%;height:120px;border:none;border-radius:8px;background:var(--surface2)"></iframe>
+    </div>
+
+    <!-- Twitch bot -->
+    <div class="card" id="bot-card">
+        <h2 class="card-title" data-i18n="botTitle">Bot de Twitch</h2>
+        <div class="bot-status-row">
+            <span class="live-dot" id="bot-dot" style="background:var(--dim)"></span>
+            <span id="bot-status-label" data-i18n="botDisconnected">Desactivado</span>
+            <span id="bot-channel-label" class="muted-text"></span>
+        </div>
+        <button id="bot-toggle-btn" class="btn" style="margin-top:0.75rem" data-i18n="activateBot">Activar bot</button>
+        <p class="muted-text" style="margin-top:0.75rem;font-size:0.75rem" data-i18n="botHint">Responde a: !check &lt;zona&gt;</p>
+    </div>
+
+</div><!-- /main-content -->
+</div><!-- /app -->
+<script src="randomlocke.js"></script>
+</body>
+</html>
