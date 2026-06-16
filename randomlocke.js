@@ -177,7 +177,7 @@ function setBotUI(active) {
     const label = document.getElementById('bot-status-label');
     const btn = document.getElementById('bot-toggle-btn');
 
-    dot.style.background = active ? '#22C55E' : 'var(--dim)';
+    dot.style.background = active ? '#22C55E' : 'var(--dimmed)';
     label.textContent = t(active ? 'botConnected' : 'botDisconnected');
     btn.textContent = t(active ? 'deactivateBot' : 'activateBot');
 }
@@ -223,8 +223,11 @@ document.addEventListener('DOMContentLoaded', async () => {
     document.getElementById('bot-toggle-btn').addEventListener('click', toggleBot);
 });
 
-// Re-apply lang when header triggers setLang
-const _origSetLang = typeof setLangBase === 'function' ? setLangBase : null;
-if (_origSetLang) {
-    window.addEventListener('langchange', applyLang);
+function setLang(lang) {
+    setLangBase(lang);
+    document.documentElement.lang = lang;
+    document.getElementById('lang-es').classList.toggle('active', lang === 'es');
+    document.getElementById('lang-en').classList.toggle('active', lang === 'en');
+    applyLang();
+    applyHeaderLang();
 }

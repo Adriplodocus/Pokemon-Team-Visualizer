@@ -1245,16 +1245,16 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     justify-content: space-between;
     padding: 0.4rem 0.75rem;
-    background: var(--surface2);
+    background: var(--surface-2);
     border-radius: 8px;
     font-size: 0.85rem;
-    color: var(--text-em);
+    color: var(--text);
 }
 
 .route-list li button {
     background: none;
     border: none;
-    color: var(--dim);
+    color: var(--dimmed);
     cursor: pointer;
     font-size: 1rem;
     line-height: 1;
@@ -1274,6 +1274,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .muted-text {
-    color: var(--muted);
+    color: var(--text-2);
     font-size: 0.8rem;
 }
