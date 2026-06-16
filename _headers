@@ -1,8 +1,8 @@
 /sprites/*
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400
 
 /*.gif
-  Cache-Control: public, max-age=31536000, immutable
+  Cache-Control: public, max-age=86400
 
 /pokemon-list.json
   Cache-Control: public, max-age=3600

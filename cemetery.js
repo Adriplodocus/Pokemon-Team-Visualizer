@@ -243,7 +243,7 @@ function buildSpriteUrl(name, props) {
     if (skin !== 'common' && skins.includes(skin)) fileName += '_' + skin;
     if (shiny) folder += 'shiny/';
     if (gender === 'female' && hasFemale && skin === 'common') folder += 'female/';
-    return folder + encodeURIComponent(fileName) + '.gif';
+    return folder + encodeURIComponent(fileName) + '.gif?v=2';
 }
 
 // ── Autocomplete ──────────────────────────────────────────────────
@@ -441,8 +441,8 @@ function renderCemetery() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
-            : BASE_URL + encodeURIComponent(name) + '.gif';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
+            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
         const label = entry.mote || entry.name;
         const fbAttr = fallback !== url
             ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
@@ -503,8 +503,8 @@ async function publishCemetery() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
-            : BASE_URL + encodeURIComponent(name) + '.gif';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
+            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
         return { url, fallback: fallback !== url ? fallback : null };
     });
 
@@ -703,8 +703,8 @@ function buildCemeteryOverlayHTML() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
-            : BASE_URL + encodeURIComponent(name) + '.gif';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
+            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
         const fbAttr = fallback !== url
             ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
             : '';

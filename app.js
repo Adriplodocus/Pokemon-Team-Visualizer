@@ -439,8 +439,8 @@ function refreshSprite(i) {
         const url         = buildSpriteUrl(name, team[i].properties);
         const canonical   = ALIAS_TO_CANONICAL[name];
         const fallbackUrl = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
-            : BASE_URL + encodeURIComponent(name) + '.gif';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
+            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
         img.onerror = () => {
             if (img.src !== fallbackUrl) {
                 img.src = fallbackUrl;
@@ -578,7 +578,7 @@ function buildSpriteUrl(name, props) {
         folder += 'female/';
     }
 
-    return folder + encodeURIComponent(fileName) + '.gif';
+    return folder + encodeURIComponent(fileName) + '.gif?v=2';
 }
 
 // ── Generate HTML (used by live preview) ────────────────────────
@@ -601,8 +601,8 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
         const url      = buildSpriteUrl(name, slot.properties);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
-            : BASE_URL + encodeURIComponent(name) + '.gif';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
+            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
         return {
             mote: (slot.mote || slot.name).toUpperCase(),
             url,
@@ -1193,8 +1193,8 @@ async function publishToObs() {
         const url      = buildSpriteUrl(name, slot.properties);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif'
-            : BASE_URL + encodeURIComponent(name) + '.gif';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
+            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
         return {
             mote:     (slot.mote || slot.name).toUpperCase(),
             url,
