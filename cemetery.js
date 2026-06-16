@@ -143,6 +143,7 @@ let channelId = null;
 let externalMode = false;
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
+let SPRITE_VER = '?v=2';
 let pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
 let modalProps   = { ...DEFAULT_PROPS };
 
@@ -243,7 +244,7 @@ function buildSpriteUrl(name, props) {
     if (skin !== 'common' && skins.includes(skin)) fileName += '_' + skin;
     if (shiny) folder += 'shiny/';
     if (gender === 'female' && hasFemale && skin === 'common') folder += 'female/';
-    return folder + encodeURIComponent(fileName) + '.gif?v=2';
+    return folder + encodeURIComponent(fileName) + '.gif' + SPRITE_VER;
 }
 
 // ── Autocomplete ──────────────────────────────────────────────────
@@ -252,8 +253,10 @@ initInput();
 Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
+    fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
 ])
-.then(([names, aliases]) => {
+.then(([names, aliases, ver]) => {
+    SPRITE_VER = '?v=' + ver.v;
     for (const [canonical, aliasList] of Object.entries(aliases)) {
         for (const alias of aliasList) ALIAS_TO_CANONICAL[alias] = canonical;
     }
@@ -441,8 +444,8 @@ function renderCemetery() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
-            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
+            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         const label = entry.mote || entry.name;
         const fbAttr = fallback !== url
             ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
@@ -503,8 +506,8 @@ async function publishCemetery() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
-            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
+            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         return { url, fallback: fallback !== url ? fallback : null };
     });
 
@@ -703,8 +706,8 @@ function buildCemeteryOverlayHTML() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
-            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
+            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         const fbAttr = fallback !== url
             ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
             : '';

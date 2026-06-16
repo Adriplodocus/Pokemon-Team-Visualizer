@@ -216,6 +216,7 @@ const team = Array.from({ length: 6 }, () => ({
 
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
+let SPRITE_VER = '?v=2';
 let channelId    = null;
 let externalMode = false;
 let modalIndex   = -1;
@@ -227,8 +228,10 @@ let dragInsertBefore = true;
 Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
+    fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
 ])
-.then(([names, aliases]) => {
+.then(([names, aliases, ver]) => {
+    SPRITE_VER = '?v=' + ver.v;
     for (const [canonical, aliasList] of Object.entries(aliases)) {
         for (const alias of aliasList) {
             ALIAS_TO_CANONICAL[alias] = canonical;
@@ -439,8 +442,8 @@ function refreshSprite(i) {
         const url         = buildSpriteUrl(name, team[i].properties);
         const canonical   = ALIAS_TO_CANONICAL[name];
         const fallbackUrl = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
-            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
+            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         img.onerror = () => {
             if (img.src !== fallbackUrl) {
                 img.src = fallbackUrl;
@@ -578,7 +581,7 @@ function buildSpriteUrl(name, props) {
         folder += 'female/';
     }
 
-    return folder + encodeURIComponent(fileName) + '.gif?v=2';
+    return folder + encodeURIComponent(fileName) + '.gif' + SPRITE_VER;
 }
 
 // ── Generate HTML (used by live preview) ────────────────────────
@@ -601,8 +604,8 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
         const url      = buildSpriteUrl(name, slot.properties);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
-            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
+            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         return {
             mote: (slot.mote || slot.name).toUpperCase(),
             url,
@@ -1193,8 +1196,8 @@ async function publishToObs() {
         const url      = buildSpriteUrl(name, slot.properties);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif?v=2'
-            : BASE_URL + encodeURIComponent(name) + '.gif?v=2';
+            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
+            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         return {
             mote:     (slot.mote || slot.name).toUpperCase(),
             url,
