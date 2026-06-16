@@ -176,7 +176,7 @@ export class TwitchBotDO {
         }
 
         // :username!username@username.tmi.twitch.tv PRIVMSG #channel :message
-        const match = raw.match(/^:\w+!\w+@\w+\.tmi\.twitch\.tv PRIVMSG #\w+ :(.+)$/);
+        const match = raw.match(/^:[\w-]+![\w-]+@[\w-]+\.tmi\.twitch\.tv PRIVMSG #[\w-]+ :(.+)$/);
         if (!match) return;
 
         const text = match[1].trim();
