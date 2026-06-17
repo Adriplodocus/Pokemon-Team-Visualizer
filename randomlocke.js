@@ -18,6 +18,9 @@ const STRINGS = {
         deactivateBot:      'Desactivar bot',
         botHint:            'Responde a: !check <zona>',
         counterDesc:        'Necesitas crear un contador en <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> y pegar el enlace embed iframe aquí.',
+        zoneAdded:          '✓ Zona añadida.',
+        zoneDuplicate:      '✗ Ya existe esa zona.',
+        zoneError:          '✗ Error al añadir la zona.',
         madeBy:             'Hecho por @MrKlypp',
         loginRequired:      'Inicia sesión para usar esta herramienta.',
         loginBtn:           'Iniciar sesión',
@@ -40,6 +43,9 @@ const STRINGS = {
         deactivateBot:      'Deactivate bot',
         botHint:            'Responds to: !check <zone>',
         counterDesc:        'You need to create a counter on <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> and paste the iframe embed link here.',
+        zoneAdded:          '✓ Zone added.',
+        zoneDuplicate:      '✗ Zone already exists.',
+        zoneError:          '✗ Failed to add zone.',
         madeBy:             'Made by @MrKlypp',
         loginRequired:      'Log in to use this tool.',
         loginBtn:           'Log in',
@@ -135,6 +141,17 @@ function renderRoutes() {
     `).join('');
 }
 
+let feedbackTimer = null;
+function showRouteFeedback(key, isError = false) {
+    const el = document.getElementById('route-feedback');
+    if (!el) return;
+    clearTimeout(feedbackTimer);
+    el.textContent = t(key);
+    el.style.color = isError ? 'var(--error)' : 'var(--blue)';
+    el.style.opacity = '1';
+    feedbackTimer = setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
+
 async function addRoute() {
     const input = document.getElementById('route-input');
     const zone = input.value.trim();
@@ -143,6 +160,7 @@ async function addRoute() {
     const normalized = zone.toLowerCase().replace(/\s+/g, ' ');
     if (routes.some(r => r.zoneName.toLowerCase() === normalized)) {
         input.select();
+        showRouteFeedback('zoneDuplicate', true);
         return;
     }
 
@@ -157,8 +175,10 @@ async function addRoute() {
         routes.unshift(newRoute);
         input.value = '';
         renderRoutes();
+        showRouteFeedback('zoneAdded');
     } catch (e) {
         console.error('Failed to add route', e);
+        showRouteFeedback('zoneError', true);
     }
 }
 
