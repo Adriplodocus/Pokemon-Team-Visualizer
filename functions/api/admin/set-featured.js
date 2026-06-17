@@ -22,11 +22,17 @@ export async function onRequestPost(context) {
     return json({ error: 'Invalid userId or featured (must be boolean)' }, 400);
   }
 
-  const sql  = getDB(context.env);
-  const rows = await sql`
-    UPDATE users SET featured = ${featured} WHERE id = ${userId}
-    RETURNING id, username, featured
-  `;
+  let rows;
+  try {
+    const sql = getDB(context.env);
+    rows = await sql`
+      UPDATE users SET featured = ${featured} WHERE id = ${userId}
+      RETURNING id, username, featured
+    `;
+  } catch (e) {
+    console.error('DB error in POST /admin/set-featured', e);
+    return json({ error: 'Database error' }, 500);
+  }
 
   if (!rows.length) return json({ error: 'User not found' }, 404);
 

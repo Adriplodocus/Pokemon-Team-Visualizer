@@ -10,7 +10,7 @@ body,html{margin:0;padding:0;background:transparent;}
 
 /* ── Horizontal ── */
 body.layout-horizontal .container{display:flex;flex-wrap:nowrap;}
-body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;}
+body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;}
 body.layout-horizontal .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 body.layout-horizontal .sprite-row{position:relative;z-index:1;}
 body.layout-horizontal .shadow-row{margin-top:-15px;}
@@ -21,7 +21,7 @@ body.layout-horizontal p{margin:0;height:35px;line-height:35px;text-align:center
 /* ── Vertical ── */
 body.layout-vertical .wrapper{display:flex;flex-direction:column;}
 body.layout-vertical .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
-body.layout-vertical .pkDiv{width:225px;}
+body.layout-vertical .pkDiv{width:225px;position:relative;}
 body.layout-vertical .shadowDiv{width:150px;margin-top:-15px;}
 body.layout-vertical img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;pointer-events:none;user-select:none;}
 body.layout-vertical p{margin:0;padding:0;height:25px;text-align:center;}

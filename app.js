@@ -694,7 +694,7 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
-.pkDiv{flex:0 0 225px;width:225px;height:150px;}
+.pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
@@ -736,7 +736,7 @@ body,html{margin:0;padding:0;}
 .wrapper{display:flex;flex-direction:column;}
 .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
 .pkDiv,.shadowDiv{margin:0;padding:0;}
-.pkDiv{width:225px;}
+.pkDiv{width:225px;position:relative;}
 .shadowDiv{width:150px;margin-top:-15px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;pointer-events:none;user-select:none;}
