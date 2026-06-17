@@ -1441,14 +1441,14 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border: 1px solid var(--border);
     border-radius: 8px;
     padding: 0.5rem 0.85rem;
-    color: var(--text-em, #F0F0F0);
+    color: var(--text);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
     outline: none;
     transition: border-color 0.18s;
 }
 
-.pk-search-input::placeholder { color: var(--dim, var(--dimmed)); }
+.pk-search-input::placeholder { color: var(--dimmed); }
 .pk-search-input:focus { border-color: rgba(0, 204, 255, 0.5); }
 
 .pk-suggestions {
@@ -1469,7 +1469,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     font-size: 0.72rem;
     font-weight: 700;
     text-transform: capitalize;
-    background: var(--surface2, var(--surface-2));
+    background: var(--surface-2);
     color: var(--text);
     border: 1px solid var(--border);
     cursor: pointer;
@@ -1481,7 +1481,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .pk-chip.active {
     background: rgba(0, 204, 255, 0.12);
     border-color: rgba(0, 204, 255, 0.5);
-    color: var(--blue, #00CCFF);
+    color: var(--cyan);
 }
 
 .pk-result {
