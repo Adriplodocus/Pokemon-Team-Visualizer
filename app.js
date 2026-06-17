@@ -70,6 +70,10 @@ const STRINGS = {
         zoneAdded:          '✓ Zona añadida.',
         zoneDuplicate:      '✗ Ya existe esa zona.',
         zoneError:          '✗ Error al añadir la zona.',
+        clearAllBtn:        'Limpiar todo',
+        clearAllConfirm:    '¿Eliminar todas las zonas? Esta acción no se puede deshacer.',
+        zonesCleared:       '✓ Todas las zonas eliminadas.',
+        zonesClearError:    '✗ Error al eliminar las zonas.',
         lifeCounterTitle:   'Contador de vidas',
         overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
         counterUrlError:    'La URL debe ser de StreamCounters.',
@@ -151,6 +155,10 @@ const STRINGS = {
         zoneAdded:          '✓ Zone added.',
         zoneDuplicate:      '✗ Zone already exists.',
         zoneError:          '✗ Failed to add zone.',
+        clearAllBtn:        'Clear all',
+        clearAllConfirm:    'Delete all zones? This action cannot be undone.',
+        zonesCleared:       '✓ All zones deleted.',
+        zonesClearError:    '✗ Failed to delete zones.',
         lifeCounterTitle:   'Life counter',
         overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
         counterUrlError:    'URL must be from StreamCounters.',
@@ -1566,6 +1574,21 @@ async function rlDeleteRoute(id) {
     }
 }
 
+async function rlClearAllRoutes() {
+    if (!rlRoutes.length) return;
+    if (!confirm(t('clearAllConfirm'))) return;
+    try {
+        const res = await fetch('/api/randomlocke/routes', { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+        rlRoutes = [];
+        rlRenderRoutes();
+        rlShowFeedback('zonesCleared');
+    } catch (e) {
+        console.error('Failed to clear routes', e);
+        rlShowFeedback('zonesClearError', true);
+    }
+}
+
 const RL_COUNTER_URL_KEY = 'ptv_streamcounters_url';
 
 function rlIsValidUrl(val) {
@@ -1653,6 +1676,7 @@ async function rlToggleBot() {
     document.getElementById('bot-toggle-btn').addEventListener('click', rlToggleBot);
     document.getElementById('zones-modal-btn').addEventListener('click', rlOpenModal);
     document.getElementById('zones-modal-close').addEventListener('click', rlCloseModal);
+    document.getElementById('zones-clear-btn').addEventListener('click', rlClearAllRoutes);
     document.getElementById('zones-modal').addEventListener('click', e => {
         if (e.target === e.currentTarget) rlCloseModal();
     });

@@ -75,3 +75,18 @@ export async function onRequestPost(context) {
   const r = rows[0];
   return json({ id: r.id, zoneName: r.zone_name, createdAt: r.created_at }, 201);
 }
+
+export async function onRequestDelete(context) {
+  const payload = await getUser(context);
+  if (!payload) return json({ error: 'Unauthorized' }, 401);
+
+  try {
+    const sql = getDB(context.env);
+    await sql`DELETE FROM randomlocke_routes WHERE user_id = ${payload.userId}`;
+  } catch (e) {
+    console.error('DB error in DELETE /routes', e);
+    return json({ error: 'Service unavailable' }, 503);
+  }
+
+  return json({ ok: true });
+}
