@@ -196,6 +196,8 @@ function clearPkSearch() {
     if (result) result.style.display = 'none';
     const error = document.getElementById('pk-error');
     if (error) error.style.display = 'none';
+    const clearBtn = document.getElementById('pk-clear-btn');
+    if (clearBtn) clearBtn.style.display = 'none';
 }
 
 // ── Pokémon search ─────────────────────────────────────────────
@@ -323,10 +325,15 @@ function renderPkResult() {
 }
 
 function initPkSearch() {
-    const input = document.getElementById('pk-search-input');
-    const list  = document.getElementById('pk-search-suggestions');
+    const input    = document.getElementById('pk-search-input');
+    const list     = document.getElementById('pk-search-suggestions');
+    const clearBtn = document.getElementById('pk-clear-btn');
 
-    input.addEventListener('input', updatePkSuggestions);
+    const toggleClear = () => { clearBtn.style.display = input.value ? 'block' : 'none'; };
+
+    clearBtn.addEventListener('click', () => { clearPkSearch(); toggleClear(); });
+
+    input.addEventListener('input', () => { updatePkSuggestions(); toggleClear(); });
 
     input.addEventListener('keydown', e => {
         if (e.key === 'Escape') { closePkSuggestions(); return; }

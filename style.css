@@ -1440,7 +1440,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     background: transparent;
     border: 1px solid var(--border);
     border-radius: 8px;
-    padding: 0.5rem 0.85rem;
+    padding: 0.5rem 2rem 0.5rem 0.85rem;
     color: var(--text);
     font-family: 'JetBrains Mono', monospace;
     font-size: 0.85rem;
@@ -1450,6 +1450,22 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 .pk-search-input::placeholder { color: var(--dimmed); }
 .pk-search-input:focus { border-color: rgba(0, 204, 255, 0.5); }
+
+.pk-clear-btn {
+    position: absolute;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--dimmed);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0.15rem 0.25rem;
+    transition: color 0.15s;
+}
+.pk-clear-btn:hover { color: var(--text); }
 
 .pk-suggestions {
     min-width: 200px;
