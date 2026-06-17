@@ -52,21 +52,26 @@ export class TwitchBotDO {
         const connected = await this.state.storage.get('connected');
         if (!connected) return;
 
-        const wsOpen = this.ws !== null && this.ws.readyState === WebSocket.OPEN;
-        if (!wsOpen) {
+        try {
             const channel = await this.state.storage.get('channel');
             const userId = await this.state.storage.get('userId');
             if (channel && userId) {
-                await this.connect(channel, userId);
+                const wsOpen = this.ws !== null && this.ws.readyState === WebSocket.OPEN;
+                if (!wsOpen) {
+                    await this.connect(channel, userId);
+                } else {
+                    this.ws.send('PING :tmi.twitch.tv');
+                }
             }
+        } catch (e) {
+            console.error('Alarm reconnect error', e);
+        } finally {
+            this.scheduleAlarm();
         }
-
-        this.scheduleAlarm();
     }
 
     scheduleAlarm() {
-        // Wake every 4 minutes to keep connection alive
-        this.state.storage.setAlarm(Date.now() + 4 * 60 * 1000);
+        this.state.storage.setAlarm(Date.now() + 2 * 60 * 1000);
     }
 
     async getBotToken() {
