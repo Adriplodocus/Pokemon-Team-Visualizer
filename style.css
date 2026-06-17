@@ -1287,6 +1287,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     color: #E5173A;
 }
 
+.card-divider {
+    border: none;
+    border-top: 1px solid var(--border);
+    margin: 1rem 0;
+}
+
 .bot-status-row {
     display: flex;
     align-items: center;
