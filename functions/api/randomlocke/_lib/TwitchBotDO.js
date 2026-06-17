@@ -205,8 +205,8 @@ export class TwitchBotDO {
         }
 
         const msg = found
-            ? `✅ ${zone} ya fue atrapada`
-            : `❌ ${zone} está libre`;
+            ? `❌ NO puedes capturar en ${zone}.`
+            : `✅ SÍ puedes capturar en ${zone}.`;
 
         this.ws?.send(`PRIVMSG #${channel} :${msg}`);
     }
