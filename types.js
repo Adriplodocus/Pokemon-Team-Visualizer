@@ -262,7 +262,7 @@ const PK_SLUG_EXCEPTIONS = {
     tapubulu:                   'tapu-bulu',
     tapufini:                   'tapu-fini',
     'dudunsparce+threesegment': 'dudunsparce-three-segment',
-    ogerponcornerstone:         'ogerpon-cornerstone-mask',
+    'ogerpon+cornerstone':      'ogerpon-cornerstone-mask',
     sirfetchd:                  'sirfetch-d',
     mrmime:                     'mr-mime',
     // calyrex

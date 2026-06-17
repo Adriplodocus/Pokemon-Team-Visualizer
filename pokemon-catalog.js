@@ -56,6 +56,7 @@ const POKEMON_CATALOG = {
     mrmime:       { skin: ['galar'] },
     muk:          { skin: ['alola'] },
     necrozma:     { skin: ['dawnwings','duskmane','ultra'] },
+    ogerpon:      { skin: ['cornerstone'] },
     ninetales:    { skin: ['alola'] },
     oricorio:     { skin: ['sensu'] },
     palafin:      { skin: ['hero'] },
