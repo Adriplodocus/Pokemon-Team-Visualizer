@@ -1,6 +1,6 @@
-import { parseCookies } from '../../_lib/cookies.js';
-import { verifyJWT } from '../../_lib/jwt.js';
-import { getDB } from '../../_lib/db.js';
+import { parseCookies } from '../_lib/cookies.js';
+import { verifyJWT } from '../_lib/jwt.js';
+import { getDB } from '../_lib/db.js';
 
 function json(data, status = 200) {
   return new Response(JSON.stringify(data), {

@@ -1,5 +1,5 @@
-import { parseCookies } from '../../../_lib/cookies.js';
-import { verifyJWT } from '../../../_lib/jwt.js';
+import { parseCookies } from '../../_lib/cookies.js';
+import { verifyJWT } from '../../_lib/jwt.js';
 
 function json(data, status = 200) {
     return new Response(JSON.stringify(data), {
