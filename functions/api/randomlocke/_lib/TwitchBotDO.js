@@ -197,7 +197,8 @@ export class TwitchBotDO {
             const sql = getDB(this.env);
             const rows = await sql`
                 SELECT id FROM randomlocke_routes
-                WHERE user_id = ${userId} AND zone_name = ${normalized}
+                WHERE user_id = ${userId}
+                  AND lower(replace(zone_name, ' ', '')) = ${normalized}
             `;
             found = rows.length > 0;
         } catch (e) {
