@@ -191,12 +191,13 @@ export class TwitchBotDO {
     }
 
     async checkZone(zone, channel, userId) {
+        const normalized = zone.toLowerCase().replace(/\s+/g, '');
         let found = false;
         try {
             const sql = getDB(this.env);
             const rows = await sql`
                 SELECT id FROM randomlocke_routes
-                WHERE user_id = ${userId} AND lower(zone_name) = lower(${zone})
+                WHERE user_id = ${userId} AND zone_name = ${normalized}
             `;
             found = rows.length > 0;
         } catch (e) {

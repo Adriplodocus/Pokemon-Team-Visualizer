@@ -47,7 +47,7 @@ export async function onRequestPost(context) {
   try { body = await context.request.json(); }
   catch { return json({ error: 'Invalid JSON' }, 400); }
 
-  const zone = (body.zone || '').trim();
+  const zone = (body.zone || '').trim().toLowerCase().replace(/\s+/g, '');
   if (!zone) return json({ error: 'zone required' }, 400);
   if (zone.length > 100) return json({ error: 'zone too long (max 100)' }, 400);
 
