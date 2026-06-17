@@ -211,7 +211,102 @@ function onPkSelect(name) {
     renderFormChips(name);
 }
 
-function renderFormChips(name) { /* stub — replaced in Task 4 */ }
+function renderFormChips(name) {
+    const container = document.getElementById('pk-form-chips');
+    const entry     = (typeof POKEMON_CATALOG !== 'undefined') ? POKEMON_CATALOG[name] : null;
+    const skins     = entry?.skin ?? [];
+
+    if (!skins.length) {
+        container.innerHTML = '';
+        resolvePokemonTypes(name, '');
+        return;
+    }
+
+    container.innerHTML = [
+        `<button class="pk-chip active" data-skin="">${tT('pokemonBase')}</button>`,
+        ...skins.map(s => `<button class="pk-chip" data-skin="${s}">${s}</button>`)
+    ].join('');
+
+    container.querySelectorAll('.pk-chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.pk-chip').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            selectedPokemon.skin = btn.dataset.skin;
+            resolvePokemonTypes(selectedPokemon.name, btn.dataset.skin);
+        });
+    });
+
+    resolvePokemonTypes(name, '');
+}
+
+const PK_SLUG_EXCEPTIONS = {
+    tapukoko:                'tapu-koko',
+    tapulele:                'tapu-lele',
+    tapubulu:                'tapu-bulu',
+    tapufini:                'tapu-fini',
+    dudunsparcethreesegment: 'dudunsparce-three-segment',
+    ogerponcornerstone:      'ogerpon-cornerstone-mask',
+    sirfetchd:               'sirfetch-d',
+};
+
+function toPokeApiSlug(name, skin) {
+    if (!skin && PK_SLUG_EXCEPTIONS[name]) return PK_SLUG_EXCEPTIONS[name];
+    const base = name
+        .replace(/'/g, '')
+        .replace(/\./g, '')
+        .replace(/\s+/g, '-')
+        .replace(/_/g, '-');
+    return skin ? `${base}-${skin.replace(/\s+/g, '-').replace(/_/g, '-')}` : base;
+}
+
+async function resolvePokemonTypes(name, skin) {
+    const resultDiv = document.getElementById('pk-result');
+    const errorEl   = document.getElementById('pk-error');
+    const typesDiv  = document.getElementById('pk-result-types');
+
+    resultDiv.style.display  = 'none';
+    errorEl.style.display    = 'none';
+    typesDiv.innerHTML       = `<span style="color:var(--text)">${tT('loadingTypes')}</span>`;
+
+    const slug = toPokeApiSlug(name, skin);
+    let types;
+    try {
+        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
+        if (!res.ok) throw new Error('not found');
+        const data = await res.json();
+        types = data.types
+            .map(t => t.type.name)
+            .filter(t => TYPES.includes(t))
+            .slice(0, 2);
+    } catch {
+        errorEl.textContent   = tT('unknownPokemon');
+        errorEl.style.display = 'block';
+        return;
+    }
+
+    selectedPokemon.types = types;
+    selectedTypes = [...types];
+    renderTypeSelector();
+    renderTable();
+
+    const spriteFile = skin ? `sprites/${name}_${skin}.gif` : `sprites/${name}.gif`;
+    const sprite     = document.getElementById('pk-result-sprite');
+    sprite.onerror   = () => { sprite.onerror = null; sprite.src = `sprites/${name}.gif`; };
+    sprite.src       = spriteFile;
+
+    renderPkResult();
+    resultDiv.style.display = 'flex';
+}
+
+function renderPkResult() {
+    const typesDiv = document.getElementById('pk-result-types');
+    if (!typesDiv || !selectedPokemon.types.length) return;
+    typesDiv.innerHTML = selectedPokemon.types.map(t =>
+        `<span class="type-chip" style="background:${TYPE_ICON_COLORS[t] || TYPE_COLORS[t]}">` +
+        `<img src="sprites/types/${t}.webp" alt="" class="type-icon">` +
+        `${TYPE_NAMES[currentLang][t]}</span>`
+    ).join('');
+}
 
 function initPkSearch() {
     const input = document.getElementById('pk-search-input');
