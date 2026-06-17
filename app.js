@@ -1337,13 +1337,15 @@ function savePreset(slot) {
         layout: document.getElementById('layout-select').value,
         shadows: document.getElementById('shadows-check').checked,
         bg: document.getElementById('bg-check').checked,
-        typography: JSON.parse(JSON.stringify(typography))
+        typography: JSON.parse(JSON.stringify(typography)),
+        zones: JSON.parse(JSON.stringify(rlRoutes)),
+        counterUrl: localStorage.getItem(RL_COUNTER_URL_KEY) || ''
     });
     renderPresets();
     setStatus(t('presetSaved'), 'var(--success)');
 }
 
-function loadPreset(slot) {
+async function loadPreset(slot) {
     const preset = getPreset(slot);
     if (!preset) return;
     preset.team.forEach((s, i) => {
@@ -1364,6 +1366,33 @@ function loadPreset(slot) {
         saveTypography();
         syncTypographyUI();
     }
+
+    const rlVisible = !document.getElementById('rl-section').classList.contains('hidden');
+    if (rlVisible && Array.isArray(preset.zones)) {
+        try {
+            await fetch('/api/randomlocke/routes', { method: 'DELETE' });
+            rlRoutes = [];
+            for (const z of preset.zones) {
+                const res = await fetch('/api/randomlocke/routes', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ zone: z.zoneName })
+                });
+                if (res.ok) rlRoutes.push(await res.json());
+            }
+            rlRenderRoutes();
+        } catch (e) {
+            console.error('Failed to restore zones from preset', e);
+        }
+    }
+
+    if (preset.counterUrl !== undefined) {
+        localStorage.setItem(RL_COUNTER_URL_KEY, preset.counterUrl);
+        const input = document.getElementById('counter-url');
+        if (input) input.value = preset.counterUrl;
+        rlApplyCounterUrl(preset.counterUrl);
+    }
+
     updateObsHint();
     saveState();
     setStatus(t('presetLoaded'), 'var(--success)');
