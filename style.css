@@ -1487,21 +1487,32 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .pk-result {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
     flex-wrap: wrap;
 }
 
 .pk-result-sprite {
-    width: 64px;
-    height: 64px;
+    width: 96px;
+    height: 96px;
     object-fit: contain;
     image-rendering: pixelated;
 }
 
 .pk-result-types {
     display: flex;
-    gap: 0.4rem;
+    gap: 0.5rem;
     flex-wrap: wrap;
+}
+
+.pk-result-types .type-chip {
+    font-size: 0.9rem;
+    padding: 0.35rem 0.9rem;
+    gap: 0.4rem;
+}
+
+.pk-result-types .type-icon {
+    width: 28px;
+    height: 28px;
 }
 
 .pk-error {
