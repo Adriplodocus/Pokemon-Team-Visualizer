@@ -311,6 +311,10 @@ const PK_SLUG_EXCEPTIONS = {
     'toxtricity+amped':         'toxtricity-amped',
     // zygarde
     'zygarde+100':              'zygarde-complete',
+    // minior (base→404, meteor form uses red-meteor slug; color cores work via default)
+    'minior+meteor':            'minior-red-meteor',
+    // morpeko (base→404, full-belly and hangry work via default)
+    morpeko:                    'morpeko-full-belly',
 };
 
 // PokéAPI uses 'hisui' not 'hisuian' for all hisuian forms
