@@ -263,10 +263,19 @@ const PK_SLUG_EXCEPTIONS = {
     dudunsparcethreesegment: 'dudunsparce-three-segment',
     ogerponcornerstone:      'ogerpon-cornerstone-mask',
     sirfetchd:               'sirfetch-d',
+    'pikachu+alolacap':      'pikachu-alola-cap',
+    'pikachu+hoenncap':      'pikachu-hoenn-cap',
+    'pikachu+kaloscap':      'pikachu-kalos-cap',
+    'pikachu+originalcap':   'pikachu-original-cap',
+    'pikachu+sinnohcap':     'pikachu-sinnoh-cap',
+    'pikachu+unovacap':      'pikachu-unova-cap',
+    'pikachu+rockstar':      'pikachu-rock-star',
+    'pikachu+popstar':       'pikachu-pop-star',
 };
 
 function toPokeApiSlug(name, skin) {
-    if (!skin && PK_SLUG_EXCEPTIONS[name]) return PK_SLUG_EXCEPTIONS[name];
+    const key = skin ? `${name}+${skin}` : name;
+    if (PK_SLUG_EXCEPTIONS[key]) return PK_SLUG_EXCEPTIONS[key];
     const base = name
         .replace(/'/g, '')
         .replace(/\./g, '')

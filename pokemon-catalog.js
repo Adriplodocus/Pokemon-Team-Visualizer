@@ -60,7 +60,7 @@ const POKEMON_CATALOG = {
     palafin:      { skin: ['hero'] },
     palkia:       { skin: ['origin'] },
     persian:      { skin: ['alola'] },
-    pikachu:      { skin: ['alolacap','cap','gorra8','hoenncap','originalcap','partnercap','sinnohcapunovacap','belle','cosplay','libre','phd','popstar','rockstar'] },
+    pikachu:      { skin: ['alolacap','hoenncap','kaloscap','originalcap','sinnohcap','unovacap','belle','cosplay','libre','phd','popstar','rockstar'] },
     polteageist:  { skin: ['antique','phony'] },
     ponyta:       { skin: ['galar'] },
     qwilfish:     { skin: ['hisuian'] },
