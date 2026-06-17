@@ -1353,6 +1353,10 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     font-size: 0.8rem;
 }
 
+.muted-text a {
+    color: var(--cyan);
+}
+
 .card-title {
     font-size: 0.9rem;
     font-weight: 700;
