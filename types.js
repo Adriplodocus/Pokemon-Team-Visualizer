@@ -256,24 +256,62 @@ function renderFormChips(name) {
 }
 
 const PK_SLUG_EXCEPTIONS = {
-    tapukoko:                'tapu-koko',
-    tapulele:                'tapu-lele',
-    tapubulu:                'tapu-bulu',
-    tapufini:                'tapu-fini',
-    dudunsparcethreesegment: 'dudunsparce-three-segment',
-    ogerponcornerstone:      'ogerpon-cornerstone-mask',
-    sirfetchd:               'sirfetch-d',
-    'calyrex+icerider':      'calyrex-ice-rider',
-    'calyrex+shadowrider':   'calyrex-shadow-rider',
-    'pikachu+alolacap':      'pikachu-alola-cap',
-    'pikachu+hoenncap':      'pikachu-hoenn-cap',
-    'pikachu+kaloscap':      'pikachu-kalos-cap',
-    'pikachu+originalcap':   'pikachu-original-cap',
-    'pikachu+sinnohcap':     'pikachu-sinnoh-cap',
-    'pikachu+unovacap':      'pikachu-unova-cap',
-    'pikachu+rockstar':      'pikachu-rock-star',
-    'pikachu+popstar':       'pikachu-pop-star',
+    // base name fixes
+    tapukoko:                   'tapu-koko',
+    tapulele:                   'tapu-lele',
+    tapubulu:                   'tapu-bulu',
+    tapufini:                   'tapu-fini',
+    dudunsparcethreesegment:    'dudunsparce-three-segment',
+    ogerponcornerstone:         'ogerpon-cornerstone-mask',
+    sirfetchd:                  'sirfetch-d',
+    mrmime:                     'mr-mime',
+    // calyrex
+    'calyrex+icerider':         'calyrex-ice-rider',
+    'calyrex+shadowrider':      'calyrex-shadow-rider',
+    // darmanitan galar
+    'darmanitan+galarice':      'darmanitan-galar',
+    'darmanitan+galaricefire':  'darmanitan-galar-zen',
+    // eiscue
+    'eiscue+noice':             'eiscue-noice-face',
+    // kyurem
+    'kyurem+blackoverdrive':    'kyurem-black',
+    'kyurem+whiteoverdrive':    'kyurem-white',
+    // mrmime galar
+    'mrmime+galar':             'mr-mime-galar',
+    // necrozma
+    'necrozma+dawnwings':       'necrozma-dawn-wings',
+    'necrozma+duskmane':        'necrozma-dusk-mane',
+    // pikachu caps
+    'pikachu+alolacap':         'pikachu-alola-cap',
+    'pikachu+hoenncap':         'pikachu-hoenn-cap',
+    'pikachu+kaloscap':         'pikachu-kalos-cap',
+    'pikachu+originalcap':      'pikachu-original-cap',
+    'pikachu+sinnohcap':        'pikachu-sinnoh-cap',
+    'pikachu+unovacap':         'pikachu-unova-cap',
+    'pikachu+rockstar':         'pikachu-rock-star',
+    'pikachu+popstar':          'pikachu-pop-star',
+    // squawkabilly
+    'squawkabilly+blue':        'squawkabilly-blue-plumage',
+    'squawkabilly+green':       'squawkabilly-green-plumage',
+    'squawkabilly+white':       'squawkabilly-white-plumage',
+    'squawkabilly+yellow':      'squawkabilly-yellow-plumage',
+    // tauros paldea
+    'tauros+paldeacombat':      'tauros-paldea-combat-breed',
+    'tauros+paldeablaze':       'tauros-paldea-blaze-breed',
+    'tauros+paldeaaqua':        'tauros-paldea-aqua-breed',
+    // toxtricity
+    'toxtricity+lowkey':        'toxtricity-low-key',
+    // ursaluna
+    'ursaluna+bloodmoon':       'ursaluna-blood-moon',
+    // basculin
+    'basculin+red':             'basculin',
+    'basculin+blue':            'basculin-blue-striped',
+    // zygarde
+    'zygarde+100':              'zygarde-complete',
 };
+
+// PokéAPI uses 'hisui' not 'hisuian' for all hisuian forms
+const SKIN_SLUG_MAP = { hisuian: 'hisui' };
 
 function toPokeApiSlug(name, skin) {
     const key = skin ? `${name}+${skin}` : name;
@@ -283,7 +321,9 @@ function toPokeApiSlug(name, skin) {
         .replace(/\./g, '')
         .replace(/\s+/g, '-')
         .replace(/_/g, '-');
-    return skin ? `${base}-${skin.replace(/\s+/g, '-').replace(/_/g, '-')}` : base;
+    if (!skin) return base;
+    const skinSlug = (SKIN_SLUG_MAP[skin] ?? skin).replace(/\s+/g, '-').replace(/_/g, '-');
+    return `${base}-${skinSlug}`;
 }
 
 async function resolvePokemonTypes(name, skin) {

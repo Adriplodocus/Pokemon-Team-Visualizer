@@ -48,7 +48,7 @@ const POKEMON_CATALOG = {
     magearna:     { skin: ['original'] },
     marowak:      { skin: ['alola'] },
     meloetta:     { skin: ['pirouette'] },
-    meowth:       { skin: ['alola, galar'] },
+    meowth:       { skin: ['alola','galar'] },
     minior:       { skin: ['blue','green','indigo','orange','red','violet','yellow'] },
     moltres:      { skin: ['galar'] },
     morpeko:      { skin: ['hangry'] },
