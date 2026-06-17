@@ -17,6 +17,7 @@ const STRINGS = {
         activateBot:        'Activar bot',
         deactivateBot:      'Desactivar bot',
         botHint:            'Responde a: !check <zona>',
+        counterDesc:        'Necesitas crear un contador en <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> y pegar el enlace embed iframe aquí.',
         madeBy:             'Hecho por @MrKlypp',
         loginRequired:      'Inicia sesión para usar esta herramienta.',
         loginBtn:           'Iniciar sesión',
@@ -38,6 +39,7 @@ const STRINGS = {
         activateBot:        'Activate bot',
         deactivateBot:      'Deactivate bot',
         botHint:            'Responds to: !check <zone>',
+        counterDesc:        'You need to create a counter on <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> and paste the iframe embed link here.',
         madeBy:             'Made by @MrKlypp',
         loginRequired:      'Log in to use this tool.',
         loginBtn:           'Log in',
@@ -55,6 +57,10 @@ function applyLang() {
     });
     document.querySelectorAll('[data-i18n-ph]').forEach(el => {
         el.placeholder = t(el.dataset.i18nPh);
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const val = t(el.dataset.i18nHtml);
+        if (val !== el.dataset.i18nHtml) el.innerHTML = val;
     });
 }
 
