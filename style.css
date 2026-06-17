@@ -1242,7 +1242,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 @media (min-width: 700px) {
     .randomlocke-layout {
         grid-template-columns: 1fr 1fr;
-        align-items: start;
+        align-items: stretch;
+    }
+
+    .randomlocke-col,
+    .randomlocke-col .card {
+        height: 100%;
     }
 }
 
