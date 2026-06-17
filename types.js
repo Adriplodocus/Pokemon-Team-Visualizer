@@ -263,24 +263,25 @@ const PK_SLUG_EXCEPTIONS = {
     tapufini:                   'tapu-fini',
     'dudunsparce+threesegment': 'dudunsparce-three-segment',
     'ogerpon+cornerstone':      'ogerpon-cornerstone-mask',
-    sirfetchd:                  'sirfetch-d',
     mrmime:                     'mr-mime',
     // calyrex
-    'calyrex+icerider':         'calyrex-ice-rider',
-    'calyrex+shadowrider':      'calyrex-shadow-rider',
-    // darmanitan galar
-    'darmanitan+galarice':      'darmanitan-galar',
+    'calyrex+icerider':         'calyrex-ice',
+    'calyrex+shadowrider':      'calyrex-shadow',
+    // darmanitan (base needs -standard suffix in PokéAPI)
+    darmanitan:                 'darmanitan-standard',
+    'darmanitan+galarice':      'darmanitan-galar-standard',
     'darmanitan+galaricefire':  'darmanitan-galar-zen',
-    // eiscue
-    'eiscue+noice':             'eiscue-noice-face',
+    // eiscue (base is ice-face form, noice is separate)
+    eiscue:                     'eiscue-ice',
+    'eiscue+noice':             'eiscue-noice',
     // kyurem
     'kyurem+blackoverdrive':    'kyurem-black',
     'kyurem+whiteoverdrive':    'kyurem-white',
     // mrmime galar
     'mrmime+galar':             'mr-mime-galar',
     // necrozma
-    'necrozma+dawnwings':       'necrozma-dawn-wings',
-    'necrozma+duskmane':        'necrozma-dusk-mane',
+    'necrozma+dawnwings':       'necrozma-dawn',
+    'necrozma+duskmane':        'necrozma-dusk',
     // pikachu caps
     'pikachu+alolacap':         'pikachu-alola-cap',
     'pikachu+hoenncap':         'pikachu-hoenn-cap',
@@ -301,8 +302,7 @@ const PK_SLUG_EXCEPTIONS = {
     'tauros+paldeaaqua':        'tauros-paldea-aqua-breed',
     // toxtricity
     'toxtricity+lowkey':        'toxtricity-low-key',
-    // ursaluna
-    'ursaluna+bloodmoon':       'ursaluna-blood-moon',
+    // ursaluna — bloodmoon works via default slug (ursaluna-bloodmoon)
     // basculin
     'basculin+red':             'basculin',
     'basculin+blue':            'basculin-blue-striped',
