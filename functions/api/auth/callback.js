@@ -43,7 +43,9 @@ export async function onRequestGet(context) {
   const error = url.searchParams.get('error');
 
   if (error) {
-    return Response.redirect(`${url.protocol}//${url.host}/login.html?error=${encodeURIComponent(error)}`, 302);
+    const desc = url.searchParams.get('error_description') || '';
+    const q = `error=${encodeURIComponent(error)}${desc ? `&error_description=${encodeURIComponent(desc)}` : ''}`;
+    return Response.redirect(`${url.protocol}//${url.host}/login.html?${q}`, 302);
   }
 
   const cookies = parseCookies(context.request);

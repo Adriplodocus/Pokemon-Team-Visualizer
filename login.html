@@ -74,7 +74,8 @@ const params = new URLSearchParams(location.search);
 const err = params.get('error');
 if (err) {
   const el = document.getElementById('login-error');
-  el.textContent = `Error al iniciar sesión: ${err}`;
+  const desc = params.get('error_description');
+  el.textContent = `Error al iniciar sesión: ${err}${desc ? ` — ${desc}` : ''}`;
   el.style.display = '';
 }
 
