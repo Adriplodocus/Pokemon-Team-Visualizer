@@ -55,6 +55,13 @@ export async function onRequestPost(context) {
   let rows;
   try {
     const sql = getDB(context.env);
+    const existing = await sql`
+      SELECT 1 FROM randomlocke_routes
+      WHERE user_id = ${payload.userId} AND lower(zone_name) = lower(${zone})
+      LIMIT 1
+    `;
+    if (existing.length > 0) return json({ error: 'Zone already exists' }, 409);
+
     rows = await sql`
       INSERT INTO randomlocke_routes (user_id, zone_name)
       VALUES (${payload.userId}, ${zone})

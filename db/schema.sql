@@ -16,7 +16,8 @@ CREATE TABLE IF NOT EXISTS randomlocke_routes (
   id         UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   zone_name  TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
+  created_at TIMESTAMPTZ DEFAULT NOW(),
+  UNIQUE(user_id, zone_name)
 );
 CREATE INDEX IF NOT EXISTS idx_randomlocke_routes_user ON randomlocke_routes(user_id);
 

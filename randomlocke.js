@@ -140,6 +140,12 @@ async function addRoute() {
     const zone = input.value.trim();
     if (!zone) return;
 
+    const normalized = zone.toLowerCase().replace(/\s+/g, ' ');
+    if (routes.some(r => r.zoneName.toLowerCase() === normalized)) {
+        input.select();
+        return;
+    }
+
     try {
         const res = await fetch('/api/randomlocke/routes', {
             method: 'POST',
