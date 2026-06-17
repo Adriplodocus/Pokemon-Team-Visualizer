@@ -141,7 +141,10 @@ export class TwitchBotDO {
         });
 
         ws.addEventListener('message', async (event) => {
-            await this.handleMessage(event.data, channel, userId, refresh_token);
+            const lines = event.data.split('\r\n').filter(l => l.trim());
+            for (const line of lines) {
+                await this.handleMessage(line, channel, userId, refresh_token);
+            }
         });
 
         ws.addEventListener('close', () => {
