@@ -90,6 +90,13 @@ function tT(key) {
 }
 
 let selectedTypes = [];
+let pkSearchNames  = [];
+let selectedPokemon = { name: '', skin: '', types: [] };
+
+fetch('pokemon-list.json').then(r => r.json()).then(names => {
+    pkSearchNames = names;
+}).catch(() => {});
+
 const TYPE_ICON_COLORS = {};
 
 function sampleIconColor(type) {
@@ -175,6 +182,74 @@ function resetTypes() {
     selectedTypes = [];
     renderTypeSelector();
     renderTable();
+}
+
+// ── Pokémon search ─────────────────────────────────────────────
+function updatePkSuggestions() {
+    const input = document.getElementById('pk-search-input');
+    const list  = document.getElementById('pk-search-suggestions');
+    const typed = input.value.toLowerCase();
+    if (typed.length < 2) { closePkSuggestions(); return; }
+    const starts  = pkSearchNames.filter(n => n.startsWith(typed));
+    const rest    = pkSearchNames.filter(n => !n.startsWith(typed) && n.includes(typed));
+    const matches = [...starts, ...rest].slice(0, 8);
+    if (!matches.length) { closePkSuggestions(); return; }
+    list.innerHTML = matches.map(n => `<li data-value="${n}">${n}</li>`).join('');
+    list.style.display = 'block';
+}
+
+function closePkSuggestions() {
+    const list = document.getElementById('pk-search-suggestions');
+    list.innerHTML     = '';
+    list.style.display = 'none';
+}
+
+function onPkSelect(name) {
+    selectedPokemon = { name, skin: '', types: [] };
+    document.getElementById('pk-search-input').value = name;
+    closePkSuggestions();
+    renderFormChips(name);
+}
+
+function renderFormChips(name) { /* stub — replaced in Task 4 */ }
+
+function initPkSearch() {
+    const input = document.getElementById('pk-search-input');
+    const list  = document.getElementById('pk-search-suggestions');
+
+    input.addEventListener('input', updatePkSuggestions);
+
+    input.addEventListener('keydown', e => {
+        if (e.key === 'Escape') { closePkSuggestions(); return; }
+        if (list.style.display !== 'block') return;
+        const items  = [...list.querySelectorAll('li')];
+        const active = list.querySelector('li.active');
+        let idx      = items.indexOf(active);
+        if (e.key === 'ArrowDown') {
+            e.preventDefault();
+            idx = idx < items.length - 1 ? idx + 1 : idx;
+            items.forEach(li => li.classList.remove('active'));
+            if (items[idx]) items[idx].classList.add('active');
+        } else if (e.key === 'ArrowUp') {
+            e.preventDefault();
+            idx = idx > 0 ? idx - 1 : 0;
+            items.forEach(li => li.classList.remove('active'));
+            if (items[idx]) items[idx].classList.add('active');
+        } else if (e.key === 'Enter' || e.key === 'Tab') {
+            e.preventDefault();
+            const target = active ?? items[0];
+            if (target) onPkSelect(target.dataset.value);
+        }
+    });
+
+    list.addEventListener('click', e => {
+        const li = e.target.closest('li');
+        if (li) onPkSelect(li.dataset.value);
+    });
+
+    document.addEventListener('click', e => {
+        if (!e.target.closest('.pk-ac-wrapper')) closePkSuggestions();
+    });
 }
 
 function applyTypeLang() {
