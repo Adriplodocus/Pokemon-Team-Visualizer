@@ -180,8 +180,22 @@ function renderTable() {
 
 function resetTypes() {
     selectedTypes = [];
+    clearPkSearch();
     renderTypeSelector();
     renderTable();
+}
+
+function clearPkSearch() {
+    selectedPokemon = { name: '', skin: '', types: [] };
+    const input = document.getElementById('pk-search-input');
+    if (input) input.value = '';
+    closePkSuggestions();
+    const chips = document.getElementById('pk-form-chips');
+    if (chips) chips.innerHTML = '';
+    const result = document.getElementById('pk-result');
+    if (result) result.style.display = 'none';
+    const error = document.getElementById('pk-error');
+    if (error) error.style.display = 'none';
 }
 
 // ── Pokémon search ─────────────────────────────────────────────
@@ -353,6 +367,12 @@ function applyTypeLang() {
         const val = TYPE_STRINGS[currentLang][key];
         if (typeof val === 'string') el.textContent = val;
     });
+    document.querySelectorAll('[data-i18n-type-ph]').forEach(el => {
+        const key = el.dataset.i18nTypePh;
+        const val = TYPE_STRINGS[currentLang][key];
+        if (typeof val === 'string') el.placeholder = val;
+    });
     renderTypeSelector();
     renderTable();
+    renderPkResult();
 }
