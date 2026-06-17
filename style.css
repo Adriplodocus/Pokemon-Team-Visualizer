@@ -1215,7 +1215,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     flex-direction: column;
     gap: 20px;
   }
-  .pokemon-desktop-layout > .card--preview {
+  .pokemon-desktop-layout > .card--preview,
+  .pokemon-desktop-layout > .card--presets {
     max-width: 1040px;
   }
   .pokemon-bottom-cols {
