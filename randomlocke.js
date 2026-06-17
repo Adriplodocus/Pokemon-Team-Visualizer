@@ -1,40 +1,42 @@
 // ── i18n ─────────────────────────────────────────────
 const STRINGS = {
     es: {
-        routeHistoryTitle: 'Historial de rutas',
-        searchZonePh:      'Buscar zona...',
-        addZonePh:         'Añadir zona...',
-        addZoneBtn:        '+ Añadir',
-        noRoutes:          'Sin rutas registradas.',
-        lifeCounterTitle:  'Contador de vidas',
-        overlayUrlLabel:   'URL del overlay',
-        overlayUrlPh:      'https://...',
-        botTitle:          'Bot de Twitch',
-        botDisconnected:   'Desactivado',
-        botConnected:      'Activo',
-        activateBot:       'Activar bot',
-        deactivateBot:     'Desactivar bot',
-        botHint:           'Responde a: !check <zona>',
-        loginRequired:     'Inicia sesión para usar esta herramienta.',
-        loginBtn:          'Iniciar sesión',
+        capturedZonesTitle: 'Historial de zonas capturadas',
+        searchZonePh:       'Buscar zona...',
+        addZonePh:          'Añadir zona...',
+        addZoneBtn:         '+ Añadir',
+        showZonesBtn:       'Mostrar / buscar zonas',
+        noRoutes:           'Sin zonas registradas.',
+        lifeCounterTitle:   'Contador de vidas',
+        overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
+        counterUrlError:    'La URL debe ser de StreamCounters.',
+        botTitle:           'Bot de Twitch',
+        botDisconnected:    'Desactivado',
+        botConnected:       'Activo',
+        activateBot:        'Activar bot',
+        deactivateBot:      'Desactivar bot',
+        botHint:            'Responde a: !check <zona>',
+        loginRequired:      'Inicia sesión para usar esta herramienta.',
+        loginBtn:           'Iniciar sesión',
     },
     en: {
-        routeHistoryTitle: 'Route history',
-        searchZonePh:      'Search zone...',
-        addZonePh:         'Add zone...',
-        addZoneBtn:        '+ Add',
-        noRoutes:          'No routes recorded.',
-        lifeCounterTitle:  'Life counter',
-        overlayUrlLabel:   'Overlay URL',
-        overlayUrlPh:      'https://...',
-        botTitle:          'Twitch bot',
-        botDisconnected:   'Inactive',
-        botConnected:      'Active',
-        activateBot:       'Activate bot',
-        deactivateBot:     'Deactivate bot',
-        botHint:           'Responds to: !check <zone>',
-        loginRequired:     'Log in to use this tool.',
-        loginBtn:          'Log in',
+        capturedZonesTitle: 'Captured zones history',
+        searchZonePh:       'Search zone...',
+        addZonePh:          'Add zone...',
+        addZoneBtn:         '+ Add',
+        showZonesBtn:       'Show / search zones',
+        noRoutes:           'No zones recorded.',
+        lifeCounterTitle:   'Life counter',
+        overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
+        counterUrlError:    'URL must be from StreamCounters.',
+        botTitle:           'Twitch bot',
+        botDisconnected:    'Inactive',
+        botConnected:       'Active',
+        activateBot:        'Activate bot',
+        deactivateBot:      'Deactivate bot',
+        botHint:            'Responds to: !check <zone>',
+        loginRequired:      'Log in to use this tool.',
+        loginBtn:           'Log in',
     },
 };
 
@@ -72,6 +74,19 @@ async function checkAuth() {
         document.getElementById('main-content').classList.add('hidden');
         return null;
     }
+}
+
+// ── Zones modal ───────────────────────────────────────
+function openZonesModal() {
+    document.getElementById('zones-modal').classList.remove('hidden');
+    document.getElementById('route-search').focus();
+}
+
+function closeZonesModal() {
+    document.getElementById('zones-modal').classList.add('hidden');
+    document.getElementById('route-search').value = '';
+    searchQuery = '';
+    renderRoutes();
 }
 
 // ── Route history ─────────────────────────────────────
@@ -145,17 +160,42 @@ async function deleteRoute(id) {
 // ── Life counter ──────────────────────────────────────
 const COUNTER_URL_KEY = 'ptv_streamcounters_url';
 
+function isValidStreamCountersUrl(val) {
+    try {
+        const u = new URL(val);
+        return u.hostname === 'streamcounters.mrklypp.com';
+    } catch {
+        return false;
+    }
+}
+
+function applyCounterUrl(url) {
+    const frame = document.getElementById('counter-frame');
+    const error = document.getElementById('counter-url-error');
+    if (!url) {
+        frame.src = '';
+        error.classList.add('hidden');
+        return;
+    }
+    if (isValidStreamCountersUrl(url)) {
+        frame.src = url;
+        error.classList.add('hidden');
+    } else {
+        frame.src = '';
+        error.classList.remove('hidden');
+    }
+}
+
 function initLifeCounter() {
     const input = document.getElementById('counter-url');
-    const frame = document.getElementById('counter-frame');
     const saved = localStorage.getItem(COUNTER_URL_KEY) || '';
     input.value = saved;
-    if (saved) frame.src = saved;
+    applyCounterUrl(saved);
 
     input.addEventListener('blur', () => {
         const url = input.value.trim();
         localStorage.setItem(COUNTER_URL_KEY, url);
-        frame.src = url;
+        applyCounterUrl(url);
     });
 }
 
@@ -221,6 +261,15 @@ document.addEventListener('DOMContentLoaded', async () => {
         renderRoutes();
     });
     document.getElementById('bot-toggle-btn').addEventListener('click', toggleBot);
+
+    document.getElementById('zones-modal-btn').addEventListener('click', openZonesModal);
+    document.getElementById('zones-modal-close').addEventListener('click', closeZonesModal);
+    document.getElementById('zones-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) closeZonesModal();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') closeZonesModal();
+    });
 });
 
 function setLang(lang) {
@@ -230,4 +279,5 @@ function setLang(lang) {
     document.getElementById('lang-en').classList.toggle('active', lang === 'en');
     applyLang();
     applyHeaderLang();
+    setBotUI(botActive);
 }
