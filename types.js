@@ -263,6 +263,8 @@ const PK_SLUG_EXCEPTIONS = {
     dudunsparcethreesegment: 'dudunsparce-three-segment',
     ogerponcornerstone:      'ogerpon-cornerstone-mask',
     sirfetchd:               'sirfetch-d',
+    'calyrex+icerider':      'calyrex-ice-rider',
+    'calyrex+shadowrider':   'calyrex-shadow-rider',
     'pikachu+alolacap':      'pikachu-alola-cap',
     'pikachu+hoenncap':      'pikachu-hoenn-cap',
     'pikachu+kaloscap':      'pikachu-kalos-cap',
