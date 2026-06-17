@@ -112,7 +112,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 var p = document.createElement('p');
                 p.style.cssText = pStyle;
                 p.textContent = slot.mote || '';
-                if (typo.namePosition !== 'below') pk.appendChild(p);
+                if (typo.namePosition === 'above') pk.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
                 pk.appendChild(makeImg(slot.url, slot.fallback, null));
 
@@ -127,14 +127,15 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
             });
             root.appendChild(wrapper);
         } else {
-            var nameAbove = typo.namePosition !== 'below';
+            var nameHidden = typo.namePosition === 'hidden';
+            var nameAbove = !nameHidden && typo.namePosition !== 'below';
             var nameAboveRow = nameAbove ? document.createElement('div') : null;
             if (nameAboveRow) nameAboveRow.className = 'container';
             var top = document.createElement('div');
             top.className = 'container sprite-row';
             var bot = document.createElement('div');
             bot.className = 'container shadow-row';
-            var nameBelowRow = !nameAbove ? document.createElement('div') : null;
+            var nameBelowRow = (!nameAbove && !nameHidden) ? document.createElement('div') : null;
             if (nameBelowRow) nameBelowRow.className = 'container';
             team.forEach(function (slot) {
                 if (!slot || !slot.url) return;

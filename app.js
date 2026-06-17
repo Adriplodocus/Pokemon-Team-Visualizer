@@ -61,6 +61,7 @@ const STRINGS = {
         typoName:        'Nombre',
         typoPosAbove:    '↑ Arriba',
         typoPosBelow:    '↓ Abajo',
+        typoPosHidden:   '— Oculto',
         capturedZonesTitle: 'Historial de zonas capturadas',
         searchZonePh:       'Buscar zona...',
         addZonePh:          'Añadir zona...',
@@ -146,6 +147,7 @@ const STRINGS = {
         typoName:        'Name',
         typoPosAbove:    '↑ Above',
         typoPosBelow:    '↓ Below',
+        typoPosHidden:   '— Hidden',
         capturedZonesTitle: 'Captured zones history',
         searchZonePh:       'Search zone...',
         addZonePh:          'Add zone...',
@@ -667,7 +669,8 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 
     const isHorizontal = layout === 'horizontal';
 
-    const nameAbove = typo.namePosition !== 'below';
+    const nameHidden = typo.namePosition === 'hidden';
+    const nameAbove  = !nameHidden && typo.namePosition !== 'below';
 
     const pTagsArr = entries.map(e => e ? `<p style="${pStyle}">${e.mote}</p>` : '');
     // pkDiv never contains <p> — names always go in a separate row above or below
@@ -712,14 +715,14 @@ p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size,
 </style>
 </head>
 <body>
-${nameAbove ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
+${(!nameHidden && nameAbove) ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
 <div class="container sprite-row">
 ${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
 <div class="container shadow-row">
 ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
 </div>
-${nameAbove ? '' : `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>`}
+${(!nameHidden && !nameAbove) ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
 </body>
 </html>`;
     } else {
@@ -756,9 +759,11 @@ ${entries.map((e, i) => {
     const onerr = e.fallback ? ` onerror="if(this.src!=='${e.fallback}'){this.src='${e.fallback}';this.onerror=null;}"` : '';
     const sprTag = `<img id="img${i+1}" src="${e.url}" decoding="async"${onerr}>`;
     const shTag = shadowContent[i];
-    return nameAbove
-        ? `<div class="pair">\n  <div class="pkDiv">${pTagsArr[i]}${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n</div>`
-        : `<div class="pair">\n  <div class="pkDiv">${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n  ${pTagsArr[i]}\n</div>`;
+    return nameHidden
+        ? `<div class="pair">\n  <div class="pkDiv">${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n</div>`
+        : nameAbove
+            ? `<div class="pair">\n  <div class="pkDiv">${pTagsArr[i]}${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n</div>`
+            : `<div class="pair">\n  <div class="pkDiv">${bgTag}${sprTag}</div>\n  <div class="shadowDiv">${shTag}</div>\n  ${pTagsArr[i]}\n</div>`;
 }).join('\n')}
 </div>
 </body>
@@ -858,12 +863,14 @@ function syncTypographyUI() {
     const pos = typography.namePosition || 'above';
     document.getElementById('pos-above').classList.toggle('active', pos === 'above');
     document.getElementById('pos-below').classList.toggle('active', pos === 'below');
+    document.getElementById('pos-hidden').classList.toggle('active', pos === 'hidden');
 }
 
 function onNamePosition(pos) {
     typography.namePosition = pos;
     document.getElementById('pos-above').classList.toggle('active', pos === 'above');
     document.getElementById('pos-below').classList.toggle('active', pos === 'below');
+    document.getElementById('pos-hidden').classList.toggle('active', pos === 'hidden');
     saveTypography();
     schedulePreviewUpdate();
 }
