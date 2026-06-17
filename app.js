@@ -61,6 +61,22 @@ const STRINGS = {
         typoName:        'Nombre',
         typoPosAbove:    '↑ Arriba',
         typoPosBelow:    '↓ Abajo',
+        capturedZonesTitle: 'Historial de zonas capturadas',
+        searchZonePh:       'Buscar zona...',
+        addZonePh:          'Añadir zona...',
+        addZoneBtn:         '+ Añadir',
+        showZonesBtn:       'Mostrar / buscar zonas',
+        noRoutes:           'Sin zonas registradas.',
+        lifeCounterTitle:   'Contador de vidas',
+        overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
+        counterUrlError:    'La URL debe ser de StreamCounters.',
+        botTitle:           'Bot de Twitch',
+        botDesc:            'El bot de Twitch responde al comando !check {zona}. Responderá si puedes o no capturar en la zona indicada.',
+        botDisconnected:    'Desactivado',
+        botConnected:       'Activo',
+        activateBot:        'Activar bot',
+        deactivateBot:      'Desactivar bot',
+        counterDesc:        'Necesitas crear un contador en <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> y pegar el enlace embed iframe aquí.',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -123,6 +139,22 @@ const STRINGS = {
         typoName:        'Name',
         typoPosAbove:    '↑ Above',
         typoPosBelow:    '↓ Below',
+        capturedZonesTitle: 'Captured zones history',
+        searchZonePh:       'Search zone...',
+        addZonePh:          'Add zone...',
+        addZoneBtn:         '+ Add',
+        showZonesBtn:       'Show / search zones',
+        noRoutes:           'No zones recorded.',
+        lifeCounterTitle:   'Life counter',
+        overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
+        counterUrlError:    'URL must be from StreamCounters.',
+        botTitle:           'Twitch bot',
+        botDesc:            'The Twitch bot responds to the command !check {zone}. It will tell you whether you can capture in the specified zone.',
+        botDisconnected:    'Inactive',
+        botConnected:       'Active',
+        activateBot:        'Activate bot',
+        deactivateBot:      'Deactivate bot',
+        counterDesc:        'You need to create a counter on <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> and paste the iframe embed link here.',
     }
 };
 
@@ -139,6 +171,7 @@ function setLang(lang) {
     applyLang();
     applyHeaderLang();
     if (typeof applyBadgeLang === 'function') applyBadgeLang();
+    rlSetBotUI(rlBotActive);
 }
 
 function applyLang() {
@@ -150,6 +183,11 @@ function applyLang() {
     document.querySelectorAll('[data-i18n-ph]').forEach(el => {
         const key = el.dataset.i18nPh;
         if (typeof s[key] === 'string') el.placeholder = s[key];
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(el => {
+        const key = el.dataset.i18nHtml;
+        const val = t(key);
+        if (val !== key) el.innerHTML = val;
     });
     updateObsHint();
     for (let i = 0; i < 6; i++) refreshIcons(i);
@@ -1406,3 +1444,192 @@ updatePreview();
 initCookieNotice();
 hydrateFromAbly();
 subscribeToAblyUpdates();
+
+// ── Randomlocke integration ────────────────────────────────────
+var rlRoutes = [];
+var rlSearchQuery = '';
+var rlBotActive = false;
+
+async function rlCheckAuth() {
+    try {
+        const res = await fetch('/api/auth/me');
+        if (!res.ok) throw new Error();
+        const user = await res.json();
+        document.getElementById('rl-section').classList.remove('hidden');
+        document.getElementById('bot-channel-label').textContent = `#${user.username}`;
+        return user;
+    } catch {
+        return null;
+    }
+}
+
+function rlOpenModal() {
+    document.getElementById('zones-modal').classList.remove('hidden');
+    document.getElementById('route-search').focus();
+}
+
+function rlCloseModal() {
+    document.getElementById('zones-modal').classList.add('hidden');
+    document.getElementById('route-search').value = '';
+    rlSearchQuery = '';
+    rlRenderRoutes();
+}
+
+async function rlLoadRoutes() {
+    try {
+        const res = await fetch('/api/randomlocke/routes');
+        if (!res.ok) throw new Error();
+        rlRoutes = await res.json();
+        rlRenderRoutes();
+    } catch (e) {
+        console.error('Failed to load routes', e);
+    }
+}
+
+function rlRenderRoutes() {
+    const list  = document.getElementById('route-list');
+    const empty = document.getElementById('route-empty');
+    const query = rlSearchQuery.toLowerCase();
+    const filtered = query
+        ? rlRoutes.filter(r => r.zoneName.toLowerCase().includes(query))
+        : rlRoutes;
+
+    if (!filtered.length) {
+        list.innerHTML = '';
+        empty.classList.remove('hidden');
+        return;
+    }
+    empty.classList.add('hidden');
+    list.innerHTML = filtered.map(r => `
+        <li data-id="${r.id}">
+            <span>${escapeHtml(r.zoneName)}</span>
+            <button onclick="rlDeleteRoute('${r.id}')" title="Eliminar">✕</button>
+        </li>
+    `).join('');
+}
+
+async function rlAddRoute() {
+    const input = document.getElementById('route-input');
+    const zone  = input.value.trim();
+    if (!zone) return;
+    try {
+        const res = await fetch('/api/randomlocke/routes', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ zone }),
+        });
+        if (!res.ok) throw new Error();
+        const newRoute = await res.json();
+        rlRoutes.unshift(newRoute);
+        input.value = '';
+        rlRenderRoutes();
+    } catch (e) {
+        console.error('Failed to add route', e);
+    }
+}
+
+async function rlDeleteRoute(id) {
+    try {
+        const res = await fetch(`/api/randomlocke/routes/${id}`, { method: 'DELETE' });
+        if (!res.ok) throw new Error();
+        rlRoutes = rlRoutes.filter(r => r.id !== id);
+        rlRenderRoutes();
+    } catch (e) {
+        console.error('Failed to delete route', e);
+    }
+}
+
+const RL_COUNTER_URL_KEY = 'ptv_streamcounters_url';
+
+function rlIsValidUrl(val) {
+    try {
+        return new URL(val).hostname === 'streamcounters.mrklypp.com';
+    } catch { return false; }
+}
+
+function rlApplyCounterUrl(url) {
+    const frame = document.getElementById('counter-frame');
+    const error = document.getElementById('counter-url-error');
+    if (!url) { frame.src = ''; error.classList.add('hidden'); return; }
+    if (rlIsValidUrl(url)) {
+        frame.src = url;
+        error.classList.add('hidden');
+    } else {
+        frame.src = '';
+        error.classList.remove('hidden');
+    }
+}
+
+function rlInitLifeCounter() {
+    const input = document.getElementById('counter-url');
+    const saved = localStorage.getItem(RL_COUNTER_URL_KEY) || '';
+    input.value = saved;
+    rlApplyCounterUrl(saved);
+    input.addEventListener('blur', () => {
+        const url = input.value.trim();
+        localStorage.setItem(RL_COUNTER_URL_KEY, url);
+        rlApplyCounterUrl(url);
+    });
+}
+
+async function rlLoadBotStatus() {
+    try {
+        const res = await fetch('/api/randomlocke/bot/status');
+        if (!res.ok) throw new Error();
+        const { connected } = await res.json();
+        rlSetBotUI(connected);
+    } catch { rlSetBotUI(false); }
+}
+
+function rlSetBotUI(active) {
+    rlBotActive = active;
+    const dot   = document.getElementById('bot-dot');
+    const label = document.getElementById('bot-status-label');
+    const btn   = document.getElementById('bot-toggle-btn');
+    if (!dot) return;
+    dot.style.background = active ? '#22C55E' : 'var(--dimmed)';
+    label.textContent    = t(active ? 'botConnected'  : 'botDisconnected');
+    btn.textContent      = t(active ? 'deactivateBot' : 'activateBot');
+}
+
+async function rlToggleBot() {
+    const btn = document.getElementById('bot-toggle-btn');
+    btn.disabled = true;
+    try {
+        const endpoint = rlBotActive ? '/api/randomlocke/bot/stop' : '/api/randomlocke/bot/start';
+        const res = await fetch(endpoint, { method: 'POST' });
+        if (!res.ok) throw new Error();
+        rlSetBotUI(!rlBotActive);
+    } catch (e) {
+        console.error('Bot toggle failed', e);
+    } finally {
+        btn.disabled = false;
+    }
+}
+
+(async () => {
+    const user = await rlCheckAuth();
+    if (!user) return;
+
+    rlLoadRoutes();
+    rlInitLifeCounter();
+    rlLoadBotStatus();
+
+    document.getElementById('route-add-btn').addEventListener('click', rlAddRoute);
+    document.getElementById('route-input').addEventListener('keydown', e => {
+        if (e.key === 'Enter') rlAddRoute();
+    });
+    document.getElementById('route-search').addEventListener('input', e => {
+        rlSearchQuery = e.target.value;
+        rlRenderRoutes();
+    });
+    document.getElementById('bot-toggle-btn').addEventListener('click', rlToggleBot);
+    document.getElementById('zones-modal-btn').addEventListener('click', rlOpenModal);
+    document.getElementById('zones-modal-close').addEventListener('click', rlCloseModal);
+    document.getElementById('zones-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) rlCloseModal();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') rlCloseModal();
+    });
+})();

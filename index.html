@@ -74,6 +74,11 @@
         </div>
     </div>
 
+    <!-- Presets: just below preview -->
+    <div class="card card--presets">
+        <div class="presets-bar" id="presets-bar"></div>
+    </div>
+
     <!-- Bottom row: editor left, actions right -->
     <div class="pokemon-bottom-cols">
     <div class="desktop-col-left">
@@ -83,9 +88,49 @@
             <div id="team-rows"></div>
         </div>
 
-        <!-- Presets -->
-        <div class="card card--presets">
-            <div class="presets-bar" id="presets-bar"></div>
+        <!-- Randomlocke sections (shown when logged in) -->
+        <div id="rl-section" class="hidden">
+            <div class="randomlocke-layout">
+
+                <!-- Col 1: Zones + Bot -->
+                <div class="randomlocke-col">
+                    <div class="card">
+                        <h2 class="card-title" data-i18n="capturedZonesTitle">Historial de zonas capturadas</h2>
+                        <div class="settings-row" style="gap:0.5rem;margin-bottom:1rem">
+                            <input id="route-input" class="input" type="text"
+                                data-i18n-ph="addZonePh" placeholder="Añadir zona...">
+                            <button id="route-add-btn" class="btn" data-i18n="addZoneBtn">+ Añadir</button>
+                        </div>
+                        <button id="zones-modal-btn" class="btn" data-i18n="showZonesBtn">Mostrar / buscar zonas</button>
+
+                        <div class="card-divider"></div>
+
+                        <h2 class="card-title" data-i18n="botTitle">Bot de Twitch</h2>
+                        <p class="muted-text" style="margin-bottom:0.75rem" data-i18n="botDesc">El bot de Twitch responde al comando !check {zona}.</p>
+                        <div class="bot-status-row">
+                            <span class="live-dot" id="bot-dot" style="background:var(--dimmed)"></span>
+                            <span id="bot-status-label" data-i18n="botDisconnected">Desactivado</span>
+                            <span id="bot-channel-label" class="muted-text"></span>
+                        </div>
+                        <button id="bot-toggle-btn" class="btn" style="margin-top:0.75rem" data-i18n="activateBot">Activar bot</button>
+                    </div>
+                </div>
+
+                <!-- Col 2: Life counter -->
+                <div class="randomlocke-col">
+                    <div class="card">
+                        <h2 class="card-title" data-i18n="lifeCounterTitle">Contador de vidas</h2>
+                        <p class="muted-text" style="margin-bottom:0.75rem" data-i18n-html="counterDesc">Necesitas crear un contador en <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> y pegar el enlace embed iframe aquí.</p>
+                        <div style="margin-bottom:0.75rem">
+                            <input id="counter-url" class="input" type="url" style="width:100%"
+                                data-i18n-ph="overlayUrlPh" placeholder="https://streamcounters.mrklypp.com/embed/...">
+                            <p id="counter-url-error" class="hidden" style="color:var(--error);font-size:0.75rem;margin-top:0.4rem" data-i18n="counterUrlError">La URL debe ser de StreamCounters.</p>
+                        </div>
+                        <iframe id="counter-frame" src="" style="width:100%;height:220px;border:none;border-radius:8px;background:var(--surface-2)"></iframe>
+                    </div>
+                </div>
+
+            </div>
         </div>
 
     </div><!-- /desktop-col-left -->
@@ -229,6 +274,22 @@
 </div><!-- /desktop-col-right -->
 </div><!-- /section-badges -->
 
+</div>
+
+<!-- Zones modal (randomlocke) -->
+<div id="zones-modal" class="modal-overlay hidden" role="dialog" aria-modal="true">
+    <div class="modal-box">
+        <div class="modal-header">
+            <h3 class="card-title" style="margin-bottom:0" data-i18n="capturedZonesTitle">Historial de zonas capturadas</h3>
+            <button id="zones-modal-close" class="modal-close-btn" aria-label="Cerrar">✕</button>
+        </div>
+        <div style="margin:0.75rem 0">
+            <input id="route-search" class="input" type="text" style="width:100%"
+                data-i18n-ph="searchZonePh" placeholder="Buscar zona...">
+        </div>
+        <ul id="route-list" class="route-list"></ul>
+        <p id="route-empty" class="muted-text hidden" data-i18n="noRoutes">Sin zonas registradas.</p>
+    </div>
 </div>
 
 <!-- Properties modal -->
