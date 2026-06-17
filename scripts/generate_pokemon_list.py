@@ -1,6 +1,18 @@
-import os, json
+import os, json, re
 
-sprites_dir = os.path.join(os.path.dirname(__file__), '..', 'sprites')
+sprites_dir  = os.path.join(os.path.dirname(__file__), '..', 'sprites')
+catalog_path = os.path.join(os.path.dirname(__file__), '..', 'pokemon-catalog.js')
+
+# Build set of base_skin combos to exclude (they're selectable via skin chips, not standalone names)
+excluded = set()
+with open(catalog_path, encoding='utf-8') as f:
+    text = f.read()
+for match in re.finditer(r"(\w+)\s*:\s*\{[^}]*skin\s*:\s*\[([^\]]*)\]", text):
+    base  = match.group(1)
+    skins = re.findall(r"'([^']+)'", match.group(2))
+    for skin in skins:
+        excluded.add(f"{base}_{skin}")
+
 names = sorted(set(
     f[:-4] for f in os.listdir(sprites_dir)
     if f.endswith('.gif')
@@ -8,6 +20,7 @@ names = sorted(set(
     and not f.endswith('-f.gif')
     and '-' not in f[:-4]
     and '(' not in f[:-4]
+    and f[:-4] not in excluded
 ))
 
 output = os.path.join(os.path.dirname(__file__), '..', 'pokemon-list.json')
