@@ -40,6 +40,22 @@
 .login-btn--twitch:hover { box-shadow: 0 0 16px rgba(145,71,255,0.25); }
 .login-btn--google:hover  { box-shadow: 0 0 14px rgba(255,255,255,0.08); }
 .login-error { color: var(--error); font-size: 0.85rem; }
+.featured-section { display: flex; flex-direction: column; align-items: center; gap: 0.75rem; width: 100%; max-width: 420px; }
+.featured-label { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-2, #9A9A9A); }
+.featured-list { display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center; }
+.featured-item { display: flex; flex-direction: column; align-items: center; gap: 0.35rem; }
+.featured-avatar {
+  width: 48px; height: 48px; border-radius: 50%;
+  border: 2px solid var(--border);
+  object-fit: cover;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.featured-item:hover .featured-avatar {
+  border-color: rgba(0,204,255,0.5);
+  box-shadow: 0 0 10px rgba(0,204,255,0.2);
+}
+.featured-name { font-size: 0.65rem; color: var(--text-2, #9A9A9A); max-width: 64px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center; }
+.featured-divider { width: 100%; max-width: 280px; border: none; border-top: 1px solid var(--border); }
 </style>
 </head>
 <body>
@@ -48,6 +64,11 @@
 <div class="login-wrap">
   <div>
     <p class="login-subtitle">Inicia sesión para acceder a todas las funciones</p>
+  </div>
+  <div id="featured-section" class="featured-section" style="display:none">
+    <div class="featured-label">Streamers que ya lo usan</div>
+    <div id="featured-list" class="featured-list"></div>
+    <hr class="featured-divider">
   </div>
   <div class="login-btns">
     <a href="/api/auth/login?provider=twitch" class="login-btn login-btn--twitch">
@@ -69,6 +90,21 @@
   <div id="login-error" class="login-error" style="display:none"></div>
 </div>
 <script>
+fetch('/api/featured').then(r => r.ok ? r.json() : []).then(streamers => {
+  if (!Array.isArray(streamers) || !streamers.length) return;
+  const list = document.getElementById('featured-list');
+  list.innerHTML = streamers.map(s => {
+    const avatar = s.avatarUrl
+      ? `<img class="featured-avatar" src="${escAttr(s.avatarUrl)}" alt="${escAttr(s.username || '')}">`
+      : `<div class="featured-avatar" style="background:var(--surface-2,#2D2D2D)"></div>`;
+    return `<div class="featured-item">${avatar}<span class="featured-name">${escText(s.username || '')}</span></div>`;
+  }).join('');
+  document.getElementById('featured-section').style.display = '';
+}).catch(() => {});
+
+function escAttr(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function escText(s)  { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
 const params = new URLSearchParams(location.search);
 
 const err = params.get('error');

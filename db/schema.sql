@@ -8,6 +8,7 @@ CREATE TABLE IF NOT EXISTS users (
   email        TEXT,
   avatar_url   TEXT,
   tier         TEXT NOT NULL DEFAULT 'guest',
+  featured     BOOLEAN NOT NULL DEFAULT false,
   created_at   TIMESTAMPTZ DEFAULT NOW(),
   UNIQUE(provider, provider_id)
 );

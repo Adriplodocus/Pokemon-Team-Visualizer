@@ -30,7 +30,7 @@ export async function onRequestGet(context) {
     const sql    = getDB(context.env);
     const params = [];
     let   query  = `
-      SELECT id, provider, username, email, avatar_url, tier, created_at,
+      SELECT id, provider, username, email, avatar_url, tier, featured, created_at,
              COUNT(*) OVER()::int AS total_count
       FROM users
     `;

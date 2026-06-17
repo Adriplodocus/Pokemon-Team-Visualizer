@@ -317,10 +317,39 @@ function renderUserRow(u) {
     <div class="user-row-meta">${esc(u.provider)} · ${esc(u.email || 'sin email')} · <span id="status-${esc(u.id)}" class="status-msg"></span></div>
   </div>
   <div class="user-row-actions">
+    <button class="admin-btn" id="feat-${esc(u.id)}" onclick="toggleFeatured('${esc(u.id)}', ${!!u.featured})" title="${u.featured ? 'Quitar de destacados' : 'Destacar en login'}" style="${u.featured ? 'color:var(--gold,#FFD700);border-color:rgba(255,215,0,0.35)' : ''}">${u.featured ? '★' : '☆'}</button>
     <select class="tier-select" id="tier-${esc(u.id)}">${opts}</select>
     <button class="admin-btn admin-btn--primary" onclick="setTier('${esc(u.id)}')">Guardar</button>
   </div>
 </div>`;
+}
+
+async function toggleFeatured(userId, currentFeatured) {
+  const key      = getKey();
+  const btn      = document.getElementById(`feat-${userId}`);
+  const statusEl = document.getElementById(`status-${userId}`);
+  if (!key) { statusEl.textContent = 'Sin Admin Key.'; statusEl.className = 'status-msg err'; return; }
+
+  const featured = !currentFeatured;
+  const res = await fetch('/api/admin/set-featured', {
+    method:  'POST',
+    headers: { 'Content-Type': 'application/json', 'X-Admin-Key': key },
+    body:    JSON.stringify({ userId, featured }),
+  });
+
+  const data = await res.json().catch(() => ({}));
+  if (res.ok) {
+    btn.textContent  = featured ? '★' : '☆';
+    btn.title        = featured ? 'Quitar de destacados' : 'Destacar en login';
+    btn.style.color  = featured ? 'var(--gold,#FFD700)' : '';
+    btn.style.borderColor = featured ? 'rgba(255,215,0,0.35)' : '';
+    btn.setAttribute('onclick', `toggleFeatured('${userId}', ${featured})`);
+    statusEl.textContent = featured ? '⭐ Destacado' : '☆ Normal';
+    statusEl.className   = 'status-msg ok';
+  } else {
+    statusEl.textContent = `Error: ${data.error || res.statusText}`;
+    statusEl.className   = 'status-msg err';
+  }
 }
 
 async function setTier(userId) {
