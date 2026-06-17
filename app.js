@@ -554,7 +554,7 @@ function openModal(i) {
     document.getElementById('modal-title').textContent = capitalize(name) + ' ' + t('modalTitle');
 
     const catalog = POKEMON_CATALOG[name.toLowerCase()] || {};
-    const skins   = ['common', ...(catalog.skin || [])];
+    const skins   = catalog.skipBase ? (catalog.skin || []) : ['common', ...(catalog.skin || [])];
     const props   = team[i].properties;
     modalVars = {};
 
@@ -571,12 +571,14 @@ function openModal(i) {
             </select>
         </div>`;
 
-    modalVars.skin = props.skin;
+    const effectiveModalSkin = (catalog.skipBase && (!props.skin || props.skin === 'common'))
+        ? (catalog.skin?.[0] ?? 'common') : (props.skin || 'common');
+    modalVars.skin = effectiveModalSkin;
     propsEl.innerHTML += `
         <div class="modal-row">
             <label>${t('modalSkin')}</label>
             <select id="mp-skin" onchange="modalVars.skin=this.value">
-                ${skins.map(s => `<option value="${s}" ${props.skin===s?'selected':''}>${s}</option>`).join('')}
+                ${skins.map(s => `<option value="${s}" ${effectiveModalSkin===s?'selected':''}>${s}</option>`).join('')}
             </select>
         </div>`;
 
@@ -625,8 +627,9 @@ function buildSpriteUrl(name, props) {
     let fileName = lower;
     let folder   = BASE_URL;
 
-    if (skin !== 'common' && skins.includes(skin)) {
-        fileName += '_' + skin;
+    const effectiveSkin = (skin === 'common' && catalog.skipBase && skins.length) ? skins[0] : skin;
+    if (effectiveSkin !== 'common' && skins.includes(effectiveSkin)) {
+        fileName += '_' + effectiveSkin;
     }
     if (shiny) {
         folder += 'shiny/';

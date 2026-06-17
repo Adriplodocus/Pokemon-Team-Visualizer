@@ -231,6 +231,7 @@ function renderFormChips(name) {
     const container = document.getElementById('pk-form-chips');
     const entry     = (typeof POKEMON_CATALOG !== 'undefined') ? POKEMON_CATALOG[name] : null;
     const skins     = entry?.skin ?? [];
+    const skipBase  = entry?.skipBase ?? false;
 
     if (!skins.length) {
         container.innerHTML = '';
@@ -238,9 +239,10 @@ function renderFormChips(name) {
         return;
     }
 
+    const baseChip = skipBase ? [] : [`<button class="pk-chip active" data-skin="">${tT('pokemonBase')}</button>`];
     container.innerHTML = [
-        `<button class="pk-chip active" data-skin="">${tT('pokemonBase')}</button>`,
-        ...skins.map(s => `<button class="pk-chip" data-skin="${s}">${s}</button>`)
+        ...baseChip,
+        ...skins.map((s, i) => `<button class="pk-chip${skipBase && i === 0 ? ' active' : ''}" data-skin="${s}">${s}</button>`)
     ].join('');
 
     container.querySelectorAll('.pk-chip').forEach(btn => {
@@ -252,7 +254,7 @@ function renderFormChips(name) {
         });
     });
 
-    resolvePokemonTypes(name, '');
+    resolvePokemonTypes(name, skipBase ? skins[0] : '');
 }
 
 const PK_SLUG_EXCEPTIONS = {
@@ -263,7 +265,6 @@ const PK_SLUG_EXCEPTIONS = {
     tapufini:                   'tapu-fini',
     'dudunsparce+threesegment': 'dudunsparce-three-segment',
     'ogerpon+cornerstone':      'ogerpon-cornerstone-mask',
-    mrmime:                     'mr-mime',
     // calyrex
     'calyrex+icerider':         'calyrex-ice',
     'calyrex+shadowrider':      'calyrex-shadow',
@@ -277,8 +278,6 @@ const PK_SLUG_EXCEPTIONS = {
     // kyurem
     'kyurem+blackoverdrive':    'kyurem-black',
     'kyurem+whiteoverdrive':    'kyurem-white',
-    // mrmime galar
-    'mrmime+galar':             'mr-mime-galar',
     // necrozma
     'necrozma+dawnwings':       'necrozma-dawn',
     'necrozma+duskmane':        'necrozma-dusk',
@@ -303,9 +302,13 @@ const PK_SLUG_EXCEPTIONS = {
     // toxtricity
     'toxtricity+lowkey':        'toxtricity-low-key',
     // ursaluna — bloodmoon works via default slug (ursaluna-bloodmoon)
-    // basculin
-    'basculin+red':             'basculin',
+    // basculin (basculin base→404, need explicit striped slugs)
+    'basculin+white':           'basculin-white-striped',
+    'basculin+red':             'basculin-red-striped',
     'basculin+blue':            'basculin-blue-striped',
+    // toxtricity (base→404, amped is the correct slug)
+    toxtricity:                 'toxtricity-amped',
+    'toxtricity+amped':         'toxtricity-amped',
     // zygarde
     'zygarde+100':              'zygarde-complete',
 };
