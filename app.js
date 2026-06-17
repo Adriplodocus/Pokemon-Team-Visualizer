@@ -67,6 +67,9 @@ const STRINGS = {
         addZoneBtn:         '+ Añadir',
         showZonesBtn:       'Mostrar / buscar zonas',
         noRoutes:           'Sin zonas registradas.',
+        zoneAdded:          '✓ Zona añadida.',
+        zoneDuplicate:      '✗ Ya existe esa zona.',
+        zoneError:          '✗ Error al añadir la zona.',
         lifeCounterTitle:   'Contador de vidas',
         overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
         counterUrlError:    'La URL debe ser de StreamCounters.',
@@ -145,6 +148,9 @@ const STRINGS = {
         addZoneBtn:         '+ Add',
         showZonesBtn:       'Show / search zones',
         noRoutes:           'No zones recorded.',
+        zoneAdded:          '✓ Zone added.',
+        zoneDuplicate:      '✗ Zone already exists.',
+        zoneError:          '✗ Failed to add zone.',
         lifeCounterTitle:   'Life counter',
         overlayUrlPh:       'https://streamcounters.mrklypp.com/embed/...',
         counterUrlError:    'URL must be from StreamCounters.',
@@ -1508,10 +1514,29 @@ function rlRenderRoutes() {
     `).join('');
 }
 
+let rlFeedbackTimer = null;
+function rlShowFeedback(key, isError = false) {
+    const el = document.getElementById('route-feedback');
+    if (!el) return;
+    clearTimeout(rlFeedbackTimer);
+    el.textContent = t(key);
+    el.style.color = isError ? 'var(--error)' : 'var(--blue)';
+    el.style.opacity = '1';
+    rlFeedbackTimer = setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
+
 async function rlAddRoute() {
     const input = document.getElementById('route-input');
     const zone  = input.value.trim();
     if (!zone) return;
+
+    const normalized = zone.toLowerCase().replace(/\s+/g, ' ');
+    if (rlRoutes.some(r => r.zoneName.toLowerCase() === normalized)) {
+        input.select();
+        rlShowFeedback('zoneDuplicate', true);
+        return;
+    }
+
     try {
         const res = await fetch('/api/randomlocke/routes', {
             method:  'POST',
@@ -1523,8 +1548,10 @@ async function rlAddRoute() {
         rlRoutes.unshift(newRoute);
         input.value = '';
         rlRenderRoutes();
+        rlShowFeedback('zoneAdded');
     } catch (e) {
         console.error('Failed to add route', e);
+        rlShowFeedback('zoneError', true);
     }
 }
 
