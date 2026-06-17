@@ -20,6 +20,7 @@ const POKEMON_CATALOG = {
     deoxys:       { skin: ['attack','defense','speed'] },
     dialga:       { skin: ['origin'] },
     diglett:      { skin: ['alola'] },
+    dudunsparce:  { skin: ['threesegment'] },
     dugtrio:      { skin: ['alola'] },
     eiscue:       { skin: ['noice'] },
     electrode:    { skin: ['hisuian'] },

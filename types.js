@@ -261,7 +261,7 @@ const PK_SLUG_EXCEPTIONS = {
     tapulele:                   'tapu-lele',
     tapubulu:                   'tapu-bulu',
     tapufini:                   'tapu-fini',
-    dudunsparcethreesegment:    'dudunsparce-three-segment',
+    'dudunsparce+threesegment': 'dudunsparce-three-segment',
     ogerponcornerstone:         'ogerpon-cornerstone-mask',
     sirfetchd:                  'sirfetch-d',
     mrmime:                     'mr-mime',
