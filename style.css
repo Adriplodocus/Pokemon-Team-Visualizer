@@ -1252,6 +1252,54 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 1rem;
 }
 
+.btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.45rem 1rem;
+    border-radius: 100px;
+    font-family: inherit;
+    font-weight: 700;
+    font-size: 0.8rem;
+    background: var(--surface-2);
+    color: var(--text-2);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.btn:hover {
+    background: var(--btn-hover);
+    border-color: rgba(0, 204, 255, 0.30);
+    color: var(--text);
+}
+
+.btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.input {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0.45rem 0.85rem;
+    color: var(--text);
+    font-family: inherit;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.18s;
+}
+
+.input::placeholder {
+    color: var(--dimmed);
+}
+
+.input:focus {
+    border-color: rgba(0, 204, 255, 0.5);
+}
+
 .route-list {
     list-style: none;
     display: flex;
