@@ -69,11 +69,19 @@ const TYPE_STRINGS = {
         noTypeSelected: 'Selecciona uno o dos tipos para ver la efectividad.',
         resetBtn:       'Resetear',
         selectorHint:   'Elige el tipo del que quieres ver las debilidades.',
+        pokemonSearchPh: 'Buscar Pokémon...',
+        pokemonBase:     'Base',
+        loadingTypes:    'Cargando...',
+        unknownPokemon:  'Pokémon no encontrado',
     },
     en: {
         noTypeSelected: 'Select one or two types to see effectiveness.',
         resetBtn:       'Reset',
         selectorHint:   'Choose the type whose weaknesses you want to see.',
+        pokemonSearchPh: 'Search Pokémon...',
+        pokemonBase:     'Base',
+        loadingTypes:    'Loading...',
+        unknownPokemon:  'Pokémon not found',
     }
 };
 

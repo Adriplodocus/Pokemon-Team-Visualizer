@@ -15,6 +15,21 @@
 <div id="app">
 
     <div class="card">
+        <div class="pk-search-section">
+            <div class="pk-ac-wrapper">
+                <input id="pk-search-input" class="pk-search-input"
+                       type="text" data-i18n-type-ph="pokemonSearchPh"
+                       placeholder="Buscar Pokémon..."
+                       autocomplete="off" spellcheck="false">
+                <ul id="pk-search-suggestions" class="suggestions pk-suggestions"></ul>
+            </div>
+            <div id="pk-form-chips" class="pk-form-chips"></div>
+            <div id="pk-result" class="pk-result" style="display:none">
+                <img id="pk-result-sprite" class="pk-result-sprite" src="" alt="" decoding="async">
+                <div id="pk-result-types" class="pk-result-types"></div>
+            </div>
+            <p id="pk-error" class="pk-error" style="display:none"></p>
+        </div>
         <div class="types-layout">
             <div class="types-selector">
                 <p class="types-selector-hint" data-i18n-type="selectorHint">Elige el tipo del que quieres ver las debilidades.</p>
@@ -28,6 +43,7 @@
 
 </div>
 
+<script src="pokemon-catalog.js"></script>
 <script src="badges.js"></script>
 <script src="types.js"></script>
 <script>
