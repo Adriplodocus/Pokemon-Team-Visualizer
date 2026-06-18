@@ -27,7 +27,7 @@
 
     document.body.insertAdjacentHTML('afterbegin', `
 <header>
-    <h1>Pokémon Stream Visualizer</h1>
+    <h1>Pokémon Stream Visualizer<span class="app-badge app-badge--beta"><span class="app-badge-dot"></span>Beta</span></h1>
     <p class="subtitle" data-i18n-header="headerSubtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
     <p class="header-error" data-i18n-header="headerError">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
     <div class="header-controls-row">
