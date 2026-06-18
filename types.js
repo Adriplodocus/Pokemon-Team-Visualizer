@@ -66,22 +66,34 @@ const TYPE_CHART = {
 
 const TYPE_STRINGS = {
     es: {
-        noTypeSelected: 'Selecciona uno o dos tipos para ver la efectividad.',
-        resetBtn:       'Resetear',
-        selectorHint:   'Elige el tipo del que quieres ver las debilidades.',
+        noTypeSelected:  'Selecciona uno o dos tipos para ver la efectividad.',
+        resetBtn:        'Resetear',
+        selectorHint:    'Elige el tipo del que quieres ver las debilidades.',
         pokemonSearchPh: 'Buscar Pokémon...',
         pokemonBase:     'Base',
         loadingTypes:    'Cargando...',
         unknownPokemon:  'Pokémon no encontrado',
+        propsBtn:        'Propiedades',
+        modalTitle:      'Propiedades',
+        modalSkin:       'Forma',
+        modalGender:     'Género',
+        modalShiny:      'Shiny',
+        modalSet:        'Guardar',
     },
     en: {
-        noTypeSelected: 'Select one or two types to see effectiveness.',
-        resetBtn:       'Reset',
-        selectorHint:   'Choose the type whose weaknesses you want to see.',
+        noTypeSelected:  'Select one or two types to see effectiveness.',
+        resetBtn:        'Reset',
+        selectorHint:    'Choose the type whose weaknesses you want to see.',
         pokemonSearchPh: 'Search Pokémon...',
         pokemonBase:     'Base',
         loadingTypes:    'Loading...',
         unknownPokemon:  'Pokémon not found',
+        propsBtn:        'Properties',
+        modalTitle:      'Properties',
+        modalSkin:       'Form',
+        modalGender:     'Gender',
+        modalShiny:      'Shiny',
+        modalSet:        'Save',
     }
 };
 
@@ -89,9 +101,11 @@ function tT(key) {
     return TYPE_STRINGS[currentLang][key];
 }
 
-let selectedTypes = [];
+let selectedTypes  = [];
 let pkSearchNames  = [];
 let selectedPokemon = { name: '', skin: '', types: [] };
+let typeProps       = { skin: '', shiny: 'False', gender: 'male' };
+let typeModalProps  = {};
 
 fetch('pokemon-list.json').then(r => r.json()).then(names => {
     pkSearchNames = names;
@@ -190,8 +204,8 @@ function clearPkSearch() {
     const input = document.getElementById('pk-search-input');
     if (input) input.value = '';
     closePkSuggestions();
-    const chips = document.getElementById('pk-form-chips');
-    if (chips) chips.innerHTML = '';
+    const propsRow = document.getElementById('pk-props-row');
+    if (propsRow) propsRow.style.display = 'none';
     const result = document.getElementById('pk-result');
     if (result) result.style.display = 'none';
     const error = document.getElementById('pk-error');
@@ -224,38 +238,78 @@ function onPkSelect(name) {
     selectedPokemon = { name, skin: '', types: [] };
     document.getElementById('pk-search-input').value = name;
     closePkSuggestions();
-    renderFormChips(name);
+    showPropsBtn(name);
 }
 
-function renderFormChips(name) {
-    const container = document.getElementById('pk-form-chips');
-    const entry     = (typeof POKEMON_CATALOG !== 'undefined') ? POKEMON_CATALOG[name] : null;
-    const skins     = entry?.skin ?? [];
-    const skipBase  = entry?.skipBase ?? false;
+function showPropsBtn(name) {
+    const catalog  = (typeof POKEMON_CATALOG !== 'undefined') ? POKEMON_CATALOG[name] : null;
+    const skipBase = catalog?.skipBase ?? false;
+    const skins    = catalog?.skin ?? [];
+    typeProps = {
+        skin:   skipBase && skins.length ? skins[0] : '',
+        shiny:  'False',
+        gender: 'male'
+    };
+    selectedPokemon.skin = typeProps.skin;
+    const row = document.getElementById('pk-props-row');
+    if (row) row.style.display = 'flex';
+    resolvePokemonTypes(name, typeProps.skin);
+}
 
-    if (!skins.length) {
-        container.innerHTML = '';
-        resolvePokemonTypes(name, '');
-        return;
-    }
+function openTypesModal() {
+    const name = selectedPokemon.name;
+    if (!name) return;
+    document.getElementById('modal-title').textContent =
+        name.charAt(0).toUpperCase() + name.slice(1) + ' — ' + tT('modalTitle');
 
-    const baseChip = skipBase ? [] : [`<button class="pk-chip active" data-skin="">${tT('pokemonBase')}</button>`];
-    container.innerHTML = [
-        ...baseChip,
-        ...skins.map((s, i) => `<button class="pk-chip${skipBase && i === 0 ? ' active' : ''}" data-skin="${s}">${s}</button>`)
-    ].join('');
+    const catalog  = (typeof POKEMON_CATALOG !== 'undefined') ? POKEMON_CATALOG[name] : null;
+    const skipBase = catalog?.skipBase ?? false;
+    const skins    = skipBase ? (catalog?.skin ?? []) : ['', ...(catalog?.skin ?? [])];
 
-    container.querySelectorAll('.pk-chip').forEach(btn => {
-        btn.addEventListener('click', () => {
-            container.querySelectorAll('.pk-chip').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            selectedPokemon.skin = btn.dataset.skin;
-            resolvePokemonTypes(selectedPokemon.name, btn.dataset.skin);
-        });
+    typeModalProps = { ...typeProps };
+
+    document.getElementById('modal-props').innerHTML = `
+        <div class="modal-row">
+            <label>${tT('modalGender')}</label>
+            <select id="mp-gender" onchange="typeModalProps.gender=this.value">
+                <option value="male"   ${typeProps.gender === 'male'   ? 'selected' : ''}>male</option>
+                <option value="female" ${typeProps.gender === 'female' ? 'selected' : ''}>female</option>
+            </select>
+        </div>
+        <div class="modal-row">
+            <label>${tT('modalSkin')}</label>
+            <select id="mp-skin" onchange="typeModalProps.skin=this.value">
+                ${skins.map(s => `<option value="${s}" ${typeProps.skin === s ? 'selected' : ''}>${s || tT('pokemonBase')}</option>`).join('')}
+            </select>
+        </div>
+        <div class="modal-row">
+            <label>${tT('modalShiny')}</label>
+            <select id="mp-shiny" onchange="typeModalProps.shiny=this.value">
+                <option value="False" ${typeProps.shiny === 'False' ? 'selected' : ''}>False</option>
+                <option value="True"  ${typeProps.shiny === 'True'  ? 'selected' : ''}>True</option>
+            </select>
+        </div>`;
+
+    document.getElementById('modal-backdrop').classList.add('open');
+}
+
+function applyTypesModal() {
+    typeProps = { ...typeModalProps };
+    selectedPokemon.skin = typeProps.skin;
+    closeTypesModal();
+    resolvePokemonTypes(selectedPokemon.name, typeProps.skin);
+}
+
+function closeTypesModal() {
+    document.getElementById('modal-backdrop').classList.remove('open');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const backdrop = document.getElementById('modal-backdrop');
+    if (backdrop) backdrop.addEventListener('click', e => {
+        if (e.target === backdrop) closeTypesModal();
     });
-
-    resolvePokemonTypes(name, skipBase ? skins[0] : '');
-}
+});
 
 const PK_SLUG_EXCEPTIONS = {
     // base name fixes
@@ -363,10 +417,18 @@ async function resolvePokemonTypes(name, skin) {
     renderTypeSelector();
     renderTable();
 
-    const spriteFile = skin ? `sprites/${name}_${skin}.gif` : `sprites/${name}.gif`;
-    const sprite     = document.getElementById('pk-result-sprite');
-    sprite.onerror   = () => { sprite.onerror = null; sprite.src = `sprites/${name}.gif`; };
-    sprite.src       = spriteFile;
+    const skinPart = typeProps.skin ? `_${typeProps.skin}` : '';
+    let spriteFile;
+    if (typeProps.shiny === 'True') {
+        spriteFile = `sprites/shiny/${name}${skinPart}.gif`;
+    } else if (typeProps.gender === 'female') {
+        spriteFile = `sprites/female/${name}${skinPart}.gif`;
+    } else {
+        spriteFile = `sprites/${name}${skinPart}.gif`;
+    }
+    const sprite = document.getElementById('pk-result-sprite');
+    sprite.onerror = () => { sprite.onerror = null; sprite.src = `sprites/${name}.gif`; };
+    sprite.src = spriteFile;
 
     renderPkResult();
     resultDiv.style.display = 'flex';

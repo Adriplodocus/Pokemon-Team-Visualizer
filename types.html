@@ -24,7 +24,9 @@
                 <button id="pk-clear-btn" class="pk-clear-btn" style="display:none" aria-label="Clear">×</button>
                 <ul id="pk-search-suggestions" class="suggestions pk-suggestions"></ul>
             </div>
-            <div id="pk-form-chips" class="pk-form-chips"></div>
+            <div id="pk-props-row" class="pk-props-row" style="display:none">
+                <button class="pk-props-btn" onclick="openTypesModal()" data-i18n-type="propsBtn">Propiedades</button>
+            </div>
             <div id="pk-result" class="pk-result" style="display:none">
                 <img id="pk-result-sprite" class="pk-result-sprite" src="" alt="" decoding="async">
                 <div id="pk-result-types" class="pk-result-types"></div>
@@ -42,6 +44,14 @@
     </div>
 
 
+</div>
+
+<div id="modal-backdrop">
+    <div id="modal">
+        <h3 id="modal-title"></h3>
+        <div id="modal-props"></div>
+        <button class="modal-apply" onclick="applyTypesModal()" data-i18n-type="modalSet">Guardar</button>
+    </div>
 </div>
 
 <script src="pokemon-catalog.js?v=2"></script>

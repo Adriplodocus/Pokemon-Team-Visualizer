@@ -66,8 +66,10 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
     border-radius: 4px;
     vertical-align: middle;
     margin-left: 6px;
-    border: 1px solid;
+    border: 1px solid rgba(13, 148, 136, 0.35);
     font-family: 'JetBrains Mono', monospace;
+    background: rgba(13, 148, 136, 0.15);
+    color: #0d9488;
 }
 .app-badge--beta {
     background: rgba(0, 204, 255, 0.12);
@@ -80,8 +82,9 @@ h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal;
     border-radius: 50%;
     background: currentColor;
     flex-shrink: 0;
-    animation: pulse 2.4s ease-in-out infinite;
+    animation: pulse 1.4s ease-in-out infinite;
 }
+.app-badge--beta .app-badge-dot { animation-duration: 2.4s; }
 
 h1 .header-brand {
     color: var(--accent);
@@ -1501,11 +1504,22 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     max-width: 320px;
 }
 
-.pk-form-chips {
+.pk-props-row {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem;
 }
+.pk-props-btn {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.3rem 0.9rem;
+    border-radius: 100px;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.pk-props-btn:hover { border-color: rgba(0, 204, 255, 0.3); }
 
 .pk-chip {
     padding: 0.25rem 0.7rem;
