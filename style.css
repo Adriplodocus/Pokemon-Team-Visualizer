@@ -940,6 +940,33 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-color: rgba(0, 204, 255, 0.3);
 }
 
+.guide-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 12px;
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--text-2);
+    text-decoration: none;
+    padding: 3px 10px 3px 8px;
+    border-radius: var(--radius-sm);
+    border: 1px solid var(--border);
+    background: var(--surface-2);
+    transition: color 0.15s, border-color 0.15s;
+    white-space: nowrap;
+    cursor: pointer;
+}
+.guide-btn:hover {
+    color: var(--text);
+    border-color: rgba(0, 204, 255, 0.3);
+}
+.guide-btn-icon {
+    width: 0.85rem;
+    height: 0.85rem;
+    flex-shrink: 0;
+}
+
 /* ── Badge section ───────────────────────────────────────────── */
 .hidden { display: none !important; }
 

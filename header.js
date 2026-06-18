@@ -38,6 +38,7 @@
             <button id="lang-es" onclick="setLang('es')">ES</button>
             <button id="lang-en" onclick="setLang('en')">EN</button>
         </div>
+        <a href="https://app.notion.com/p/Pok-mon-Stream-Visualizer-Gu-a-de-uso-383ca8d9d3fe80e8ab0cdbda2c106ded" target="_blank" rel="noopener" class="guide-btn" aria-label="Guía de uso"><svg class="guide-btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n-header="guideBtn">Guía</span></a>
         <div class="user-widget" id="user-widget"></div>
     </div>
 </header>`);
@@ -47,10 +48,12 @@ const HEADER_STRINGS = {
     es: {
         headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
         headerError: 'Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.',
+        guideBtn: 'Guía',
     },
     en: {
         headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
         headerError: 'Found a bug? <a href="mailto:MrKlypp@gmail.com">Drop me a line</a>.',
+        guideBtn: 'Guide',
     },
 };
 
