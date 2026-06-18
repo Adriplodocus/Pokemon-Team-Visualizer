@@ -378,6 +378,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
+    width: 100%;
+    box-sizing: border-box;
     padding: 8px 14px;
     border-radius: 8px;
     background: rgba(255, 86, 180, 0.10);
