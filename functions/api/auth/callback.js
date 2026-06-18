@@ -7,6 +7,22 @@ const TOKEN_URLS = {
   google: 'https://oauth2.googleapis.com/token',
 };
 
+const FEATURED_FOLLOWER_THRESHOLD = 20_000;
+
+async function fetchTwitchFollowers(accessToken, clientId, broadcasterId) {
+  try {
+    const res = await fetch(
+      `https://api.twitch.tv/helix/channels/followers?broadcaster_id=${broadcasterId}&first=1`,
+      { headers: { Authorization: `Bearer ${accessToken}`, 'Client-Id': clientId } },
+    );
+    if (!res.ok) return 0;
+    const { total } = await res.json();
+    return typeof total === 'number' ? total : 0;
+  } catch {
+    return 0;
+  }
+}
+
 async function fetchProfile(provider, accessToken, clientId) {
   if (provider === 'twitch') {
     const res = await fetch('https://api.twitch.tv/helix/users', {
@@ -99,17 +115,24 @@ export async function onRequestGet(context) {
     return new Response('Failed to fetch user profile. Please try again.', { status: 502 });
   }
 
+  let featured = false;
+  if (provider === 'twitch') {
+    const followers = await fetchTwitchFollowers(access_token, clientId, profile.providerId);
+    featured = followers >= FEATURED_FOLLOWER_THRESHOLD;
+  }
+
   let rows;
   try {
     const sql = getDB(context.env);
     rows = await sql`
-      INSERT INTO users (provider, provider_id, username, email, avatar_url)
-      VALUES (${provider}, ${profile.providerId}, ${profile.username}, ${profile.email}, ${profile.avatarUrl})
+      INSERT INTO users (provider, provider_id, username, email, avatar_url, featured)
+      VALUES (${provider}, ${profile.providerId}, ${profile.username}, ${profile.email}, ${profile.avatarUrl}, ${featured})
       ON CONFLICT (provider, provider_id)
       DO UPDATE SET
         username   = EXCLUDED.username,
         email      = EXCLUDED.email,
-        avatar_url = EXCLUDED.avatar_url
+        avatar_url = EXCLUDED.avatar_url,
+        featured   = EXCLUDED.featured
       RETURNING id, tier
     `;
   } catch (e) {
