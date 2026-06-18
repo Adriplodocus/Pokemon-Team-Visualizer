@@ -1580,8 +1580,8 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .pk-result-sprite {
-    width: 96px;
-    height: 96px;
+    width: 160px;
+    height: 160px;
     object-fit: contain;
     image-rendering: pixelated;
 }
