@@ -2,7 +2,7 @@ import { parseCookies } from './api/_lib/cookies.js';
 import { verifyJWT } from './api/_lib/jwt.js';
 
 const PUBLIC_EXTENSIONS = new Set([
-  '.css', '.js', '.gif', '.png', '.svg', '.json',
+  '.css', '.js', '.gif', '.png', '.webp', '.svg', '.json',
   '.ico', '.webmanifest',
 ]);
 
