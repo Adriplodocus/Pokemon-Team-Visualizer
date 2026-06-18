@@ -41,6 +41,7 @@
 .login-btn--twitch:hover { box-shadow: 0 0 16px rgba(145,71,255,0.25); }
 .login-btn--google:hover  { box-shadow: 0 0 14px rgba(255,255,255,0.08); }
 .login-error { color: var(--error); font-size: 0.85rem; }
+.login-consent { font-size: 0.7rem; color: var(--dim, #555555); max-width: 280px; text-align: center; line-height: 1.5; }
 .featured-section {
   display: flex; flex-direction: column; align-items: center; gap: 1rem;
   width: 100%; max-width: 480px;
@@ -105,6 +106,7 @@
     </a>
   </div>
   <div id="login-error" class="login-error" style="display:none"></div>
+  <p class="login-consent">Al iniciar sesión aceptas que tu nombre y avatar puedan mostrarse como streamer destacado.</p>
 </div>
 <script>
 fetch('/api/featured').then(r => r.ok ? r.json() : []).then(streamers => {
