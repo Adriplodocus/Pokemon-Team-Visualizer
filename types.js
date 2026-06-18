@@ -101,11 +101,12 @@ function tT(key) {
     return TYPE_STRINGS[currentLang][key];
 }
 
-let selectedTypes  = [];
-let pkSearchNames  = [];
+let selectedTypes   = [];
+let pkSearchNames   = [];
 let selectedPokemon = { name: '', skin: '', types: [] };
 let typeProps       = { skin: '', shiny: 'False', gender: 'male' };
 let typeModalProps  = {};
+let typeResolveId   = 0;
 
 fetch('pokemon-list.json').then(r => r.json()).then(names => {
     pkSearchNames = names;
@@ -388,6 +389,11 @@ function toPokeApiSlug(name, skin) {
 }
 
 async function resolvePokemonTypes(name, skin) {
+    const reqId      = ++typeResolveId;
+    const capSkin    = skin;
+    const capShiny   = typeProps.shiny;
+    const capGender  = typeProps.gender;
+
     const resultDiv = document.getElementById('pk-result');
     const errorEl   = document.getElementById('pk-error');
     const typesDiv  = document.getElementById('pk-result-types');
@@ -396,7 +402,7 @@ async function resolvePokemonTypes(name, skin) {
     errorEl.style.display    = 'none';
     typesDiv.innerHTML       = `<span style="color:var(--text)">${tT('loadingTypes')}</span>`;
 
-    const slug = toPokeApiSlug(name, skin);
+    const slug = toPokeApiSlug(name, capSkin);
     let types;
     try {
         const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
@@ -407,21 +413,26 @@ async function resolvePokemonTypes(name, skin) {
             .filter(t => TYPES.includes(t))
             .slice(0, 2);
     } catch {
+        if (reqId !== typeResolveId) return;
         errorEl.textContent   = tT('unknownPokemon');
         errorEl.style.display = 'block';
         return;
     }
+
+    if (reqId !== typeResolveId) return;
 
     selectedPokemon.types = types;
     selectedTypes = [...types];
     renderTypeSelector();
     renderTable();
 
-    const skinPart = typeProps.skin ? `_${typeProps.skin}` : '';
+    const catalog  = (typeof POKEMON_CATALOG !== 'undefined') ? POKEMON_CATALOG[name] : null;
+    const skins    = catalog?.skin ?? [];
+    const skinPart = (capSkin && skins.includes(capSkin)) ? `_${capSkin}` : '';
     let spriteFile;
-    if (typeProps.shiny === 'True') {
+    if (capShiny === 'True') {
         spriteFile = `sprites/shiny/${name}${skinPart}.gif`;
-    } else if (typeProps.gender === 'female') {
+    } else if (capGender === 'female') {
         spriteFile = `sprites/female/${name}${skinPart}.gif`;
     } else {
         spriteFile = `sprites/${name}${skinPart}.gif`;
