@@ -60,7 +60,13 @@ export class TwitchBotDO {
                 if (!wsOpen) {
                     await this.connect(channel, userId);
                 } else {
-                    this.ws.send('PING :tmi.twitch.tv');
+                    const staleSince = Date.now() - (this.lastPongAt || 0);
+                    if (staleSince > 4 * 60 * 1000) {
+                        // No PONG in 4+ min — TCP connection likely dead
+                        await this.connect(channel, userId);
+                    } else {
+                        this.ws.send('PING :tmi.twitch.tv');
+                    }
                 }
             }
         } catch (e) {
@@ -132,6 +138,7 @@ export class TwitchBotDO {
 
     async connect(channel, userId) {
         this.disconnect();
+        this.lastPongAt = Date.now();
 
         const { access_token, refresh_token } = await this.getBotToken();
         const botUsername = this.env.BOT_USERNAME;
@@ -173,6 +180,11 @@ export class TwitchBotDO {
     async handleMessage(raw, channel, userId, refreshToken) {
         if (raw.startsWith('PING')) {
             this.ws?.send('PONG :tmi.twitch.tv');
+            return;
+        }
+
+        if (raw.startsWith('PONG')) {
+            this.lastPongAt = Date.now();
             return;
         }
 
