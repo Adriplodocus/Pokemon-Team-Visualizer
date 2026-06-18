@@ -19,12 +19,19 @@ for match in re.finditer(r'(?:"([^"]+)"|(\w+))\s*:\s*\{[^}]*skin\s*:\s*\[([^\]]*
     for skin in skins:
         excluded.add(f"{base}_{skin}")
 
+# Pokémon whose canonical species name contains a hyphen
+HYPHENATED_SPECIES = {
+    'ho-oh', 'porygon-z',
+    'jangmo-o', 'hakamo-o', 'kommo-o',
+    'chi-yu', 'chien-pao', 'ting-lu', 'wo-chien',
+}
+
 from_sprites = set(
     f[:-4] for f in os.listdir(sprites_dir)
     if f.endswith('.gif')
     and not f.endswith(' (1).gif')
     and not f.endswith('-f.gif')
-    and '-' not in f[:-4]
+    and ('-' not in f[:-4] or f[:-4] in HYPHENATED_SPECIES)
     and '(' not in f[:-4]
     and f[:-4] not in excluded
 )
