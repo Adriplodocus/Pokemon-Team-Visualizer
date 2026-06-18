@@ -140,6 +140,7 @@ export class TwitchBotDO {
         this.ws = ws;
 
         ws.addEventListener('open', () => {
+            ws.send('CAP REQ :twitch.tv/tags');
             ws.send(`PASS oauth:${access_token}`);
             ws.send(`NICK ${botUsername}`);
             ws.send(`JOIN #${channel}`);
@@ -183,13 +184,31 @@ export class TwitchBotDO {
             return;
         }
 
+        // Strip IRC tags (@key=val;... prefix) if present
+        let tagsStr = '';
+        let msgLine = raw;
+        if (raw.startsWith('@')) {
+            const sp = raw.indexOf(' ');
+            tagsStr = raw.slice(1, sp);
+            msgLine = raw.slice(sp + 1);
+        }
+
         // :username!username@username.tmi.twitch.tv PRIVMSG #channel :message
-        const match = raw.match(/^:[\w-]+![\w-]+@[\w-]+\.tmi\.twitch\.tv PRIVMSG #[\w-]+ :(.+)$/);
+        const match = msgLine.match(/^:([\w-]+)![\w-]+@[\w-]+\.tmi\.twitch\.tv PRIVMSG #[\w-]+ :(.+)$/);
         if (!match) return;
 
-        const text = match[1].trim();
+        const senderUsername = match[1].toLowerCase();
+        const text = match[2].trim();
         const checkMatch = text.match(/^!check\s+(.+)$/i);
         if (!checkMatch) return;
+
+        // Only broadcaster and mods can use !check
+        const tags = Object.fromEntries(
+            tagsStr.split(';').filter(Boolean).map(kv => { const i = kv.indexOf('='); return [kv.slice(0, i), kv.slice(i + 1)]; })
+        );
+        const isBroadcaster = senderUsername === channel.toLowerCase();
+        const isMod = tags.mod === '1' || (tags.badges || '').includes('moderator/');
+        if (!isBroadcaster && !isMod) return;
 
         const zone = checkMatch[1].trim();
         await this.checkZone(zone, channel, userId);
