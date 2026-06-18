@@ -107,10 +107,15 @@ let selectedPokemon = { name: '', skin: '', types: [] };
 let typeProps       = { skin: '', shiny: 'False', gender: 'male' };
 let typeModalProps  = {};
 let typeResolveId   = 0;
+let SPRITE_VER      = '?v=2';
 
-fetch('pokemon-list.json').then(r => r.json()).then(names => {
+Promise.all([
+    fetch('pokemon-list.json').then(r => r.json()),
+    fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
+]).then(([names, ver]) => {
     pkSearchNames = names;
-}).catch(() => {});
+    SPRITE_VER    = '?v=' + ver.v;
+});
 
 const TYPE_ICON_COLORS = {};
 
@@ -438,8 +443,8 @@ async function resolvePokemonTypes(name, skin) {
         spriteFile = `sprites/${name}${skinPart}.gif`;
     }
     const sprite = document.getElementById('pk-result-sprite');
-    sprite.onerror = () => { sprite.onerror = null; sprite.src = `sprites/${name}.gif`; };
-    sprite.src = spriteFile;
+    sprite.onerror = () => { sprite.onerror = null; sprite.src = `sprites/${name}.gif` + SPRITE_VER; };
+    sprite.src = spriteFile + SPRITE_VER;
 
     renderPkResult();
     resultDiv.style.display = 'flex';
