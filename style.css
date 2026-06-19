@@ -104,10 +104,8 @@ h1 .header-brand:hover { transform: scale(1.08); }
 /* ── Donation banner ─────────────────────────────────────────── */
 .donation-banner {
     position: relative;
-    align-self: stretch;
-    max-width: 1120px;
-    margin: 0 auto 18px;
     box-sizing: border-box;
+    margin-bottom: 18px;
     padding: 10px 40px 10px 14px;
     font-size: 12px;
     line-height: 1.6;
@@ -1306,6 +1304,10 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     position: sticky;
     top: 20px;
   }
+
+  /* Banners match the 1040px preview card width */
+  .donation-banner,
+  .external-banner { max-width: 1040px; }
 
   /* Pokémon page: preview full-width top, editor + actions below */
   .pokemon-desktop-layout {

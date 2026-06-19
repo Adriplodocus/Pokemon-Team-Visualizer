@@ -84,8 +84,10 @@ function initDonationBanner() {
         banner.remove();
         localStorage.setItem('ptv_donation_dismissed', '1');
     });
+    const app = document.getElementById('app');
     const header = document.querySelector('header');
-    if (header) header.insertAdjacentElement('afterend', banner);
+    if (app) app.insertAdjacentElement('afterbegin', banner);
+    else if (header) header.insertAdjacentElement('afterend', banner);
 }
 
 function esc(s) {
