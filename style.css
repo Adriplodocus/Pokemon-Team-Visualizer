@@ -104,10 +104,11 @@ h1 .header-brand:hover { transform: scale(1.08); }
 /* ── Donation banner ─────────────────────────────────────────── */
 .donation-banner {
     position: relative;
-    width: 100%;
+    align-self: stretch;
     max-width: 1120px;
+    margin: 0 auto 18px;
+    box-sizing: border-box;
     padding: 10px 40px 10px 14px;
-    margin-bottom: 18px;
     font-size: 12px;
     line-height: 1.6;
     color: var(--text-2);
@@ -415,7 +416,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
-    width: 100%;
     box-sizing: border-box;
     padding: 8px 14px;
     border-radius: 8px;
