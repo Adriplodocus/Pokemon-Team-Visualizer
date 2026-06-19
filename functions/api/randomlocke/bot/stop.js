@@ -1,7 +1,7 @@
 import { parseCookies } from '../../_lib/cookies.js';
 import { verifyJWT } from '../../_lib/jwt.js';
 import { getDB } from '../../_lib/db.js';
-import { getBotToken, refreshToken } from '../_lib/botToken.js';
+import { getAppToken } from '../_lib/botToken.js';
 
 function json(data, status = 200) {
     return new Response(JSON.stringify(data), {
@@ -30,34 +30,21 @@ export async function onRequestPost(context) {
     }
 
     try {
-        let token = await getBotToken(context.env);
-        let delRes = await fetch(
-            `https://api.twitch.tv/helix/eventsub/subscriptions?id=${subscriptionId}`,
-            {
-                method: 'DELETE',
-                headers: {
-                    'Client-Id': context.env.TWITCH_CLIENT_ID,
-                    'Authorization': `Bearer ${token.access_token}`,
-                },
+        const appToken = await getAppToken(context.env);
+        if (appToken) {
+            const delRes = await fetch(
+                `https://api.twitch.tv/helix/eventsub/subscriptions?id=${subscriptionId}`,
+                {
+                    method: 'DELETE',
+                    headers: {
+                        'Client-Id': context.env.TWITCH_CLIENT_ID,
+                        'Authorization': `Bearer ${appToken}`,
+                    },
+                }
+            );
+            if (!delRes.ok && delRes.status !== 404) {
+                console.error('Twitch EventSub delete failed', delRes.status);
             }
-        );
-        if (delRes.status === 401) {
-            const newToken = await refreshToken(context.env, token.refresh_token);
-            if (newToken) {
-                delRes = await fetch(
-                    `https://api.twitch.tv/helix/eventsub/subscriptions?id=${subscriptionId}`,
-                    {
-                        method: 'DELETE',
-                        headers: {
-                            'Client-Id': context.env.TWITCH_CLIENT_ID,
-                            'Authorization': `Bearer ${newToken.access_token}`,
-                        },
-                    }
-                );
-            }
-        }
-        if (!delRes.ok && delRes.status !== 404) {
-            console.error('Twitch EventSub delete failed', delRes.status);
         }
     } catch (e) {
         console.error('Twitch EventSub delete failed (network error)', e);

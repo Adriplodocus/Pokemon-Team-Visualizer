@@ -1,5 +1,23 @@
 import { getDB } from '../../_lib/db.js';
 
+export async function getAppToken(env) {
+    const res = await fetch('https://id.twitch.tv/oauth2/token', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({
+            grant_type: 'client_credentials',
+            client_id: env.TWITCH_CLIENT_ID,
+            client_secret: env.TWITCH_CLIENT_SECRET,
+        }),
+    });
+    if (!res.ok) {
+        console.error('App token fetch failed', res.status, await res.text());
+        return null;
+    }
+    const { access_token } = await res.json();
+    return access_token;
+}
+
 export async function getBotToken(env) {
     try {
         const sql = getDB(env);
