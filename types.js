@@ -375,6 +375,82 @@ const PK_SLUG_EXCEPTIONS = {
     'minior+meteor':            'minior-red-meteor',
     // morpeko (base→404, full-belly and hangry work via default)
     morpeko:                    'morpeko-full-belly',
+    // mimikyu (base→404, skipBase — disguised/busted work via default)
+
+    // base forms that require a form suffix in PokéAPI
+    aegislash:                  'aegislash-shield',
+    basculegion:                'basculegion-male',
+    deoxys:                     'deoxys-normal',
+    dudunsparce:                'dudunsparce-two-segment',
+    enamorus:                   'enamorus-incarnate',
+    frillish:                   'frillish-male',
+    giratina:                   'giratina-altered',
+    gourgeist:                  'gourgeist-average',
+    indeedee:                   'indeedee-male',
+    jellicent:                  'jellicent-male',
+    keldeo:                     'keldeo-ordinary',
+    landorus:                   'landorus-incarnate',
+    lycanroc:                   'lycanroc-midday',
+    maushold:                   'maushold-family-of-three',
+    meowstic:                   'meowstic-male',
+    nidoran:                    'nidoran-f',
+    oinkologne:                 'oinkologne-male',
+    oricorio:                   'oricorio-baile',
+    palafin:                    'palafin-zero',
+    pumpkaboo:                  'pumpkaboo-average',
+    pyroar:                     'pyroar-male',
+    shaymin:                    'shaymin-land',
+    tatsugiri:                  'tatsugiri-curly',
+    thundurus:                  'thundurus-incarnate',
+    tornadus:                   'tornadus-incarnate',
+    urshifu:                    'urshifu-single-strike',
+    wishiwashi:                 'wishiwashi-solo',
+    wormadam:                   'wormadam-plant',
+    typenull:                   'type-null',
+
+    // Paradox Pokémon — stored as one word in pokemon-list.json, PokéAPI uses hyphens
+    greattusk:                  'great-tusk',
+    screamtail:                 'scream-tail',
+    brutebonnet:                'brute-bonnet',
+    fluttermane:                'flutter-mane',
+    slitherwing:                'slither-wing',
+    sandyshocks:                'sandy-shocks',
+    roaringmoon:                'roaring-moon',
+    irontreads:                 'iron-treads',
+    ironbundle:                 'iron-bundle',
+    ironhands:                  'iron-hands',
+    ironjugulis:                'iron-jugulis',
+    ironmoth:                   'iron-moth',
+    ironthorns:                 'iron-thorns',
+    ironvaliant:                'iron-valiant',
+    gougingfire:                'gouging-fire',
+    ragingbolt:                 'raging-bolt',
+    ironboulder:                'iron-boulder',
+    ironcrown:                  'iron-crown',
+    walkingwake:                'walking-wake',
+    ironleaves:                 'iron-leaves',
+
+    // Spanish display names → PokéAPI English slugs
+    bramaluna:                  'roaring-moon',
+    colagrito:                  'scream-tail',
+    colmilargo:                 'great-tusk',
+    electrofuria:               'raging-bolt',
+    ferrocuello:                'iron-jugulis',
+    ferrodada:                  'iron-treads',
+    ferromole:                  'iron-boulder',
+    'ferropúas':                'iron-thorns',
+    'ferropaladín':             'iron-valiant',
+    ferropalmas:                'iron-hands',
+    ferropolilla:               'iron-moth',
+    ferrosaco:                  'iron-bundle',
+    ferrotesta:                 'iron-crown',
+    ferroverdor:                'iron-leaves',
+    flamariete:                 'gouging-fire',
+    furioseta:                  'brute-bonnet',
+    melenaleteo:                'flutter-mane',
+    ondulagua:                  'walking-wake',
+    pelarena:                   'sandy-shocks',
+    reptalada:                  'slither-wing',
 };
 
 // PokéAPI uses 'hisui' not 'hisuian' for all hisuian forms
@@ -410,7 +486,11 @@ async function resolvePokemonTypes(name, skin) {
     const slug = toPokeApiSlug(name, capSkin);
     let types;
     try {
-        const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
+        let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
+        // Cosmetic-only skins don't have their own PokéAPI entry — fall back to base slug
+        if (!res.ok && capSkin) {
+            res = await fetch(`https://pokeapi.co/api/v2/pokemon/${toPokeApiSlug(name, null)}`);
+        }
         if (!res.ok) throw new Error('not found');
         const data = await res.json();
         types = data.types
