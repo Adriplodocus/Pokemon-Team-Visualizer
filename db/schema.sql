@@ -30,3 +30,10 @@ CREATE TABLE IF NOT EXISTS bot_global_token (
   refresh_token TEXT NOT NULL,
   updated_at    TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- EventSub subscription per user (replaces TwitchBotDO)
+CREATE TABLE IF NOT EXISTS bot_eventsub_subscriptions (
+  user_id         UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  subscription_id TEXT NOT NULL,
+  created_at      TIMESTAMPTZ DEFAULT NOW()
+);
