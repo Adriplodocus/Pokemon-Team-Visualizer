@@ -1,8 +1,7 @@
-// functions/api/randomlocke/bot/start.js
 import { parseCookies } from '../../_lib/cookies.js';
 import { verifyJWT } from '../../_lib/jwt.js';
 import { getDB } from '../../_lib/db.js';
-import { getBotToken, refreshToken, getAppToken } from '../_lib/botToken.js';
+import { getBotToken, getAppToken } from '../_lib/botToken.js';
 
 function json(data, status = 200) {
     return new Response(JSON.stringify(data), {
@@ -12,30 +11,6 @@ function json(data, status = 200) {
 }
 
 const WEBHOOK_URL = 'https://pokemon.mrklypp.com/api/randomlocke/bot/webhook';
-
-async function createSubscription(env, token, broadcasterUserId) {
-    return fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
-        method: 'POST',
-        headers: {
-            'Client-Id': env.TWITCH_CLIENT_ID,
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-            type: 'channel.chat.message',
-            version: '1',
-            condition: {
-                broadcaster_user_id: broadcasterUserId,
-                user_id: env.BOT_USER_ID,
-            },
-            transport: {
-                method: 'webhook',
-                callback: WEBHOOK_URL,
-                secret: env.EVENTSUB_SECRET,
-            },
-        }),
-    });
-}
 
 export async function onRequestPost(context) {
     const cookies = parseCookies(context.request);
@@ -58,16 +33,15 @@ export async function onRequestPost(context) {
     }
 
     const appToken = await getAppToken(context.env);
-    const botTokenRow = await getBotToken(context.env);
-    if (!botTokenRow?.access_token) return json({ error: 'Bot not authorized' }, 502);
+    if (!appToken) return json({ error: 'Failed to get app token' }, 502);
 
-    // Cleanup: remove previous subscription if exists (use app token for DELETE)
+    // Cleanup: remove previous subscription if exists
     try {
         const existing = await sql`
             SELECT subscription_id FROM bot_eventsub_subscriptions WHERE user_id = ${payload.userId}
         `;
-        if (existing.length && appToken) {
-            const delRes = await fetch(
+        if (existing.length) {
+            await fetch(
                 `https://api.twitch.tv/helix/eventsub/subscriptions?id=${existing[0].subscription_id}`,
                 {
                     method: 'DELETE',
@@ -77,43 +51,62 @@ export async function onRequestPost(context) {
                     },
                 }
             );
-            if (!delRes.ok && delRes.status !== 404) {
-                console.error('Old subscription cleanup failed', delRes.status);
-            }
         }
     } catch (e) {
         console.error('Old subscription cleanup failed (non-fatal)', e);
     }
 
-    // Try with bot user token first (has user:read:chat scope); fall back to app token
-    console.log('EventSub subscribe attempt', { broadcasterUserId, BOT_USER_ID: context.env.BOT_USER_ID });
-    let res = await createSubscription(context.env, botTokenRow.access_token, broadcasterUserId);
-    if (res.status === 401) {
-        const refreshed = await refreshToken(context.env, botTokenRow.refresh_token);
-        if (refreshed) {
-            res = await createSubscription(context.env, refreshed.access_token, broadcasterUserId);
-        }
-    }
-    if (!res.ok) {
-        const errBody = await res.text();
-        console.error('Bot user token subscribe failed', res.status, errBody);
-        // Fallback: try app token
-        if (appToken) {
-            console.log('Falling back to app token for EventSub subscribe');
-            res = await createSubscription(context.env, appToken, broadcasterUserId);
-        }
-    }
+    const res = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
+        method: 'POST',
+        headers: {
+            'Client-Id': context.env.TWITCH_CLIENT_ID,
+            'Authorization': `Bearer ${appToken}`,
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            type: 'channel.chat.message',
+            version: '1',
+            condition: {
+                broadcaster_user_id: broadcasterUserId,
+                user_id: context.env.BOT_USER_ID,
+            },
+            transport: {
+                method: 'webhook',
+                callback: WEBHOOK_URL,
+                secret: context.env.EVENTSUB_SECRET,
+            },
+        }),
+    });
 
-    if (!res.ok) {
+    let subscriptionId;
+
+    if (res.status === 409) {
+        // Already exists on Twitch — fetch existing ID
+        const listRes = await fetch(
+            `https://api.twitch.tv/helix/eventsub/subscriptions?type=channel.chat.message`,
+            {
+                headers: {
+                    'Client-Id': context.env.TWITCH_CLIENT_ID,
+                    'Authorization': `Bearer ${appToken}`,
+                },
+            }
+        );
+        if (listRes.ok) {
+            const list = await listRes.json();
+            const sub = list.data?.find(s => s.condition?.broadcaster_user_id === broadcasterUserId);
+            subscriptionId = sub?.id;
+        }
+    } else if (res.ok) {
+        const data = await res.json();
+        subscriptionId = data.data?.[0]?.id;
+    } else {
         const errBody = await res.text();
-        console.error('EventSub subscribe failed (all tokens)', res.status, errBody);
+        console.error('EventSub subscribe failed', res.status, errBody);
         return json({ error: 'Failed to start bot' }, 502);
     }
 
-    const data = await res.json();
-    const subscriptionId = data.data?.[0]?.id;
     if (!subscriptionId) {
-        console.error('EventSub subscribe: unexpected response shape', JSON.stringify(data));
+        console.error('EventSub subscribe: could not determine subscription ID');
         return json({ error: 'Failed to start bot' }, 502);
     }
 

@@ -119,40 +119,6 @@ export async function onRequestGet(context) {
   if (provider === 'twitch') {
     const followers = await fetchTwitchFollowers(access_token, clientId, profile.providerId);
     featured = followers >= FEATURED_FOLLOWER_THRESHOLD;
-    if (context.env.BOT_USER_ID && context.env.EVENTSUB_SECRET) {
-      context.waitUntil((async () => {
-        const validateRes = await fetch('https://id.twitch.tv/oauth2/validate', {
-          headers: { Authorization: `OAuth ${access_token}` },
-        });
-        const validateData = await validateRes.json();
-        console.log('Twitch login scopes for', profile.username, JSON.stringify(validateData.scopes));
-
-        // Try EventSub with broadcaster user token (self as user_id)
-        const subRes = await fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
-          method: 'POST',
-          headers: {
-            'Client-Id': context.env.TWITCH_CLIENT_ID,
-            'Authorization': `Bearer ${access_token}`,
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            type: 'channel.chat.message',
-            version: '1',
-            condition: {
-              broadcaster_user_id: profile.providerId,
-              user_id: profile.providerId,
-            },
-            transport: {
-              method: 'webhook',
-              callback: 'https://pokemon.mrklypp.com/api/randomlocke/bot/webhook',
-              secret: context.env.EVENTSUB_SECRET,
-            },
-          }),
-        });
-        const subBody = await subRes.text();
-        console.log('EventSub user-token attempt', subRes.status, subBody);
-      })());
-    }
   }
 
   let rows;
