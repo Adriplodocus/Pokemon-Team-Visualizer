@@ -84,6 +84,7 @@ export async function onRequestPost(context) {
         console.error('Old subscription cleanup failed (non-fatal)', e);
     }
 
+    console.log('EventSub subscribe attempt', { broadcasterUserId, BOT_USER_ID: context.env.BOT_USER_ID });
     const res = await createSubscription(context.env, appToken, broadcasterUserId);
 
     if (!res.ok) {
