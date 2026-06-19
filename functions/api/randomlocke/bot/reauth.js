@@ -11,7 +11,7 @@ export async function onRequestGet(context) {
         client_id: env.TWITCH_CLIENT_ID,
         redirect_uri: 'https://pokemon.mrklypp.com/api/randomlocke/bot/reauth/callback',
         response_type: 'code',
-        scope: 'user:read:chat user:write:chat',
+        scope: 'user:read:chat user:write:chat user:bot',
         force_verify: 'true',
     });
 
