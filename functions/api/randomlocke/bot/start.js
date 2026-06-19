@@ -63,17 +63,35 @@ export async function onRequestPost(context) {
             SELECT subscription_id FROM bot_eventsub_subscriptions WHERE user_id = ${payload.userId}
         `;
         if (existing.length) {
-            const token = await getBotToken(context.env);
-            await fetch(
+            let cleanupToken = await getBotToken(context.env);
+            let delRes = await fetch(
                 `https://api.twitch.tv/helix/eventsub/subscriptions?id=${existing[0].subscription_id}`,
                 {
                     method: 'DELETE',
                     headers: {
                         'Client-Id': context.env.TWITCH_CLIENT_ID,
-                        'Authorization': `Bearer ${token.access_token}`,
+                        'Authorization': `Bearer ${cleanupToken.access_token}`,
                     },
                 }
             );
+            if (delRes.status === 401) {
+                const newToken = await refreshToken(context.env, cleanupToken.refresh_token);
+                if (newToken) {
+                    delRes = await fetch(
+                        `https://api.twitch.tv/helix/eventsub/subscriptions?id=${existing[0].subscription_id}`,
+                        {
+                            method: 'DELETE',
+                            headers: {
+                                'Client-Id': context.env.TWITCH_CLIENT_ID,
+                                'Authorization': `Bearer ${newToken.access_token}`,
+                            },
+                        }
+                    );
+                }
+            }
+            if (!delRes.ok && delRes.status !== 404) {
+                console.error('Old subscription cleanup failed', delRes.status);
+            }
         }
     } catch (e) {
         console.error('Old subscription cleanup failed (non-fatal)', e);
@@ -96,7 +114,11 @@ export async function onRequestPost(context) {
     }
 
     const data = await res.json();
-    const subscriptionId = data.data[0].id;
+    const subscriptionId = data.data?.[0]?.id;
+    if (!subscriptionId) {
+        console.error('EventSub subscribe: unexpected response shape', JSON.stringify(data));
+        return json({ error: 'Failed to start bot' }, 502);
+    }
 
     try {
         await sql`

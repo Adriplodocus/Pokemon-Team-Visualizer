@@ -10,12 +10,12 @@ async function verifySignature(messageId, timestamp, body, signature, secret) {
         encoder.encode(secret),
         { name: 'HMAC', hash: 'SHA-256' },
         false,
-        ['sign']
+        ['verify']
     );
-    const sig = await crypto.subtle.sign('HMAC', key, encoder.encode(message));
-    const expected = 'sha256=' + Array.from(new Uint8Array(sig))
-        .map(b => b.toString(16).padStart(2, '0')).join('');
-    return signature === expected;
+    // Parse the hex signature from Twitch (strips "sha256=" prefix)
+    const hexSig = signature.startsWith('sha256=') ? signature.slice(7) : signature;
+    const sigBytes = new Uint8Array(hexSig.match(/.{1,2}/g).map(b => parseInt(b, 16)));
+    return crypto.subtle.verify('HMAC', key, sigBytes, encoder.encode(message));
 }
 
 async function sendChatMessage(env, token, broadcasterUserId, msg) {
@@ -59,6 +59,9 @@ export async function onRequestPost(context) {
 
     const valid = await verifySignature(messageId, timestamp, rawBody, signature, env.EVENTSUB_SECRET);
     if (!valid) return new Response('Forbidden', { status: 403 });
+
+    const msgAge = Date.now() - new Date(timestamp).getTime();
+    if (msgAge > 10 * 60 * 1000) return new Response('Message too old', { status: 403 });
 
     let payload;
     try { payload = JSON.parse(rawBody); }

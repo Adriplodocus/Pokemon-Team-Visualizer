@@ -1,5 +1,13 @@
 import { getDB } from '../../../_lib/db.js';
 
+function escapeHtml(str) {
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+}
+
 function html(content) {
     return new Response(content, { headers: { 'Content-Type': 'text/html' } });
 }
@@ -11,7 +19,7 @@ export async function onRequestGet(context) {
     const error = url.searchParams.get('error');
 
     if (error || !code) {
-        return html(`<p>OAuth error: ${error || 'no code received'}</p>`);
+        return html(`<p>OAuth error: ${escapeHtml(error || 'no code received')}</p>`);
     }
 
     const res = await fetch('https://id.twitch.tv/oauth2/token', {
@@ -28,7 +36,7 @@ export async function onRequestGet(context) {
 
     if (!res.ok) {
         const err = await res.text();
-        return html(`<p>Token exchange failed: ${err}</p>`);
+        return html(`<p>Token exchange failed: ${escapeHtml(err)}</p>`);
     }
 
     const { access_token, refresh_token } = await res.json();
