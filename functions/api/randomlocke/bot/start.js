@@ -2,7 +2,7 @@
 import { parseCookies } from '../../_lib/cookies.js';
 import { verifyJWT } from '../../_lib/jwt.js';
 import { getDB } from '../../_lib/db.js';
-import { getAppToken } from '../_lib/botToken.js';
+import { getBotToken, refreshToken, getAppToken } from '../_lib/botToken.js';
 
 function json(data, status = 200) {
     return new Response(JSON.stringify(data), {
@@ -13,12 +13,12 @@ function json(data, status = 200) {
 
 const WEBHOOK_URL = 'https://pokemon.mrklypp.com/api/randomlocke/bot/webhook';
 
-async function createSubscription(env, appToken, broadcasterUserId) {
+async function createSubscription(env, token, broadcasterUserId) {
     return fetch('https://api.twitch.tv/helix/eventsub/subscriptions', {
         method: 'POST',
         headers: {
             'Client-Id': env.TWITCH_CLIENT_ID,
-            'Authorization': `Bearer ${appToken}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
@@ -58,14 +58,15 @@ export async function onRequestPost(context) {
     }
 
     const appToken = await getAppToken(context.env);
-    if (!appToken) return json({ error: 'Failed to get app token' }, 502);
+    const botTokenRow = await getBotToken(context.env);
+    if (!botTokenRow?.access_token) return json({ error: 'Bot not authorized' }, 502);
 
-    // Cleanup: remove previous subscription if exists
+    // Cleanup: remove previous subscription if exists (use app token for DELETE)
     try {
         const existing = await sql`
             SELECT subscription_id FROM bot_eventsub_subscriptions WHERE user_id = ${payload.userId}
         `;
-        if (existing.length) {
+        if (existing.length && appToken) {
             const delRes = await fetch(
                 `https://api.twitch.tv/helix/eventsub/subscriptions?id=${existing[0].subscription_id}`,
                 {
@@ -84,12 +85,28 @@ export async function onRequestPost(context) {
         console.error('Old subscription cleanup failed (non-fatal)', e);
     }
 
+    // Try with bot user token first (has user:read:chat scope); fall back to app token
     console.log('EventSub subscribe attempt', { broadcasterUserId, BOT_USER_ID: context.env.BOT_USER_ID });
-    const res = await createSubscription(context.env, appToken, broadcasterUserId);
+    let res = await createSubscription(context.env, botTokenRow.access_token, broadcasterUserId);
+    if (res.status === 401) {
+        const refreshed = await refreshToken(context.env, botTokenRow.refresh_token);
+        if (refreshed) {
+            res = await createSubscription(context.env, refreshed.access_token, broadcasterUserId);
+        }
+    }
+    if (!res.ok) {
+        const errBody = await res.text();
+        console.error('Bot user token subscribe failed', res.status, errBody);
+        // Fallback: try app token
+        if (appToken) {
+            console.log('Falling back to app token for EventSub subscribe');
+            res = await createSubscription(context.env, appToken, broadcasterUserId);
+        }
+    }
 
     if (!res.ok) {
         const errBody = await res.text();
-        console.error('EventSub subscribe failed', res.status, errBody);
+        console.error('EventSub subscribe failed (all tokens)', res.status, errBody);
         return json({ error: 'Failed to start bot' }, 502);
     }
 
