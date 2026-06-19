@@ -62,7 +62,7 @@ export async function onRequestPost(context) {
 
     let payload;
     try { payload = JSON.parse(rawBody); }
-    catch { return new Response('Bad Request', { status: 400 }); }
+    catch { return new Response(null, { status: 204 }); }
 
     if (msgType === 'webhook_callback_verification') {
         return new Response(payload.challenge, {
@@ -79,6 +79,8 @@ export async function onRequestPost(context) {
         const text               = event?.message?.text?.trim() || '';
         const badges             = event?.badges || [];
 
+        if (!senderLogin || !broadcasterLogin) return new Response(null, { status: 204 });
+
         const isBroadcaster = senderLogin === broadcasterLogin;
         const isMod = badges.some(b => b.set_id === 'moderator');
         if (!isBroadcaster && !isMod) return new Response(null, { status: 204 });
@@ -89,9 +91,9 @@ export async function onRequestPost(context) {
         const zone = checkMatch[1].trim();
         const normalized = zone.toLowerCase().replace(/\s+/g, '');
 
+        const sql = getDB(env);
         let userId;
         try {
-            const sql = getDB(env);
             const rows = await sql`
                 SELECT id FROM users
                 WHERE provider = 'twitch' AND provider_id = ${broadcasterUserId}
@@ -105,7 +107,6 @@ export async function onRequestPost(context) {
 
         let found = false;
         try {
-            const sql = getDB(env);
             const rows = await sql`
                 SELECT id FROM randomlocke_routes
                 WHERE user_id = ${userId}
@@ -121,8 +122,12 @@ export async function onRequestPost(context) {
             ? `❌ NO puedes capturar en ${zone}.`
             : `✅ SÍ puedes capturar en ${zone}.`;
 
-        const token = await getBotToken(env);
-        await sendChatMessage(env, token, broadcasterUserId, msg);
+        try {
+            const token = await getBotToken(env);
+            await sendChatMessage(env, token, broadcasterUserId, msg);
+        } catch (e) {
+            console.error('sendChatMessage error', e);
+        }
     }
 
     return new Response(null, { status: 204 });
