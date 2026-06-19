@@ -50,7 +50,7 @@ body {
 }
 
 /* ── Header ─────────────────────────────────────────────────── */
-header { text-align: center; margin-bottom: 24px; animation: fade-up 0.5s ease both; }
+header { text-align: center; margin-bottom: 24px; animation: fade-up 0.5s ease both; width: 100%; max-width: 1120px; }
 h1 { font-family: 'Russo One', sans-serif; font-size: 28px; font-weight: normal; letter-spacing: 0.02em; color: var(--cyan); margin-bottom: 4px; }
 .subtitle { color: var(--text-2); font-size: 13px; margin-bottom: 10px; }
 
