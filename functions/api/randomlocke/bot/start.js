@@ -26,7 +26,7 @@ async function createSubscription(env, token, broadcasterUserId) {
             version: '1',
             condition: {
                 broadcaster_user_id: broadcasterUserId,
-                user_id: broadcasterUserId,
+                user_id: env.BOT_USER_ID,
             },
             transport: {
                 method: 'webhook',
