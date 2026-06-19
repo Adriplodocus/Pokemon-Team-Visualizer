@@ -1683,7 +1683,6 @@ function rlSetBotUI(active) {
 
 async function rlToggleBot() {
     const btn = document.getElementById('bot-toggle-btn');
-    if (!btn) return;
     btn.disabled = true;
     try {
         const endpoint = rlBotActive ? '/api/randomlocke/bot/stop' : '/api/randomlocke/bot/start';
@@ -1713,7 +1712,7 @@ async function rlToggleBot() {
         rlSearchQuery = e.target.value;
         rlRenderRoutes();
     });
-    document.getElementById('bot-toggle-btn')?.addEventListener('click', rlToggleBot);
+    document.getElementById('bot-toggle-btn').addEventListener('click', rlToggleBot);
     document.getElementById('zones-modal-btn').addEventListener('click', rlOpenModal);
     document.getElementById('zones-modal-close').addEventListener('click', rlCloseModal);
     document.getElementById('zones-clear-btn').addEventListener('click', rlClearAllRoutes);
