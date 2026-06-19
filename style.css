@@ -101,6 +101,42 @@ h1 .header-brand:hover { transform: scale(1.08); }
 .header-error a { color: var(--cyan); text-decoration: underline; transition: opacity 0.15s; }
 .header-error a:hover { opacity: 0.75; }
 
+/* ── Donation banner ─────────────────────────────────────────── */
+.donation-banner {
+    position: relative;
+    width: 100%;
+    max-width: 1120px;
+    padding: 10px 40px 10px 14px;
+    margin-bottom: 18px;
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--text-2);
+    background: rgba(251, 191, 36, 0.06);
+    border: 1px solid rgba(251, 191, 36, 0.18);
+    border-left: 3px solid rgba(251, 191, 36, 0.5);
+    border-radius: 8px;
+    animation: fade-up 0.4s ease both;
+    animation-delay: 0.15s;
+}
+.donation-banner-inner { display: flex; align-items: flex-start; gap: 7px; }
+.donation-banner-icon { flex-shrink: 0; color: rgba(251, 191, 36, 0.65); margin-top: 1px; }
+.donation-banner a { color: var(--gold); text-decoration: underline; transition: opacity 0.15s; }
+.donation-banner a:hover { opacity: 0.75; }
+.donation-banner-close {
+    position: absolute;
+    top: 9px;
+    right: 10px;
+    background: none;
+    border: none;
+    color: var(--dimmed);
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    padding: 2px 4px;
+    transition: color 0.15s;
+}
+.donation-banner-close:hover { color: var(--gold); }
+
 /* ── Lang toggle ─────────────────────────────────────────────── */
 .lang-toggle {
     display: inline-flex;

@@ -23,6 +23,7 @@
     <a href="https://mrklypp.com/" target="_blank" rel="noopener" data-i18n="madeBy">Hecho por @MrKlypp</a>
 </footer>`);
         initUserWidget();
+        initDonationBanner();
     });
 
     document.body.insertAdjacentHTML('afterbegin', `
@@ -49,11 +50,13 @@ const HEADER_STRINGS = {
         headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
         headerError: 'Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.',
         guideBtn: 'Guía',
+        donationMsg: 'Este es un proyecto gratuito. Pero utiliza servicios de terceros que aplican barreras de pago (Cloudflare, Ably, Neon). Tu donación puede ayudar a mejorar los servicios prestados por la aplicación. Puedes realizar una donación <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">aquí</a>.',
     },
     en: {
         headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
         headerError: 'Found a bug? <a href="mailto:MrKlypp@gmail.com">Drop me a line</a>.',
         guideBtn: 'Guide',
+        donationMsg: 'This is a free project, but it relies on third-party services with paid tiers (Cloudflare, Ably, Neon). Your donation helps keep and improve the app. You can make a donation <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">here</a>.',
     },
 };
 
@@ -63,6 +66,26 @@ function applyHeaderLang() {
         const key = el.dataset.i18nHeader;
         if (typeof s[key] === 'string') el.innerHTML = s[key];
     });
+}
+
+function initDonationBanner() {
+    if (localStorage.getItem('ptv_donation_dismissed')) return;
+    const banner = document.createElement('div');
+    banner.className = 'donation-banner';
+    banner.setAttribute('role', 'banner');
+    const s = HEADER_STRINGS[currentLang] || HEADER_STRINGS.es;
+    banner.innerHTML = `
+        <div class="donation-banner-inner">
+            <span class="donation-banner-icon" aria-hidden="true">★</span>
+            <span data-i18n-header="donationMsg">${s.donationMsg}</span>
+        </div>
+        <button class="donation-banner-close" aria-label="Cerrar">✕</button>`;
+    banner.querySelector('.donation-banner-close').addEventListener('click', () => {
+        banner.remove();
+        localStorage.setItem('ptv_donation_dismissed', '1');
+    });
+    const header = document.querySelector('header');
+    if (header) header.insertAdjacentElement('afterend', banner);
 }
 
 function esc(s) {
