@@ -3,7 +3,7 @@ import { setCookie } from '../_lib/cookies.js';
 const PROVIDERS = {
   twitch: {
     authUrl: 'https://id.twitch.tv/oauth2/authorize',
-    scope:   'user:read:email moderator:read:followers',
+    scope:   'user:read:email moderator:read:followers user:read:chat',
   },
   google: {
     authUrl: 'https://accounts.google.com/o/oauth2/v2/auth',
