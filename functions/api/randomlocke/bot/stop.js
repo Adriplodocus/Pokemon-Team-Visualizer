@@ -1,5 +1,7 @@
 import { parseCookies } from '../../_lib/cookies.js';
 import { verifyJWT } from '../../_lib/jwt.js';
+import { getDB } from '../../_lib/db.js';
+import { getBotToken } from '../_lib/botToken.js';
 
 function json(data, status = 200) {
     return new Response(JSON.stringify(data), {
@@ -13,11 +15,42 @@ export async function onRequestPost(context) {
     const payload = await verifyJWT(cookies.auth, context.env.JWT_SECRET);
     if (!payload) return json({ error: 'Unauthorized' }, 401);
 
-    if (!context.env.TWITCH_BOT) return json({ ok: true });
+    const sql = getDB(context.env);
 
-    const id = context.env.TWITCH_BOT.idFromName(payload.userId);
-    const stub = context.env.TWITCH_BOT.get(id);
+    let subscriptionId;
+    try {
+        const rows = await sql`
+            SELECT subscription_id FROM bot_eventsub_subscriptions WHERE user_id = ${payload.userId}
+        `;
+        if (!rows.length) return json({ ok: true }); // Already stopped
+        subscriptionId = rows[0].subscription_id;
+    } catch (e) {
+        console.error('DB error in bot/stop', e);
+        return json({ error: 'Service unavailable' }, 503);
+    }
 
-    await stub.fetch('https://do/disconnect', { method: 'POST' });
+    try {
+        const token = await getBotToken(context.env);
+        await fetch(
+            `https://api.twitch.tv/helix/eventsub/subscriptions?id=${subscriptionId}`,
+            {
+                method: 'DELETE',
+                headers: {
+                    'Client-Id': context.env.TWITCH_CLIENT_ID,
+                    'Authorization': `Bearer ${token.access_token}`,
+                },
+            }
+        );
+    } catch (e) {
+        console.error('Twitch EventSub delete failed (non-fatal)', e);
+    }
+
+    try {
+        await sql`DELETE FROM bot_eventsub_subscriptions WHERE user_id = ${payload.userId}`;
+    } catch (e) {
+        console.error('DB error deleting subscription', e);
+        return json({ error: 'Service unavailable' }, 503);
+    }
+
     return json({ ok: true });
 }
