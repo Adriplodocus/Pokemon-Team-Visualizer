@@ -50,6 +50,8 @@ export async function onRequestGet(context) {
   if (provider === 'google') {
     params.set('access_type', 'offline');
     params.set('prompt', 'select_account');
+  } else if (provider === 'twitch') {
+    params.set('force_verify', 'true');
   }
 
   const isSecure    = url.protocol === 'https:';

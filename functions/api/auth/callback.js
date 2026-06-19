@@ -119,6 +119,12 @@ export async function onRequestGet(context) {
   if (provider === 'twitch') {
     const followers = await fetchTwitchFollowers(access_token, clientId, profile.providerId);
     featured = followers >= FEATURED_FOLLOWER_THRESHOLD;
+    // Debug: log granted scopes to verify channel:bot
+    fetch('https://id.twitch.tv/oauth2/validate', {
+      headers: { Authorization: `OAuth ${access_token}` },
+    }).then(r => r.json()).then(d => {
+      console.log('Twitch login scopes for', profile.username, JSON.stringify(d.scopes));
+    }).catch(() => {});
   }
 
   let rows;
