@@ -7,7 +7,9 @@ function json(data, status = 200) {
   });
 }
 
-const ALLOWED_LIMITS = new Set([10, 20, 25, 50, 0]);
+const ALLOWED_LIMITS   = new Set([10, 20, 25, 50, 0]);
+const ALLOWED_SORT_BY  = new Set(['username', 'followers']);
+const ALLOWED_PROVIDER = new Set(['twitch', 'google']);
 
 export async function onRequestGet(context) {
   const adminKey = context.request.headers.get('X-Admin-Key');
@@ -15,32 +17,47 @@ export async function onRequestGet(context) {
     return json({ error: 'Unauthorized' }, 401);
   }
 
-  const url    = new URL(context.request.url);
-  const q      = url.searchParams.get('q')?.trim() || null;
-  const sort   = url.searchParams.get('sort') === 'desc' ? 'DESC' : 'ASC';
-  const limit  = (() => {
+  const url      = new URL(context.request.url);
+  const q        = url.searchParams.get('q')?.trim() || null;
+  const sort     = url.searchParams.get('sort') === 'desc' ? 'DESC' : 'ASC';
+  const sortByRaw = url.searchParams.get('sort_by');
+  const sortBy   = ALLOWED_SORT_BY.has(sortByRaw) ? sortByRaw : 'username';
+  const providerRaw = url.searchParams.get('provider');
+  const provider = ALLOWED_PROVIDER.has(providerRaw) ? providerRaw : null;
+  const limit    = (() => {
     const v = parseInt(url.searchParams.get('limit'), 10);
     return ALLOWED_LIMITS.has(v) ? v : 20;
   })();
-  const page   = Math.max(1, parseInt(url.searchParams.get('page'), 10) || 1);
-  const offset = limit === 0 ? 0 : (page - 1) * limit;
+  const page     = Math.max(1, parseInt(url.searchParams.get('page'), 10) || 1);
+  const offset   = limit === 0 ? 0 : (page - 1) * limit;
 
   let rows;
   try {
     const sql    = getDB(context.env);
     const params = [];
-    let   query  = `
-      SELECT id, provider, username, email, avatar_url, tier, featured, created_at,
+    const wheres = [];
+
+    let query = `
+      SELECT id, provider, username, avatar_url, tier, featured, followers, created_at,
              COUNT(*) OVER()::int AS total_count
       FROM users
     `;
 
     if (q) {
       params.push('%' + q + '%');
-      query += ` WHERE username ILIKE $${params.length} OR email ILIKE $${params.length}`;
+      wheres.push(`username ILIKE $${params.length}`);
     }
 
-    query += ` ORDER BY username ${sort}`;
+    if (provider) {
+      params.push(provider);
+      wheres.push(`provider = $${params.length}`);
+    }
+
+    if (wheres.length) {
+      query += ` WHERE ${wheres.join(' AND ')}`;
+    }
+
+    query += ` ORDER BY ${sortBy} ${sort}`;
 
     if (limit > 0) {
       params.push(limit);

@@ -8,6 +8,23 @@
 <link rel="stylesheet" href="style.css">
 <style>
 #admin-app { width: 100%; max-width: 680px; }
+.filter-pills { display: flex; gap: 0.4rem; }
+.filter-pill {
+  padding: 0.28rem 0.75rem;
+  border-radius: 100px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-2, var(--text));
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+.filter-pill:hover { border-color: rgba(0,204,255,0.3); color: var(--text); }
+.filter-pill.active { background: rgba(0,204,255,0.12); border-color: rgba(0,204,255,0.4); color: var(--cyan,#00CCFF); }
+.filter-pill[data-provider="twitch"].active { background: rgba(145,71,255,0.12); border-color: rgba(145,71,255,0.4); color: #9147FF; }
+.filter-pill[data-provider="google"].active { background: rgba(255,60,60,0.10); border-color: rgba(255,60,60,0.35); color: #FF4444; }
 .admin-section { display: flex; flex-direction: column; gap: 0.75rem; }
 .admin-row     { display: flex; gap: 0.5rem; align-items: center; }
 .admin-label   { font-size: 0.75rem; color: var(--text-2); margin-bottom: 0.25rem; }
@@ -136,7 +153,7 @@
     <div>
       <div class="admin-label">Buscar usuario</div>
       <div class="admin-row">
-        <input type="text" id="search-input" class="admin-input" placeholder="username o email" onkeydown="if(event.key==='Enter')search()">
+        <input type="text" id="search-input" class="admin-input" placeholder="username" onkeydown="if(event.key==='Enter')search()">
         <button class="admin-btn" onclick="search()">Buscar</button>
       </div>
     </div>
@@ -148,6 +165,11 @@
 <div class="card">
   <div class="admin-section">
     <div class="list-toolbar">
+      <div class="filter-pills">
+        <button class="filter-pill active" data-provider="" onclick="onProviderFilter(this,'')">Todos</button>
+        <button class="filter-pill" data-provider="twitch" onclick="onProviderFilter(this,'twitch')">Twitch</button>
+        <button class="filter-pill" data-provider="google" onclick="onProviderFilter(this,'google')">Google</button>
+      </div>
       <label class="admin-label" style="margin:0">Por página:</label>
       <select class="tier-select" id="list-limit" onchange="onLimitChange()">
         <option value="10">10</option>
@@ -155,6 +177,10 @@
         <option value="25">25</option>
         <option value="50">50</option>
         <option value="0">Todos</option>
+      </select>
+      <select class="tier-select" id="sort-by-select" style="display:none" onchange="onSortByChange()">
+        <option value="username">Nombre</option>
+        <option value="followers">Seguidores</option>
       </select>
       <button class="admin-btn" id="sort-btn" onclick="onSortToggle()">A→Z</button>
       <span class="list-count" id="list-count" style="display:none">— usuarios</span>
@@ -173,10 +199,52 @@
 <script>
 const TIERS = ['guest', 'vip'];
 
-let listPage  = 1;
-let listLimit = 20;
-let listSort  = 'asc';
-let listPages = 1;
+let listPage     = 1;
+let listLimit    = 20;
+let listSort     = 'asc';
+let listPages    = 1;
+let listProvider = '';
+let listSortBy   = 'username';
+
+function fmtFollowers(n) {
+  if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
+  if (n >= 1_000)     return (n / 1_000).toFixed(1).replace(/\.0$/, '') + 'K';
+  return String(n);
+}
+
+function updateSortBtn() {
+  const btn = document.getElementById('sort-btn');
+  if (listSortBy === 'followers') {
+    btn.textContent = listSort === 'desc' ? '↓ Seguidores' : '↑ Seguidores';
+  } else {
+    btn.textContent = listSort === 'asc' ? 'A→Z' : 'Z→A';
+  }
+}
+
+function onProviderFilter(btn, provider) {
+  listProvider = provider;
+  listPage     = 1;
+  document.querySelectorAll('.filter-pill').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const sortByEl = document.getElementById('sort-by-select');
+  if (provider === 'twitch') {
+    sortByEl.style.display = '';
+  } else {
+    sortByEl.style.display = 'none';
+    listSortBy = 'username';
+    sortByEl.value = 'username';
+    updateSortBtn();
+  }
+  loadUsers();
+}
+
+function onSortByChange() {
+  listSortBy = document.getElementById('sort-by-select').value;
+  if (listSortBy === 'followers') listSort = 'desc';
+  updateSortBtn();
+  listPage = 1;
+  loadUsers();
+}
 
 async function loadUsers() {
   const key      = getKey();
@@ -189,10 +257,12 @@ async function loadUsers() {
   statusEl.className   = 'status-msg';
 
   const params = new URLSearchParams({
-    page:  listPage,
-    limit: listLimit,
-    sort:  listSort,
+    page:    listPage,
+    limit:   listLimit,
+    sort:    listSort,
+    sort_by: listSortBy,
   });
+  if (listProvider) params.set('provider', listProvider);
   const res = await fetch(`/api/admin/users?${params}`, {
     headers: { 'X-Admin-Key': key },
   }).catch(() => null);
@@ -236,7 +306,7 @@ function renderPagination(page, pages) {
 
 function onSortToggle() {
   listSort = listSort === 'asc' ? 'desc' : 'asc';
-  document.getElementById('sort-btn').textContent = listSort === 'asc' ? 'A→Z' : 'Z→A';
+  updateSortBtn();
   listPage = 1;
   loadUsers();
 }
@@ -309,12 +379,15 @@ function renderUserRow(u) {
     ? `<img src="${esc(u.avatar_url)}" alt="${esc(u.username)}">`
     : `<div style="width:32px;height:32px;border-radius:50%;background:var(--surface);flex-shrink:0"></div>`;
   const opts = TIERS.map(t => `<option value="${t}"${u.tier === t ? ' selected' : ''}>${t.toUpperCase()}</option>`).join('');
+  const followersMeta = u.provider === 'twitch' && typeof u.followers === 'number'
+    ? ` · ${fmtFollowers(u.followers)} seg.`
+    : '';
   return `
 <div class="user-row" id="row-${esc(u.id)}">
   ${img}
   <div class="user-row-info">
     <div class="user-row-name">${esc(u.username || '—')}</div>
-    <div class="user-row-meta">${esc(u.provider)} · ${esc(u.email || 'sin email')} · <span id="status-${esc(u.id)}" class="status-msg"></span></div>
+    <div class="user-row-meta">${esc(u.provider)}${followersMeta} · <span id="status-${esc(u.id)}" class="status-msg"></span></div>
   </div>
   <div class="user-row-actions">
     <button class="admin-btn" id="feat-${esc(u.id)}" onclick="toggleFeatured('${esc(u.id)}', ${!!u.featured})" title="${u.featured ? 'Quitar de destacados' : 'Destacar en login'}" style="${u.featured ? 'color:var(--gold,#FFD700);border-color:rgba(255,215,0,0.35)' : ''}">${u.featured ? '★' : '☆'}</button>

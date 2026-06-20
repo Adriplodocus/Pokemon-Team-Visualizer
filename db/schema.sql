@@ -47,3 +47,5 @@ CREATE TABLE IF NOT EXISTS bot_eventsub_subscriptions (
 ALTER TABLE users ADD COLUMN IF NOT EXISTS state JSONB;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS badge_channel_id TEXT UNIQUE;
 CREATE INDEX IF NOT EXISTS idx_users_badge_channel_id ON users(badge_channel_id);
+
+ALTER TABLE users ADD COLUMN IF NOT EXISTS followers INTEGER NOT NULL DEFAULT 0;

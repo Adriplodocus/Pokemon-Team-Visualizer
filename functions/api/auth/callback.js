@@ -115,24 +115,26 @@ export async function onRequestGet(context) {
     return new Response('Failed to fetch user profile. Please try again.', { status: 502 });
   }
 
-  let featured = false;
+  let featured  = false;
+  let followers = 0;
   if (provider === 'twitch') {
-    const followers = await fetchTwitchFollowers(access_token, clientId, profile.providerId);
-    featured = followers >= FEATURED_FOLLOWER_THRESHOLD;
+    followers = await fetchTwitchFollowers(access_token, clientId, profile.providerId);
+    featured  = followers >= FEATURED_FOLLOWER_THRESHOLD;
   }
 
   let rows;
   try {
     const sql = getDB(context.env);
     rows = await sql`
-      INSERT INTO users (provider, provider_id, username, email, avatar_url, featured)
-      VALUES (${provider}, ${profile.providerId}, ${profile.username}, ${profile.email}, ${profile.avatarUrl}, ${featured})
+      INSERT INTO users (provider, provider_id, username, email, avatar_url, featured, followers)
+      VALUES (${provider}, ${profile.providerId}, ${profile.username}, ${profile.email}, ${profile.avatarUrl}, ${featured}, ${followers})
       ON CONFLICT (provider, provider_id)
       DO UPDATE SET
         username   = EXCLUDED.username,
         email      = EXCLUDED.email,
         avatar_url = EXCLUDED.avatar_url,
-        featured   = EXCLUDED.featured
+        featured   = EXCLUDED.featured,
+        followers  = EXCLUDED.followers
       RETURNING id, tier
     `;
   } catch (e) {
