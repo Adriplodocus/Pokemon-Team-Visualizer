@@ -9,14 +9,32 @@ function json(data, status = 200) {
   });
 }
 
-async function getUser(context) {
+// In external mode the frontend passes ?channel=<channelId> instead of a JWT.
+// We resolve the owner's user_id from users.channel_id.
+async function resolveUserId(context) {
+  const url = new URL(context.request.url);
+  const channelId = url.searchParams.get('channel');
+
+  if (channelId) {
+    const sql = getDB(context.env);
+    const rows = await sql`
+      SELECT id FROM users WHERE channel_id = ${channelId} LIMIT 1
+    `;
+    return rows.length ? rows[0].id : null;
+  }
+
   const cookies = parseCookies(context.request);
-  return verifyJWT(cookies.auth, context.env.JWT_SECRET);
+  const payload = await verifyJWT(cookies.auth, context.env.JWT_SECRET);
+  return payload ? payload.userId : null;
 }
 
 export async function onRequestGet(context) {
-  const payload = await getUser(context);
-  if (!payload) return json({ error: 'Unauthorized' }, 401);
+  let userId;
+  try { userId = await resolveUserId(context); } catch (e) {
+    console.error('DB error resolving user in GET /routes', e);
+    return json({ error: 'Service unavailable' }, 503);
+  }
+  if (!userId) return json({ error: 'Unauthorized' }, 401);
 
   let rows;
   try {
@@ -24,7 +42,7 @@ export async function onRequestGet(context) {
     rows = await sql`
       SELECT id, zone_name, created_at
       FROM randomlocke_routes
-      WHERE user_id = ${payload.userId}
+      WHERE user_id = ${userId}
       ORDER BY created_at DESC
     `;
   } catch (e) {
@@ -40,8 +58,12 @@ export async function onRequestGet(context) {
 }
 
 export async function onRequestPost(context) {
-  const payload = await getUser(context);
-  if (!payload) return json({ error: 'Unauthorized' }, 401);
+  let userId;
+  try { userId = await resolveUserId(context); } catch (e) {
+    console.error('DB error resolving user in POST /routes', e);
+    return json({ error: 'Service unavailable' }, 503);
+  }
+  if (!userId) return json({ error: 'Unauthorized' }, 401);
 
   let body;
   try { body = await context.request.json(); }
@@ -57,14 +79,14 @@ export async function onRequestPost(context) {
     const sql = getDB(context.env);
     const existing = await sql`
       SELECT 1 FROM randomlocke_routes
-      WHERE user_id = ${payload.userId} AND lower(zone_name) = lower(${zone})
+      WHERE user_id = ${userId} AND lower(zone_name) = lower(${zone})
       LIMIT 1
     `;
     if (existing.length > 0) return json({ error: 'Zone already exists' }, 409);
 
     rows = await sql`
       INSERT INTO randomlocke_routes (user_id, zone_name)
-      VALUES (${payload.userId}, ${zone})
+      VALUES (${userId}, ${zone})
       RETURNING id, zone_name, created_at
     `;
   } catch (e) {
@@ -77,12 +99,16 @@ export async function onRequestPost(context) {
 }
 
 export async function onRequestDelete(context) {
-  const payload = await getUser(context);
-  if (!payload) return json({ error: 'Unauthorized' }, 401);
+  let userId;
+  try { userId = await resolveUserId(context); } catch (e) {
+    console.error('DB error resolving user in DELETE /routes', e);
+    return json({ error: 'Service unavailable' }, 503);
+  }
+  if (!userId) return json({ error: 'Unauthorized' }, 401);
 
   try {
     const sql = getDB(context.env);
-    await sql`DELETE FROM randomlocke_routes WHERE user_id = ${payload.userId}`;
+    await sql`DELETE FROM randomlocke_routes WHERE user_id = ${userId}`;
   } catch (e) {
     console.error('DB error in DELETE /routes', e);
     return json({ error: 'Service unavailable' }, 503);

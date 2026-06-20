@@ -22,6 +22,11 @@ CREATE TABLE IF NOT EXISTS randomlocke_routes (
 );
 CREATE INDEX IF NOT EXISTS idx_randomlocke_routes_user ON randomlocke_routes(user_id);
 
+-- channel_id links a user's browser-local channel UUID to their account
+-- Used to resolve ownership when an external editor submits routes
+ALTER TABLE users ADD COLUMN IF NOT EXISTS channel_id TEXT UNIQUE;
+CREATE INDEX IF NOT EXISTS idx_users_channel_id ON users(channel_id);
+
 -- Single-row table: stores the refreshed global bot token.
 -- Seeded manually; updated by TwitchBotDO on each token refresh.
 CREATE TABLE IF NOT EXISTS bot_global_token (

@@ -1380,10 +1380,10 @@ async function loadPreset(slot) {
     const rlVisible = !document.getElementById('rl-section').classList.contains('hidden');
     if (rlVisible && Array.isArray(preset.zones)) {
         try {
-            await fetch('/api/randomlocke/routes', { method: 'DELETE' });
+            await fetch(rlRoutesUrl(), { method: 'DELETE' });
             rlRoutes = [];
             for (const z of preset.zones) {
-                const res = await fetch('/api/randomlocke/routes', {
+                const res = await fetch(rlRoutesUrl(), {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ zone: z.zoneName })
@@ -1528,9 +1528,14 @@ function rlCloseModal() {
     rlRenderRoutes();
 }
 
+function rlRoutesUrl(suffix = '') {
+    const base = '/api/randomlocke/routes' + suffix;
+    return externalMode ? base + (suffix.includes('?') ? '&' : '?') + 'channel=' + encodeURIComponent(channelId) : base;
+}
+
 async function rlLoadRoutes() {
     try {
-        const res = await fetch('/api/randomlocke/routes');
+        const res = await fetch(rlRoutesUrl());
         if (!res.ok) throw new Error();
         rlRoutes = await res.json();
         rlRenderRoutes();
@@ -1585,7 +1590,7 @@ async function rlAddRoute() {
     }
 
     try {
-        const res = await fetch('/api/randomlocke/routes', {
+        const res = await fetch(rlRoutesUrl(), {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },
             body:    JSON.stringify({ zone }),
@@ -1604,7 +1609,7 @@ async function rlAddRoute() {
 
 async function rlDeleteRoute(id) {
     try {
-        const res = await fetch(`/api/randomlocke/routes/${id}`, { method: 'DELETE' });
+        const res = await fetch(rlRoutesUrl(`/${id}`), { method: 'DELETE' });
         if (!res.ok) throw new Error();
         rlRoutes = rlRoutes.filter(r => r.id !== id);
         rlRenderRoutes();
@@ -1617,7 +1622,7 @@ async function rlClearAllRoutes() {
     if (!rlRoutes.length) return;
     if (!confirm(t('clearAllConfirm'))) return;
     try {
-        const res = await fetch('/api/randomlocke/routes', { method: 'DELETE' });
+        const res = await fetch(rlRoutesUrl(), { method: 'DELETE' });
         if (!res.ok) throw new Error();
         rlRoutes = [];
         rlRenderRoutes();
@@ -1699,6 +1704,14 @@ async function rlToggleBot() {
 (async () => {
     const user = await rlCheckAuth();
     if (!user) return;
+
+    if (!externalMode) {
+        fetch('/api/auth/channel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ channelId }),
+        }).catch(() => {});
+    }
 
     rlLoadRoutes();
     rlInitLifeCounter();
