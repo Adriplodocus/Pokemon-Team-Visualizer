@@ -402,7 +402,11 @@ function copyBadgeEditorUrl() {
 function newBadgeChannel() {
     if (!confirm(tB('badgeNewChannelConfirm'))) return;
     badgeChannelId = crypto.randomUUID();
-    localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
+    fetch('/api/auth/badge-channel', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ badgeChannelId }),
+    }).catch(() => {});
     updateBadgeObsHint();
 }
 
@@ -526,7 +530,24 @@ async function hydrateFromAbly() {
 }
 
 // ── Init ──────────────────────────────────────────────────────────
-function initBadges() {
+async function initBadgeChannelFromServer() {
+    const meRes = await fetch('/api/auth/me');
+    if (!meRes.ok) return; // badges.js is embedded in app — don't redirect here
+    const me = await meRes.json();
+
+    if (me.badgeChannelId) {
+        badgeChannelId = me.badgeChannelId;
+    } else {
+        badgeChannelId = localStorage.getItem('ptv_badge_channel_id') || crypto.randomUUID();
+        await fetch('/api/auth/badge-channel', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ badgeChannelId }),
+        }).catch(() => {});
+    }
+}
+
+async function initBadges() {
     if (typeof ACTIVE_PAGE !== 'undefined' && ACTIVE_PAGE === 'badges') {
         const urlId = new URLSearchParams(location.search).get('id');
         if (urlId) {
@@ -539,11 +560,7 @@ function initBadges() {
                 badgeChannelId    = storedExtBadge;
                 badgeExternalMode = true;
             } else {
-                badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
-                if (!badgeChannelId) {
-                    badgeChannelId = crypto.randomUUID();
-                    localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
-                }
+                await initBadgeChannelFromServer();
             }
         }
     } else {
@@ -552,11 +569,7 @@ function initBadges() {
             badgeChannelId    = storedExtBadge;
             badgeExternalMode = true;
         } else {
-            badgeChannelId = localStorage.getItem('ptv_badge_channel_id');
-            if (!badgeChannelId) {
-                badgeChannelId = crypto.randomUUID();
-                localStorage.setItem('ptv_badge_channel_id', badgeChannelId);
-            }
+            await initBadgeChannelFromServer();
         }
     }
 
@@ -574,4 +587,4 @@ function initBadges() {
     hydrateFromAbly();
 }
 
-initBadges();
+(async () => { await initBadges(); })();
