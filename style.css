@@ -1646,3 +1646,15 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     font-size: 0.78rem;
     color: #E5173A;
 }
+
+.save-indicator {
+    font-family: var(--font-mono, 'JetBrains Mono', monospace);
+    font-size: 0.7rem;
+    color: var(--muted, #888);
+    min-height: 1.2em;
+    transition: opacity 0.3s;
+}
+.save-indicator.hidden { opacity: 0; pointer-events: none; }
+.save-indicator.saving { color: var(--muted, #888); }
+.save-indicator.saved  { color: var(--success, #4ade80); }
+.save-indicator.error  { color: var(--error, #f87171); }
