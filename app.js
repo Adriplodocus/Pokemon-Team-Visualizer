@@ -84,6 +84,8 @@ const STRINGS = {
         botConnected:       'Activo',
         activateBot:        'Activar bot',
         deactivateBot:      'Desactivar bot',
+        botGoogleNotice:    'El bot requiere una cuenta de Twitch. Inicia sesión con Twitch para activarlo.',
+        botLoginTwitch:     'Iniciar sesión con Twitch',
         counterDesc:        'Necesitas crear un contador en <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> y pegar el enlace embed iframe aquí.',
     },
     en: {
@@ -170,6 +172,8 @@ const STRINGS = {
         botConnected:       'Active',
         activateBot:        'Activate bot',
         deactivateBot:      'Deactivate bot',
+        botGoogleNotice:    'The bot requires a Twitch account. Log in with Twitch to enable it.',
+        botLoginTwitch:     'Log in with Twitch',
         counterDesc:        'You need to create a counter on <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> and paste the iframe embed link here.',
     }
 };
@@ -1599,7 +1603,10 @@ async function rlCheckAuth() {
     try {
         const user = currentUser || await fetch('/api/auth/me').then(r => r.ok ? r.json() : Promise.reject());
         document.getElementById('rl-section').classList.remove('hidden');
-        document.getElementById('bot-channel-label').textContent = `#${user.username}`;
+        const isTwitch = user.provider === 'twitch';
+        document.getElementById('bot-twitch-controls').classList.toggle('hidden', !isTwitch);
+        document.getElementById('bot-google-notice').classList.toggle('hidden', isTwitch);
+        if (isTwitch) document.getElementById('bot-channel-label').textContent = `#${user.username}`;
         return user;
     } catch {
         return null;

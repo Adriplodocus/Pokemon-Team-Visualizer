@@ -107,14 +107,22 @@
                         <div id="bot-section">
                         <div class="card-divider"></div>
 
-                        <h2 class="card-title" data-i18n="botTitle">Bot de Twitch</h2>
-                        <p class="muted-text" style="margin-bottom:0.75rem" data-i18n="botDesc">El bot de Twitch responde al comando !check {zona}.</p>
-                        <div class="bot-status-row">
-                            <span class="live-dot" id="bot-dot" style="background:var(--dimmed)"></span>
-                            <span id="bot-status-label" data-i18n="botDisconnected">Desactivado</span>
-                            <span id="bot-channel-label" class="muted-text"></span>
+                        <div id="bot-twitch-controls">
+                            <h2 class="card-title" data-i18n="botTitle">Bot de Twitch</h2>
+                            <p class="muted-text" style="margin-bottom:0.75rem" data-i18n="botDesc">El bot de Twitch responde al comando !check {zona}.</p>
+                            <div class="bot-status-row">
+                                <span class="live-dot" id="bot-dot" style="background:var(--dimmed)"></span>
+                                <span id="bot-status-label" data-i18n="botDisconnected">Desactivado</span>
+                                <span id="bot-channel-label" class="muted-text"></span>
+                            </div>
+                            <button id="bot-toggle-btn" class="btn" style="margin-top:0.75rem" data-i18n="activateBot">Activar bot</button>
                         </div>
-                        <button id="bot-toggle-btn" class="btn" style="margin-top:0.75rem" data-i18n="activateBot">Activar bot</button>
+
+                        <div id="bot-google-notice" class="hidden">
+                            <h2 class="card-title" data-i18n="botTitle">Bot de Twitch</h2>
+                            <p class="muted-text" style="margin-bottom:0.75rem" data-i18n="botGoogleNotice">El bot requiere una cuenta de Twitch.</p>
+                            <a href="/api/auth/login?provider=twitch" class="btn" data-i18n="botLoginTwitch">Iniciar sesión con Twitch</a>
+                        </div>
                         </div>
                     </div>
                 </div>

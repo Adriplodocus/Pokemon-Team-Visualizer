@@ -19,7 +19,7 @@ export async function onRequestGet(context) {
   try {
     const sql = getDB(context.env);
     rows = await sql`
-      SELECT username, avatar_url, tier, channel_id, badge_channel_id
+      SELECT username, avatar_url, tier, channel_id, badge_channel_id, provider
       FROM users WHERE id = ${payload.userId}
     `;
   } catch (e) {
@@ -29,11 +29,12 @@ export async function onRequestGet(context) {
 
   if (!rows.length) return json({ error: 'User not found' }, 401);
 
-  const { username, avatar_url, tier, channel_id, badge_channel_id } = rows[0];
+  const { username, avatar_url, tier, channel_id, badge_channel_id, provider } = rows[0];
   return json({
     username,
     avatarUrl: avatar_url,
     tier,
+    provider,
     channelId: channel_id || null,
     badgeChannelId: badge_channel_id || null,
   });
