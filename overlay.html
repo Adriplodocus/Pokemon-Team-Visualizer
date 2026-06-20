@@ -11,6 +11,7 @@ body,html{margin:0;padding:0;background:transparent;}
 /* ── Horizontal ── */
 body.layout-horizontal .container{display:flex;flex-wrap:nowrap;}
 body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;}
+body.layout-horizontal .pkDiv--float{align-items:center;}
 body.layout-horizontal .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 body.layout-horizontal .sprite-row{position:relative;z-index:1;}
 body.layout-horizontal .shadow-row{margin-top:-15px;}
@@ -55,6 +56,10 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
 (function () {
     var SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
     var POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
+
+    var FLOATING_POKEMON = new Set([
+        // fill with pokemon names that should appear elevated (center-aligned)
+    ]);
 
     var id = new URLSearchParams(location.search).get('id');
     if (!id) return;
@@ -141,7 +146,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
             team.forEach(function (slot) {
                 if (!slot || !slot.url) return;
                 var pk = document.createElement('div');
-                pk.className = 'pkDiv';
+                pk.className = 'pkDiv' + (slot.name && FLOATING_POKEMON.has(slot.name) ? ' pkDiv--float' : '');
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
                 pk.appendChild(makeImg(slot.url, slot.fallback, null));
                 top.appendChild(pk);

@@ -215,6 +215,10 @@ const BASE_URL     = 'https://pokemon.mrklypp.com/sprites/';
 const SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
 const POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
 
+const FLOATING_POKEMON = new Set([
+    // fill with pokemon names that should appear elevated (center-aligned)
+]);
+
 const FEMALE_VARIANTS = new Set([
     'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
     'bibarel','bidoof','blaziken','buizel','butterfree','cacturne',
@@ -718,6 +722,7 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
             ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
             : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         return {
+            name,
             mote: (slot.mote || slot.name).toUpperCase(),
             url,
             fallback: fallback !== url ? fallback : null,
@@ -752,6 +757,7 @@ ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
 .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;}
+.pkDiv--float{align-items:center;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
@@ -774,7 +780,7 @@ p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size,
 <body>
 ${(!nameHidden && nameAbove) ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
 <div class="container sprite-row">
-${entries.map((e, i) => e ? `<div class="pkDiv">${pkDivContent[i]}</div>` : '').join('\n')}
+${entries.map((e, i) => e ? `<div class="pkDiv${FLOATING_POKEMON.has(e.name) ? ' pkDiv--float' : ''}">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
 <div class="container shadow-row">
 ${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
@@ -1288,6 +1294,7 @@ async function publishToObs() {
             ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
             : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
         return {
+            name,
             mote:     (slot.mote || slot.name).toUpperCase(),
             url,
             fallback: fallback !== url ? fallback : null,
