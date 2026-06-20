@@ -273,6 +273,8 @@ const ALIAS_TO_CANONICAL = {};
 let SPRITE_VER = '?v=2';
 let channelId    = null;
 let externalMode = false;
+let currentUser   = null;
+let serverPresets = [null, null, null];
 let modalIndex   = -1;
 let modalVars    = {};
 let dragSrcIndex    = -1;
@@ -1088,43 +1090,8 @@ function saveState(updatePreview = true) {
     if (updatePreview) schedulePreviewUpdate();
 }
 
-function loadState() {
-    const saved = localStorage.getItem('ptv_team');
-    if (!saved) return;
-    try {
-        const data = JSON.parse(saved);
-        data.forEach((slot, i) => {
-            if (i >= 6) return;
-            team[i] = { name: slot.name || '', mote: slot.mote || '', properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) } };
-            const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
-            row.querySelector('.name-input').value = team[i].name;
-            row.querySelector('.mote-input').value = team[i].mote;
-            refreshIcons(i);
-            refreshSprite(i);
-        });
-    } catch(e) {}
-
-    const layout = localStorage.getItem('ptv_layout');
-    if (layout) document.getElementById('layout-select').value = layout;
-
-    const shadows = localStorage.getItem('ptv_shadows');
-    if (shadows !== null) document.getElementById('shadows-check').checked = shadows === 'true';
-
-    const bg = localStorage.getItem('ptv_bg');
-    if (bg !== null) document.getElementById('bg-check').checked = bg === 'true';
-
-    loadTypography();
-}
-
 function saveTypography() {
     localStorage.setItem('ptv_typography', JSON.stringify(typography));
-}
-
-function loadTypography() {
-    try {
-        const saved = JSON.parse(localStorage.getItem('ptv_typography'));
-        if (saved) typography = { ...DEFAULT_TYPOGRAPHY, ...saved };
-    } catch (_) {}
 }
 
 function applyRawState(raw) {
@@ -1155,15 +1122,24 @@ function applyRawState(raw) {
         syncTypographyUI();
     }
 
-    if (!externalMode) {
-        localStorage.setItem('ptv_team', JSON.stringify(team));
-        if (raw.layout  !== undefined) localStorage.setItem('ptv_layout',  raw.layout);
-        if (raw.shadows !== undefined) localStorage.setItem('ptv_shadows', String(raw.shadows));
-        if (raw.bg      !== undefined) localStorage.setItem('ptv_bg',      String(raw.bg));
-    }
-
     updatePreview();
     updateObsHint();
+}
+
+function applyServerState(state) {
+    if (!state) return;
+    applyRawState(state);
+
+    serverPresets = Array.isArray(state.presets) ? state.presets.slice(0, 3) : [null, null, null];
+    while (serverPresets.length < 3) serverPresets.push(null);
+    renderPresets();
+
+    const counterUrl = state.counterUrl || '';
+    const counterInput = document.getElementById('counter-url');
+    if (counterInput) {
+        counterInput.value = counterUrl;
+        rlApplyCounterUrl(counterUrl);
+    }
 }
 
 async function hydrateFromAbly() {
@@ -1454,7 +1430,7 @@ function dismissCookie() {
 }
 
 // ── Init ─────────────────────────────────────────────────────────
-function initChannelId() {
+function initExternalMode() {
     const params = new URLSearchParams(location.search);
     const urlId  = params.get('id');
     const bidId  = params.get('bid');
@@ -1464,19 +1440,75 @@ function initChannelId() {
         externalMode = true;
         sessionStorage.setItem('ptv_external_id', urlId);
         if (bidId) sessionStorage.setItem('ptv_external_badge_id', bidId);
+        return;
+    }
+    const storedExtId = sessionStorage.getItem('ptv_external_id');
+    if (storedExtId) {
+        channelId    = storedExtId;
+        externalMode = true;
+    }
+}
+
+async function initFromServer() {
+    const meRes = await fetch('/api/auth/me');
+    if (!meRes.ok) {
+        window.location.href = '/login.html';
+        return;
+    }
+    currentUser = await meRes.json();
+
+    if (currentUser.channelId) {
+        channelId = currentUser.channelId;
     } else {
-        const storedExtId = sessionStorage.getItem('ptv_external_id');
-        if (storedExtId) {
-            channelId    = storedExtId;
-            externalMode = true;
-        } else {
-            channelId = localStorage.getItem('ptv_channel_id');
-            if (!channelId) {
-                channelId = crypto.randomUUID();
-                localStorage.setItem('ptv_channel_id', channelId);
-            }
+        channelId = localStorage.getItem('ptv_channel_id') || crypto.randomUUID();
+        await fetch('/api/auth/channel', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ channelId }),
+        }).catch(() => {});
+    }
+
+    const stateRes = await fetch('/api/state');
+    if (!stateRes.ok) return;
+    const serverState = await stateRes.json();
+
+    if (serverState.team) {
+        applyServerState(serverState);
+    } else {
+        const localTeam = localStorage.getItem('ptv_team');
+        if (localTeam) {
+            const migrated = buildMigratedState();
+            await fetch('/api/state', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(migrated),
+            }).catch(() => {});
+            applyServerState(migrated);
         }
     }
+}
+
+function buildMigratedState() {
+    let parsedTeam = [];
+    try { parsedTeam = JSON.parse(localStorage.getItem('ptv_team') || '[]'); } catch (_) {}
+    let parsedTypo = null;
+    try { parsedTypo = JSON.parse(localStorage.getItem('ptv_typography')); } catch (_) {}
+    return {
+        team: parsedTeam.slice(0, 6).map(s => ({
+            name:       s.name       || '',
+            mote:       s.mote       || '',
+            properties: { ...DEFAULT_PROPS, ...(s.properties || {}) },
+        })),
+        layout:     localStorage.getItem('ptv_layout')   || 'horizontal',
+        shadows:    localStorage.getItem('ptv_shadows')  !== 'false',
+        bg:         localStorage.getItem('ptv_bg')       === 'true',
+        typography: parsedTypo ? { ...DEFAULT_TYPOGRAPHY, ...parsedTypo } : { ...DEFAULT_TYPOGRAPHY },
+        presets: [0, 1, 2].map(i => {
+            try { return JSON.parse(localStorage.getItem('ptv_preset_' + i)); }
+            catch (_) { return null; }
+        }),
+        counterUrl: localStorage.getItem('ptv_streamcounters_url') || '',
+    };
 }
 
 // ── Mode toggle ───────────────────────────────────────────────────
@@ -1489,17 +1521,13 @@ function setMode(mode) {
     if (mode === 'badges') schedulePreviewBadgeUpdate();
 }
 
-initChannelId();
+// ── Init sequence ────────────────────────────────────────────────
+initExternalMode();
 buildRows();
-loadState();
 buildFontDropdown();
-syncTypographyUI();
 initColorPicker();
 setLang(currentLang);
-updatePreview();
 initCookieNotice();
-hydrateFromAbly();
-subscribeToAblyUpdates();
 
 // ── Randomlocke integration ────────────────────────────────────
 var rlRoutes = [];
@@ -1508,9 +1536,7 @@ var rlBotActive = false;
 
 async function rlCheckAuth() {
     try {
-        const res = await fetch('/api/auth/me');
-        if (!res.ok) throw new Error();
-        const user = await res.json();
+        const user = currentUser || await fetch('/api/auth/me').then(r => r.ok ? r.json() : Promise.reject());
         document.getElementById('rl-section').classList.remove('hidden');
         document.getElementById('bot-channel-label').textContent = `#${user.username}`;
         return user;
@@ -1705,16 +1731,18 @@ async function rlToggleBot() {
 }
 
 (async () => {
+    if (!externalMode) {
+        await initFromServer();
+    }
+    syncTypographyUI();
+    updatePreview();
+    updateObsHint();
+    hydrateFromAbly();
+    subscribeToAblyUpdates();
+    renderPresets();
+
     const user = await rlCheckAuth();
     if (!user) return;
-
-    if (!externalMode) {
-        fetch('/api/auth/channel', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ channelId }),
-        }).catch(() => {});
-    }
 
     rlLoadRoutes();
     rlInitLifeCounter();
