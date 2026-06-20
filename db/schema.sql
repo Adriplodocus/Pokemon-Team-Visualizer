@@ -42,3 +42,8 @@ CREATE TABLE IF NOT EXISTS bot_eventsub_subscriptions (
   subscription_id TEXT NOT NULL,
   created_at      TIMESTAMPTZ DEFAULT NOW()
 );
+
+-- Server-side team/badge state and badge overlay channel
+ALTER TABLE users ADD COLUMN IF NOT EXISTS state JSONB;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS badge_channel_id TEXT UNIQUE;
+CREATE INDEX IF NOT EXISTS idx_users_badge_channel_id ON users(badge_channel_id);

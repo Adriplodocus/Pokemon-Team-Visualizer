@@ -9,32 +9,28 @@ function json(data, status = 200) {
   });
 }
 
-export async function onRequestGet(context) {
+export async function onRequestPost(context) {
   const cookies = parseCookies(context.request);
   const payload = await verifyJWT(cookies.auth, context.env.JWT_SECRET);
-
   if (!payload) return json({ error: 'Unauthorized' }, 401);
 
-  let rows;
+  let body;
+  try { body = await context.request.json(); }
+  catch { return json({ error: 'Invalid JSON' }, 400); }
+
+  const badgeChannelId = (body.badgeChannelId || '').trim();
+  if (!badgeChannelId || badgeChannelId.length > 100) return json({ error: 'Invalid badgeChannelId' }, 400);
+
   try {
     const sql = getDB(context.env);
-    rows = await sql`
-      SELECT username, avatar_url, tier, channel_id, badge_channel_id
-      FROM users WHERE id = ${payload.userId}
+    await sql`
+      UPDATE users SET badge_channel_id = ${badgeChannelId}
+      WHERE id = ${payload.userId}
     `;
   } catch (e) {
-    console.error('DB error in /me', e);
+    console.error('DB error in POST /auth/badge-channel', e);
     return json({ error: 'Service unavailable' }, 503);
   }
 
-  if (!rows.length) return json({ error: 'User not found' }, 401);
-
-  const { username, avatar_url, tier, channel_id, badge_channel_id } = rows[0];
-  return json({
-    username,
-    avatarUrl: avatar_url,
-    tier,
-    channelId: channel_id || null,
-    badgeChannelId: badge_channel_id || null,
-  });
+  return json({ ok: true });
 }
