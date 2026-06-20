@@ -178,6 +178,11 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
     }
     window.addEventListener('resize', fitToViewport);
 
+    fetch('/api/load?id=' + id + '&event=update')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) { if (data && !data.error) { renderTeam(data); fitToViewport(); } })
+        .catch(function () {});
+
     var ably = new Ably.Realtime({ authUrl: '/api/token' });
     var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('update', function (msg) {

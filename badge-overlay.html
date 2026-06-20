@@ -52,6 +52,11 @@ body, html { margin: 0; padding: 0; background: transparent; }
         root.appendChild(grid);
     }
 
+    fetch('/api/load?id=' + id + '&event=update')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) { if (data && !data.error) render(data); })
+        .catch(function () {});
+
     var ably    = new Ably.Realtime({ authUrl: '/api/token' });
     var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('update', function (msg) {
