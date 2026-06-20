@@ -148,7 +148,7 @@ let pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
 let modalProps   = { ...DEFAULT_PROPS };
 
 // ── Channel ID ────────────────────────────────────────────────────
-function initChannelId() {
+async function initChannelId() {
     const params = new URLSearchParams(location.search);
     const urlId  = params.get('id');
     const bidId  = params.get('bid');
@@ -158,18 +158,31 @@ function initChannelId() {
         externalMode = true;
         sessionStorage.setItem('ptv_external_id', urlId);
         if (bidId) sessionStorage.setItem('ptv_external_badge_id', bidId);
+        return;
+    }
+    const storedExtId = sessionStorage.getItem('ptv_external_id');
+    if (storedExtId) {
+        channelId    = storedExtId;
+        externalMode = true;
+        return;
+    }
+
+    const meRes = await fetch('/api/auth/me');
+    if (!meRes.ok) {
+        window.location.href = '/login.html';
+        return;
+    }
+    const me = await meRes.json();
+
+    if (me.channelId) {
+        channelId = me.channelId;
     } else {
-        const storedExtId = sessionStorage.getItem('ptv_external_id');
-        if (storedExtId) {
-            channelId    = storedExtId;
-            externalMode = true;
-        } else {
-            channelId = localStorage.getItem('ptv_channel_id');
-            if (!channelId) {
-                channelId = crypto.randomUUID();
-                localStorage.setItem('ptv_channel_id', channelId);
-            }
-        }
+        channelId = localStorage.getItem('ptv_channel_id') || crypto.randomUUID();
+        await fetch('/api/auth/channel', {
+            method:  'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body:    JSON.stringify({ channelId }),
+        }).catch(() => {});
     }
 }
 
@@ -495,7 +508,11 @@ function copyEditorUrl() {
 function newChannel() {
     if (!confirm(tC('newChannelConfirm'))) return;
     channelId = crypto.randomUUID();
-    localStorage.setItem('ptv_channel_id', channelId);
+    fetch('/api/auth/channel', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ channelId }),
+    }).catch(() => {});
     updateObsUrl();
 }
 
@@ -1000,16 +1017,18 @@ function initCemColorPicker() {
 }
 
 // ── Init ───────────────────────────────────────────────────────────
-initChannelId();
-loadCemeteryConfig();
-loadCemeteryTypo();
-loadCemetery();
-renderCemetery();
-updateObsUrl();
-updateCemeteryObsHint();
-initGridControls();
-buildCemFontDropdown();
-syncCemTypoUI();
-initCemColorPicker();
-initCemeteryPreview();
-hydrateFromAbly();
+(async () => {
+    await initChannelId();
+    loadCemeteryConfig();
+    loadCemeteryTypo();
+    loadCemetery();
+    renderCemetery();
+    updateObsUrl();
+    updateCemeteryObsHint();
+    initGridControls();
+    buildCemFontDropdown();
+    syncCemTypoUI();
+    initCemColorPicker();
+    initCemeteryPreview();
+    hydrateFromAbly();
+})();
