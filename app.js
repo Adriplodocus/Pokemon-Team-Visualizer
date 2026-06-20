@@ -275,6 +275,56 @@ let channelId    = null;
 let externalMode = false;
 let currentUser   = null;
 let serverPresets = [null, null, null];
+
+let _saveIndicatorTimer = null;
+function setSaveIndicator(state, text) {
+    const el = document.getElementById('save-indicator');
+    if (!el) return;
+    el.className = 'save-indicator ' + state;
+    el.textContent = text;
+    clearTimeout(_saveIndicatorTimer);
+    if (state === 'saved') {
+        _saveIndicatorTimer = setTimeout(() => {
+            el.className = 'save-indicator hidden';
+            el.textContent = '';
+        }, 2000);
+    }
+}
+
+function buildStateBlob() {
+    return {
+        team:       team.map(s => ({ name: s.name, mote: s.mote, properties: { ...s.properties } })),
+        layout:     document.getElementById('layout-select').value,
+        shadows:    document.getElementById('shadows-check').checked,
+        bg:         document.getElementById('bg-check').checked,
+        typography: { ...typography },
+        presets:    serverPresets.slice(),
+        counterUrl: document.getElementById('counter-url')?.value || '',
+    };
+}
+
+let _saveTimer = null;
+function scheduleSaveToServer() {
+    setSaveIndicator('saving', 'Guardando…');
+    clearTimeout(_saveTimer);
+    _saveTimer = setTimeout(async () => {
+        try {
+            const res = await fetch('/api/state', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(buildStateBlob()),
+            });
+            if (res.ok) {
+                setSaveIndicator('saved', 'Guardado ✓');
+            } else {
+                setSaveIndicator('error', 'Error al guardar');
+            }
+        } catch {
+            setSaveIndicator('error', 'Error al guardar');
+        }
+    }, 1000);
+}
+
 let modalIndex   = -1;
 let modalVars    = {};
 let dragSrcIndex    = -1;
@@ -1083,15 +1133,12 @@ function initColorPicker() {
 // ── Persistence ─────────────────────────────────────────────────
 function saveState(updatePreview = true) {
     if (externalMode) return;
-    localStorage.setItem('ptv_team',    JSON.stringify(team));
-    localStorage.setItem('ptv_layout',  document.getElementById('layout-select').value);
-    localStorage.setItem('ptv_shadows', document.getElementById('shadows-check').checked);
-    localStorage.setItem('ptv_bg',      document.getElementById('bg-check').checked);
     if (updatePreview) schedulePreviewUpdate();
+    scheduleSaveToServer();
 }
 
 function saveTypography() {
-    localStorage.setItem('ptv_typography', JSON.stringify(typography));
+    saveState(false);
 }
 
 function applyRawState(raw) {
@@ -1278,7 +1325,11 @@ async function publishToObs() {
 function newChannel() {
     if (!confirm(t('newChannelConfirm'))) return;
     channelId = crypto.randomUUID();
-    localStorage.setItem('ptv_channel_id', channelId);
+    fetch('/api/auth/channel', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify({ channelId }),
+    }).catch(() => {});
     updateObsHint();
 }
 
@@ -1307,10 +1358,12 @@ function showTooltip(el) {
 
 // ── Presets ───────────────────────────────────────────────────────
 function getPreset(slot) {
-    try { return JSON.parse(localStorage.getItem('ptv_preset_' + slot)); } catch(_) { return null; }
+    return serverPresets[slot] || null;
 }
+
 function setPreset(slot, data) {
-    localStorage.setItem('ptv_preset_' + slot, JSON.stringify(data));
+    serverPresets[slot] = data;
+    saveState(false);
 }
 
 function savePreset(slot) {
@@ -1327,7 +1380,7 @@ function savePreset(slot) {
         bg: document.getElementById('bg-check').checked,
         typography: JSON.parse(JSON.stringify(typography)),
         zones: JSON.parse(JSON.stringify(rlRoutes)),
-        counterUrl: localStorage.getItem(RL_COUNTER_URL_KEY) || ''
+        counterUrl: document.getElementById('counter-url')?.value || ''
     });
     renderPresets();
     setStatus(t('presetSaved'), 'var(--success)');
@@ -1375,7 +1428,6 @@ async function loadPreset(slot) {
     }
 
     if (preset.counterUrl !== undefined) {
-        localStorage.setItem(RL_COUNTER_URL_KEY, preset.counterUrl);
         const input = document.getElementById('counter-url');
         if (input) input.value = preset.counterUrl;
         rlApplyCounterUrl(preset.counterUrl);
@@ -1387,8 +1439,9 @@ async function loadPreset(slot) {
 }
 
 function deletePreset(slot) {
-    localStorage.removeItem('ptv_preset_' + slot);
+    serverPresets[slot] = null;
     renderPresets();
+    saveState(false);
     setStatus(t('presetDeleted'), 'var(--success)');
 }
 
@@ -1661,8 +1714,6 @@ async function rlClearAllRoutes() {
     }
 }
 
-const RL_COUNTER_URL_KEY = 'ptv_streamcounters_url';
-
 function rlIsValidUrl(val) {
     try {
         return new URL(val).hostname === 'streamcounters.mrklypp.com';
@@ -1684,13 +1735,10 @@ function rlApplyCounterUrl(url) {
 
 function rlInitLifeCounter() {
     const input = document.getElementById('counter-url');
-    const saved = localStorage.getItem(RL_COUNTER_URL_KEY) || '';
-    input.value = saved;
-    rlApplyCounterUrl(saved);
+    if (!input) return;
     input.addEventListener('blur', () => {
-        const url = input.value.trim();
-        localStorage.setItem(RL_COUNTER_URL_KEY, url);
-        rlApplyCounterUrl(url);
+        saveState(false);
+        rlApplyCounterUrl(input.value.trim());
     });
 }
 
