@@ -386,7 +386,7 @@ function renderUserRow(u) {
 <div class="user-row" id="row-${esc(u.id)}">
   ${img}
   <div class="user-row-info">
-    <div class="user-row-name">${esc(u.username || '—')}</div>
+    <div class="user-row-name">${u.provider === 'twitch' && u.username ? `<a href="https://twitch.tv/${esc(u.username)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(145,71,255,0.4)">${esc(u.username)}</a>` : esc(u.username || '—')}</div>
     <div class="user-row-meta">${esc(u.provider)}${followersMeta} · <span id="status-${esc(u.id)}" class="status-msg"></span></div>
   </div>
   <div class="user-row-actions">
