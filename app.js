@@ -216,7 +216,7 @@ const SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
 const POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
 
 const FLOATING_POKEMON = new Set([
-    // fill with pokemon names that should appear elevated (center-aligned)
+    'wingull','kyogre','swellow','vibrava','mantine','yanmega','yanma','tropius','regieleki',
 ]);
 
 const FEMALE_VARIANTS = new Set([
