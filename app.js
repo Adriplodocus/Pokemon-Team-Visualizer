@@ -275,6 +275,7 @@ let channelId    = null;
 let externalMode = false;
 let currentUser   = null;
 let serverPresets = [null, null, null];
+let _serverInitDone = false;
 
 let _saveIndicatorTimer = null;
 function setSaveIndicator(state, text) {
@@ -305,6 +306,7 @@ function buildStateBlob() {
 
 let _saveTimer = null;
 function scheduleSaveToServer() {
+    if (!_serverInitDone) return;
     setSaveIndicator('saving', 'Guardando…');
     clearTimeout(_saveTimer);
     _saveTimer = setTimeout(async () => {
@@ -1781,6 +1783,7 @@ async function rlToggleBot() {
     if (!externalMode) {
         await initFromServer();
     }
+    _serverInitDone = true;
     syncTypographyUI();
     updatePreview();
     updateObsHint();
