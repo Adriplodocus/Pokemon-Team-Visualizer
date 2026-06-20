@@ -17,6 +17,7 @@ body.layout-horizontal .shadow-row{margin-top:-15px;}
 body.layout-horizontal .nameDiv{flex:0 0 225px;width:225px;}
 body.layout-horizontal img{width:100%;max-width:100%;max-height:100%;object-fit:contain;pointer-events:none;user-select:none;}
 body.layout-horizontal p{margin:0;height:35px;line-height:35px;text-align:center;}
+body.layout-horizontal .name-above-row{padding-top:10px;}
 
 /* ── Vertical ── */
 body.layout-vertical .wrapper{display:flex;flex-direction:column;}
@@ -112,7 +113,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
                 var p = document.createElement('p');
                 p.style.cssText = pStyle;
                 p.textContent = slot.mote || '';
-                if (typo.namePosition === 'above') pk.appendChild(p);
+                if (typo.namePosition === 'above') pair.appendChild(p);
                 if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
                 pk.appendChild(makeImg(slot.url, slot.fallback, null));
 
@@ -130,7 +131,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
             var nameHidden = typo.namePosition === 'hidden';
             var nameAbove = !nameHidden && typo.namePosition !== 'below';
             var nameAboveRow = nameAbove ? document.createElement('div') : null;
-            if (nameAboveRow) nameAboveRow.className = 'container';
+            if (nameAboveRow) nameAboveRow.className = 'container name-above-row';
             var top = document.createElement('div');
             top.className = 'container sprite-row';
             var bot = document.createElement('div');
