@@ -1200,6 +1200,9 @@ function capitalize(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
 
 // ── OBS hint ────────────────────────────────────────────────────
 function updateObsHint() {
+    const botSection = document.getElementById('bot-section');
+    if (botSection) botSection.classList.toggle('hidden', externalMode);
+
     const banner = document.getElementById('external-banner');
     if (banner) {
         banner.classList.toggle('hidden', !externalMode);
