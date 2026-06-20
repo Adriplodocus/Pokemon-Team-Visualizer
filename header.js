@@ -30,7 +30,7 @@
 <header>
     <h1>Pokémon Stream Visualizer<span class="app-badge app-badge--beta"><span class="app-badge-dot"></span>Beta</span></h1>
     <p class="subtitle" data-i18n-header="headerSubtitle">La herramienta definitiva para gestionar tu overlay de pokémon</p>
-    <p class="header-error" data-i18n-header="headerError">Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.</p>
+    <p class="header-error" data-i18n-header="headerError">¿Quieres notificar un error o dejar feedback? Puedes hacerlo a través de este <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">enlace</a>.</p>
     <div class="header-controls-row">
         <div class="mode-toggle">
             ${tabs}
@@ -48,13 +48,13 @@
 const HEADER_STRINGS = {
     es: {
         headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
-        headerError: 'Si encuentras algún error, <a href="mailto:MrKlypp@gmail.com">escríbeme</a>.',
+        headerError: '¿Quieres notificar un error o dejar feedback? Puedes hacerlo a través de este <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">enlace</a>.',
         guideBtn: 'Guía',
         donationMsg: 'Este es un proyecto gratuito. Pero utiliza servicios de terceros que aplican barreras de pago (Cloudflare, Ably, Neon). Tu donación puede ayudar a mejorar los servicios prestados por la aplicación. Puedes realizar una donación <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">aquí</a>.',
     },
     en: {
         headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
-        headerError: 'Found a bug? <a href="mailto:MrKlypp@gmail.com">Drop me a line</a>.',
+        headerError: 'Want to report a bug or leave feedback? You can do so through this <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">link</a>.',
         guideBtn: 'Guide',
         donationMsg: 'This is a free project, but it relies on third-party services with paid tiers (Cloudflare, Ably, Neon). Your donation helps keep and improve the app. You can make a donation <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">here</a>.',
     },
