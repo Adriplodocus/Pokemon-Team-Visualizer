@@ -33,6 +33,7 @@ const GAME_TO_REGION = {
     'pokemon-escudo':             'Galar',
     'pokemon-escarlata':          'Paldea',
     'pokemon-purpura':            'Paldea',
+    'pokemon-consonancia':        'Passio',
 };
 
 const REGION_DATA = {
@@ -45,6 +46,7 @@ const REGION_DATA = {
     Kalos:  { count: 8 },
     Galar:  { count: 10 },
     Paldea: { count: 8 },
+    Passio: { count: 8 },
 };
 
 const BADGE_GAMES = [
@@ -98,6 +100,9 @@ const BADGE_GAMES = [
     { region: 'Paldea', labels: { es: 'Paldea', en: 'Paldea' }, games: [
         ['pokemon-escarlata', { es: 'Pokémon Escarlata', en: 'Pokémon Scarlet' }],
         ['pokemon-purpura',   { es: 'Pokémon Púrpura',   en: 'Pokémon Violet' }],
+    ]},
+    { region: 'Passio', labels: { es: 'Passio', en: 'Passio' }, games: [
+        ['pokemon-consonancia', { es: 'Pokémon Consonancia', en: 'Pokémon Consonancia' }],
     ]},
 ];
 
