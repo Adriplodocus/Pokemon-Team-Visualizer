@@ -42,7 +42,7 @@ export async function onRequestPost(context) {
     try {
         const sql = getDB(context.env);
         await sql`
-            UPDATE users SET state = ${JSON.stringify(body)}::jsonb
+            UPDATE users SET state = COALESCE(state, '{}'::jsonb) || ${JSON.stringify(body)}::jsonb
             WHERE id = ${payload.userId}
         `;
     } catch (e) {

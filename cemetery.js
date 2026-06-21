@@ -28,6 +28,49 @@ const DEFAULT_CEMETERY_TYPO = {
 };
 let cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO };
 
+let _cemeteryServerInitDone = false;
+let _cemeteryTimer = null;
+
+function buildCemeteryBlob() {
+    return {
+        cemetery:       cemetery.map(e => ({ name: e.name, mote: e.mote, props: { ...e.props } })),
+        cemeteryConfig: { ...cemeteryConfig },
+        cemeteryTypo:   { ...cemeteryTypo },
+    };
+}
+
+function scheduleSaveCemeteryToServer() {
+    if (!_cemeteryServerInitDone) return;
+    clearTimeout(_cemeteryTimer);
+    _cemeteryTimer = setTimeout(async () => {
+        try {
+            await fetch('/api/state', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(buildCemeteryBlob()),
+            });
+        } catch (_) {}
+    }, 1000);
+}
+
+function applyCemeteryServerState(s) {
+    if (Array.isArray(s.cemetery)) {
+        cemetery = s.cemetery.map(e => ({
+            name:  e.name  || '',
+            mote:  e.mote  || '',
+            props: { ...DEFAULT_PROPS, ...(e.props || {}) },
+        }));
+    }
+    if (s.cemeteryConfig) {
+        cemeteryConfig.cols     = Math.min(10, Math.max(1, parseInt(s.cemeteryConfig.cols) || 4));
+        cemeteryConfig.rows     = Math.min(10, Math.max(1, parseInt(s.cemeteryConfig.rows) || 3));
+        cemeteryConfig.overflow = s.cemeteryConfig.overflow !== false;
+    }
+    if (s.cemeteryTypo && Object.keys(s.cemeteryTypo).length) {
+        cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO, ...s.cemeteryTypo };
+    }
+}
+
 const FEMALE_VARIANTS = new Set([
     'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
     'bibarel','bidoof','blaziken','buizel','butterfree','cacturne',
@@ -189,7 +232,7 @@ async function initChannelId() {
 // ── Persist ───────────────────────────────────────────────────────
 function saveCemetery() {
     if (externalMode) return;
-    localStorage.setItem(CEMETERY_KEY, JSON.stringify(cemetery));
+    scheduleSaveCemeteryToServer();
 }
 
 function loadCemetery() {
@@ -200,7 +243,7 @@ function loadCemetery() {
 
 function saveCemeteryConfig() {
     if (externalMode) return;
-    localStorage.setItem(CEMETERY_CONFIG_KEY, JSON.stringify(cemeteryConfig));
+    scheduleSaveCemeteryToServer();
 }
 
 function loadCemeteryConfig() {
@@ -214,7 +257,7 @@ function loadCemeteryConfig() {
 
 function saveCemeteryTypo() {
     if (externalMode) return;
-    localStorage.setItem(CEMETERY_TYPO_KEY, JSON.stringify(cemeteryTypo));
+    scheduleSaveCemeteryToServer();
 }
 
 function loadCemeteryTypo() {
@@ -1019,9 +1062,35 @@ function initCemColorPicker() {
 // ── Init ───────────────────────────────────────────────────────────
 (async () => {
     await initChannelId();
-    loadCemeteryConfig();
-    loadCemeteryTypo();
-    loadCemetery();
+
+    if (!externalMode) {
+        const stateRes = await fetch('/api/state').catch(() => null);
+        if (stateRes && stateRes.ok) {
+            const serverState = await stateRes.json();
+            if (Array.isArray(serverState.cemetery)) {
+                applyCemeteryServerState(serverState);
+            } else {
+                loadCemeteryConfig();
+                loadCemeteryTypo();
+                loadCemetery();
+                fetch('/api/state', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(buildCemeteryBlob()),
+                }).catch(() => {});
+            }
+        } else {
+            loadCemeteryConfig();
+            loadCemeteryTypo();
+            loadCemetery();
+        }
+        _cemeteryServerInitDone = true;
+    } else {
+        loadCemeteryConfig();
+        loadCemeteryTypo();
+        loadCemetery();
+    }
+
     renderCemetery();
     updateObsUrl();
     updateCemeteryObsHint();

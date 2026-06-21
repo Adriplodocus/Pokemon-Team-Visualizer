@@ -196,6 +196,57 @@ let badgeBrightness = 20;
 let badgeChannelId  = null;
 let badgeExternalMode = false;
 
+let _badgeServerInitDone = false;
+let _badgeTimer = null;
+
+function buildBadgesBlob() {
+    return {
+        badges: {
+            game:       badgeGame,
+            layout:     badgeLayout,
+            active:     badgeActive.slice(),
+            brightness: badgeBrightness,
+        },
+    };
+}
+
+function scheduleSaveBadgesToServer() {
+    if (!_badgeServerInitDone) return;
+    clearTimeout(_badgeTimer);
+    _badgeTimer = setTimeout(async () => {
+        try {
+            await fetch('/api/state', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(buildBadgesBlob()),
+            });
+        } catch (_) {}
+    }, 1000);
+}
+
+function applyBadgesServerState(b) {
+    if (b.game && GAME_TO_REGION[b.game]) {
+        badgeGame   = b.game;
+        badgeRegion = GAME_TO_REGION[b.game];
+    }
+    const count = REGION_DATA[badgeRegion].count;
+    if (b.layout) {
+        const layouts = getLayouts(count);
+        if (layouts.some(l => l.value === b.layout)) badgeLayout = b.layout;
+        else badgeLayout = defaultLayout(count);
+    } else {
+        badgeLayout = defaultLayout(count);
+    }
+    if (Array.isArray(b.active) && b.active.length === count) {
+        badgeActive = b.active.map(Boolean);
+    } else {
+        badgeActive = Array(count).fill(false);
+    }
+    if (b.brightness !== undefined) {
+        badgeBrightness = Math.min(100, Math.max(0, Number(b.brightness)));
+    }
+}
+
 // ── Selectors ────────────────────────────────────────────────────
 function buildBadgeGameSelect() {
     const sel = document.getElementById('badge-game-select');
@@ -458,10 +509,7 @@ function setBadgeStatus(msg, color) {
 // ── Persistence ───────────────────────────────────────────────────
 function saveBadgeState() {
     if (badgeExternalMode) return;
-    localStorage.setItem('ptv_badge_game',       badgeGame);
-    localStorage.setItem('ptv_badge_layout',     badgeLayout);
-    localStorage.setItem('ptv_badge_active',     JSON.stringify(badgeActive));
-    localStorage.setItem('ptv_badge_brightness', String(badgeBrightness));
+    scheduleSaveBadgesToServer();
 }
 
 function loadBadgeState() {
@@ -573,7 +621,28 @@ async function initBadges() {
         }
     }
 
-    loadBadgeState();
+    if (!badgeExternalMode) {
+        const stateRes = await fetch('/api/state').catch(() => null);
+        if (stateRes && stateRes.ok) {
+            const serverState = await stateRes.json();
+            if (serverState.badges) {
+                applyBadgesServerState(serverState.badges);
+            } else {
+                loadBadgeState();
+                fetch('/api/state', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(buildBadgesBlob()),
+                }).catch(() => {});
+            }
+        } else {
+            loadBadgeState();
+        }
+        _badgeServerInitDone = true;
+    } else {
+        loadBadgeState();
+    }
+
     buildBadgeGameSelect();
     buildBadgeLayoutSelect();
     buildBadgeCheckboxes();
