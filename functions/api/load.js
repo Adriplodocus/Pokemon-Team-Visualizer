@@ -1,12 +1,26 @@
+import { getDB } from './_lib/db.js';
+
 export async function onRequestGet(context) {
     if (!context.env.ABLY_API_KEY) return json({ error: 'Not configured' }, 503);
 
-    const url    = new URL(context.request.url);
-    const id     = url.searchParams.get('id');
-    const event  = url.searchParams.get('event');
+    const url   = new URL(context.request.url);
+    const id    = url.searchParams.get('id');
+    const event = url.searchParams.get('event');
 
     if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
     if (event && !/^[a-z-]+$/.test(event))   return json({ error: 'Invalid event' }, 400);
+
+    if ((!event || event === 'update') && context.env.DATABASE_URL) {
+        try {
+            const sql = getDB(context.env);
+            const rows = await sql`SELECT state->'teamState' AS team_state FROM users WHERE channel_id = ${id}`;
+            if (rows.length && rows[0].team_state) {
+                return json(rows[0].team_state);
+            }
+        } catch (e) {
+            console.error('[load] DB lookup failed:', e.message);
+        }
+    }
 
     try {
         const ablyUrl = new URL(`https://rest.ably.io/channels/ptv-${id}/messages`);

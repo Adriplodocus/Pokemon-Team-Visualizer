@@ -1,3 +1,5 @@
+import { getDB } from './_lib/db.js';
+
 export async function onRequestPost(context) {
     if (!context.env.ABLY_API_KEY) {
         return json({ error: 'ABLY_API_KEY not configured' }, 503);
@@ -18,7 +20,23 @@ export async function onRequestPost(context) {
         body: JSON.stringify({ name: event || 'update', data: JSON.stringify(data) }),
     });
 
-    return resp.ok ? json({ ok: true }) : json({ error: 'Ably error' }, 502);
+    if (!resp.ok) return json({ error: 'Ably error' }, 502);
+
+    if ((!event || event === 'update') && context.env.DATABASE_URL) {
+        try {
+            const sql = getDB(context.env);
+            const patch = JSON.stringify({ teamState: data });
+            await sql`
+                UPDATE users
+                SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
+                WHERE channel_id = ${id}
+            `;
+        } catch (e) {
+            console.error('[publish] DB state save failed:', e.message);
+        }
+    }
+
+    return json({ ok: true });
 }
 
 function json(data, status = 200) {
