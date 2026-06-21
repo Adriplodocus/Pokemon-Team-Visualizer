@@ -50,52 +50,37 @@ const REGION_DATA = {
 };
 
 const BADGE_GAMES = [
-    { region: 'Kanto', labels: { es: 'Kanto', en: 'Kanto' }, games: [
-        ['pokemon-rojo',            { es: 'Pokémon Rojo',       en: 'Pokémon Red' }],
-        ['pokemon-azul',            { es: 'Pokémon Azul',       en: 'Pokémon Blue' }],
-        ['pokemon-amarillo',        { es: 'Pokémon Amarillo',   en: 'Pokémon Yellow' }],
-        ['pokemon-rojo-fuego',      { es: 'Pokémon Rojo Fuego', en: 'Pokémon FireRed' }],
-        ['pokemon-verde-hoja',      { es: 'Pokémon Verde Hoja', en: 'Pokémon LeafGreen' }],
-        ['pokemon-lets-go-pikachu', { es: "Pokémon: Let's Go, Pikachu!", en: "Pokémon: Let's Go, Pikachu!" }],
-        ['pokemon-lets-go-eevee',   { es: "Pokémon: Let's Go, Eevee!",   en: "Pokémon: Let's Go, Eevee!" }],
-        ['pokemon-anil',            { es: 'Pokémon Añil',                 en: 'Pokémon Añil' }],
-    ]},
-    { region: 'Johto', labels: { es: 'Johto', en: 'Johto' }, games: [
-        ['pokemon-oro',        { es: 'Pokémon Oro',       en: 'Pokémon Gold' }],
-        ['pokemon-plata',      { es: 'Pokémon Plata',     en: 'Pokémon Silver' }],
-        ['pokemon-cristal',    { es: 'Pokémon Cristal',   en: 'Pokémon Crystal' }],
-        ['pokemon-soulsilver', { es: 'Pokémon SoulSilver', en: 'Pokémon SoulSilver' }],
-        ['pokemon-heartgold',  { es: 'Pokémon HeartGold',  en: 'Pokémon HeartGold' }],
+    { region: 'Galar', labels: { es: 'Galar', en: 'Galar' }, games: [
+        ['pokemon-escudo', { es: 'Pokémon Escudo', en: 'Pokémon Shield' }],
+        ['pokemon-espada', { es: 'Pokémon Espada', en: 'Pokémon Sword' }],
     ]},
     { region: 'Hoenn', labels: { es: 'Hoenn', en: 'Hoenn' }, games: [
-        ['pokemon-rubi',        { es: 'Pokémon Rubí',         en: 'Pokémon Ruby' }],
-        ['pokemon-zafiro',      { es: 'Pokémon Zafiro',       en: 'Pokémon Sapphire' }],
-        ['pokemon-esmeralda',   { es: 'Pokémon Esmeralda',    en: 'Pokémon Emerald' }],
-        ['pokemon-rubi-omega',  { es: 'Pokémon Rubí Omega',   en: 'Pokémon Omega Ruby' }],
-        ['pokemon-zafiro-alfa', { es: 'Pokémon Zafiro Alfa',  en: 'Pokémon Alpha Sapphire' }],
+        ['pokemon-esmeralda',   { es: 'Pokémon Esmeralda',   en: 'Pokémon Emerald' }],
+        ['pokemon-rubi',        { es: 'Pokémon Rubí',        en: 'Pokémon Ruby' }],
+        ['pokemon-rubi-omega',  { es: 'Pokémon Rubí Omega',  en: 'Pokémon Omega Ruby' }],
+        ['pokemon-zafiro',      { es: 'Pokémon Zafiro',      en: 'Pokémon Sapphire' }],
+        ['pokemon-zafiro-alfa', { es: 'Pokémon Zafiro Alfa', en: 'Pokémon Alpha Sapphire' }],
     ]},
-    { region: 'Sinnoh', labels: { es: 'Sinnoh', en: 'Sinnoh' }, games: [
-        ['pokemon-diamante',           { es: 'Pokémon Diamante',           en: 'Pokémon Diamond' }],
-        ['pokemon-perla',              { es: 'Pokémon Perla',              en: 'Pokémon Pearl' }],
-        ['pokemon-platino',            { es: 'Pokémon Platino',            en: 'Pokémon Platinum' }],
-        ['pokemon-diamante-brillante', { es: 'Pokémon Diamante Brillante', en: 'Pokémon Brilliant Diamond' }],
-        ['pokemon-perla-reluciente',   { es: 'Pokémon Perla Reluciente',   en: 'Pokémon Shining Pearl' }],
-    ]},
-    { region: 'Unova1', labels: { es: 'Teselia', en: 'Unova' }, games: [
-        ['pokemon-negro',  { es: 'Pokémon Edición Negra',  en: 'Pokémon Black' }],
-        ['pokemon-blanco', { es: 'Pokémon Edición Blanca', en: 'Pokémon White' }],
-    ]},
-    { region: 'Unova2', labels: { es: 'Teselia 2', en: 'Unova 2' }, games: [
-        ['pokemon-negro-2',  { es: 'Pokémon Edición Negra 2',  en: 'Pokémon Black 2' }],
-        ['pokemon-blanco-2', { es: 'Pokémon Edición Blanca 2', en: 'Pokémon White 2' }],
+    { region: 'Johto', labels: { es: 'Johto', en: 'Johto' }, games: [
+        ['pokemon-cristal',    { es: 'Pokémon Cristal',    en: 'Pokémon Crystal' }],
+        ['pokemon-heartgold',  { es: 'Pokémon HeartGold',  en: 'Pokémon HeartGold' }],
+        ['pokemon-oro',        { es: 'Pokémon Oro',        en: 'Pokémon Gold' }],
+        ['pokemon-plata',      { es: 'Pokémon Plata',      en: 'Pokémon Silver' }],
+        ['pokemon-soulsilver', { es: 'Pokémon SoulSilver', en: 'Pokémon SoulSilver' }],
     ]},
     { region: 'Kalos', labels: { es: 'Kalos', en: 'Kalos' }, games: [
         ['pokemon-x', { es: 'Pokémon X', en: 'Pokémon X' }],
         ['pokemon-y', { es: 'Pokémon Y', en: 'Pokémon Y' }],
     ]},
-    { region: 'Galar', labels: { es: 'Galar', en: 'Galar' }, games: [
-        ['pokemon-espada', { es: 'Pokémon Espada', en: 'Pokémon Sword' }],
-        ['pokemon-escudo', { es: 'Pokémon Escudo', en: 'Pokémon Shield' }],
+    { region: 'Kanto', labels: { es: 'Kanto', en: 'Kanto' }, games: [
+        ['pokemon-amarillo',        { es: 'Pokémon Amarillo',          en: 'Pokémon Yellow' }],
+        ['pokemon-anil',            { es: 'Pokémon Añil',              en: 'Pokémon Añil' }],
+        ['pokemon-azul',            { es: 'Pokémon Azul',              en: 'Pokémon Blue' }],
+        ['pokemon-lets-go-eevee',   { es: "Pokémon: Let's Go, Eevee!", en: "Pokémon: Let's Go, Eevee!" }],
+        ['pokemon-lets-go-pikachu', { es: "Pokémon: Let's Go, Pikachu!", en: "Pokémon: Let's Go, Pikachu!" }],
+        ['pokemon-rojo',            { es: 'Pokémon Rojo',              en: 'Pokémon Red' }],
+        ['pokemon-rojo-fuego',      { es: 'Pokémon Rojo Fuego',        en: 'Pokémon FireRed' }],
+        ['pokemon-verde-hoja',      { es: 'Pokémon Verde Hoja',        en: 'Pokémon LeafGreen' }],
     ]},
     { region: 'Paldea', labels: { es: 'Paldea', en: 'Paldea' }, games: [
         ['pokemon-escarlata', { es: 'Pokémon Escarlata', en: 'Pokémon Scarlet' }],
@@ -103,6 +88,21 @@ const BADGE_GAMES = [
     ]},
     { region: 'Passio', labels: { es: 'Passio', en: 'Passio' }, games: [
         ['pokemon-consonancia', { es: 'Pokémon Consonancia', en: 'Pokémon Consonancia' }],
+    ]},
+    { region: 'Sinnoh', labels: { es: 'Sinnoh', en: 'Sinnoh' }, games: [
+        ['pokemon-diamante',           { es: 'Pokémon Diamante',           en: 'Pokémon Diamond' }],
+        ['pokemon-diamante-brillante', { es: 'Pokémon Diamante Brillante', en: 'Pokémon Brilliant Diamond' }],
+        ['pokemon-perla',              { es: 'Pokémon Perla',              en: 'Pokémon Pearl' }],
+        ['pokemon-perla-reluciente',   { es: 'Pokémon Perla Reluciente',   en: 'Pokémon Shining Pearl' }],
+        ['pokemon-platino',            { es: 'Pokémon Platino',            en: 'Pokémon Platinum' }],
+    ]},
+    { region: 'Unova1', labels: { es: 'Teselia', en: 'Unova' }, games: [
+        ['pokemon-blanco', { es: 'Pokémon Edición Blanca', en: 'Pokémon White' }],
+        ['pokemon-negro',  { es: 'Pokémon Edición Negra',  en: 'Pokémon Black' }],
+    ]},
+    { region: 'Unova2', labels: { es: 'Teselia 2', en: 'Unova 2' }, games: [
+        ['pokemon-blanco-2', { es: 'Pokémon Edición Blanca 2', en: 'Pokémon White 2' }],
+        ['pokemon-negro-2',  { es: 'Pokémon Edición Negra 2',  en: 'Pokémon Black 2' }],
     ]},
 ];
 
