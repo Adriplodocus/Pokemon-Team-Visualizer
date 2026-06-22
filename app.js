@@ -766,7 +766,7 @@ body,html{margin:0;padding:0;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
 .shadow-row{margin-top:-15px;}
-img{max-width:225px;max-height:150px;width:auto;height:auto;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
+img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
 p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
 .container{display:flex;flex-wrap:nowrap;}
 .nameDiv{flex:0 0 225px;width:225px;}
