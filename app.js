@@ -1290,6 +1290,15 @@ function copyEditorUrl() {
 async function publishToObs() {
     if (!validateTeam()) return;
 
+    // Flush any pending debounced save so the server state is current after publish
+    clearTimeout(_saveTimer);
+    _saveTimer = null;
+    fetch('/api/state', {
+        method:  'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body:    JSON.stringify(buildStateBlob()),
+    }).then(r => r.ok && setSaveIndicator('saved', 'Guardado ✓')).catch(() => {});
+
     const entries = team.map(slot => {
         const name = slot.name.trim().toLowerCase();
         if (!name || !pokemonNames.includes(name)) return null;
