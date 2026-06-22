@@ -26,7 +26,16 @@ export async function onRequestPost(context) {
         try {
             const sql = getDB(context.env);
             if (!event || event === 'update') {
-                const patch = JSON.stringify({ teamState: data });
+                const rawState = (data.raw && Array.isArray(data.raw.team)) ? data.raw : null;
+                const patchObj = { teamState: data };
+                if (rawState) {
+                    patchObj.team       = rawState.team;
+                    patchObj.layout     = rawState.layout;
+                    patchObj.shadows    = rawState.shadows;
+                    patchObj.bg         = rawState.bg;
+                    patchObj.typography = rawState.typography;
+                }
+                const patch = JSON.stringify(patchObj);
                 const teamResult = await sql`
                     UPDATE users
                     SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
