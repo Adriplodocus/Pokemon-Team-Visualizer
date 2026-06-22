@@ -94,23 +94,44 @@ function esc(s) {
     return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
 
+const _ME_CACHE_KEY = 'ptv_me_cache';
+const _ME_TTL = 5 * 60 * 1000;
+
+function clearAuthMeCache() {
+    try { sessionStorage.removeItem(_ME_CACHE_KEY); } catch (_) {}
+}
+
+async function fetchAuthMe() {
+    try {
+        const cached = JSON.parse(sessionStorage.getItem(_ME_CACHE_KEY) || 'null');
+        if (cached && (Date.now() - cached.ts) < _ME_TTL) return { ok: true, data: cached.data };
+    } catch (_) {}
+    const res = await fetch('/api/auth/me');
+    if (res.ok) {
+        const data = await res.json();
+        try { sessionStorage.setItem(_ME_CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+        return { ok: true, data };
+    }
+    clearAuthMeCache();
+    return { ok: false, status: res.status };
+}
+
 async function initUserWidget() {
     const el = document.getElementById('user-widget');
     if (!el) return;
     try {
-        const res = await fetch('/api/auth/me');
-        if (res.ok) {
-            const { username, avatarUrl, tier } = await res.json();
+        const result = await fetchAuthMe();
+        if (result.ok) {
+            const { username, avatarUrl, tier } = result.data;
             const badgeClass = tier === 'vip' ? 'user-badge--vip' : 'user-badge--guest';
             const badgeLabel = tier === 'vip' ? 'VIP' : 'GUEST';
             el.innerHTML =
                 (avatarUrl ? `<img class="user-avatar" src="${esc(avatarUrl)}" alt="${esc(username)}">` : '') +
                 `<span class="user-name">${esc(username)}</span>` +
                 `<span class="user-badge ${badgeClass}">${badgeLabel}</span>` +
-                `<a href="/api/auth/logout" class="user-logout">Salir</a>`;
+                `<a href="/api/auth/logout" class="user-logout" onclick="clearAuthMeCache()">Salir</a>`;
         } else {
-            const body = await res.text().catch(() => '(no body)');
-            console.error('[auth] /api/auth/me failed:', res.status, body);
+            console.error('[auth] /api/auth/me failed:', result.status);
             el.innerHTML = `<a href="/login.html" class="user-login-link">Login</a>`;
         }
     } catch (err) {

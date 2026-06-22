@@ -1516,12 +1516,12 @@ function initExternalMode() {
 }
 
 async function initFromServer() {
-    const meRes = await fetch('/api/auth/me');
-    if (!meRes.ok) {
+    const meResult = await fetchAuthMe();
+    if (!meResult.ok) {
         window.location.href = '/login.html';
         return false;
     }
-    currentUser = await meRes.json();
+    currentUser = meResult.data;
 
     if (currentUser.channelId) {
         channelId = currentUser.channelId;
@@ -1605,7 +1605,7 @@ var rlBotActive = false;
 
 async function rlCheckAuth() {
     try {
-        const user = currentUser || await fetch('/api/auth/me').then(r => r.ok ? r.json() : Promise.reject());
+        const user = currentUser || await fetchAuthMe().then(r => r.ok ? r.data : Promise.reject());
         document.getElementById('rl-section').classList.remove('hidden');
         const isTwitch = user.provider === 'twitch';
         document.getElementById('bot-twitch-controls').classList.toggle('hidden', !isTwitch);

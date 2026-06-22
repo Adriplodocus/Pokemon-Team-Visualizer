@@ -584,9 +584,9 @@ async function hydrateFromAbly() {
 
 // ── Init ──────────────────────────────────────────────────────────
 async function initBadgeChannelFromServer() {
-    const meRes = await fetch('/api/auth/me');
-    if (!meRes.ok) return; // badges.js is embedded in app — don't redirect here
-    const me = await meRes.json();
+    const meResult = await fetchAuthMe();
+    if (!meResult.ok) return; // badges.js is embedded in app — don't redirect here
+    const me = meResult.data;
 
     if (me.badgeChannelId) {
         badgeChannelId = me.badgeChannelId;

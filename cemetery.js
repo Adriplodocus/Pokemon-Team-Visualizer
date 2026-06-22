@@ -210,12 +210,12 @@ async function initChannelId() {
         return;
     }
 
-    const meRes = await fetch('/api/auth/me');
-    if (!meRes.ok) {
+    const meResult = await fetchAuthMe();
+    if (!meResult.ok) {
         window.location.href = '/login.html';
         return;
     }
-    const me = await meRes.json();
+    const me = meResult.data;
 
     if (me.channelId) {
         channelId = me.channelId;
