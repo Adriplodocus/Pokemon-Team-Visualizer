@@ -95,21 +95,21 @@ function esc(s) {
 }
 
 const _ME_CACHE_KEY = 'ptv_me_cache';
-const _ME_TTL = 5 * 60 * 1000;
+const _ME_TTL = 30 * 60 * 1000;
 
 function clearAuthMeCache() {
-    try { sessionStorage.removeItem(_ME_CACHE_KEY); } catch (_) {}
+    try { localStorage.removeItem(_ME_CACHE_KEY); } catch (_) {}
 }
 
 async function fetchAuthMe() {
     try {
-        const cached = JSON.parse(sessionStorage.getItem(_ME_CACHE_KEY) || 'null');
+        const cached = JSON.parse(localStorage.getItem(_ME_CACHE_KEY) || 'null');
         if (cached && (Date.now() - cached.ts) < _ME_TTL) return { ok: true, data: cached.data };
     } catch (_) {}
     const res = await fetch('/api/auth/me');
     if (res.ok) {
         const data = await res.json();
-        try { sessionStorage.setItem(_ME_CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
+        try { localStorage.setItem(_ME_CACHE_KEY, JSON.stringify({ ts: Date.now(), data })); } catch (_) {}
         return { ok: true, data };
     }
     clearAuthMeCache();

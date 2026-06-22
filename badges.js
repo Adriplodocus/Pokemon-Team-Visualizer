@@ -226,7 +226,7 @@ function scheduleSaveBadgesToServer() {
                 body:    JSON.stringify(buildBadgesBlob()),
             });
         } catch (_) {}
-    }, 1000);
+    }, 3000);
 }
 
 function applyBadgesServerState(b) {

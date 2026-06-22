@@ -332,7 +332,7 @@ function scheduleSaveToServer() {
         } catch {
             setSaveIndicator('error', 'Error al guardar');
         }
-    }, 1000);
+    }, 3000);
 }
 
 let modalIndex   = -1;

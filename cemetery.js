@@ -50,7 +50,7 @@ function scheduleSaveCemeteryToServer() {
                 body:    JSON.stringify(buildCemeteryBlob()),
             });
         } catch (_) {}
-    }, 1000);
+    }, 3000);
 }
 
 function applyCemeteryServerState(s) {
