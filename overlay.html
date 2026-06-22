@@ -10,13 +10,13 @@ body,html{margin:0;padding:0;background:transparent;}
 
 /* ── Horizontal ── */
 body.layout-horizontal .container{display:flex;flex-wrap:nowrap;}
-body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;}
+body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
 body.layout-horizontal .pkDiv--float{align-items:center;}
 body.layout-horizontal .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 body.layout-horizontal .sprite-row{position:relative;z-index:1;}
 body.layout-horizontal .shadow-row{margin-top:-15px;}
 body.layout-horizontal .nameDiv{flex:0 0 225px;width:225px;}
-body.layout-horizontal img{width:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;}
+body.layout-horizontal img{max-width:225px;max-height:150px;width:auto;height:auto;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
 body.layout-horizontal p{margin:0;height:35px;line-height:35px;text-align:center;}
 body.layout-horizontal .name-above-row{padding-top:10px;}
 

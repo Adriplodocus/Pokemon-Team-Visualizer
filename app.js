@@ -760,16 +760,17 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
 ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
-.pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;}
+.pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
 .pkDiv--float{align-items:center;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
 .shadow-row{margin-top:-15px;}
-img{width:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;}
+img{max-width:225px;max-height:150px;width:auto;height:auto;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
 p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
 .container{display:flex;flex-wrap:nowrap;}
 .nameDiv{flex:0 0 225px;width:225px;}
+.name-above-row{padding-top:10px;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pkDiv,.shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
 .pkDiv:nth-child(1),.shadowDiv:nth-child(1){animation-delay:0.00s;}
@@ -782,7 +783,7 @@ p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size,
 </style>
 </head>
 <body>
-${(!nameHidden && nameAbove) ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
+${(!nameHidden && nameAbove) ? `<div class="container name-above-row">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
 <div class="container sprite-row">
 ${entries.map((e, i) => e ? `<div class="pkDiv${FLOATING_POKEMON.has(e.name) ? ' pkDiv--float' : ''}">${pkDivContent[i]}</div>` : '').join('\n')}
 </div>
@@ -967,7 +968,7 @@ function updatePreview() {
         - parseFloat(cardStyle.paddingRight);
 
     const nameH     = Math.max(typography.size, 25);
-    const overlayH  = 175 + nameH;
+    const overlayH  = 175 + nameH + 10;
     const scale     = Math.max(containerW / 1350, 0.75);
     const wrapperW  = Math.min(Math.round(1350 * scale), containerW);
     const wrapperH  = Math.round(overlayH * scale);
