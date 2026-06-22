@@ -22,15 +22,33 @@ export async function onRequestPost(context) {
 
     if (!resp.ok) return json({ error: 'Ably error' }, 502);
 
-    if ((!event || event === 'update') && context.env.DATABASE_URL) {
+    if (context.env.DATABASE_URL) {
         try {
             const sql = getDB(context.env);
-            const patch = JSON.stringify({ teamState: data });
-            await sql`
-                UPDATE users
-                SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
-                WHERE channel_id = ${id}
-            `;
+            if (!event || event === 'update') {
+                const patch = JSON.stringify({ teamState: data });
+                const teamResult = await sql`
+                    UPDATE users
+                    SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
+                    WHERE channel_id = ${id}
+                    RETURNING id
+                `;
+                if (!teamResult.length) {
+                    const badgePatch = JSON.stringify({ badgeState: data });
+                    await sql`
+                        UPDATE users
+                        SET state = COALESCE(state, '{}'::jsonb) || ${badgePatch}::jsonb
+                        WHERE badge_channel_id = ${id}
+                    `;
+                }
+            } else if (event === 'cemetery-update') {
+                const patch = JSON.stringify({ cemeteryState: data });
+                await sql`
+                    UPDATE users
+                    SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
+                    WHERE channel_id = ${id}
+                `;
+            }
         } catch (e) {
             console.error('[publish] DB state save failed:', e.message);
         }

@@ -10,12 +10,17 @@ export async function onRequestGet(context) {
     if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
     if (event && !/^[a-z-]+$/.test(event))   return json({ error: 'Invalid event' }, 400);
 
-    if ((!event || event === 'update') && context.env.DATABASE_URL) {
+    if (context.env.DATABASE_URL) {
         try {
             const sql = getDB(context.env);
-            const rows = await sql`SELECT state->'teamState' AS team_state FROM users WHERE channel_id = ${id}`;
-            if (rows.length && rows[0].team_state) {
-                return json(rows[0].team_state);
+            if (!event || event === 'update') {
+                const teamRows = await sql`SELECT state->'teamState' AS data FROM users WHERE channel_id = ${id}`;
+                if (teamRows.length && teamRows[0].data) return json(teamRows[0].data);
+                const badgeRows = await sql`SELECT state->'badgeState' AS data FROM users WHERE badge_channel_id = ${id}`;
+                if (badgeRows.length && badgeRows[0].data) return json(badgeRows[0].data);
+            } else if (event === 'cemetery-update') {
+                const rows = await sql`SELECT state->'cemeteryState' AS data FROM users WHERE channel_id = ${id}`;
+                if (rows.length && rows[0].data) return json(rows[0].data);
             }
         } catch (e) {
             console.error('[load] DB lookup failed:', e.message);
