@@ -312,28 +312,6 @@ function buildStateBlob() {
     };
 }
 
-let _saveTimer = null;
-function scheduleSaveToServer() {
-    if (!_serverInitDone) return;
-    setSaveIndicator('saving', 'Guardando…');
-    clearTimeout(_saveTimer);
-    _saveTimer = setTimeout(async () => {
-        try {
-            const res = await fetch('/api/state', {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(buildStateBlob()),
-            });
-            if (res.ok) {
-                setSaveIndicator('saved', 'Guardado ✓');
-            } else {
-                setSaveIndicator('error', 'Error al guardar');
-            }
-        } catch {
-            setSaveIndicator('error', 'Error al guardar');
-        }
-    }, 3000);
-}
 
 let modalIndex   = -1;
 let modalVars    = {};
@@ -1147,7 +1125,6 @@ function initColorPicker() {
 function saveState(updatePreview = true) {
     if (externalMode) return;
     if (updatePreview) schedulePreviewUpdate();
-    scheduleSaveToServer();
 }
 
 function saveTypography() {
@@ -1290,10 +1267,7 @@ function copyEditorUrl() {
 async function publishToObs() {
     if (!validateTeam()) return;
 
-    // Flush any pending debounced save (owner only — external mode uses publish.js to update owner's DB row)
     if (!externalMode) {
-        clearTimeout(_saveTimer);
-        _saveTimer = null;
         fetch('/api/state', {
             method:  'POST',
             headers: { 'Content-Type': 'application/json' },

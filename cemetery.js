@@ -29,7 +29,6 @@ const DEFAULT_CEMETERY_TYPO = {
 let cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO };
 
 let _cemeteryServerInitDone = false;
-let _cemeteryTimer = null;
 
 function buildCemeteryBlob() {
     return {
@@ -39,19 +38,6 @@ function buildCemeteryBlob() {
     };
 }
 
-function scheduleSaveCemeteryToServer() {
-    if (!_cemeteryServerInitDone) return;
-    clearTimeout(_cemeteryTimer);
-    _cemeteryTimer = setTimeout(async () => {
-        try {
-            await fetch('/api/state', {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(buildCemeteryBlob()),
-            });
-        } catch (_) {}
-    }, 3000);
-}
 
 function applyCemeteryServerState(s) {
     if (Array.isArray(s.cemetery)) {
@@ -231,8 +217,6 @@ async function initChannelId() {
 
 // ── Persist ───────────────────────────────────────────────────────
 function saveCemetery() {
-    if (externalMode) return;
-    scheduleSaveCemeteryToServer();
 }
 
 function loadCemetery() {
@@ -242,8 +226,6 @@ function loadCemetery() {
 }
 
 function saveCemeteryConfig() {
-    if (externalMode) return;
-    scheduleSaveCemeteryToServer();
 }
 
 function loadCemeteryConfig() {
@@ -256,8 +238,6 @@ function loadCemeteryConfig() {
 }
 
 function saveCemeteryTypo() {
-    if (externalMode) return;
-    scheduleSaveCemeteryToServer();
 }
 
 function loadCemeteryTypo() {
@@ -586,8 +566,16 @@ async function publishCemetery() {
                 typography: cemeteryTypo,
             }),
         });
-        setStatus(resp.ok ? tC('cemeteryPublishOk') : tC('cemeteryPublishErr'),
-                  resp.ok ? 'var(--success)' : 'var(--error)');
+        if (resp.ok) {
+            setStatus(tC('cemeteryPublishOk'), 'var(--success)');
+            fetch('/api/state', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(buildCemeteryBlob()),
+            }).catch(() => {});
+        } else {
+            setStatus(tC('cemeteryPublishErr'), 'var(--error)');
+        }
     } catch {
         setStatus(tC('cemeteryPublishErr'), 'var(--error)');
     }

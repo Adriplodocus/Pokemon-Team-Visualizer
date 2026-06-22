@@ -202,7 +202,6 @@ let badgeChannelId  = null;
 let badgeExternalMode = false;
 
 let _badgeServerInitDone = false;
-let _badgeTimer = null;
 
 function buildBadgesBlob() {
     return {
@@ -213,20 +212,6 @@ function buildBadgesBlob() {
             brightness: badgeBrightness,
         },
     };
-}
-
-function scheduleSaveBadgesToServer() {
-    if (!_badgeServerInitDone) return;
-    clearTimeout(_badgeTimer);
-    _badgeTimer = setTimeout(async () => {
-        try {
-            await fetch('/api/state', {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(buildBadgesBlob()),
-            });
-        } catch (_) {}
-    }, 3000);
 }
 
 function applyBadgesServerState(b) {
@@ -481,7 +466,16 @@ async function publishBadgesToObs() {
                 brightness: badgeBrightness,
             }),
         });
-        setBadgeStatus(tB(resp.ok ? 'badgePublishOk' : 'badgePublishErr'), resp.ok ? 'var(--success)' : 'var(--error)');
+        if (resp.ok) {
+            setBadgeStatus(tB('badgePublishOk'), 'var(--success)');
+            fetch('/api/state', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify(buildBadgesBlob()),
+            }).catch(() => {});
+        } else {
+            setBadgeStatus(tB('badgePublishErr'), 'var(--error)');
+        }
     } catch {
         setBadgeStatus(tB('badgePublishErr'), 'var(--error)');
     }
@@ -513,8 +507,6 @@ function setBadgeStatus(msg, color) {
 
 // ── Persistence ───────────────────────────────────────────────────
 function saveBadgeState() {
-    if (badgeExternalMode) return;
-    scheduleSaveBadgesToServer();
 }
 
 function loadBadgeState() {
