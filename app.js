@@ -1519,7 +1519,7 @@ async function initFromServer() {
     const meRes = await fetch('/api/auth/me');
     if (!meRes.ok) {
         window.location.href = '/login.html';
-        return;
+        return false;
     }
     currentUser = await meRes.json();
 
@@ -1535,11 +1535,12 @@ async function initFromServer() {
     }
 
     const stateRes = await fetch('/api/state');
-    if (!stateRes.ok) return;
+    if (!stateRes.ok) return false;
     const serverState = await stateRes.json();
 
     if (serverState.team) {
         applyServerState(serverState);
+        return true;
     } else {
         const localTeam = localStorage.getItem('ptv_team');
         if (localTeam) {
@@ -1550,8 +1551,10 @@ async function initFromServer() {
                 body:    JSON.stringify(migrated),
             }).catch(() => {});
             applyServerState(migrated);
+            return true;
         }
     }
+    return false;
 }
 
 function buildMigratedState() {
@@ -1795,14 +1798,15 @@ async function rlToggleBot() {
 }
 
 (async () => {
+    let hadServerState = false;
     if (!externalMode) {
-        await initFromServer();
+        hadServerState = await initFromServer();
     }
     _serverInitDone = true;
     syncTypographyUI();
     updatePreview();
     updateObsHint();
-    hydrateFromAbly();
+    if (!hadServerState) hydrateFromAbly();
     subscribeToAblyUpdates();
     renderPresets();
 
