@@ -626,12 +626,14 @@ async function initBadges() {
         }
     }
 
+    let hadServerState = false;
     if (!badgeExternalMode) {
         const stateRes = await fetch('/api/state').catch(() => null);
         if (stateRes && stateRes.ok) {
             const serverState = await stateRes.json();
             if (serverState.badges) {
                 applyBadgesServerState(serverState.badges);
+                hadServerState = true;
             } else {
                 loadBadgeState();
                 fetch('/api/state', {
@@ -658,7 +660,7 @@ async function initBadges() {
 
     if (typeof setMode === 'function') setMode('pokemon');
     updateBadgePreview();
-    hydrateFromAbly();
+    if (!hadServerState) hydrateFromAbly();
 }
 
 (async () => { await initBadges(); })();

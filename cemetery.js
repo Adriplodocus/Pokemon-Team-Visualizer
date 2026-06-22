@@ -1063,12 +1063,14 @@ function initCemColorPicker() {
 (async () => {
     await initChannelId();
 
+    let hadServerState = false;
     if (!externalMode) {
         const stateRes = await fetch('/api/state').catch(() => null);
         if (stateRes && stateRes.ok) {
             const serverState = await stateRes.json();
             if (Array.isArray(serverState.cemetery)) {
                 applyCemeteryServerState(serverState);
+                hadServerState = true;
             } else {
                 loadCemeteryConfig();
                 loadCemeteryTypo();
@@ -1099,5 +1101,5 @@ function initCemColorPicker() {
     syncCemTypoUI();
     initCemColorPicker();
     initCemeteryPreview();
-    hydrateFromAbly();
+    if (!hadServerState) hydrateFromAbly();
 })();
