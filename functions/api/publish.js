@@ -84,7 +84,11 @@ export async function onRequestPost(context) {
                     `;
                 }
             } else if (event === 'cemetery-update') {
-                const patch = JSON.stringify({ cemeteryState: data });
+                const patch = JSON.stringify({
+                    cemetery:       data.raw || [],
+                    cemeteryConfig: { cols: data.cols, rows: data.rows, overflow: data.overflow },
+                    cemeteryTypo:   data.typography || {},
+                });
                 await sql`
                     UPDATE users
                     SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
