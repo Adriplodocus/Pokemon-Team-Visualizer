@@ -1,4 +1,8 @@
-# Backward compat: old Showdown sprite URLs (pre-theme-reorganization)
-# Static assets (Home/Official/Pixel/Showdown PNGs/GIFs) are served directly
-# and bypass these rules. Only missing/moved files hit the redirect.
+# Pass-through for current theme folders (must come before the catch-all)
+/sprites/Showdown/* /sprites/Showdown/:splat 200
+/sprites/Home/* /sprites/Home/:splat 200
+/sprites/Official/* /sprites/Official/:splat 200
+/sprites/Pixel/* /sprites/Pixel/:splat 200
+
+# Backward compat: old root Showdown URLs → sprites/Showdown/
 /sprites/* /sprites/Showdown/:splat 301
