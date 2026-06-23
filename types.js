@@ -135,7 +135,7 @@ function sampleIconColor(type) {
             resolve();
         };
         img.onerror = () => { TYPE_ICON_COLORS[type] = TYPE_COLORS[type]; resolve(); };
-        img.src = `sprites/types/${type}.webp`;
+        img.src = `sprites/types/${type}.webp?v=2`;
     });
 }
 
@@ -169,7 +169,7 @@ function renderTypeSelector() {
     for (const type of TYPES) {
         const btn = document.createElement('button');
         btn.className = 'type-btn' + (selectedTypes.includes(type) ? ' selected' : '');
-        btn.innerHTML = `<img src="sprites/types/${type}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][type]}`;
+        btn.innerHTML = `<img src="sprites/types/${type}.webp?v=2" alt="" class="type-icon">${TYPE_NAMES[currentLang][type]}`;
         btn.style.background = TYPE_ICON_COLORS[type] || TYPE_COLORS[type];
         btn.onclick = () => toggleType(type);
         grid.appendChild(btn);
@@ -191,7 +191,7 @@ function renderTable() {
         html += `<div class="mult-row">
             <span class="mult-label">×${mult}</span>
             <div class="mult-chips">${types.map(t =>
-                `<span class="type-chip" style="background:${TYPE_ICON_COLORS[t] || TYPE_COLORS[t]}"><img src="sprites/types/${t}.webp" alt="" class="type-icon">${TYPE_NAMES[currentLang][t]}</span>`
+                `<span class="type-chip" style="background:${TYPE_ICON_COLORS[t] || TYPE_COLORS[t]}"><img src="sprites/types/${t}.webp?v=2" alt="" class="type-icon">${TYPE_NAMES[currentLang][t]}</span>`
             ).join('')}</div>
         </div>`;
     }
@@ -535,7 +535,7 @@ function renderPkResult() {
     if (!typesDiv || !selectedPokemon.types.length) return;
     typesDiv.innerHTML = selectedPokemon.types.map(t =>
         `<span class="type-chip" style="background:${TYPE_ICON_COLORS[t] || TYPE_COLORS[t]}">` +
-        `<img src="sprites/types/${t}.webp" alt="" class="type-icon">` +
+        `<img src="sprites/types/${t}.webp?v=2" alt="" class="type-icon">` +
         `${TYPE_NAMES[currentLang][t]}</span>`
     ).join('');
 }
