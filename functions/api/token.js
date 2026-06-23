@@ -1,5 +1,3 @@
-const TOKEN_TTL_MS = 86400000; // 24h
-
 export async function onRequestGet(context) {
     if (!context.env.ABLY_API_KEY) {
         return json({ error: 'ABLY_API_KEY not configured' }, 503);
@@ -13,9 +11,10 @@ export async function onRequestGet(context) {
                 'Content-Type':  'application/json',
             },
             body: JSON.stringify({
-                keyName:    keyName,
-                capability: JSON.stringify({ '*': ['subscribe'] }),
-                ttl:        TOKEN_TTL_MS,
+                keyName:     keyName,
+                capability:  JSON.stringify({ '*': ['subscribe'] }),
+                ttl:         3600000,
+                timestamp:   Date.now(),
             }),
         });
         const text = await resp.text();
