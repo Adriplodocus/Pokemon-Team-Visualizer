@@ -9,7 +9,6 @@ export async function onRequestPost(context) {
 
     const cookies = parseCookies(context.request);
     const payload = await verifyJWT(cookies.auth, context.env.JWT_SECRET);
-    if (!payload) return json({ error: 'Unauthorized' }, 401);
 
     let body;
     try { body = await context.request.json(); } catch { return json({ error: 'Invalid JSON' }, 400); }
@@ -21,16 +20,28 @@ export async function onRequestPost(context) {
     if (context.env.DATABASE_URL) {
         try {
             const sql  = getDB(context.env);
-            const rows = await sql`
-                SELECT id FROM users
-                WHERE id = ${payload.userId}
-                  AND (channel_id = ${id} OR badge_channel_id = ${id})
-            `;
-            if (!rows.length) return json({ error: 'Forbidden' }, 403);
+            if (payload) {
+                // Authenticated owner: verify they own this channel
+                const rows = await sql`
+                    SELECT id FROM users
+                    WHERE id = ${payload.userId}
+                      AND (channel_id = ${id} OR badge_channel_id = ${id})
+                `;
+                if (!rows.length) return json({ error: 'Forbidden' }, 403);
+            } else {
+                // External editor: no JWT, but channel UUID acts as the shared key
+                const rows = await sql`
+                    SELECT id FROM users
+                    WHERE channel_id = ${id} OR badge_channel_id = ${id}
+                `;
+                if (!rows.length) return json({ error: 'Forbidden' }, 403);
+            }
         } catch (e) {
             console.error('[publish] ownership check failed:', e.message);
             return json({ error: 'Service unavailable' }, 503);
         }
+    } else if (!payload) {
+        return json({ error: 'Unauthorized' }, 401);
     }
 
     const resp = await fetch(`https://rest.ably.io/channels/ptv-${id}/messages`, {
