@@ -326,14 +326,13 @@ function onPageNext() {
 }
 
 function getKey() {
-  return sessionStorage.getItem('ptv_admin_key') || '';
+  return document.getElementById('admin-key-input').value.trim();
 }
 
 function saveKey() {
-  const val = document.getElementById('admin-key-input').value.trim();
+  const val = getKey();
   if (!val) return;
-  sessionStorage.setItem('ptv_admin_key', val);
-  document.getElementById('key-status').textContent = 'Guardada en sesión.';
+  document.getElementById('key-status').textContent = 'Key lista.';
   document.getElementById('key-status').className = 'status-msg ok';
   loadUsers();
 }
@@ -452,21 +451,16 @@ async function setTier(userId) {
 }
 
 function esc(s) {
-  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#x27;');
 }
 
-// Restore saved key on load + UX guard: redirect to home if not logged in
 window.addEventListener('DOMContentLoaded', () => {
-  const saved = sessionStorage.getItem('ptv_admin_key');
-  if (saved) {
-    document.getElementById('admin-key-input').value = saved;
-    document.getElementById('key-status').textContent = 'Key cargada de sesión.';
-    document.getElementById('key-status').className   = 'status-msg ok';
-    loadUsers();
-  }
-  fetch('/api/auth/me').then(r => {
-    if (r.status === 401) window.location.href = '/';
-  }).catch(() => {});
+  fetch('/api/auth/me')
+    .then(r => r.ok ? r.json() : null)
+    .then(data => {
+      if (!data || !data.isAdmin) window.location.href = '/';
+    })
+    .catch(() => { window.location.href = '/'; });
 });
 </script>
 </body>

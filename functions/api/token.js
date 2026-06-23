@@ -2,6 +2,13 @@ export async function onRequestGet(context) {
     if (!context.env.ABLY_API_KEY) {
         return json({ error: 'ABLY_API_KEY not configured' }, 503);
     }
+
+    const url = new URL(context.request.url);
+    const id  = url.searchParams.get('id');
+    if (!id || !/^[0-9a-f-]{36}$/.test(id)) {
+        return json({ error: 'Invalid id' }, 400);
+    }
+
     try {
         const keyName = context.env.ABLY_API_KEY.split(':')[0];
         const resp    = await fetch(`https://rest.ably.io/keys/${keyName}/requestToken`, {
@@ -11,10 +18,10 @@ export async function onRequestGet(context) {
                 'Content-Type':  'application/json',
             },
             body: JSON.stringify({
-                keyName:     keyName,
-                capability:  JSON.stringify({ '*': ['subscribe'] }),
-                ttl:         3600000,
-                timestamp:   Date.now(),
+                keyName:    keyName,
+                capability: JSON.stringify({ [`ptv-${id}`]: ['subscribe'] }),
+                ttl:        3600000,
+                timestamp:  Date.now(),
             }),
         });
         const text = await resp.text();

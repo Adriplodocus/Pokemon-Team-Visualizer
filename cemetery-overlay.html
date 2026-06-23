@@ -132,7 +132,7 @@ body { padding: 5px; }
         .then(function (data) { if (data && !data.error) renderCemetery(data); })
         .catch(function () {});
 
-    var ably    = new Ably.Realtime({ authUrl: '/api/token' });
+    var ably    = new Ably.Realtime({ authUrl: '/api/token?id=' + id });
     var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('cemetery-update', function (msg) {
         try {

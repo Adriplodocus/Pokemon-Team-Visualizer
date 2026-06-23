@@ -9,13 +9,13 @@ export async function onRequestGet(context) {
     const id    = url.searchParams.get('id');
     const event = url.searchParams.get('event');
 
+    if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
+    if (event && !/^[a-z-]+$/.test(event))   return json({ error: 'Invalid event' }, 400);
+
     const cache    = caches.default;
     const cacheKey = new Request(context.request.url);
     const cached   = await cache.match(cacheKey);
     if (cached) return cached;
-
-    if (!id || !/^[0-9a-f-]{36}$/.test(id)) return json({ error: 'Invalid id' }, 400);
-    if (event && !/^[a-z-]+$/.test(event))   return json({ error: 'Invalid event' }, 400);
 
     const respond = async (data) => {
         const r = json(data);

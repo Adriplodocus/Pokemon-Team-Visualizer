@@ -36,7 +36,7 @@ async function fetchProfile(provider, accessToken, clientId) {
       providerId: u.id,
       username:   u.login,
       email:      u.email || null,
-      avatarUrl:  u.profile_image_url,
+      avatarUrl:  sanitizeAvatarUrl(u.profile_image_url),
     };
   }
   const res = await fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
@@ -48,8 +48,13 @@ async function fetchProfile(provider, accessToken, clientId) {
     providerId: u.sub,
     username:   u.name || u.email,
     email:      u.email || null,
-    avatarUrl:  u.picture || null,
+    avatarUrl:  sanitizeAvatarUrl(u.picture),
   };
+}
+
+function sanitizeAvatarUrl(url) {
+  if (!url || typeof url !== 'string') return null;
+  return url.startsWith('https://') ? url : null;
 }
 
 export async function onRequestGet(context) {
@@ -155,7 +160,7 @@ export async function onRequestGet(context) {
 
   const iat   = Math.floor(Date.now() / 1000);
   const exp   = iat + 7 * 24 * 3600;
-  const token = await signJWT({ userId, tier, iat, exp }, context.env.JWT_SECRET);
+  const token = await signJWT({ userId, iat, exp }, context.env.JWT_SECRET);
 
   const isSecure   = url.protocol === 'https:';
   const loginNext  = cookies.login_next || '';

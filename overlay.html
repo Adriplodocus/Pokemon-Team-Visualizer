@@ -189,7 +189,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
         .then(function (data) { if (data && !data.error) { renderTeam(data); fitToViewport(); } })
         .catch(function () {});
 
-    var ably = new Ably.Realtime({ authUrl: '/api/token' });
+    var ably = new Ably.Realtime({ authUrl: '/api/token?id=' + id });
     var channel = ably.channels.get('ptv-' + id, { params: { rewind: '1' } });
     channel.subscribe('update', function (msg) {
         try { renderTeam(JSON.parse(msg.data)); fitToViewport(); } catch (e) {}
