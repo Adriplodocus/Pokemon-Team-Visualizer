@@ -173,6 +173,9 @@ let externalMode = false;
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
 let SPRITE_VER = '?v=2';
+let spriteTheme = localStorage.getItem('ptv_sprite_theme') || 'Showdown';
+let themeIndex  = {};
+let themeIndexLoaded = false;
 let pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
 let modalProps   = { ...DEFAULT_PROPS };
 
@@ -266,6 +269,21 @@ async function hydrateFromAbly() {
 }
 
 // ── Sprite URL ────────────────────────────────────────────────────
+function themeBaseUrl() {
+    return BASE_URL + spriteTheme + '/';
+}
+function themeExt() {
+    return spriteTheme === 'Showdown' ? '.gif' : '.png';
+}
+function themeAvail(lower) {
+    return (themeIndex[spriteTheme] || {})[lower] || {};
+}
+function setTheme(theme) {
+    spriteTheme = theme;
+    localStorage.setItem('ptv_sprite_theme', theme);
+    renderCemetery();
+}
+
 function buildSpriteUrl(name, props) {
     const lower    = name.toLowerCase();
     const shiny    = props.shiny === 'True';
@@ -273,14 +291,16 @@ function buildSpriteUrl(name, props) {
     const gender   = props.gender || 'male';
     const catalog  = POKEMON_CATALOG[lower] || {};
     const skins    = catalog.skin || [];
-    const hasFemale = FEMALE_VARIANTS.has(lower);
+    const avail      = themeAvail(lower);
+    const availSkins = themeIndexLoaded ? (avail.skins || []) : skins;
+    const hasFemale  = themeIndexLoaded ? (avail.female === true) : FEMALE_VARIANTS.has(lower);
 
     let fileName = lower;
-    let folder   = BASE_URL;
-    if (skin !== 'common' && skins.includes(skin)) fileName += '_' + skin;
+    let folder   = themeBaseUrl();
+    if (skin !== 'common' && availSkins.includes(skin)) fileName += '_' + skin;
     if (shiny) folder += 'shiny/';
     if (gender === 'female' && hasFemale && skin === 'common') folder += 'female/';
-    return folder + encodeURIComponent(fileName) + '.gif' + SPRITE_VER;
+    return folder + encodeURIComponent(fileName) + themeExt() + SPRITE_VER;
 }
 
 // ── Autocomplete ──────────────────────────────────────────────────
@@ -290,9 +310,12 @@ Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
     fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
+    fetch('sprites/theme-index.json').then(r => r.json()).catch(() => ({})),
 ])
-.then(([names, aliases, ver]) => {
+.then(([names, aliases, ver, tIdx]) => {
     SPRITE_VER = '?v=' + ver.v;
+    themeIndex = tIdx || {};
+    themeIndexLoaded = Object.keys(themeIndex).length > 0;
     for (const [canonical, aliasList] of Object.entries(aliases)) {
         for (const alias of aliasList) ALIAS_TO_CANONICAL[alias] = canonical;
     }
@@ -387,18 +410,27 @@ function openModal() {
     if (!name) { setStatus(tC('errWriteFirst'), 'var(--error)'); return; }
     document.getElementById('modal-title').textContent = capitalize(name) + ' ' + tC('modalTitle');
 
-    const lower   = name.toLowerCase();
-    const catalog = POKEMON_CATALOG[lower] || {};
-    const skins   = ['common', ...(catalog.skin || [])];
+    const lower      = name.toLowerCase();
+    const catalog    = POKEMON_CATALOG[lower] || {};
+    const avail      = themeAvail(lower);
+    const catalogSkins = catalog.skin || [];
+    const availSkins   = themeIndexLoaded ? (avail.skins || []) : catalogSkins;
+    const hasFemale    = themeIndexLoaded ? (avail.female === true) : FEMALE_VARIANTS.has(lower);
+    const skins = catalog.skipBase
+        ? (availSkins.length ? availSkins : catalogSkins)
+        : ['common', ...availSkins];
     const props   = pendingEntry.props;
-    modalProps    = { ...props };
+    modalProps    = {
+        ...props,
+        gender: (props.gender === 'female' && !hasFemale) ? 'male' : props.gender,
+    };
 
     document.getElementById('modal-props').innerHTML = `
         <div class="modal-row">
             <label>${tC('modalGender')}</label>
             <select id="mp-gender" onchange="modalProps.gender=this.value">
-                <option value="male"   ${props.gender === 'male'   ? 'selected' : ''}>male</option>
-                <option value="female" ${props.gender === 'female' ? 'selected' : ''}>female</option>
+                <option value="male"   ${modalProps.gender === 'male'   ? 'selected' : ''}>male</option>
+                ${hasFemale ? `<option value="female" ${modalProps.gender === 'female' ? 'selected' : ''}>female</option>` : ''}
             </select>
         </div>
         <div class="modal-row">
@@ -480,8 +512,8 @@ function renderCemetery() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
-            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
+            ? themeBaseUrl() + encodeURIComponent(canonical) + themeExt() + SPRITE_VER
+            : themeBaseUrl() + encodeURIComponent(name) + themeExt() + SPRITE_VER;
         const label = entry.mote || entry.name;
         const fbAttr = fallback !== url
             ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
@@ -546,8 +578,8 @@ async function publishCemetery() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
-            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
+            ? themeBaseUrl() + encodeURIComponent(canonical) + themeExt() + SPRITE_VER
+            : themeBaseUrl() + encodeURIComponent(name) + themeExt() + SPRITE_VER;
         return { url, fallback: fallback !== url ? fallback : null };
     });
 
@@ -702,6 +734,12 @@ function initGridControls() {
         updateCemeteryPreviewContent();
     });
 
+    const _themeSelect = document.getElementById('theme-select');
+    if (_themeSelect) {
+        _themeSelect.value = spriteTheme;
+        _themeSelect.addEventListener('change', e => setTheme(e.target.value));
+    }
+
     syncOverflowControl();
 }
 
@@ -754,8 +792,8 @@ function buildCemeteryOverlayHTML() {
         const url       = buildSpriteUrl(name, entry.props);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
-            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
+            ? themeBaseUrl() + encodeURIComponent(canonical) + themeExt() + SPRITE_VER
+            : themeBaseUrl() + encodeURIComponent(name) + themeExt() + SPRITE_VER;
         const fbAttr = fallback !== url
             ? `onerror="if(this.src!==${JSON.stringify(fallback)}){this.src=${JSON.stringify(fallback)};this.onerror=null;}"`
             : '';

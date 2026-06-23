@@ -49,6 +49,7 @@ const STRINGS = {
         tooltipShiny:     'Shiny',
         tooltipYes:       'Sí',
         tooltipNo:        'No',
+        themeLabel:       'Sprites',
         cookieMsg:        'Esta app usa una cookie de sesión para autenticarte y guarda tu equipo en nuestro servidor. Sin publicidad ni rastreo de terceros.',
         cookieOk:         'Entendido',
         copyEditorUrl:   '🔗 Copiar link para editor',
@@ -137,6 +138,7 @@ const STRINGS = {
         tooltipShiny:     'Shiny',
         tooltipYes:       'Yes',
         tooltipNo:        'No',
+        themeLabel:       'Sprites',
         cookieMsg:        'This app uses a session cookie for authentication and saves your team on our server. No ads or third-party tracking.',
         cookieOk:         'Got it',
         copyEditorUrl:   '🔗 Copy editor link',
@@ -279,6 +281,9 @@ const team = Array.from({ length: 6 }, () => ({
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
 let SPRITE_VER = '?v=2';
+let spriteTheme = localStorage.getItem('ptv_sprite_theme') || 'Showdown';
+let themeIndex  = {};
+let themeIndexLoaded = false;
 let channelId    = null;
 let externalMode = false;
 let currentUser   = null;
@@ -323,9 +328,12 @@ Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
     fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
+    fetch('sprites/theme-index.json').then(r => r.json()).catch(() => ({})),
 ])
-.then(([names, aliases, ver]) => {
+.then(([names, aliases, ver, tIdx]) => {
     SPRITE_VER = '?v=' + ver.v;
+    themeIndex = tIdx || {};
+    themeIndexLoaded = Object.keys(themeIndex).length > 0;
     for (const [canonical, aliasList] of Object.entries(aliases)) {
         for (const alias of aliasList) {
             ALIAS_TO_CANONICAL[alias] = canonical;
@@ -535,11 +543,9 @@ function refreshSprite(i) {
     if (name && pokemonNames.includes(name)) {
         const url         = buildSpriteUrl(name, team[i].properties);
         const canonical   = ALIAS_TO_CANONICAL[name];
-        const fallbackUrl = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
-            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
+        const fallbackUrl = themeBaseUrl() + encodeURIComponent(canonical || name) + themeExt() + SPRITE_VER;
         img.onerror = () => {
-            if (img.src !== fallbackUrl) {
+            if (fallbackUrl !== url && img.src !== fallbackUrl) {
                 img.src = fallbackUrl;
             } else {
                 img.classList.remove('visible');
@@ -593,26 +599,33 @@ function openModal(i) {
     }
     document.getElementById('modal-title').textContent = capitalize(name) + ' ' + t('modalTitle');
 
-    const catalog = POKEMON_CATALOG[name.toLowerCase()] || {};
-    const skins   = catalog.skipBase ? (catalog.skin || []) : ['common', ...(catalog.skin || [])];
+    const lower   = name.toLowerCase();
+    const catalog = POKEMON_CATALOG[lower] || {};
+    const avail   = themeAvail(lower);
+    const catalogSkins = catalog.skin || [];
+    const availSkins   = themeIndexLoaded ? (avail.skins || []) : catalogSkins;
+    const hasFemale    = themeIndexLoaded ? (avail.female === true) : FEMALE_VARIANTS.has(lower);
+    const skins = catalog.skipBase
+        ? (availSkins.length ? availSkins : catalogSkins)
+        : ['common', ...availSkins];
     const props   = team[i].properties;
     modalVars = {};
 
     const propsEl = document.getElementById('modal-props');
     propsEl.innerHTML = '';
 
-    modalVars.gender = props.gender;
+    modalVars.gender = (props.gender === 'female' && !hasFemale) ? 'male' : props.gender;
     propsEl.innerHTML += `
         <div class="modal-row">
             <label>${t('modalGender')}</label>
             <select id="mp-gender" onchange="modalVars.gender=this.value">
-                <option value="male"   ${props.gender==='male'   ? 'selected':''}>male</option>
-                <option value="female" ${props.gender==='female' ? 'selected':''}>female</option>
+                <option value="male"   ${modalVars.gender==='male'   ? 'selected':''}>male</option>
+                ${hasFemale ? `<option value="female" ${modalVars.gender==='female' ? 'selected':''}>female</option>` : ''}
             </select>
         </div>`;
 
     const effectiveModalSkin = (catalog.skipBase && (!props.skin || props.skin === 'common'))
-        ? (catalog.skin?.[0] ?? 'common') : (props.skin || 'common');
+        ? (skins[0] ?? 'common') : (props.skin || 'common');
     modalVars.skin = effectiveModalSkin;
     propsEl.innerHTML += `
         <div class="modal-row">
@@ -653,32 +666,47 @@ document.getElementById('modal-backdrop').addEventListener('click', e => {
     if (e.target === document.getElementById('modal-backdrop')) closeModal();
 });
 
+// ── Theme helpers ────────────────────────────────────────────────
+function themeBaseUrl() {
+    return BASE_URL + spriteTheme + '/';
+}
+function themeExt() {
+    return spriteTheme === 'Showdown' ? '.gif' : '.png';
+}
+function themeAvail(lower) {
+    return (themeIndex[spriteTheme] || {})[lower] || {};
+}
+function setTheme(theme) {
+    spriteTheme = theme;
+    localStorage.setItem('ptv_sprite_theme', theme);
+    for (let i = 0; i < 6; i++) refreshSprite(i);
+    updatePreview();
+}
+
 // ── Sprite URL builder ──────────────────────────────────────────
 function buildSpriteUrl(name, props) {
-    const lower   = name.toLowerCase();
-    const shiny   = props.shiny === 'True';
-    const skin    = props.skin  || 'common';
-    const gender  = props.gender || 'male';
+    const lower  = name.toLowerCase();
+    const shiny  = props.shiny === 'True';
+    const skin   = props.skin  || 'common';
+    const gender = props.gender || 'male';
 
-    const catalog   = POKEMON_CATALOG[lower] || {};
-    const skins     = catalog.skin || [];
-    const hasFemale = FEMALE_VARIANTS.has(lower);
-
+    const catalog    = POKEMON_CATALOG[lower] || {};
+    const skins      = catalog.skin || [];
+    const avail      = themeAvail(lower);
+    const availSkins = themeIndexLoaded ? (avail.skins || []) : skins;
+    const hasFemale  = themeIndexLoaded ? (avail.female === true) : FEMALE_VARIANTS.has(lower);
+    const ext    = themeExt();
+    let folder   = themeBaseUrl();
     let fileName = lower;
-    let folder   = BASE_URL;
 
     const effectiveSkin = (skin === 'common' && catalog.skipBase && skins.length) ? skins[0] : skin;
-    if (effectiveSkin !== 'common' && skins.includes(effectiveSkin)) {
+    if (effectiveSkin !== 'common' && availSkins.includes(effectiveSkin)) {
         fileName += '_' + effectiveSkin;
     }
-    if (shiny) {
-        folder += 'shiny/';
-    }
-    if (gender === 'female' && hasFemale && skin === 'common') {
-        folder += 'female/';
-    }
+    if (shiny) folder += 'shiny/';
+    if (gender === 'female' && hasFemale && skin === 'common') folder += 'female/';
 
-    return folder + encodeURIComponent(fileName) + '.gif' + SPRITE_VER;
+    return folder + encodeURIComponent(fileName) + ext + SPRITE_VER;
 }
 
 // ── Generate HTML (used by live preview) ────────────────────────
@@ -701,8 +729,8 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
         const url      = buildSpriteUrl(name, slot.properties);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
-            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
+            ? themeBaseUrl() + encodeURIComponent(canonical) + themeExt() + SPRITE_VER
+            : themeBaseUrl() + encodeURIComponent(name) + themeExt() + SPRITE_VER;
         return {
             name,
             mote: (slot.mote || slot.name).toUpperCase(),
@@ -1281,8 +1309,8 @@ async function publishToObs() {
         const url      = buildSpriteUrl(name, slot.properties);
         const canonical = ALIAS_TO_CANONICAL[name];
         const fallback  = canonical
-            ? BASE_URL + encodeURIComponent(canonical) + '.gif' + SPRITE_VER
-            : BASE_URL + encodeURIComponent(name) + '.gif' + SPRITE_VER;
+            ? themeBaseUrl() + encodeURIComponent(canonical) + themeExt() + SPRITE_VER
+            : themeBaseUrl() + encodeURIComponent(name) + themeExt() + SPRITE_VER;
         return {
             name,
             mote:     (slot.mote || slot.name).toUpperCase(),
@@ -1335,6 +1363,11 @@ function newChannel() {
 document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
 document.getElementById('shadows-check').addEventListener('change', saveState);
 document.getElementById('bg-check').addEventListener('change', saveState);
+const _themeSelect = document.getElementById('theme-select');
+if (_themeSelect) {
+    _themeSelect.value = spriteTheme;
+    _themeSelect.addEventListener('change', e => setTheme(e.target.value));
+}
 
 // ── Tooltip ──────────────────────────────────────────────────────
 const tooltipEl = document.createElement('div');

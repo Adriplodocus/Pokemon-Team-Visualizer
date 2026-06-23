@@ -1,6 +1,6 @@
 import os, json, re
 
-sprites_dir  = os.path.join(os.path.dirname(__file__), '..', 'sprites')
+sprites_dir  = os.path.join(os.path.dirname(__file__), '..', 'sprites', 'Showdown')
 catalog_path = os.path.join(os.path.dirname(__file__), '..', 'pokemon-catalog.js')
 
 with open(catalog_path, encoding='utf-8') as f:
