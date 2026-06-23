@@ -85,7 +85,8 @@ export async function onRequestPost(context) {
         if (!senderLogin || !broadcasterLogin) return new Response(null, { status: 204 });
 
         const isBroadcaster = senderLogin === broadcasterLogin;
-        const isMod = badges.some(b => b.set_id === 'moderator');
+        const isMod = badges.some(b => b.set_id?.includes('moderator'));
+        console.log('[webhook] sender:', senderLogin, 'isBroadcaster:', isBroadcaster, 'isMod:', isMod, 'badges:', JSON.stringify(badges));
         if (!isBroadcaster && !isMod) return new Response(null, { status: 204 });
 
         const checkMatch = text.match(/^!check\s+(.+)$/i);

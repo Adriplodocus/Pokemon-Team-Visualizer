@@ -1828,31 +1828,33 @@ async function rlToggleBot() {
     subscribeToAblyUpdates();
     renderPresets();
 
-    if (!externalMode) {
+    if (externalMode) {
+        document.getElementById('rl-section').classList.remove('hidden');
+    } else {
         const user = await rlCheckAuth();
         if (!user) return;
-
-        rlLoadRoutes();
-        rlInitLifeCounter();
         rlLoadBotStatus();
-
-        document.getElementById('route-add-btn').addEventListener('click', rlAddRoute);
-        document.getElementById('route-input').addEventListener('keydown', e => {
-            if (e.key === 'Enter') rlAddRoute();
-        });
-        document.getElementById('route-search').addEventListener('input', e => {
-            rlSearchQuery = e.target.value;
-            rlRenderRoutes();
-        });
         document.getElementById('bot-toggle-btn').addEventListener('click', rlToggleBot);
-        document.getElementById('zones-modal-btn').addEventListener('click', rlOpenModal);
-        document.getElementById('zones-modal-close').addEventListener('click', rlCloseModal);
-        document.getElementById('zones-clear-btn').addEventListener('click', rlClearAllRoutes);
-        document.getElementById('zones-modal').addEventListener('click', e => {
-            if (e.target === e.currentTarget) rlCloseModal();
-        });
-        document.addEventListener('keydown', e => {
-            if (e.key === 'Escape') rlCloseModal();
-        });
     }
+
+    rlLoadRoutes();
+    rlInitLifeCounter();
+
+    document.getElementById('route-add-btn').addEventListener('click', rlAddRoute);
+    document.getElementById('route-input').addEventListener('keydown', e => {
+        if (e.key === 'Enter') rlAddRoute();
+    });
+    document.getElementById('route-search').addEventListener('input', e => {
+        rlSearchQuery = e.target.value;
+        rlRenderRoutes();
+    });
+    document.getElementById('zones-modal-btn').addEventListener('click', rlOpenModal);
+    document.getElementById('zones-modal-close').addEventListener('click', rlCloseModal);
+    document.getElementById('zones-clear-btn').addEventListener('click', rlClearAllRoutes);
+    document.getElementById('zones-modal').addEventListener('click', e => {
+        if (e.target === e.currentTarget) rlCloseModal();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape') rlCloseModal();
+    });
 })();
