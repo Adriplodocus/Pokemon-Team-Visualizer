@@ -173,7 +173,7 @@ let externalMode = false;
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
 let SPRITE_VER = '?v=2';
-let spriteTheme = localStorage.getItem('ptv_sprite_theme') || 'Showdown';
+let spriteTheme = localStorage.getItem('ptv_sprite_theme_cemetery') || 'Showdown';
 let themeIndex  = {};
 let themeIndexLoaded = false;
 let pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
@@ -280,7 +280,7 @@ function themeAvail(lower) {
 }
 function setTheme(theme) {
     spriteTheme = theme;
-    localStorage.setItem('ptv_sprite_theme', theme);
+    localStorage.setItem('ptv_sprite_theme_cemetery', theme);
     renderCemetery();
 }
 
