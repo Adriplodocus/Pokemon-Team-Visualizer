@@ -255,6 +255,18 @@ async function hydrateFromAbly() {
         const resp = await fetch(`/api/load?id=${channelId}&event=cemetery-update`);
         if (!resp.ok) return;
         const data = await resp.json();
+
+        if (Array.isArray(data.cemetery)) {
+            // New shape: buildCemeteryBlob { cemetery, cemeteryConfig, cemeteryTypo }
+            applyCemeteryServerState(data);
+            syncGridUI();
+            syncCemTypoUI();
+            if (!externalMode) saveCemetery();
+            renderCemetery();
+            return;
+        }
+
+        // Old shape: Ably message { raw, cols, rows, overflow, typography }
         if (!Array.isArray(data.raw)) return;
 
         cemetery = data.raw.map(e => ({
@@ -263,9 +275,32 @@ async function hydrateFromAbly() {
             props: { ...DEFAULT_PROPS, ...(e.props || {}) },
         }));
 
+        if (data.cols !== undefined) {
+            cemeteryConfig.cols     = Math.min(10, Math.max(1, parseInt(data.cols) || 4));
+            cemeteryConfig.rows     = Math.min(10, Math.max(1, parseInt(data.rows) || 3));
+            cemeteryConfig.overflow = data.overflow !== false;
+            syncGridUI();
+        }
+
         if (!externalMode) saveCemetery();
         renderCemetery();
     } catch (_) {}
+}
+
+function syncGridUI() {
+    const colsSlider = document.getElementById('cemetery-cols-slider');
+    const rowsSlider = document.getElementById('cemetery-rows-slider');
+    const colsVal    = document.getElementById('cemetery-cols-val');
+    const rowsVal    = document.getElementById('cemetery-rows-val');
+    const overflowCk = document.getElementById('cemetery-overflow-check');
+    if (!colsSlider) return;
+    colsSlider.value    = cemeteryConfig.cols;
+    rowsSlider.value    = cemeteryConfig.rows;
+    colsVal.textContent = cemeteryConfig.cols;
+    rowsVal.textContent = cemeteryConfig.rows;
+    overflowCk.checked  = cemeteryConfig.overflow;
+    syncOverflowControl();
+    updateCemeteryObsHint();
 }
 
 // ── Sprite URL ────────────────────────────────────────────────────
