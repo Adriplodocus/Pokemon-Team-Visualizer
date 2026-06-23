@@ -76,7 +76,7 @@ export async function onRequestPost(context) {
                     RETURNING id
                 `;
                 if (!teamResult.length) {
-                    const badgePatch = JSON.stringify({ badgeState: data });
+                    const badgePatch = JSON.stringify({ badges: data });
                     await sql`
                         UPDATE users
                         SET state = COALESCE(state, '{}'::jsonb) || ${badgePatch}::jsonb
