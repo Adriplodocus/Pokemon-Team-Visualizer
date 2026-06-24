@@ -48,6 +48,7 @@
 
 const HEADER_STRINGS = {
     es: {
+        patchNew: 'NOVEDAD',
         patchUpdates: 'novedades',
         patchClose: 'Cerrar novedad',
         headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
@@ -56,6 +57,7 @@ const HEADER_STRINGS = {
         donationMsg: 'Este es un proyecto gratuito. Pero utiliza servicios de terceros que aplican barreras de pago (Cloudflare, Ably, Neon). Tu donación puede ayudar a mejorar los servicios prestados por la aplicación. Puedes realizar una donación <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">aquí</a>.',
     },
     en: {
+        patchNew: 'NEW',
         patchUpdates: 'updates',
         patchClose: 'Close update',
         headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
@@ -128,9 +130,12 @@ function initPatchNotesBanner() {
             : '';
         banner.innerHTML = `
             <div class="patch-banner-inner">
-                <span class="patch-banner-icon" aria-hidden="true">★</span>
+                <span class="patch-banner-icon" aria-hidden="true">⚡</span>
                 <div class="patch-banner-content">
-                    <strong class="patch-banner-title">${esc(note.title[lang] || note.title.es)}</strong>
+                    <div class="patch-banner-header">
+                        <span class="patch-banner-tag">${esc(s.patchNew)}</span>
+                        <strong class="patch-banner-title">${esc(note.title[lang] || note.title.es)}</strong>
+                    </div>
                     <span class="patch-banner-body">${esc(note.body[lang] || note.body.es)}</span>
                 </div>
             </div>

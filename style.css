@@ -142,14 +142,14 @@ h1 .header-brand:hover { transform: scale(1.08); }
     position: relative;
     box-sizing: border-box;
     margin-bottom: 18px;
-    padding: 10px 14px;
+    padding: 12px 16px;
     font-size: 12px;
     line-height: 1.6;
     color: var(--text-2);
-    background: rgba(0, 204, 255, 0.06);
-    border: 1px solid rgba(0, 204, 255, 0.18);
-    border-left: 3px solid rgba(0, 204, 255, 0.5);
-    border-radius: 8px;
+    background: linear-gradient(135deg, rgba(255, 86, 180, 0.08) 0%, rgba(0, 204, 255, 0.08) 100%);
+    border: 1px solid rgba(255, 86, 180, 0.35);
+    border-radius: 10px;
+    box-shadow: 0 0 18px rgba(255, 86, 180, 0.12), inset 0 0 0 1px rgba(255, 86, 180, 0.05);
     animation: fade-up 0.4s ease both;
     animation-delay: 0.15s;
     text-align: left;
@@ -159,10 +159,26 @@ h1 .header-brand:hover { transform: scale(1.08); }
     gap: 10px;
     transition: opacity 0.15s;
 }
-.patch-banner-inner { display: flex; align-items: flex-start; gap: 7px; flex: 1; min-width: 0; }
-.patch-banner-icon { flex-shrink: 0; color: rgba(0, 204, 255, 0.65); margin-top: 1px; }
-.patch-banner-content { display: flex; flex-direction: column; gap: 2px; }
-.patch-banner-title { color: var(--text-em); font-weight: 700; display: block; }
+.patch-banner-inner { display: flex; align-items: flex-start; gap: 9px; flex: 1; min-width: 0; }
+.patch-banner-icon { flex-shrink: 0; color: var(--pink); margin-top: 2px; font-size: 14px; }
+.patch-banner-content { display: flex; flex-direction: column; gap: 3px; }
+.patch-banner-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.patch-banner-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 1px 7px;
+    border-radius: 100px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    background: rgba(255, 86, 180, 0.2);
+    color: var(--pink);
+    border: 1px solid rgba(255, 86, 180, 0.45);
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+.patch-banner-title { color: var(--text-em); font-weight: 700; }
 .patch-banner-body { display: block; }
 .patch-banner-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; padding-top: 2px; }
 .patch-banner-counter { font-size: 10px; color: var(--dimmed); white-space: nowrap; }
@@ -176,7 +192,7 @@ h1 .header-brand:hover { transform: scale(1.08); }
     padding: 2px 4px;
     transition: color 0.15s;
 }
-.patch-banner-close:hover { color: var(--cyan); }
+.patch-banner-close:hover { color: var(--pink); }
 
 /* ── Lang toggle ─────────────────────────────────────────────── */
 .lang-toggle {
