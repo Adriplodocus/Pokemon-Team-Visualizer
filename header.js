@@ -24,6 +24,7 @@
 </footer>`);
         initUserWidget();
         initDonationBanner();
+        initPatchNotesBanner();
     });
 
     document.body.insertAdjacentHTML('afterbegin', `
@@ -47,12 +48,16 @@
 
 const HEADER_STRINGS = {
     es: {
+        patchUpdates: 'novedades',
+        patchClose: 'Cerrar novedad',
         headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
         headerError: '¿Quieres notificar un error o dejar feedback? Puedes hacerlo a través de este <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">enlace</a>.',
         guideBtn: 'Guía',
         donationMsg: 'Este es un proyecto gratuito. Pero utiliza servicios de terceros que aplican barreras de pago (Cloudflare, Ably, Neon). Tu donación puede ayudar a mejorar los servicios prestados por la aplicación. Puedes realizar una donación <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">aquí</a>.',
     },
     en: {
+        patchUpdates: 'updates',
+        patchClose: 'Close update',
         headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
         headerError: 'Want to report a bug or leave feedback? You can do so through this <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">link</a>.',
         guideBtn: 'Guide',
@@ -88,6 +93,71 @@ function initDonationBanner() {
     const header = document.querySelector('header');
     if (app) app.insertAdjacentElement('afterbegin', banner);
     else if (header) header.insertAdjacentElement('afterend', banner);
+}
+
+function initPatchNotesBanner() {
+    if (typeof PATCH_NOTES === 'undefined' || !PATCH_NOTES.length) return;
+
+    let seen;
+    try { seen = JSON.parse(localStorage.getItem('ptv_seen_patches') || '[]'); }
+    catch (_) { seen = []; }
+
+    const pending = PATCH_NOTES
+        .filter(n => !seen.includes(n.id))
+        .sort((a, b) => b.date.localeCompare(a.date));
+
+    if (!pending.length) return;
+
+    let idx = 0;
+    const seenLocal = [...seen];
+
+    const banner = document.createElement('div');
+    banner.className = 'patch-banner';
+    banner.setAttribute('role', 'status');
+
+    function renderNote() {
+        const note = pending[idx];
+        const lang = currentLang || 'es';
+        const s = HEADER_STRINGS[lang] || HEADER_STRINGS.es;
+        const total = pending.length;
+        const counterHtml = total > 1
+            ? `<span class="patch-banner-counter">${idx + 1} / ${total} ${s.patchUpdates}</span>`
+            : '';
+        banner.innerHTML = `
+            <div class="patch-banner-inner">
+                <span class="patch-banner-icon" aria-hidden="true">★</span>
+                <div class="patch-banner-content">
+                    <strong class="patch-banner-title">${esc(note.title[lang] || note.title.es)}</strong>
+                    <span class="patch-banner-body">${esc(note.body[lang] || note.body.es)}</span>
+                </div>
+            </div>
+            <div class="patch-banner-actions">
+                ${counterHtml}
+                <button class="patch-banner-close" aria-label="${esc(s.patchClose)}">✕</button>
+            </div>`;
+        banner.querySelector('.patch-banner-close').addEventListener('click', dismissNote);
+    }
+
+    function dismissNote() {
+        seenLocal.push(pending[idx].id);
+        try { localStorage.setItem('ptv_seen_patches', JSON.stringify(seenLocal)); } catch (_) {}
+        idx++;
+        if (idx < pending.length) {
+            banner.style.opacity = '0';
+            setTimeout(() => { banner.style.opacity = ''; renderNote(); }, 150);
+        } else {
+            banner.remove();
+        }
+    }
+
+    renderNote();
+
+    const ref = document.querySelector('.donation-banner');
+    const app = document.getElementById('app');
+    const hdr = document.querySelector('header');
+    if (ref)      ref.insertAdjacentElement('afterend', banner);
+    else if (app) app.insertAdjacentElement('afterbegin', banner);
+    else if (hdr) hdr.insertAdjacentElement('afterend', banner);
 }
 
 function esc(s) {
