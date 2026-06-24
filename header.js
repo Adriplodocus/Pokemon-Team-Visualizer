@@ -104,7 +104,10 @@ function initPatchNotesBanner() {
 
     const pending = PATCH_NOTES
         .filter(n => !seen.includes(n.id))
-        .sort((a, b) => b.date.localeCompare(a.date));
+        .sort((a, b) => {
+            const p = d => { const [dd,mm,yy] = d.split('/'); return new Date(yy, mm-1, dd); };
+            return p(b.date) - p(a.date);
+        });
 
     if (!pending.length) return;
 
