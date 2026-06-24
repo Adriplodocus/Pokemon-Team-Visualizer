@@ -311,11 +311,14 @@ async function checkLiveStatus(twitchUsers, key) {
   if (!res || !res.ok) return;
   const { live } = await res.json();
   if (!live?.length) return;
-  const liveSet = new Set(live.map(u => u.toLowerCase()));
+  const liveSet  = new Set(live.map(u => u.toLowerCase()));
+  const listEl   = document.getElementById('list-results');
   for (const u of twitchUsers) {
     if (liveSet.has(u.username.toLowerCase())) {
-      const el = document.getElementById(`live-${u.id}`);
-      if (el) el.innerHTML = '<span class="live-badge">LIVE</span>';
+      const liveEl = document.getElementById(`live-${u.id}`);
+      if (liveEl) liveEl.innerHTML = '<span class="live-badge">LIVE</span>';
+      const row = document.getElementById(`row-${u.id}`);
+      if (row) listEl.prepend(row);
     }
   }
 }
