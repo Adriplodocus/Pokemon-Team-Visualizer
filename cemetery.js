@@ -287,6 +287,36 @@ async function hydrateFromAbly() {
     } catch (_) {}
 }
 
+function subscribeToAblyUpdates() {
+    if (typeof Ably === 'undefined') return;
+    try {
+        const ably = new Ably.Realtime({ authUrl: `/api/token?id=${channelId}` });
+        const ch = ably.channels.get(`ptv-${channelId}`);
+        ch.subscribe('cemetery-update', msg => {
+            try {
+                const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
+                if (!Array.isArray(data.raw)) return;
+                cemetery = data.raw.map(e => ({
+                    name:  e.name || '',
+                    mote:  e.mote || '',
+                    props: { ...DEFAULT_PROPS, ...(e.props || {}) },
+                }));
+                if (data.cols !== undefined) {
+                    cemeteryConfig.cols     = Math.min(10, Math.max(1, parseInt(data.cols) || 4));
+                    cemeteryConfig.rows     = Math.min(10, Math.max(1, parseInt(data.rows) || 3));
+                    cemeteryConfig.overflow = data.overflow !== false;
+                    syncGridUI();
+                }
+                if (data.typography) {
+                    cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO, ...data.typography };
+                    syncCemTypoUI();
+                }
+                renderCemetery();
+            } catch (_) {}
+        });
+    } catch (_) {}
+}
+
 function syncGridUI() {
     const colsSlider = document.getElementById('cemetery-cols-slider');
     const rowsSlider = document.getElementById('cemetery-rows-slider');
@@ -1163,4 +1193,5 @@ function initCemColorPicker() {
     initCemColorPicker();
     initCemeteryPreview();
     if (!hadServerState) hydrateFromAbly();
+    subscribeToAblyUpdates();
 })();
