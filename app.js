@@ -1217,7 +1217,7 @@ async function hydrateFromAbly() {
 
 function subscribeToAblyUpdates() {
     try {
-        const ably = new Ably.Realtime({ authUrl: '/api/token' });
+        const ably = new Ably.Realtime({ authUrl: `/api/token?id=${channelId}` });
         const channel = ably.channels.get(`ptv-${channelId}`);
         channel.subscribe('update', msg => {
             try {
