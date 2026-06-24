@@ -128,6 +128,19 @@
 .pagination button:hover:not(:disabled) { border-color: rgba(0,204,255,0.3); }
 .pagination button:disabled { opacity: 0.35; cursor: default; }
 #list-results { display: flex; flex-direction: column; gap: 0.5rem; }
+.live-badge {
+  display: inline-block;
+  background: #e91916;
+  color: #fff;
+  font-size: 0.58rem;
+  font-weight: 800;
+  padding: 0.08rem 0.32rem;
+  border-radius: 3px;
+  letter-spacing: 0.06em;
+  vertical-align: middle;
+  margin-left: 0.4rem;
+  line-height: 1.5;
+}
 </style>
 </head>
 <body>
@@ -286,6 +299,29 @@ async function loadUsers() {
     users.length ? users.map(u => renderUserRow(u)).join('') : '<div class="status-msg">Sin usuarios.</div>';
 
   renderPagination(page, pages);
+
+  const twitchUsers = users.filter(u => u.provider === 'twitch' && u.username);
+  if (twitchUsers.length) checkLiveStatus(twitchUsers, key);
+}
+
+async function checkLiveStatus(twitchUsers, key) {
+  const usernames = twitchUsers.map(u => u.username).join(',');
+  const res = await fetch(`/api/admin/live-status?usernames=${encodeURIComponent(usernames)}`, {
+    headers: { 'X-Admin-Key': key },
+  }).catch(() => null);
+  if (!res || !res.ok) return;
+  const { live } = await res.json();
+  if (!live?.length) return;
+  const liveSet  = new Set(live.map(u => u.toLowerCase()));
+  const listEl   = document.getElementById('list-results');
+  for (const u of twitchUsers) {
+    if (liveSet.has(u.username.toLowerCase())) {
+      const liveEl = document.getElementById(`live-${u.id}`);
+      if (liveEl) liveEl.innerHTML = '<span class="live-badge">LIVE</span>';
+      const row = document.getElementById(`row-${u.id}`);
+      if (row) listEl.prepend(row);
+    }
+  }
 }
 
 function renderPagination(page, pages) {
@@ -386,7 +422,7 @@ function renderUserRow(u) {
 <div class="user-row" id="row-${esc(u.id)}">
   ${img}
   <div class="user-row-info">
-    <div class="user-row-name">${u.provider === 'twitch' && u.username ? `<a href="https://twitch.tv/${esc(u.username)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(145,71,255,0.4)">${esc(u.username)}</a>` : esc(u.username || '—')}</div>
+    <div class="user-row-name">${u.provider === 'twitch' && u.username ? `<a href="https://twitch.tv/${esc(u.username)}" target="_blank" rel="noopener" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(145,71,255,0.4)">${esc(u.username)}</a>` : esc(u.username || '—')}<span id="live-${esc(u.id)}"></span></div>
     <div class="user-row-meta">${esc(u.provider)}${followersMeta} · <span id="status-${esc(u.id)}" class="status-msg"></span></div>
   </div>
   <div class="user-row-actions">
