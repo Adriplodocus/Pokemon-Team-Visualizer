@@ -457,7 +457,7 @@ function openModal() {
     const props   = pendingEntry.props;
     modalProps    = {
         ...props,
-        gender: (props.gender === 'female' && !hasFemale) ? 'male' : props.gender,
+        gender: props.gender || 'male',
     };
 
     document.getElementById('modal-props').innerHTML = `
@@ -465,7 +465,7 @@ function openModal() {
             <label>${tC('modalGender')}</label>
             <select id="mp-gender" onchange="modalProps.gender=this.value">
                 <option value="male"   ${modalProps.gender === 'male'   ? 'selected' : ''}>male</option>
-                ${hasFemale ? `<option value="female" ${modalProps.gender === 'female' ? 'selected' : ''}>female</option>` : ''}
+                <option value="female" ${modalProps.gender === 'female' ? 'selected' : ''}>female</option>
             </select>
         </div>
         <div class="modal-row">

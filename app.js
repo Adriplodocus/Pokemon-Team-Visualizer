@@ -614,13 +614,13 @@ function openModal(i) {
     const propsEl = document.getElementById('modal-props');
     propsEl.innerHTML = '';
 
-    modalVars.gender = (props.gender === 'female' && !hasFemale) ? 'male' : props.gender;
+    modalVars.gender = props.gender || 'male';
     propsEl.innerHTML += `
         <div class="modal-row">
             <label>${t('modalGender')}</label>
             <select id="mp-gender" onchange="modalVars.gender=this.value">
                 <option value="male"   ${modalVars.gender==='male'   ? 'selected':''}>male</option>
-                ${hasFemale ? `<option value="female" ${modalVars.gender==='female' ? 'selected':''}>female</option>` : ''}
+                <option value="female" ${modalVars.gender==='female' ? 'selected':''}>female</option>
             </select>
         </div>`;
 
