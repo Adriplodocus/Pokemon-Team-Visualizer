@@ -518,33 +518,30 @@ function toPokeApiSlug(name, skin) {
 }
 
 async function resolvePokemonTypes(name, skin) {
-    const reqId      = ++typeResolveId;
-    const capSkin    = skin;
-    const capShiny   = typeProps.shiny;
-    const capGender  = typeProps.gender;
+    const reqId     = ++typeResolveId;
+    const capSkin   = skin;
+    const capShiny  = typeProps.shiny;
+    const capGender = typeProps.gender;
 
     const resultDiv = document.getElementById('pk-result');
     const errorEl   = document.getElementById('pk-error');
     const typesDiv  = document.getElementById('pk-result-types');
+    const infoDiv   = document.getElementById('pk-info');
 
-    resultDiv.style.display  = 'none';
-    errorEl.style.display    = 'none';
-    typesDiv.innerHTML       = `<span style="color:var(--text)">${tT('loadingTypes')}</span>`;
+    resultDiv.style.display = 'none';
+    errorEl.style.display   = 'none';
+    if (infoDiv) infoDiv.style.display = 'none';
+    typesDiv.innerHTML = `<span style="color:var(--text-2)">${tT('loadingTypes')}</span>`;
 
     const slug = toPokeApiSlug(name, capSkin);
-    let types;
+    let data;
     try {
         let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
-        // Cosmetic-only skins don't have their own PokéAPI entry — fall back to base slug
         if (!res.ok && capSkin) {
             res = await fetch(`https://pokeapi.co/api/v2/pokemon/${toPokeApiSlug(name, null)}`);
         }
         if (!res.ok) throw new Error('not found');
-        const data = await res.json();
-        types = data.types
-            .map(t => t.type.name)
-            .filter(t => TYPES.includes(t))
-            .slice(0, 2);
+        data = await res.json();
     } catch {
         if (reqId !== typeResolveId) return;
         errorEl.textContent   = tT('unknownPokemon');
@@ -554,7 +551,18 @@ async function resolvePokemonTypes(name, skin) {
 
     if (reqId !== typeResolveId) return;
 
-    selectedPokemon.types = types;
+    const types = data.types
+        .map(t => t.type.name)
+        .filter(t => TYPES.includes(t))
+        .slice(0, 2);
+
+    selectedPokemon.types     = types;
+    selectedPokemon.abilities = data.abilities;
+    selectedPokemon.stats     = data.stats;
+    pkCurrentSpeciesName      = data.species.name;
+    pkSpeciesData             = null;
+    pkChainData               = null;
+
     selectedTypes = [...types];
     renderTypeSelector();
     renderTable();
@@ -576,6 +584,13 @@ async function resolvePokemonTypes(name, skin) {
 
     renderPkResult();
     resultDiv.style.display = 'flex';
+
+    // Show info panel — stats + abilities available immediately from step 1
+    if (infoDiv) infoDiv.style.display = 'flex';
+    renderPkStats(data.stats);
+    renderPkAbilities(data.abilities);
+
+    // (species + evo chain calls added in Task 4)
 }
 
 function renderPkResult() {
@@ -586,6 +601,41 @@ function renderPkResult() {
         `<img src="sprites/types/${t}.webp?v=2" alt="" class="type-icon">` +
         `${TYPE_NAMES[currentLang][t]}</span>`
     ).join('');
+}
+
+function renderPkStats(stats) {
+    const el = document.getElementById('pk-info-stats');
+    if (!el || !stats.length) return;
+    const rows = stats
+        .filter(s => STAT_KEYS[s.stat.name])
+        .map(s => {
+            const label = tT(STAT_KEYS[s.stat.name]);
+            const pct   = Math.round((s.base_stat / 255) * 100);
+            const color = statColor(s.base_stat);
+            return `<div class="pk-stat-row">
+                <span class="pk-stat-name">${label}</span>
+                <div class="pk-stat-bar-track">
+                    <div class="pk-stat-bar-fill" style="width:${pct}%;background:${color}"></div>
+                </div>
+                <span class="pk-stat-value">${s.base_stat}</span>
+            </div>`;
+        }).join('');
+    el.innerHTML = `<div class="pk-info-label">${tT('statsSection')}</div>
+        <div class="pk-stat-list">${rows}</div>`;
+}
+
+function renderPkAbilities(abilities) {
+    const el = document.getElementById('pk-info-abilities');
+    if (!el || !abilities.length) return;
+    const chips = abilities.map(a => {
+        const name = a.ability.name.replace(/-/g, ' ');
+        const hiddenLabel = a.is_hidden
+            ? ` <span class="pk-ability-hidden-label">(${tT('hiddenAbility')})</span>`
+            : '';
+        return `<span class="pk-ability-chip${a.is_hidden ? ' hidden' : ''}">${name}${hiddenLabel}</span>`;
+    }).join('');
+    el.innerHTML = `<div class="pk-info-label">${tT('abilitiesSection')}</div>
+        <div class="pk-ability-chips">${chips}</div>`;
 }
 
 function initPkSearch() {
