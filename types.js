@@ -79,6 +79,18 @@ const TYPE_STRINGS = {
         modalGender:     'Género',
         modalShiny:      'Shiny',
         modalSet:        'Guardar',
+        statsSection:     'Stats base',
+        abilitiesSection: 'Habilidades',
+        evoSection:       'Cadena evolutiva',
+        hiddenAbility:    'oculta',
+        badgeCommon:      'Común',
+        badgeLegendary:   'Legendario',
+        badgeMythic:      'Mítico',
+        badgeBaby:        'Bebé',
+        statHp:    'HP',        statAtk:   'Ataque',
+        statDef:   'Defensa',   statSpAtk: 'Sp.Atk',
+        statSpDef: 'Sp.Def',    statSpd:   'Velocidad',
+        evoLevel:  'nv.',       evoTrade:  'intercambio',
     },
     en: {
         noTypeSelected:  'Select one or two types to see effectiveness.',
@@ -94,6 +106,18 @@ const TYPE_STRINGS = {
         modalGender:     'Gender',
         modalShiny:      'Shiny',
         modalSet:        'Save',
+        statsSection:     'Base Stats',
+        abilitiesSection: 'Abilities',
+        evoSection:       'Evolution Chain',
+        hiddenAbility:    'hidden',
+        badgeCommon:      'Common',
+        badgeLegendary:   'Legendary',
+        badgeMythic:      'Mythical',
+        badgeBaby:        'Baby',
+        statHp:    'HP',        statAtk:   'Attack',
+        statDef:   'Defense',   statSpAtk: 'Sp.Atk',
+        statSpDef: 'Sp.Def',    statSpd:   'Speed',
+        evoLevel:  'lv.',       evoTrade:  'trade',
     }
 };
 
@@ -103,10 +127,13 @@ function tT(key) {
 
 let selectedTypes   = [];
 let pkSearchNames   = [];
-let selectedPokemon = { name: '', skin: '', types: [] };
+let selectedPokemon = { name: '', skin: '', types: [], abilities: [], stats: [] };
 let typeProps       = { skin: '', shiny: 'False', gender: 'male' };
 let typeModalProps  = {};
 let typeResolveId   = 0;
+let pkSpeciesData        = null;
+let pkChainData          = null;
+let pkCurrentSpeciesName = '';
 let SPRITE_VER      = '?v=2';
 
 Promise.all([
@@ -206,7 +233,10 @@ function resetTypes() {
 }
 
 function clearPkSearch() {
-    selectedPokemon = { name: '', skin: '', types: [] };
+    selectedPokemon      = { name: '', skin: '', types: [], abilities: [], stats: [] };
+    pkSpeciesData        = null;
+    pkChainData          = null;
+    pkCurrentSpeciesName = '';
     const input = document.getElementById('pk-search-input');
     if (input) input.value = '';
     closePkSuggestions();
@@ -214,6 +244,8 @@ function clearPkSearch() {
     if (propsRow) propsRow.style.display = 'none';
     const result = document.getElementById('pk-result');
     if (result) result.style.display = 'none';
+    const infoDiv = document.getElementById('pk-info');
+    if (infoDiv) infoDiv.style.display = 'none';
     const error = document.getElementById('pk-error');
     if (error) error.style.display = 'none';
     const clearBtn = document.getElementById('pk-clear-btn');
@@ -455,6 +487,22 @@ const PK_SLUG_EXCEPTIONS = {
 
 // PokéAPI uses 'hisui' not 'hisuian' for all hisuian forms
 const SKIN_SLUG_MAP = { hisuian: 'hisui' };
+
+const STAT_KEYS = {
+    'hp':               'statHp',
+    'attack':           'statAtk',
+    'defense':          'statDef',
+    'special-attack':   'statSpAtk',
+    'special-defense':  'statSpDef',
+    'speed':            'statSpd',
+};
+
+function statColor(v) {
+    if (v < 50)  return '#E5173A';
+    if (v < 80)  return '#FFD700';
+    if (v < 110) return 'var(--cyan)';
+    return 'var(--accent)';
+}
 
 function toPokeApiSlug(name, skin) {
     const key = skin ? `${name}+${skin}` : name;
