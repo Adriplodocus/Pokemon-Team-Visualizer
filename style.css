@@ -1677,7 +1677,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     flex-wrap: wrap;
 }
 
-.pk-result-info {
+.pk-result-col {
     display: flex;
     flex-direction: column;
     gap: 0.6rem;
