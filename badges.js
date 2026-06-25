@@ -713,7 +713,7 @@ async function initBadges() {
 
     if (typeof setMode === 'function') setMode('pokemon');
     updateBadgePreview();
-    if (!hadServerState) hydrateFromAbly();
+    if (!hadServerState && !badgeExternalMode) hydrateFromAbly();
     subscribeToBadgeAblyUpdates();
 }
 
@@ -721,7 +721,7 @@ function subscribeToBadgeAblyUpdates() {
     if (typeof Ably === 'undefined') return;
     try {
         const ably = new Ably.Realtime({ authUrl: `/api/token?id=${badgeChannelId}` });
-        const ch = ably.channels.get(`ptv-${badgeChannelId}`);
+        const ch = ably.channels.get(`ptv-${badgeChannelId}`, { params: { rewind: '1' } });
         ch.subscribe('update', msg => {
             try {
                 const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
