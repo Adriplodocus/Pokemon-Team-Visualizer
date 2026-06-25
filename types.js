@@ -91,6 +91,7 @@ const TYPE_STRINGS = {
         statDef:   'Defensa',   statSpAtk: 'Sp.Atk',
         statSpDef: 'Sp.Def',    statSpd:   'Velocidad',
         evoLevel:  'nv.',       evoTrade:  'intercambio',
+        evoHappiness: 'amistad',
     },
     en: {
         noTypeSelected:  'Select one or two types to see effectiveness.',
@@ -118,6 +119,7 @@ const TYPE_STRINGS = {
         statDef:   'Defense',   statSpAtk: 'Sp.Atk',
         statSpDef: 'Sp.Def',    statSpd:   'Speed',
         evoLevel:  'lv.',       evoTrade:  'trade',
+        evoHappiness: 'friendship',
     }
 };
 
@@ -689,6 +691,7 @@ function evoMethodLabel(details) {
     if (d.min_level)                                   return `${tT('evoLevel')}${d.min_level}`;
     if (d.trigger?.name === 'use-item' && d.item?.name) return d.item.name.replace(/-/g, ' ');
     if (d.trigger?.name === 'trade')                   return tT('evoTrade');
+    if (d.min_happiness)                               return tT('evoHappiness');
     if (d.trigger?.name === 'level-up')                return `${tT('evoLevel')}?`;
     return d.trigger?.name?.replace(/-/g, ' ') ?? '';
 }
