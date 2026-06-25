@@ -24,6 +24,12 @@ html { scrollbar-gutter: stable; }
     --male-blue:   #60a5fa;
     --radius:      14px;
     --radius-sm:   8px;
+    /* Type scale */
+    --fs-hero:  28px;
+    --fs-lg:    15px;
+    --fs-md:    13px;
+    --fs-sm:    11px;
+    --fs-xs:     9px;
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
