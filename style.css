@@ -1672,9 +1672,17 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 .pk-result {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     gap: 1rem;
     flex-wrap: wrap;
+}
+
+.pk-result-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+    min-width: 0;
 }
 
 .pk-result-sprite {

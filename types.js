@@ -587,12 +587,11 @@ async function resolvePokemonTypes(name, skin) {
     renderPkResult();
     resultDiv.style.display = 'flex';
 
-    // Show info panel — stats + abilities available immediately from step 1
-    if (infoDiv) infoDiv.style.display = 'flex';
+    // Stats + abilities render immediately (elements now inside #pk-result)
     renderPkStats(data.stats);
     renderPkAbilities(data.abilities);
 
-    // Fetch species data (badge)
+    // Fetch species data (badge + evo chain)
     try {
         const speciesRes = await fetch(data.species.url);
         if (reqId !== typeResolveId) return;
@@ -607,8 +606,9 @@ async function resolvePokemonTypes(name, skin) {
         pkChainData = await chainRes.json();
         if (reqId !== typeResolveId) return;
         renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+        if (infoDiv) infoDiv.style.display = 'flex';
     } catch {
-        // badge is non-critical — silently skip on error
+        // non-critical — silently skip on error
     }
 }
 
@@ -757,12 +757,16 @@ function renderPkEvo(chain, selectedSpeciesName) {
 }
 
 function renderPkInfo() {
-    const infoDiv = document.getElementById('pk-info');
-    if (!pkSpeciesData || !infoDiv || infoDiv.style.display === 'none') return;
+    const resultDiv = document.getElementById('pk-result');
+    if (!pkSpeciesData || !resultDiv || resultDiv.style.display === 'none') return;
     renderPkBadge(pkSpeciesData);
     renderPkAbilities(selectedPokemon.abilities);
     renderPkStats(selectedPokemon.stats);
-    if (pkChainData) renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+    const infoDiv = document.getElementById('pk-info');
+    if (pkChainData && infoDiv) {
+        renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+        infoDiv.style.display = 'flex';
+    }
 }
 
 function initPkSearch() {
