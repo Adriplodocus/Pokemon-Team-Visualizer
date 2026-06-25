@@ -1,5 +1,9 @@
 // ── Constants ────────────────────────────────────────────────────
 const GAME_TO_REGION = {
+    'pokemon-sol':                'Alola',
+    'pokemon-luna':               'Alola',
+    'pokemon-ultrasol':           'AlolaUltra',
+    'pokemon-ultraluna':          'AlolaUltra',
     'pokemon-rojo':               'Kanto',
     'pokemon-azul':               'Kanto',
     'pokemon-amarillo':           'Kanto',
@@ -37,6 +41,8 @@ const GAME_TO_REGION = {
 };
 
 const REGION_DATA = {
+    Alola:      { count: 11, ids: [1,2,3,4,5,6,7,8,9,10,12], layouts: ['4x3', '6x2', '11x1', '1x11'] },
+    AlolaUltra: { count: 12 },
     Kanto:  { count: 8 },
     Johto:  { count: 8 },
     Hoenn:  { count: 8 },
@@ -50,6 +56,12 @@ const REGION_DATA = {
 };
 
 const BADGE_GAMES = [
+    { region: 'Alola', labels: { es: 'Alola', en: 'Alola' }, games: [
+        ['pokemon-luna',      { es: 'Pokémon Luna',      en: 'Pokémon Moon' }],
+        ['pokemon-sol',       { es: 'Pokémon Sol',       en: 'Pokémon Sun' }],
+        ['pokemon-ultraluna', { es: 'Pokémon Ultraluna', en: 'Pokémon Ultra Moon' }],
+        ['pokemon-ultrasol',  { es: 'Pokémon Ultrasol',  en: 'Pokémon Ultra Sun' }],
+    ]},
     { region: 'Galar', labels: { es: 'Galar', en: 'Galar' }, games: [
         ['pokemon-escudo', { es: 'Pokémon Escudo', en: 'Pokémon Shield' }],
         ['pokemon-espada', { es: 'Pokémon Espada', en: 'Pokémon Sword' }],
@@ -177,6 +189,11 @@ function applyBadgeLang() {
 }
 
 // ── Helpers ──────────────────────────────────────────────────────
+function getBadgeIds(region) {
+    const d = REGION_DATA[region];
+    return d.ids || Array.from({ length: d.count }, (_, i) => i + 1);
+}
+
 function getLayouts(count) {
     const layouts = [];
     for (let cols = 1; cols <= count; cols++) {
@@ -187,8 +204,17 @@ function getLayouts(count) {
     return layouts;
 }
 
-function defaultLayout(count) {
-    const layouts = getLayouts(count);
+function getRegionLayouts(region) {
+    const d = REGION_DATA[region];
+    if (d.layouts) return d.layouts.map(v => {
+        const [cols, rows] = v.split('x').map(Number);
+        return { cols, rows, value: v };
+    });
+    return getLayouts(d.count);
+}
+
+function defaultLayout(region) {
+    const layouts = getRegionLayouts(region);
     return (layouts.find(l => l.rows === 2) || layouts[0]).value;
 }
 
@@ -200,6 +226,7 @@ let badgeActive     = Array(8).fill(false);
 let badgeBrightness = 20;
 let badgeChannelId  = null;
 let badgeExternalMode = false;
+let badgeProgressMap = {};
 
 let _badgeServerInitDone = false;
 
@@ -221,11 +248,11 @@ function applyBadgesServerState(b) {
     }
     const count = REGION_DATA[badgeRegion].count;
     if (b.layout) {
-        const layouts = getLayouts(count);
+        const layouts = getRegionLayouts(badgeRegion);
         if (layouts.some(l => l.value === b.layout)) badgeLayout = b.layout;
-        else badgeLayout = defaultLayout(count);
+        else badgeLayout = defaultLayout(badgeRegion);
     } else {
-        badgeLayout = defaultLayout(count);
+        badgeLayout = defaultLayout(badgeRegion);
     }
     if (Array.isArray(b.active) && b.active.length === count) {
         badgeActive = b.active.map(Boolean);
@@ -251,7 +278,7 @@ function buildBadgeGameSelect() {
         badgeRegion = GAME_TO_REGION[badgeGame];
         const count = REGION_DATA[badgeRegion].count;
         badgeActive = Array(count).fill(false);
-        badgeLayout = defaultLayout(count);
+        badgeLayout = defaultLayout(badgeRegion);
         buildBadgeLayoutSelect();
         buildBadgeCheckboxes();
         saveBadgeState();
@@ -261,8 +288,7 @@ function buildBadgeGameSelect() {
 }
 
 function buildBadgeLayoutSelect() {
-    const count   = REGION_DATA[badgeRegion].count;
-    const layouts = getLayouts(count);
+    const layouts = getRegionLayouts(badgeRegion);
     const sel     = document.getElementById('badge-layout-select');
     if (!sel) return;
     sel.innerHTML = layouts.map(l =>
@@ -279,6 +305,7 @@ function buildBadgeLayoutSelect() {
 // ── Badge checkboxes ─────────────────────────────────────────────
 function buildBadgeCheckboxes() {
     const count     = REGION_DATA[badgeRegion].count;
+    const ids       = getBadgeIds(badgeRegion);
     const container = document.getElementById('badge-checkboxes');
     if (!container) return;
     container.innerHTML = '';
@@ -288,8 +315,8 @@ function buildBadgeCheckboxes() {
         item.className = 'badge-check-item';
 
         const img = document.createElement('img');
-        img.src       = `badges/${badgeRegion}/${i + 1}.webp`;
-        img.alt       = `Badge ${i + 1}`;
+        img.src       = `badges/${badgeRegion}/${ids[i]}.webp`;
+        img.alt       = `Badge ${ids[i]}`;
         img.className = 'badge-thumb';
 
         const cb  = document.createElement('input');
@@ -319,12 +346,13 @@ function updateBadgeBrightness(val) {
 function buildBadgeOverlayHTML() {
     const [cols, rows] = badgeLayout.split('x').map(Number);
     const count        = REGION_DATA[badgeRegion].count;
+    const ids          = getBadgeIds(badgeRegion);
     const bv           = (badgeBrightness / 100).toFixed(2);
 
     const imgs = Array.from({ length: count }, (_, i) => {
         const filter = badgeActive[i] ? '' : `filter:brightness(${bv});`;
         const delay  = (i * 0.08).toFixed(2);
-        return `<img src="badges/${badgeRegion}/${i + 1}.webp" style="width:80px;height:80px;object-fit:contain;display:block;animation:fadeSlideUp 0.45s ${delay}s ease forwards;opacity:0;${filter}" alt="">`;
+        return `<img src="badges/${badgeRegion}/${ids[i]}.webp" style="width:80px;height:80px;object-fit:contain;display:block;animation:fadeSlideUp 0.45s ${delay}s ease forwards;opacity:0;${filter}" alt="">`;
     }).join('\n');
 
     return `<html>
@@ -464,6 +492,7 @@ async function publishBadgesToObs() {
                 layout:     badgeLayout,
                 active:     badgeActive,
                 brightness: badgeBrightness,
+                ids:        getBadgeIds(badgeRegion),
             }),
         });
         if (resp.ok) {
@@ -517,8 +546,8 @@ function loadBadgeState() {
     }
     const count  = REGION_DATA[badgeRegion].count;
     const layout = localStorage.getItem('ptv_badge_layout');
-    if (layout && getLayouts(count).some(l => l.value === layout)) badgeLayout = layout;
-    else badgeLayout = defaultLayout(count);
+    if (layout && getRegionLayouts(badgeRegion).some(l => l.value === layout)) badgeLayout = layout;
+    else badgeLayout = defaultLayout(badgeRegion);
 
     const active = localStorage.getItem('ptv_badge_active');
     if (active) {
@@ -552,7 +581,7 @@ async function hydrateFromAbly() {
         const count = REGION_DATA[badgeRegion].count;
 
         if (data.layout) {
-            const layouts = getLayouts(count);
+            const layouts = getRegionLayouts(badgeRegion);
             if (layouts.some(l => l.value === data.layout)) badgeLayout = data.layout;
         }
         if (Array.isArray(data.active) && data.active.length === count) {
@@ -638,6 +667,10 @@ async function initBadges() {
             loadBadgeState();
         }
         _badgeServerInitDone = true;
+        fetch('/api/badges/progress')
+            .then(r => r.ok ? r.json() : {})
+            .then(map => { badgeProgressMap = map; })
+            .catch(() => {});
     } else {
         loadBadgeState();
     }
@@ -672,7 +705,7 @@ function subscribeToBadgeAblyUpdates() {
                 }
                 const count = REGION_DATA[badgeRegion].count;
                 if (data.layout) {
-                    const layouts = getLayouts(count);
+                    const layouts = getRegionLayouts(badgeRegion);
                     if (layouts.some(l => l.value === data.layout)) badgeLayout = data.layout;
                 }
                 if (Array.isArray(data.active) && data.active.length === count) {
