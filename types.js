@@ -599,7 +599,12 @@ async function resolvePokemonTypes(name, skin) {
         if (reqId !== typeResolveId) return;
         renderPkBadge(pkSpeciesData);
 
-        // (evo chain fetch added in Task 5)
+        const chainRes = await fetch(pkSpeciesData.evolution_chain.url);
+        if (reqId !== typeResolveId) return;
+        if (!chainRes.ok) throw new Error('chain not found');
+        pkChainData = await chainRes.json();
+        if (reqId !== typeResolveId) return;
+        renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
     } catch {
         // badge is non-critical — silently skip on error
     }
@@ -678,6 +683,85 @@ function renderPkBadge(species) {
     el.innerHTML = `<span class="pk-status-badge" style="background:${bg};color:${color};border-color:${borderColor}">${label}</span>`;
 }
 
+function evoMethodLabel(details) {
+    if (!details || !details.length) return '';
+    const d = details[0];
+    if (d.min_level)                                   return `${tT('evoLevel')}${d.min_level}`;
+    if (d.trigger?.name === 'use-item' && d.item?.name) return d.item.name.replace(/-/g, ' ');
+    if (d.trigger?.name === 'trade')                   return tT('evoTrade');
+    if (d.trigger?.name === 'level-up')                return `${tT('evoLevel')}?`;
+    return d.trigger?.name?.replace(/-/g, ' ') ?? '';
+}
+
+function evoNodeHTML(speciesName, selectedSpeciesName) {
+    const isSelected = speciesName === selectedSpeciesName;
+    return `<div class="pk-evo-node${isSelected ? ' selected' : ''}">
+        <img src="sprites/${speciesName}.gif${SPRITE_VER}" alt="${speciesName}" loading="lazy"
+             onerror="this.style.display='none'">
+        <span class="pk-evo-node-name">${speciesName}</span>
+    </div>`;
+}
+
+function collectLinear(node) {
+    if (node.evolves_to.length === 0) return [node];
+    if (node.evolves_to.length > 1)   return null;
+    const rest = collectLinear(node.evolves_to[0]);
+    return rest ? [node, ...rest] : null;
+}
+
+function renderChainNode(node, selectedSpeciesName) {
+    const linear = collectLinear(node);
+    if (linear) {
+        let html = '<div class="pk-evo-row">';
+        for (let i = 0; i < linear.length; i++) {
+            if (i > 0) {
+                const method = evoMethodLabel(linear[i].evolution_details);
+                html += `<div class="pk-evo-arrow">
+                    <span class="pk-evo-arrow-method">${method}</span>
+                    <span class="pk-evo-arrow-icon">→</span>
+                </div>`;
+            }
+            html += evoNodeHTML(linear[i].species.name, selectedSpeciesName);
+        }
+        html += '</div>';
+        return html;
+    }
+
+    // Branching node
+    const parentHTML   = evoNodeHTML(node.species.name, selectedSpeciesName);
+    const childrenHTML = node.evolves_to.map(child => {
+        const method = evoMethodLabel(child.evolution_details);
+        return `<div class="pk-evo-row">
+            <div class="pk-evo-arrow">
+                <span class="pk-evo-arrow-method">${method}</span>
+                <span class="pk-evo-arrow-icon">→</span>
+            </div>
+            ${renderChainNode(child, selectedSpeciesName)}
+        </div>`;
+    }).join('');
+
+    return `<div class="pk-evo-row">
+        ${parentHTML}
+        <div class="pk-evo-children">${childrenHTML}</div>
+    </div>`;
+}
+
+function renderPkEvo(chain, selectedSpeciesName) {
+    const el = document.getElementById('pk-info-evo');
+    if (!el) return;
+    el.innerHTML = `<div class="pk-info-label">${tT('evoSection')}</div>
+        <div class="pk-evo-tree">${renderChainNode(chain, selectedSpeciesName)}</div>`;
+}
+
+function renderPkInfo() {
+    const infoDiv = document.getElementById('pk-info');
+    if (!pkSpeciesData || !infoDiv || infoDiv.style.display === 'none') return;
+    renderPkBadge(pkSpeciesData);
+    renderPkAbilities(selectedPokemon.abilities);
+    renderPkStats(selectedPokemon.stats);
+    if (pkChainData) renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+}
+
 function initPkSearch() {
     const input    = document.getElementById('pk-search-input');
     const list     = document.getElementById('pk-search-suggestions');
@@ -736,4 +820,5 @@ function applyTypeLang() {
     renderTypeSelector();
     renderTable();
     renderPkResult();
+    renderPkInfo();
 }
