@@ -124,7 +124,7 @@ const BADGE_STRINGS = {
     es: {
         pokemonMode:            'Pokémon',
         badgeMode:              'Medallas',
-        typesMode:              'Tabla de tipos',
+        typesMode:              'Pokédex',
         cemeteryMode:           'Cementerio',
         badgeGame:              'Juego',
         badgeLayout:            'Diseño',
@@ -149,7 +149,7 @@ const BADGE_STRINGS = {
     en: {
         pokemonMode:            'Pokémon',
         badgeMode:              'Badges',
-        typesMode:              'Types table',
+        typesMode:              'Pokédex',
         cemeteryMode:           'Cemetery',
         badgeGame:              'Game',
         badgeLayout:            'Layout',
