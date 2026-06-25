@@ -602,14 +602,18 @@ async function resolvePokemonTypes(name, skin) {
         ]);
         if (reqId !== typeResolveId) return;
 
-        // Build ability name map
+        // Build ability name + description map
+        const cleanAbilityDesc = s => s?.replace(/[\f\n\r]+/g, ' ').replace(/  +/g, ' ').trim() ?? '';
         pkAbilityNames = {};
         data.abilities.forEach((a, i) => {
             const detail = abilityDetails[i];
             const slug   = a.ability.name;
+            const ftes = detail?.flavor_text_entries;
             pkAbilityNames[slug] = {
-                es: detail?.names?.find(n => n.language.name === 'es')?.name ?? slug.replace(/-/g, ' '),
-                en: detail?.names?.find(n => n.language.name === 'en')?.name ?? slug.replace(/-/g, ' '),
+                es:      detail?.names?.find(n => n.language.name === 'es')?.name ?? slug.replace(/-/g, ' '),
+                en:      detail?.names?.find(n => n.language.name === 'en')?.name ?? slug.replace(/-/g, ' '),
+                desc_es: cleanAbilityDesc(ftes?.filter(e => e.language.name === 'es').pop()?.flavor_text),
+                desc_en: cleanAbilityDesc(ftes?.filter(e => e.language.name === 'en').pop()?.flavor_text),
             };
         });
 
@@ -669,7 +673,7 @@ function renderPkAbilities(abilities) {
         const hiddenLabel = a.is_hidden
             ? ` <span class="pk-ability-hidden-label">(${tT('hiddenAbility')})</span>`
             : '';
-        return `<span class="pk-ability-chip${a.is_hidden ? ' hidden' : ''}">${name}${hiddenLabel}</span>`;
+        return `<span class="pk-ability-chip${a.is_hidden ? ' hidden' : ''}" data-ability-slug="${slug}">${name}${hiddenLabel}</span>`;
     }).join('');
     el.innerHTML = `<div class="pk-info-label">${tT('abilitiesSection')}</div>
         <div class="pk-ability-chips">${chips}</div>`;
@@ -845,7 +849,58 @@ function renderPkInfo() {
     }
 }
 
+function initAbilityTooltip() {
+    if (document.getElementById('ability-tooltip')) return;
+    const tip = document.createElement('div');
+    tip.id = 'ability-tooltip';
+    tip.className = 'pk-ability-tooltip';
+    document.body.appendChild(tip);
+
+    function showTip(chip) {
+        const slug = chip.dataset.abilitySlug;
+        if (!slug) return;
+        const desc = pkAbilityNames[slug]?.[`desc_${currentLang}`];
+        if (!desc) return;
+        tip.textContent = desc;
+        const rect = chip.getBoundingClientRect();
+        tip.style.top  = (rect.bottom + 6) + 'px';
+        tip.style.left = rect.left + 'px';
+        tip.classList.add('visible');
+        requestAnimationFrame(() => {
+            const tr = tip.getBoundingClientRect();
+            if (tr.right > window.innerWidth - 8)
+                tip.style.left = Math.max(8, window.innerWidth - tr.width - 8) + 'px';
+        });
+    }
+
+    function hideTip() { tip.classList.remove('visible'); }
+
+    document.addEventListener('mouseover', e => {
+        const chip = e.target.closest('#pk-info-abilities .pk-ability-chip');
+        if (chip) showTip(chip);
+    });
+    document.addEventListener('mouseout', e => {
+        const chip = e.target.closest('#pk-info-abilities .pk-ability-chip');
+        if (chip) hideTip();
+    });
+    document.addEventListener('click', e => {
+        const chip = e.target.closest('#pk-info-abilities .pk-ability-chip');
+        if (chip) {
+            if (tip.classList.contains('visible') && tip._chip === chip) {
+                hideTip();
+            } else {
+                showTip(chip);
+                tip._chip = chip;
+            }
+        } else {
+            hideTip();
+            tip._chip = null;
+        }
+    }, true);
+}
+
 function initPkSearch() {
+    initAbilityTooltip();
     const input    = document.getElementById('pk-search-input');
     const list     = document.getElementById('pk-search-suggestions');
     const clearBtn = document.getElementById('pk-clear-btn');
