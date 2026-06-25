@@ -274,11 +274,26 @@ function buildBadgeGameSelect() {
         ).join('')}</optgroup>`
     ).join('');
     sel.onchange = () => {
-        badgeGame   = sel.value;
-        badgeRegion = GAME_TO_REGION[badgeGame];
-        const count = REGION_DATA[badgeRegion].count;
-        badgeActive = Array(count).fill(false);
-        badgeLayout = defaultLayout(badgeRegion);
+        const prevGame  = badgeGame;
+        badgeGame       = sel.value;
+        badgeRegion     = GAME_TO_REGION[badgeGame];
+        const count     = REGION_DATA[badgeRegion].count;
+
+        badgeProgressMap[prevGame] = { active: badgeActive.slice(), layout: badgeLayout };
+
+        const saved = badgeProgressMap[badgeGame];
+        if (saved) {
+            badgeActive = Array.isArray(saved.active) && saved.active.length === count
+                ? saved.active.map(Boolean)
+                : Array(count).fill(false);
+            badgeLayout = getRegionLayouts(badgeRegion).some(l => l.value === saved.layout)
+                ? saved.layout
+                : defaultLayout(badgeRegion);
+        } else {
+            badgeActive = Array(count).fill(false);
+            badgeLayout = defaultLayout(badgeRegion);
+        }
+
         buildBadgeLayoutSelect();
         buildBadgeCheckboxes();
         saveBadgeState();
