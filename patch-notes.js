@@ -10,5 +10,11 @@ const PATCH_NOTES = [
         date: '24/06/2026',
         title: { es: 'Estilos para los sprites', en: 'Styles for sprites' },
         body:  { es: 'Ahora puedes cambiar el estilo de los sprites de los pokémon desde el panel de diseño. ¡Pruébalo!', en: 'You can now change the style of the pokemon sprites from the design panel. Try it!' },
-    }
+    },
+    {
+        id: 'better_search',
+        date: '25/06/2026',
+        title: { es: 'Búsqueda mejorada', en: 'Better search' },
+        body:  { es: 'Se ha mejorado la función de búsqueda de la tabla de tipos. Ahora podrás ver más estadísticas del pokémon que busques. ¡Pruébala!', en: 'The Type Chart search feature has been improved. You can now view more stats for any Pokémon you search for. Give it a try!' },
+    },
 ];
