@@ -1179,10 +1179,6 @@ function initCemColorPicker() {
             loadCemetery();
         }
         _cemeteryServerInitDone = true;
-    } else {
-        loadCemeteryConfig();
-        loadCemeteryTypo();
-        loadCemetery();
     }
 
     renderCemetery();
