@@ -1353,6 +1353,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     grid-template-columns: 1fr 380px;
     gap: 20px;
     align-items: start;
+    max-width: 1040px;
   }
   .desktop-col-left {
     min-width: 0;
