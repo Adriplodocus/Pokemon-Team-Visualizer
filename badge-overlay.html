@@ -26,6 +26,7 @@ body, html { margin: 0; padding: 0; background: transparent; }
         var active     = data.active     || [];
         var brightness = typeof data.brightness === 'number' ? data.brightness : 20;
         var ids        = Array.isArray(data.ids) ? data.ids : null;
+        var dir        = data.dir || region;
 
         var parts = layout.split('x').map(Number);
         var cols  = parts[0];
@@ -38,7 +39,7 @@ body, html { margin: 0; padding: 0; background: transparent; }
 
         for (var i = 0; i < count; i++) {
             var img = document.createElement('img');
-            img.src    = 'badges/' + region + '/' + (ids ? ids[i] : (i + 1)) + '.webp';
+            img.src    = 'badges/' + dir + '/' + (ids ? ids[i] : (i + 1)) + '.webp';
             img.alt    = '';
             img.width  = 80;
             img.height = 80;

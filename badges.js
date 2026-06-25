@@ -42,7 +42,7 @@ const GAME_TO_REGION = {
 
 const REGION_DATA = {
     Alola:      { count: 11, ids: [1,2,3,4,5,6,7,8,9,10,12], layouts: ['4x3', '6x2', '11x1', '1x11'] },
-    AlolaUltra: { count: 12 },
+    AlolaUltra: { count: 12, dir: 'Alola' },
     Kanto:  { count: 8 },
     Johto:  { count: 8 },
     Hoenn:  { count: 8 },
@@ -194,6 +194,10 @@ function getBadgeIds(region) {
     return d.ids || Array.from({ length: d.count }, (_, i) => i + 1);
 }
 
+function getBadgeDir(region) {
+    return REGION_DATA[region].dir || region;
+}
+
 function getLayouts(count) {
     const layouts = [];
     for (let cols = 1; cols <= count; cols++) {
@@ -321,6 +325,7 @@ function buildBadgeLayoutSelect() {
 function buildBadgeCheckboxes() {
     const count     = REGION_DATA[badgeRegion].count;
     const ids       = getBadgeIds(badgeRegion);
+    const dir       = getBadgeDir(badgeRegion);
     const container = document.getElementById('badge-checkboxes');
     if (!container) return;
     container.innerHTML = '';
@@ -330,7 +335,7 @@ function buildBadgeCheckboxes() {
         item.className = 'badge-check-item';
 
         const img = document.createElement('img');
-        img.src       = `badges/${badgeRegion}/${ids[i]}.webp`;
+        img.src       = `badges/${dir}/${ids[i]}.webp`;
         img.alt       = `Badge ${ids[i]}`;
         img.className = 'badge-thumb';
 
@@ -362,12 +367,13 @@ function buildBadgeOverlayHTML() {
     const [cols, rows] = badgeLayout.split('x').map(Number);
     const count        = REGION_DATA[badgeRegion].count;
     const ids          = getBadgeIds(badgeRegion);
+    const dir          = getBadgeDir(badgeRegion);
     const bv           = (badgeBrightness / 100).toFixed(2);
 
     const imgs = Array.from({ length: count }, (_, i) => {
         const filter = badgeActive[i] ? '' : `filter:brightness(${bv});`;
         const delay  = (i * 0.08).toFixed(2);
-        return `<img src="badges/${badgeRegion}/${ids[i]}.webp" style="width:80px;height:80px;object-fit:contain;display:block;animation:fadeSlideUp 0.45s ${delay}s ease forwards;opacity:0;${filter}" alt="">`;
+        return `<img src="badges/${dir}/${ids[i]}.webp" style="width:80px;height:80px;object-fit:contain;display:block;animation:fadeSlideUp 0.45s ${delay}s ease forwards;opacity:0;${filter}" alt="">`;
     }).join('\n');
 
     return `<html>
@@ -508,6 +514,7 @@ async function publishBadgesToObs() {
                 active:     badgeActive,
                 brightness: badgeBrightness,
                 ids:        getBadgeIds(badgeRegion),
+                dir:        getBadgeDir(badgeRegion),
             }),
         });
         if (resp.ok) {
