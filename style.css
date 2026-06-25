@@ -218,7 +218,7 @@ h1 .header-brand:hover { transform: scale(1.08); }
 }
 .lang-toggle button.active { background: var(--btn-hover); color: var(--text); }
 
-#app { width: 100%; max-width: 1120px; }
+#app { width: 100%; max-width: 1040px; }
 
 /* ── Cards ───────────────────────────────────────────────────── */
 .card {
@@ -1354,7 +1354,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 20px;
     align-items: start;
     max-width: 1040px;
-    margin: 0 auto;
   }
   .desktop-col-left {
     min-width: 0;
@@ -1364,11 +1363,10 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     top: 20px;
   }
 
-  /* Banners and single-card pages match the 1040px content width */
+  /* Banners match the 1040px content width */
   .donation-banner,
   .patch-banner,
-  .external-banner,
-  .card--types { max-width: 1040px; margin: 0 auto; }
+  .external-banner { max-width: 1040px; }
 
   /* Pokémon page: preview full-width top, editor + actions below */
   .pokemon-desktop-layout {
@@ -1379,7 +1377,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
   .pokemon-desktop-layout > .card--preview,
   .pokemon-desktop-layout > .card--presets {
     max-width: 1040px;
-    margin: 0 auto;
   }
   .pokemon-bottom-cols {
     display: grid;
@@ -1387,7 +1384,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 20px;
     align-items: start;
     max-width: 1040px;
-    margin: 0 auto;
   }
   .pokemon-actions-col {
     position: sticky;
