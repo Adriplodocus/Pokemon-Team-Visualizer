@@ -331,6 +331,7 @@ function syncGridUI() {
     overflowCk.checked  = cemeteryConfig.overflow;
     syncOverflowControl();
     updateCemeteryObsHint();
+    updateCemeteryPreview();
 }
 
 // ── Sprite URL ────────────────────────────────────────────────────
