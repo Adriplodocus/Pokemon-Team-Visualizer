@@ -1706,6 +1706,178 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     color: #E5173A;
 }
 
+/* ── Pokémon info panel ──────────────────────────────────────── */
+.pk-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--border);
+}
+
+.pk-info-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-2);
+    margin-bottom: 0.3rem;
+}
+
+.pk-status-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.22rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    border: 1px solid transparent;
+}
+
+.pk-ability-chips {
+    display: flex;
+    gap: 0.4rem;
+    flex-wrap: wrap;
+}
+
+.pk-ability-chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.22rem 0.7rem;
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    background: var(--surface-2);
+    color: var(--text);
+    border: 1px solid var(--border);
+    text-transform: capitalize;
+}
+
+.pk-ability-chip.hidden {
+    color: var(--dimmed);
+    border-style: dashed;
+}
+
+.pk-ability-hidden-label {
+    font-style: italic;
+    font-weight: 400;
+    color: var(--dimmed);
+}
+
+.pk-stat-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+}
+
+.pk-stat-row {
+    display: grid;
+    grid-template-columns: 5.5rem 1fr 2.2rem;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.pk-stat-name {
+    font-size: 0.68rem;
+    color: var(--text-2);
+    text-align: right;
+}
+
+.pk-stat-bar-track {
+    height: 6px;
+    border-radius: 3px;
+    background: var(--surface-2);
+    overflow: hidden;
+}
+
+.pk-stat-bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    transition: width 0.35s ease;
+}
+
+.pk-stat-value {
+    font-size: 0.68rem;
+    color: var(--text);
+    font-weight: 700;
+    text-align: right;
+}
+
+.pk-evo-tree {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.pk-evo-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.pk-evo-children {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.pk-evo-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.15rem;
+}
+
+.pk-evo-node img {
+    width: 48px;
+    height: 48px;
+    image-rendering: pixelated;
+    object-fit: contain;
+    border: 1px solid transparent;
+    border-radius: 8px;
+    background: var(--surface-2);
+    transition: border-color 0.18s;
+}
+
+.pk-evo-node.selected img {
+    border-color: var(--cyan);
+    box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
+}
+
+.pk-evo-node-name {
+    font-size: 0.6rem;
+    color: var(--text-2);
+    text-align: center;
+    text-transform: capitalize;
+    max-width: 52px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.pk-evo-arrow {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.pk-evo-arrow-method {
+    font-size: 0.58rem;
+    color: var(--dimmed);
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.pk-evo-arrow-icon {
+    font-size: 0.9rem;
+    color: var(--text-2);
+    line-height: 1;
+}
+
 .save-indicator {
     font-family: var(--font-mono, 'JetBrains Mono', monospace);
     font-size: 0.7rem;
