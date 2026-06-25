@@ -136,6 +136,7 @@ let typeResolveId   = 0;
 let pkSpeciesData        = null;
 let pkChainData          = null;
 let pkCurrentSpeciesName = '';
+let pkAbilityNames       = {};
 let SPRITE_VER      = '?v=2';
 
 Promise.all([
@@ -239,6 +240,7 @@ function clearPkSearch() {
     pkSpeciesData        = null;
     pkChainData          = null;
     pkCurrentSpeciesName = '';
+    pkAbilityNames       = {};
     const input = document.getElementById('pk-search-input');
     if (input) input.value = '';
     closePkSuggestions();
@@ -587,20 +589,35 @@ async function resolvePokemonTypes(name, skin) {
     renderPkResult();
     resultDiv.style.display = 'flex';
 
-    // Stats + abilities render immediately (elements now inside #pk-result)
+    // Stats render immediately; abilities wait for translated names
     renderPkStats(data.stats);
-    renderPkAbilities(data.abilities);
 
-    // Fetch species data (badge + evo chain)
+    // Parallel fetch: species + all ability details (for translated names)
     try {
-        const speciesRes = await fetch(data.species.url);
+        const [speciesData, ...abilityDetails] = await Promise.all([
+            fetch(data.species.url).then(r => r.json()),
+            ...data.abilities.map(a =>
+                fetch(a.ability.url).then(r => r.ok ? r.json() : null).catch(() => null)
+            ),
+        ]);
         if (reqId !== typeResolveId) return;
-        if (!speciesRes.ok) throw new Error('species not found');
-        pkSpeciesData = await speciesRes.json();
-        if (reqId !== typeResolveId) return;
-        renderPkBadge(pkSpeciesData);
 
-        const chainRes = await fetch(pkSpeciesData.evolution_chain.url);
+        // Build ability name map
+        pkAbilityNames = {};
+        data.abilities.forEach((a, i) => {
+            const detail = abilityDetails[i];
+            const slug   = a.ability.name;
+            pkAbilityNames[slug] = {
+                es: detail?.names?.find(n => n.language.name === 'es')?.name ?? slug.replace(/-/g, ' '),
+                en: detail?.names?.find(n => n.language.name === 'en')?.name ?? slug.replace(/-/g, ' '),
+            };
+        });
+
+        pkSpeciesData = speciesData;
+        renderPkBadge(pkSpeciesData);
+        renderPkAbilities(data.abilities);
+
+        const chainRes = await fetch(speciesData.evolution_chain.url);
         if (reqId !== typeResolveId) return;
         if (!chainRes.ok) throw new Error('chain not found');
         pkChainData = await chainRes.json();
@@ -647,7 +664,8 @@ function renderPkAbilities(abilities) {
     const el = document.getElementById('pk-info-abilities');
     if (!el || !abilities.length) return;
     const chips = abilities.map(a => {
-        const name = a.ability.name.replace(/-/g, ' ');
+        const slug = a.ability.name;
+        const name = pkAbilityNames[slug]?.[currentLang] ?? slug.replace(/-/g, ' ');
         const hiddenLabel = a.is_hidden
             ? ` <span class="pk-ability-hidden-label">(${tT('hiddenAbility')})</span>`
             : '';
@@ -685,11 +703,64 @@ function renderPkBadge(species) {
     el.innerHTML = `<span class="pk-status-badge" style="background:${bg};color:${color};border-color:${borderColor}">${label}</span>`;
 }
 
+const EVO_ITEM_NAMES = {
+    'water-stone':        { es: 'Piedra Agua',           en: 'Water Stone' },
+    'fire-stone':         { es: 'Piedra Fuego',          en: 'Fire Stone' },
+    'thunder-stone':      { es: 'Piedra Trueno',         en: 'Thunder Stone' },
+    'leaf-stone':         { es: 'Piedra Hoja',           en: 'Leaf Stone' },
+    'moon-stone':         { es: 'Piedra Lunar',          en: 'Moon Stone' },
+    'sun-stone':          { es: 'Piedra Solar',          en: 'Sun Stone' },
+    'shiny-stone':        { es: 'Piedra Día',            en: 'Shiny Stone' },
+    'dusk-stone':         { es: 'Piedra Noche',          en: 'Dusk Stone' },
+    'dawn-stone':         { es: 'Piedra Alba',           en: 'Dawn Stone' },
+    'ice-stone':          { es: 'Piedra Hielo',          en: 'Ice Stone' },
+    'oval-stone':         { es: 'Piedra Oval',           en: 'Oval Stone' },
+    'kings-rock':         { es: 'Roca del Rey',          en: "King's Rock" },
+    'metal-coat':         { es: 'Revestimiento Metálico', en: 'Metal Coat' },
+    'dragon-scale':       { es: 'Escama Dragón',         en: 'Dragon Scale' },
+    'upgrade':            { es: 'Mejora',                en: 'Upgrade' },
+    'deep-sea-tooth':     { es: 'Diente Marino',         en: 'Deep Sea Tooth' },
+    'deep-sea-scale':     { es: 'Escama Marina',         en: 'Deep Sea Scale' },
+    'prism-scale':        { es: 'Escama Bella',          en: 'Prism Scale' },
+    'sachet':             { es: 'Saquito Fragante',      en: 'Sachet' },
+    'whipped-dream':      { es: 'Dulce de Nata',         en: 'Whipped Dream' },
+    'protector':          { es: 'Protector',             en: 'Protector' },
+    'electirizer':        { es: 'Electrizador',          en: 'Electirizer' },
+    'magmarizer':         { es: 'Magmatizador',          en: 'Magmarizer' },
+    'dubious-disc':       { es: 'Disco Extraño',         en: 'Dubious Disc' },
+    'razor-fang':         { es: 'Colmillo Agudo',        en: 'Razor Fang' },
+    'razor-claw':         { es: 'Garra Afilada',         en: 'Razor Claw' },
+    'reaper-cloth':       { es: 'Tela Terrible',         en: 'Reaper Cloth' },
+    'linking-cord':       { es: 'Cordón Unión',          en: 'Linking Cord' },
+    'peat-block':         { es: 'Bloque de Turba',       en: 'Peat Block' },
+    'black-augurite':     { es: 'Mineral Negro',         en: 'Black Augurite' },
+    'auspicious-armor':   { es: 'Armadura Auspiciosa',   en: 'Auspicious Armor' },
+    'malicious-armor':    { es: 'Armadura Maldita',      en: 'Malicious Armor' },
+    'scroll-of-darkness': { es: 'Manuscrito Sombras',    en: 'Scroll of Darkness' },
+    'scroll-of-waters':   { es: 'Manuscrito Aguas',      en: 'Scroll of Waters' },
+    'leaders-crest':      { es: 'Distintivo de Líder',   en: "Leader's Crest" },
+    'galarica-cuff':      { es: 'Brazal Galanuez',       en: 'Galarica Cuff' },
+    'galarica-wreath':    { es: 'Corona Galanuez',       en: 'Galarica Wreath' },
+    'chipped-pot':        { es: 'Tetera Rota',           en: 'Chipped Pot' },
+    'cracked-pot':        { es: 'Tetera Agrietada',      en: 'Cracked Pot' },
+    'sweet-apple':        { es: 'Manzana Dulce',         en: 'Sweet Apple' },
+    'tart-apple':         { es: 'Manzana Ácida',         en: 'Tart Apple' },
+    'strawberry-sweet':   { es: 'Confite Fresa',         en: 'Strawberry Sweet' },
+    'love-sweet':         { es: 'Confite Corazón',       en: 'Love Sweet' },
+    'berry-sweet':        { es: 'Confite Fruto',         en: 'Berry Sweet' },
+    'clover-sweet':       { es: 'Confite Trébol',        en: 'Clover Sweet' },
+    'flower-sweet':       { es: 'Confite Flor',          en: 'Flower Sweet' },
+    'ribbon-sweet':       { es: 'Confite Lazo',          en: 'Ribbon Sweet' },
+    'star-sweet':         { es: 'Confite Estrella',      en: 'Star Sweet' },
+};
+
 function evoMethodLabel(details) {
     if (!details || !details.length) return '';
     const d = details[0];
     if (d.min_level)                                   return `${tT('evoLevel')}${d.min_level}`;
-    if (d.trigger?.name === 'use-item' && d.item?.name) return d.item.name.replace(/-/g, ' ');
+    if (d.trigger?.name === 'use-item' && d.item?.name) {
+        return EVO_ITEM_NAMES[d.item.name]?.[currentLang] ?? d.item.name.replace(/-/g, ' ');
+    }
     if (d.trigger?.name === 'trade')                   return tT('evoTrade');
     if (d.min_happiness)                               return tT('evoHappiness');
     if (d.trigger?.name === 'level-up')                return `${tT('evoLevel')}?`;
