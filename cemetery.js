@@ -291,7 +291,7 @@ function subscribeToAblyUpdates() {
     if (typeof Ably === 'undefined') return;
     try {
         const ably = new Ably.Realtime({ authUrl: `/api/token?id=${channelId}` });
-        const ch = ably.channels.get(`ptv-${channelId}`);
+        const ch = ably.channels.get(`ptv-${channelId}`, { params: { rewind: '1' } });
         ch.subscribe('cemetery-update', msg => {
             try {
                 const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
