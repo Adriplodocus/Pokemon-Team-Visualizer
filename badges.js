@@ -381,7 +381,7 @@ function buildBadgeOverlayHTML() {
 <meta charset="UTF-8">
 <style>
 body,html{margin:0;padding:0;background:transparent;}
-.grid{display:grid;grid-template-columns:repeat(${cols},80px);gap:0;width:${cols * 80}px;}
+.grid{display:flex;flex-wrap:wrap;justify-content:center;width:${cols * 80}px;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 </style>
 </head>

@@ -5,7 +5,7 @@
 <style>
 *, *::before, *::after { box-sizing: border-box; }
 body, html { margin: 0; padding: 0; background: transparent; }
-.grid { display: grid; gap: 0; }
+.grid { display: flex; flex-wrap: wrap; justify-content: center; }
 @keyframes fadeSlideUp {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
@@ -34,7 +34,6 @@ body, html { margin: 0; padding: 0; background: transparent; }
 
         var grid = document.createElement('div');
         grid.className = 'grid';
-        grid.style.gridTemplateColumns = 'repeat(' + cols + ', 80px)';
         grid.style.width = (cols * 80) + 'px';
 
         for (var i = 0; i < count; i++) {
