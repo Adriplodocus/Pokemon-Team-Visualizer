@@ -622,8 +622,8 @@ async function resolvePokemonTypes(name, skin) {
         if (!chainRes.ok) throw new Error('chain not found');
         pkChainData = await chainRes.json();
         if (reqId !== typeResolveId) return;
-        renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
-        if (infoDiv) infoDiv.style.display = 'flex';
+        const hasEvo = renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+        if (hasEvo && infoDiv) infoDiv.style.display = 'flex';
     } catch {
         // non-critical — silently skip on error
     }
@@ -822,9 +822,14 @@ function renderChainNode(node, selectedSpeciesName) {
 
 function renderPkEvo(chain, selectedSpeciesName) {
     const el = document.getElementById('pk-info-evo');
-    if (!el) return;
+    if (!el) return false;
+    if (!chain.evolves_to || !chain.evolves_to.length) {
+        el.innerHTML = '';
+        return false;
+    }
     el.innerHTML = `<div class="pk-info-label">${tT('evoSection')}</div>
         <div class="pk-evo-tree">${renderChainNode(chain, selectedSpeciesName)}</div>`;
+    return true;
 }
 
 function renderPkInfo() {
@@ -835,8 +840,8 @@ function renderPkInfo() {
     renderPkStats(selectedPokemon.stats);
     const infoDiv = document.getElementById('pk-info');
     if (pkChainData && infoDiv) {
-        renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
-        infoDiv.style.display = 'flex';
+        const hasEvo = renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+        infoDiv.style.display = hasEvo ? 'flex' : 'none';
     }
 }
 
