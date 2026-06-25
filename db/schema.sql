@@ -50,3 +50,12 @@ CREATE INDEX IF NOT EXISTS idx_users_badge_channel_id ON users(badge_channel_id)
 
 ALTER TABLE users ADD COLUMN IF NOT EXISTS followers INTEGER NOT NULL DEFAULT 0;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS is_admin BOOLEAN NOT NULL DEFAULT false;
+
+CREATE TABLE IF NOT EXISTS badge_progress (
+  user_id    UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  game       TEXT NOT NULL,
+  active     JSONB NOT NULL DEFAULT '[]',
+  layout     TEXT NOT NULL,
+  updated_at TIMESTAMPTZ DEFAULT NOW(),
+  PRIMARY KEY (user_id, game)
+);
