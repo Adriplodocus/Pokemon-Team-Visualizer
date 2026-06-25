@@ -617,7 +617,7 @@ function copyObsUrl() {
 
 function copyEditorUrl() {
     const bid = typeof badgeChannelId !== 'undefined' && badgeChannelId ? `&bid=${badgeChannelId}` : '';
-    const url = `https://pokemon.mrklypp.com/cemetery.html?id=${channelId}${bid}`;
+    const url = `https://pokemon.mrklypp.com/index.html?id=${channelId}${bid}`;
     if (navigator.clipboard) {
         navigator.clipboard.writeText(url).then(() => setStatus(tC('obsUrlCopied'), 'var(--success)'));
     } else {

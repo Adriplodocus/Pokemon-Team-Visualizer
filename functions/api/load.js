@@ -33,8 +33,14 @@ export async function onRequestGet(context) {
                 const badgeRows = await sql`SELECT state->'badgeState' AS data FROM users WHERE badge_channel_id = ${id}`;
                 if (badgeRows.length && badgeRows[0].data) return respond(badgeRows[0].data);
             } else if (event === 'cemetery-update') {
-                const rows = await sql`SELECT state->'cemeteryState' AS data FROM users WHERE channel_id = ${id}`;
-                if (rows.length && rows[0].data) return respond(rows[0].data);
+                const rows = await sql`
+                    SELECT jsonb_build_object(
+                        'cemetery',       state->'cemetery',
+                        'cemeteryConfig', state->'cemeteryConfig',
+                        'cemeteryTypo',   state->'cemeteryTypo'
+                    ) AS data FROM users WHERE channel_id = ${id}
+                `;
+                if (rows.length && rows[0].data && rows[0].data.cemetery) return respond(rows[0].data);
             }
         } catch (e) {
             console.error('[load] DB lookup failed:', e.message);
