@@ -517,6 +517,12 @@ async function publishBadgesToObs() {
                 headers: { 'Content-Type': 'application/json' },
                 body:    JSON.stringify(buildBadgesBlob()),
             }).catch(() => {});
+            badgeProgressMap[badgeGame] = { active: badgeActive.slice(), layout: badgeLayout };
+            fetch('/api/badges/progress', {
+                method:  'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body:    JSON.stringify({ game: badgeGame, active: badgeActive, layout: badgeLayout }),
+            }).catch(() => {});
         } else {
             setBadgeStatus(tB('badgePublishErr'), 'var(--error)');
         }
