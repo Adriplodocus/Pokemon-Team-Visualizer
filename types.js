@@ -590,7 +590,19 @@ async function resolvePokemonTypes(name, skin) {
     renderPkStats(data.stats);
     renderPkAbilities(data.abilities);
 
-    // (species + evo chain calls added in Task 4)
+    // Fetch species data (badge)
+    try {
+        const speciesRes = await fetch(data.species.url);
+        if (reqId !== typeResolveId) return;
+        if (!speciesRes.ok) throw new Error('species not found');
+        pkSpeciesData = await speciesRes.json();
+        if (reqId !== typeResolveId) return;
+        renderPkBadge(pkSpeciesData);
+
+        // (evo chain fetch added in Task 5)
+    } catch {
+        // badge is non-critical — silently skip on error
+    }
 }
 
 function renderPkResult() {
@@ -636,6 +648,34 @@ function renderPkAbilities(abilities) {
     }).join('');
     el.innerHTML = `<div class="pk-info-label">${tT('abilitiesSection')}</div>
         <div class="pk-ability-chips">${chips}</div>`;
+}
+
+function renderPkBadge(species) {
+    const el = document.getElementById('pk-info-badge');
+    if (!el) return;
+    let label, bg, color, borderColor;
+    if (species.is_baby) {
+        label = tT('badgeBaby');
+        bg = 'rgba(255,86,180,0.15)';
+        color = 'var(--accent)';
+        borderColor = 'rgba(255,86,180,0.35)';
+    } else if (species.is_legendary) {
+        label = tT('badgeLegendary');
+        bg = 'rgba(255,215,0,0.15)';
+        color = '#FFD700';
+        borderColor = 'rgba(255,215,0,0.35)';
+    } else if (species.is_mythical) {
+        label = tT('badgeMythic');
+        bg = 'rgba(0,204,255,0.15)';
+        color = 'var(--cyan)';
+        borderColor = 'rgba(0,204,255,0.35)';
+    } else {
+        label = tT('badgeCommon');
+        bg = 'rgba(255,255,255,0.06)';
+        color = 'var(--text-2)';
+        borderColor = 'var(--border)';
+    }
+    el.innerHTML = `<span class="pk-status-badge" style="background:${bg};color:${color};border-color:${borderColor}">${label}</span>`;
 }
 
 function initPkSearch() {
