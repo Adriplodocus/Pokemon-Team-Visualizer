@@ -755,7 +755,7 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
     });
 
     const shadowContent = entries.map((e, i) =>
-        e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}" decoding="async">` : `<img id="shadow${i+1}">`
+        e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}" decoding="async">` : ''
     );
 
     if (isHorizontal) {
