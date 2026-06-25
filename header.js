@@ -117,7 +117,7 @@ function initPatchNotesBanner() {
     const seenLocal = [...seen];
 
     const banner = document.createElement('div');
-    banner.className = 'patch-banner';
+    banner.className = 'patch-banner patch-banner--conic';
     banner.setAttribute('role', 'status');
 
     function renderNote() {
