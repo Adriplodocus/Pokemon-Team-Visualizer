@@ -30,7 +30,10 @@ export async function onRequestGet(context) {
             if (!event || event === 'update') {
                 const teamRows = await sql`SELECT state->'teamState' AS data FROM users WHERE channel_id = ${id}`;
                 if (teamRows.length && teamRows[0].data) return respond(teamRows[0].data);
-                const badgeRows = await sql`SELECT state->'badgeState' AS data FROM users WHERE badge_channel_id = ${id}`;
+                const badgeRows = await sql`
+                    SELECT COALESCE(state->'badgeState', state->'badges') AS data
+                    FROM users WHERE badge_channel_id = ${id}
+                `;
                 if (badgeRows.length && badgeRows[0].data) return respond(badgeRows[0].data);
             } else if (event === 'cemetery-update') {
                 const rows = await sql`
