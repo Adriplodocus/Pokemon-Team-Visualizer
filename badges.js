@@ -680,8 +680,9 @@ async function initBadges() {
         const stateRes = await fetch('/api/state').catch(() => null);
         if (stateRes && stateRes.ok) {
             const serverState = await stateRes.json();
-            if (serverState.badges) {
-                applyBadgesServerState(serverState.badges);
+            const badgeServerData = serverState.badgeState || serverState.badges;
+            if (badgeServerData) {
+                applyBadgesServerState(badgeServerData);
                 hadServerState = true;
             } else {
                 loadBadgeState();
