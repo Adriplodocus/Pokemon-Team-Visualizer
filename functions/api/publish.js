@@ -70,11 +70,11 @@ export async function onRequestPost(context) {
                 const rawState = (data.raw && Array.isArray(data.raw.team)) ? data.raw : null;
                 const patchObj = { teamState: data };
                 if (rawState) {
-                    patchObj.team       = rawState.team;
-                    patchObj.layout     = rawState.layout;
-                    patchObj.shadows    = rawState.shadows;
-                    patchObj.bg         = rawState.bg;
-                    patchObj.typography = rawState.typography;
+                    patchObj.team    = rawState.team;
+                    patchObj.layout  = rawState.layout;
+                    patchObj.shadows = rawState.shadows;
+                    patchObj.bg      = rawState.bg;
+                    if (payload) patchObj.typography = rawState.typography;
                 }
                 const patch = JSON.stringify(patchObj);
                 const teamResult = await sql`
@@ -92,12 +92,15 @@ export async function onRequestPost(context) {
                     `;
                 }
             } else if (event === 'cemetery-update') {
-                const patch = JSON.stringify({
+                const patchObj = {
                     cemeteryState:  data,
                     cemetery:       data.raw || [],
                     cemeteryConfig: { cols: data.cols, rows: data.rows, overflow: data.overflow },
-                    cemeteryTypo:   data.typography || {},
-                });
+                };
+                if (payload && data.typography) {
+                    patchObj.cemeteryTypo = data.typography;
+                }
+                const patch = JSON.stringify(patchObj);
                 await sql`
                     UPDATE users
                     SET state = COALESCE(state, '{}'::jsonb) || ${patch}::jsonb
