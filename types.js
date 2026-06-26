@@ -92,7 +92,7 @@ const TYPE_STRINGS = {
         statSpDef: 'Sp.Def',    statSpd:   'Velocidad',
         evoLevel:  'nv.',       evoTrade:  'intercambio',
         evoHappiness: 'amistad',  evoAffection: 'afinidad',
-        evoLocation: 'lugar',
+        evoLocation: 'lugar',     evoSpecial: 'especial',
     },
     en: {
         noTypeSelected:  'Select one or two types to see effectiveness.',
@@ -121,7 +121,7 @@ const TYPE_STRINGS = {
         statSpDef: 'Sp.Def',    statSpd:   'Speed',
         evoLevel:  'lv.',       evoTrade:  'trade',
         evoHappiness: 'friendship', evoAffection: 'affection',
-        evoLocation: 'location',
+        evoLocation: 'location',   evoSpecial: 'special',
     }
 };
 
@@ -773,16 +773,17 @@ function evoMethodLabel(details) {
 
     // Second pass: specific level-up conditions
     for (const d of details) {
-        if (d.min_level)        return `${tT('evoLevel')}${d.min_level}`;
-        if (d.min_happiness)    return tT('evoHappiness');
-        if (d.min_affection)    return tT('evoAffection');
-        if (d.known_move_type)  return tT('evoAffection');
-        if (d.location)         return tT('evoLocation');
+        if (d.min_level)         return `${tT('evoLevel')}${d.min_level}`;
+        if (d.min_happiness)     return tT('evoHappiness');
+        if (d.min_affection)     return tT('evoAffection');
+        if (d.known_move_type)   return tT('evoAffection');
+        if (d.location)          return tT('evoLocation');
+        if (d.held_item?.name)   return EVO_ITEM_NAMES[d.held_item.name]?.[currentLang] ?? d.held_item.name.replace(/-/g, ' ');
     }
 
     if (details.some(d => d.trigger?.name === 'level-up'))
         return `${tT('evoLevel')}?`;
-    return details[0].trigger?.name?.replace(/-/g, ' ') ?? '';
+    return tT('evoSpecial');
 }
 
 function evoNodeHTML(speciesName, selectedSpeciesName) {
