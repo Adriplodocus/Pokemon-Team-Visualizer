@@ -443,6 +443,14 @@ button:hover { background: var(--btn-hover); }
     color: var(--text-2);
     font-weight: 500;
 }
+.settings-row label:has(select) {
+    flex: 1;
+    min-width: 0;
+}
+.settings-row label:has(select) select {
+    flex: 1;
+    min-width: 0;
+}
 select {
     background: var(--input-bg);
     border: 1px solid var(--border);
