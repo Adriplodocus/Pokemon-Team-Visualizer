@@ -358,6 +358,7 @@ h1 .header-brand:hover { transform: scale(1.08); }
     display: block;
     opacity: 0;
     transition: opacity 0.2s;
+    image-rendering: pixelated;
 }
 .sprite-preview.visible { opacity: 1; }
 
@@ -1312,6 +1313,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     height: 48px;
     object-fit: contain;
     flex-shrink: 0;
+    image-rendering: pixelated;
 }
 .cemetery-list {
     display: grid;
