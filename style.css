@@ -1400,17 +1400,25 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 /* Footer */
 .site-footer {
     text-align: center;
-    padding: 0.6rem 1rem 1rem;
+    padding: 0.75rem 1rem 1.1rem;
     margin-top: 0;
+    border-top: 1px solid var(--border);
 }
 .site-footer a {
     font-size: var(--fs-xs);
-    color: rgba(255,255,255,0.12);
-    letter-spacing: 0.04em;
+    color: rgba(255,255,255,0.28);
+    letter-spacing: 0.06em;
     text-decoration: none;
-    transition: color 0.2s;
+    transition: color 0.2s, text-shadow 0.2s, background 0.2s, -webkit-text-fill-color 0.2s;
+    -webkit-text-fill-color: rgba(255,255,255,0.28);
 }
-.site-footer a:hover { color: rgba(255,255,255,0.35); }
+.site-footer a:hover {
+    background: linear-gradient(90deg, var(--pink), var(--blue));
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-shadow: none;
+}
 
 /* ── Desktop layout ──────────────────────────────────────────── */
 @media (min-width: 1120px) {
