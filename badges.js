@@ -715,7 +715,7 @@ async function initBadges() {
 
     if (typeof setMode === 'function') setMode('pokemon');
     updateBadgePreview();
-    if (!hadServerState && !badgeExternalMode) hydrateFromAbly();
+    if (!hadServerState) hydrateFromAbly();
     subscribeToBadgeAblyUpdates();
 }
 

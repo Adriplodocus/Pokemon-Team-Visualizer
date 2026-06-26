@@ -1822,7 +1822,7 @@ async function rlToggleBot() {
     syncTypographyUI();
     updatePreview();
     updateObsHint();
-    if (!hadServerState && !externalMode) hydrateFromAbly();
+    if (!hadServerState) hydrateFromAbly();
     subscribeToAblyUpdates();
     renderPresets();
 

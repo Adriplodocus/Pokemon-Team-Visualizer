@@ -1187,6 +1187,6 @@ function initCemColorPicker() {
     syncCemTypoUI();
     initCemColorPicker();
     initCemeteryPreview();
-    if (!hadServerState && !externalMode) hydrateFromAbly();
+    if (!hadServerState) hydrateFromAbly();
     subscribeToAblyUpdates();
 })();
