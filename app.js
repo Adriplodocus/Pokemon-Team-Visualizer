@@ -280,7 +280,7 @@ const team = Array.from({ length: 6 }, () => ({
 
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
-let SPRITE_VER = '?v=2';
+let SPRITE_VER = '';
 let spriteTheme = localStorage.getItem('ptv_sprite_theme') || 'Showdown';
 let themeIndex  = {};
 let themeIndexLoaded = false;
@@ -327,11 +327,9 @@ let dragInsertBefore = true;
 Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
-    fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
     fetch('sprites/theme-index.json').then(r => r.json()).catch(() => ({})),
 ])
-.then(([names, aliases, ver, tIdx]) => {
-    SPRITE_VER = '?v=' + ver.v;
+.then(([names, aliases, tIdx]) => {
     themeIndex = tIdx || {};
     themeIndexLoaded = Object.keys(themeIndex).length > 0;
     for (const [canonical, aliasList] of Object.entries(aliases)) {
@@ -528,7 +526,7 @@ function refreshIcons(i) {
 
     const sIcon = row.querySelector('.skin-icon');
     sIcon.className = 'icon skin-icon' + (p.skin !== 'common' ? ' active' : ' dimmed');
-    sIcon.dataset.tooltip = t('tooltipSkin') + ': ' + (p.skin || 'common');
+    sIcon.dataset.tooltip = t('tooltipSkin') + ': ' + (p.skin || 'common').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 
     const shIcon = row.querySelector('.shiny-icon');
     shIcon.className = 'icon shiny-icon' + (p.shiny === 'True' ? ' active' : ' dimmed');
@@ -619,8 +617,8 @@ function openModal(i) {
         <div class="modal-row">
             <label>${t('modalGender')}</label>
             <select id="mp-gender" onchange="modalVars.gender=this.value">
-                <option value="male"   ${modalVars.gender==='male'   ? 'selected':''}>male</option>
-                <option value="female" ${modalVars.gender==='female' ? 'selected':''}>female</option>
+                <option value="male"   ${modalVars.gender==='male'   ? 'selected':''}>Male</option>
+                <option value="female" ${modalVars.gender==='female' ? 'selected':''}>Female</option>
             </select>
         </div>`;
 
@@ -631,7 +629,7 @@ function openModal(i) {
         <div class="modal-row">
             <label>${t('modalSkin')}</label>
             <select id="mp-skin" onchange="modalVars.skin=this.value">
-                ${skins.map(s => `<option value="${s}" ${effectiveModalSkin===s?'selected':''}>${s}</option>`).join('')}
+                ${skins.map(s => `<option value="${s}" ${effectiveModalSkin===s?'selected':''}>${s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</option>`).join('')}
             </select>
         </div>`;
 
@@ -772,7 +770,7 @@ body,html{margin:0;padding:0;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
 .shadow-row{margin-top:-15px;}
-img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
+img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;image-rendering:pixelated;}
 p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
 .container{display:flex;flex-wrap:nowrap;}
 .nameDiv{flex:0 0 225px;width:225px;}
@@ -813,7 +811,7 @@ body,html{margin:0;padding:0;}
 .pkDiv{width:225px;position:relative;}
 .shadowDiv{width:150px;margin-top:-15px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
-img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;}
+img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;image-rendering:pixelated;}
 p{margin:0;padding:0;height:25px;text-align:center;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}

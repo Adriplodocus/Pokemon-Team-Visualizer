@@ -64,6 +64,11 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
     var id = new URLSearchParams(location.search).get('id');
     if (!id) return;
 
+    function freshUrl(url) {
+        if (!url) return url;
+        return url.replace(/\?v=[^&]*/, '');
+    }
+
     function renderTeam(data) {
         var team    = data.team    || [];
         var layout  = data.layout  || 'horizontal';
@@ -95,11 +100,12 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
 
         function makeImg(src, fallback, style) {
             var img = document.createElement('img');
-            img.src = src;
+            img.src = freshUrl(src);
             if (style) img.style.cssText = style;
             if (fallback && fallback !== src) {
                 img.onerror = function () {
-                    if (img.src !== fallback) { img.src = fallback; img.onerror = null; }
+                    var fb = freshUrl(fallback);
+                    if (img.src !== fb) { img.src = fb; img.onerror = null; }
                 };
             }
             return img;

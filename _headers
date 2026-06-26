@@ -1,8 +1,5 @@
 /sprites/*
-  Cache-Control: public, max-age=86400
-
-/*.gif
-  Cache-Control: public, max-age=86400
+  Cache-Control: public, max-age=3600, stale-while-revalidate=86400
 
 /pokemon-list.json
   Cache-Control: public, max-age=3600

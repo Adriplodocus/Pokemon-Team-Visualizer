@@ -3,7 +3,7 @@ export function onRequestGet(context) {
     return new Response(JSON.stringify({ v: sha }), {
         headers: {
             'Content-Type': 'application/json',
-            'Cache-Control': 'public, max-age=3600',
+            'Cache-Control': 'no-store',
         },
     });
 }
