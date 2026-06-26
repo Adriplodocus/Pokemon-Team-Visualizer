@@ -27,7 +27,15 @@ export async function onRequestPost(context) {
                     WHERE id = ${payload.userId}
                       AND (channel_id = ${id} OR badge_channel_id = ${id})
                 `;
-                if (!rows.length) return json({ error: 'Forbidden' }, 403);
+                if (!rows.length) {
+                    // Not the owner — fall through to external editor check:
+                    // channel UUID itself acts as the shared key
+                    const channelRows = await sql`
+                        SELECT id FROM users
+                        WHERE channel_id = ${id} OR badge_channel_id = ${id}
+                    `;
+                    if (!channelRows.length) return json({ error: 'Forbidden' }, 403);
+                }
             } else {
                 // External editor: no JWT, but channel UUID acts as the shared key
                 const rows = await sql`
