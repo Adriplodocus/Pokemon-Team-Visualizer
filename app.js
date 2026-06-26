@@ -770,7 +770,7 @@ body,html{margin:0;padding:0;}
 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
 .sprite-row{position:relative;z-index:1;}
 .shadow-row{margin-top:-15px;}
-img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;image-rendering:pixelated;}
+img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
 p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
 .container{display:flex;flex-wrap:nowrap;}
 .nameDiv{flex:0 0 225px;width:225px;}
@@ -811,7 +811,7 @@ body,html{margin:0;padding:0;}
 .pkDiv{width:225px;position:relative;}
 .shadowDiv{width:150px;margin-top:-15px;}
 #pokeballBackground1,#pokeballBackground2,#pokeballBackground3,#pokeballBackground4,#pokeballBackground5,#pokeballBackground6{position:absolute;width:225px;height:150px;z-index:-1;}
-img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;image-rendering:pixelated;}
+img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;}
 p{margin:0;padding:0;height:25px;text-align:center;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}

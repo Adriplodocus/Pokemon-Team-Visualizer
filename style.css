@@ -358,7 +358,6 @@ h1 .header-brand:hover { transform: scale(1.08); }
     display: block;
     opacity: 0;
     transition: opacity 0.2s;
-    image-rendering: pixelated;
 }
 .sprite-preview.visible { opacity: 1; }
 
@@ -1313,7 +1312,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     height: 48px;
     object-fit: contain;
     flex-shrink: 0;
-    image-rendering: pixelated;
 }
 .cemetery-list {
     display: grid;
@@ -1757,7 +1755,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     width: 160px;
     height: 160px;
     object-fit: contain;
-    image-rendering: pixelated;
 }
 
 .pk-result-types {
@@ -1931,7 +1928,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 .pk-evo-node img {
     width: 80px;
     height: 80px;
-    image-rendering: pixelated;
     object-fit: contain;
     border: 1px solid transparent;
     border-radius: 10px;
