@@ -139,14 +139,12 @@ let pkSpeciesData        = null;
 let pkChainData          = null;
 let pkCurrentSpeciesName = '';
 let pkAbilityNames       = {};
-let SPRITE_VER      = '?v=2';
+let SPRITE_VER      = '';
 
 Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
-    fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
-]).then(([names, ver]) => {
+]).then(([names]) => {
     pkSearchNames = names;
-    SPRITE_VER    = '?v=' + ver.v;
 });
 
 const TYPE_ICON_COLORS = {};

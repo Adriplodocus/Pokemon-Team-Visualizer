@@ -64,15 +64,9 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
     var id = new URLSearchParams(location.search).get('id');
     if (!id) return;
 
-    var SPRITE_VER = '?v=2';
-    fetch('/api/version')
-        .then(function(r) { return r.json(); })
-        .then(function(ver) { SPRITE_VER = '?v=' + ver.v; })
-        .catch(function() {});
-
     function freshUrl(url) {
         if (!url) return url;
-        return url.replace(/\?v=[^&]*/, '') + SPRITE_VER;
+        return url.replace(/\?v=[^&]*/, '');
     }
 
     function renderTeam(data) {

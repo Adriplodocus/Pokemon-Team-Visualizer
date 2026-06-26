@@ -172,7 +172,7 @@ let channelId = null;
 let externalMode = false;
 let pokemonNames = [];
 const ALIAS_TO_CANONICAL = {};
-let SPRITE_VER = '?v=2';
+let SPRITE_VER = '';
 let spriteTheme = localStorage.getItem('ptv_sprite_theme_cemetery') || 'Showdown';
 let themeIndex  = {};
 let themeIndexLoaded = false;
@@ -374,11 +374,9 @@ initInput();
 Promise.all([
     fetch('pokemon-list.json').then(r => r.json()),
     fetch('pokemon-aliases.json').then(r => r.json()),
-    fetch('/api/version').then(r => r.json()).catch(() => ({ v: '2' })),
     fetch('sprites/theme-index.json').then(r => r.json()).catch(() => ({})),
 ])
-.then(([names, aliases, ver, tIdx]) => {
-    SPRITE_VER = '?v=' + ver.v;
+.then(([names, aliases, tIdx]) => {
     themeIndex = tIdx || {};
     themeIndexLoaded = Object.keys(themeIndex).length > 0;
     for (const [canonical, aliasList] of Object.entries(aliases)) {
