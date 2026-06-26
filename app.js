@@ -528,7 +528,7 @@ function refreshIcons(i) {
 
     const sIcon = row.querySelector('.skin-icon');
     sIcon.className = 'icon skin-icon' + (p.skin !== 'common' ? ' active' : ' dimmed');
-    sIcon.dataset.tooltip = t('tooltipSkin') + ': ' + (p.skin || 'common');
+    sIcon.dataset.tooltip = t('tooltipSkin') + ': ' + (p.skin || 'common').replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
 
     const shIcon = row.querySelector('.shiny-icon');
     shIcon.className = 'icon shiny-icon' + (p.shiny === 'True' ? ' active' : ' dimmed');
@@ -631,7 +631,7 @@ function openModal(i) {
         <div class="modal-row">
             <label>${t('modalSkin')}</label>
             <select id="mp-skin" onchange="modalVars.skin=this.value">
-                ${skins.map(s => `<option value="${s}" ${effectiveModalSkin===s?'selected':''}>${s}</option>`).join('')}
+                ${skins.map(s => `<option value="${s}" ${effectiveModalSkin===s?'selected':''}>${s.replace(/_/g,' ').replace(/\b\w/g,c=>c.toUpperCase())}</option>`).join('')}
             </select>
         </div>`;
 
