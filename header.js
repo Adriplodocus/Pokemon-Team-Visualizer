@@ -20,7 +20,7 @@
     document.addEventListener('DOMContentLoaded', () => {
         document.body.insertAdjacentHTML('beforeend', `
 <footer class="site-footer">
-    <a href="https://mrklypp.com/" target="_blank" rel="noopener" data-i18n="madeBy">Hecho por @MrKlypp</a>
+    <a href="https://mrklypp.com/" target="_blank" rel="noopener" data-i18n="madeBy">⚡ Hecho por @MrKlypp ↗</a>
 </footer>`);
         initUserWidget();
         initDonationBanner();

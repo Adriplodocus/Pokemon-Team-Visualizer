@@ -1405,19 +1405,16 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-top: 1px solid var(--border);
 }
 .site-footer a {
-    font-size: var(--fs-xs);
-    color: rgba(255,255,255,0.28);
-    letter-spacing: 0.06em;
+    font-size: var(--fs-sm);
+    color: rgba(255,255,255,0.35);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
     text-decoration: none;
-    transition: color 0.2s, text-shadow 0.2s, background 0.2s, -webkit-text-fill-color 0.2s;
-    -webkit-text-fill-color: rgba(255,255,255,0.28);
+    transition: color 0.2s, text-shadow 0.2s;
 }
 .site-footer a:hover {
-    background: linear-gradient(90deg, var(--pink), var(--blue));
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    text-shadow: none;
+    color: var(--blue);
+    text-shadow: 0 0 14px rgba(0, 204, 255, 0.55);
 }
 
 /* ── Desktop layout ──────────────────────────────────────────── */
