@@ -1910,9 +1910,9 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .pk-evo-children {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 0.3rem 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
 }
 
 .pk-evo-node {
@@ -1944,14 +1944,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     box-shadow: 0 0 8px rgba(0, 204, 255, 0.3);
 }
 
-.pk-evo-children .pk-evo-node img {
-    width: 60px;
-    height: 60px;
-}
-
-.pk-evo-children .pk-evo-node-name {
-    max-width: 64px;
-}
 
 .pk-evo-node-name {
     font-size: var(--fs-sm);
