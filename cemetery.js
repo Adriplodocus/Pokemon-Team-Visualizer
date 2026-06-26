@@ -240,17 +240,7 @@ function loadCemeteryConfig() {
     } catch(_) {}
 }
 
-let _cemTypoSaveTimer = null;
 function saveCemeteryTypo() {
-    if (externalMode || !_cemeteryServerInitDone) return;
-    clearTimeout(_cemTypoSaveTimer);
-    _cemTypoSaveTimer = setTimeout(() => {
-        fetch('/api/state', {
-            method:  'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body:    JSON.stringify(buildCemeteryBlob()),
-        }).catch(() => {});
-    }, 500);
 }
 
 function loadCemeteryTypo() {
