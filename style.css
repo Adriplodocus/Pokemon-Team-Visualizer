@@ -443,14 +443,6 @@ button:hover { background: var(--btn-hover); }
     color: var(--text-2);
     font-weight: 500;
 }
-.settings-row label:has(select) {
-    flex: 1;
-    min-width: 0;
-}
-.settings-row label:has(select) select {
-    flex: 1;
-    min-width: 0;
-}
 select {
     background: var(--input-bg);
     border: 1px solid var(--border);
@@ -842,10 +834,13 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     text-align: right;
 }
 
-.typo-row input[type="range"] {
+.typo-row input[type="range"],
+.typo-row select {
     flex: 1;
-    accent-color: var(--cyan);
     min-width: 0;
+}
+.typo-row input[type="range"] {
+    accent-color: var(--cyan);
 }
 
 /* Font dropdown */
