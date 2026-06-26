@@ -84,6 +84,16 @@ body { padding: 5px; }
     }
 
     function renderCemetery(data) {
+        // Normalize nested shape { cemetery, cemeteryConfig, cemeteryTypo } → flat
+        if (data.cemeteryConfig) {
+            data = {
+                pokemon:    data.pokemon || [],
+                cols:       data.cemeteryConfig.cols,
+                rows:       data.cemeteryConfig.rows,
+                overflow:   data.cemeteryConfig.overflow,
+                typography: data.cemeteryTypo,
+            };
+        }
         var pokemon      = data.pokemon  || [];
         var cols         = Math.max(1, parseInt(data.cols, 10) || 4);
         var rows         = Math.max(1, parseInt(data.rows, 10) || 3);

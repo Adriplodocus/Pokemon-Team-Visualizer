@@ -1216,7 +1216,7 @@ async function hydrateFromAbly() {
 function subscribeToAblyUpdates() {
     try {
         const ably = new Ably.Realtime({ authUrl: `/api/token?id=${channelId}` });
-        const channel = ably.channels.get(`ptv-${channelId}`);
+        const channel = ably.channels.get(`ptv-${channelId}`, { params: { rewind: '1' } });
         channel.subscribe('update', msg => {
             try {
                 const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
@@ -1822,7 +1822,7 @@ async function rlToggleBot() {
     syncTypographyUI();
     updatePreview();
     updateObsHint();
-    if (!hadServerState) hydrateFromAbly();
+    if (!hadServerState && !externalMode) hydrateFromAbly();
     subscribeToAblyUpdates();
     renderPresets();
 

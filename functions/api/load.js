@@ -30,17 +30,24 @@ export async function onRequestGet(context) {
             if (!event || event === 'update') {
                 const teamRows = await sql`SELECT state->'teamState' AS data FROM users WHERE channel_id = ${id}`;
                 if (teamRows.length && teamRows[0].data) return respond(teamRows[0].data);
-                const badgeRows = await sql`SELECT state->'badgeState' AS data FROM users WHERE badge_channel_id = ${id}`;
+                const badgeRows = await sql`
+                    SELECT COALESCE(state->'badgeState', state->'badges') AS data
+                    FROM users WHERE badge_channel_id = ${id}
+                `;
                 if (badgeRows.length && badgeRows[0].data) return respond(badgeRows[0].data);
             } else if (event === 'cemetery-update') {
                 const rows = await sql`
-                    SELECT jsonb_build_object(
-                        'cemetery',       state->'cemetery',
-                        'cemeteryConfig', state->'cemeteryConfig',
-                        'cemeteryTypo',   state->'cemeteryTypo'
-                    ) AS data FROM users WHERE channel_id = ${id}
+                    SELECT CASE
+                        WHEN state ? 'cemeteryState' THEN state->'cemeteryState'
+                        WHEN state ? 'cemetery' THEN jsonb_build_object(
+                            'cemetery',       state->'cemetery',
+                            'cemeteryConfig', state->'cemeteryConfig',
+                            'cemeteryTypo',   state->'cemeteryTypo'
+                        )
+                        ELSE NULL
+                    END AS data FROM users WHERE channel_id = ${id}
                 `;
-                if (rows.length && rows[0].data && rows[0].data.cemetery) return respond(rows[0].data);
+                if (rows.length && rows[0].data) return respond(rows[0].data);
             }
         } catch (e) {
             console.error('[load] DB lookup failed:', e.message);

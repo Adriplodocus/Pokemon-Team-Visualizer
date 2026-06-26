@@ -291,7 +291,7 @@ function subscribeToAblyUpdates() {
     if (typeof Ably === 'undefined') return;
     try {
         const ably = new Ably.Realtime({ authUrl: `/api/token?id=${channelId}` });
-        const ch = ably.channels.get(`ptv-${channelId}`);
+        const ch = ably.channels.get(`ptv-${channelId}`, { params: { rewind: '1' } });
         ch.subscribe('cemetery-update', msg => {
             try {
                 const data = typeof msg.data === 'string' ? JSON.parse(msg.data) : msg.data;
@@ -331,6 +331,7 @@ function syncGridUI() {
     overflowCk.checked  = cemeteryConfig.overflow;
     syncOverflowControl();
     updateCemeteryObsHint();
+    updateCemeteryPreview();
 }
 
 // ── Sprite URL ────────────────────────────────────────────────────
@@ -1176,10 +1177,6 @@ function initCemColorPicker() {
             loadCemetery();
         }
         _cemeteryServerInitDone = true;
-    } else {
-        loadCemeteryConfig();
-        loadCemeteryTypo();
-        loadCemetery();
     }
 
     renderCemetery();
@@ -1190,6 +1187,6 @@ function initCemColorPicker() {
     syncCemTypoUI();
     initCemColorPicker();
     initCemeteryPreview();
-    if (!hadServerState) hydrateFromAbly();
+    if (!hadServerState && !externalMode) hydrateFromAbly();
     subscribeToAblyUpdates();
 })();
