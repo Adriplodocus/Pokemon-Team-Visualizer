@@ -1954,13 +1954,17 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     flex-direction: column;
     align-items: center;
     flex-shrink: 0;
+    width: 68px;
+    text-align: center;
 }
 
 .pk-evo-arrow-method {
     font-size: var(--fs-xs);
     color: var(--dimmed);
     text-transform: capitalize;
-    white-space: nowrap;
+    white-space: normal;
+    line-height: 1.3;
+    word-break: break-word;
 }
 
 .pk-evo-arrow-icon {
