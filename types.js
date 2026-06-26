@@ -576,14 +576,14 @@ async function resolvePokemonTypes(name, skin) {
     const skinPart = (capSkin && skins.includes(capSkin)) ? `_${capSkin}` : '';
     let spriteFile;
     if (capShiny === 'True') {
-        spriteFile = `sprites/shiny/${name}${skinPart}.gif`;
+        spriteFile = `sprites/Showdown/shiny/${name}${skinPart}.gif`;
     } else if (capGender === 'female') {
-        spriteFile = `sprites/female/${name}${skinPart}.gif`;
+        spriteFile = `sprites/Showdown/female/${name}${skinPart}.gif`;
     } else {
-        spriteFile = `sprites/${name}${skinPart}.gif`;
+        spriteFile = `sprites/Showdown/${name}${skinPart}.gif`;
     }
     const sprite = document.getElementById('pk-result-sprite');
-    sprite.onerror = () => { sprite.onerror = null; sprite.src = `sprites/${name}.gif` + SPRITE_VER; };
+    sprite.onerror = () => { sprite.onerror = null; sprite.src = `sprites/Showdown/${name}.gif` + SPRITE_VER; };
     sprite.src = spriteFile + SPRITE_VER;
 
     renderPkResult();
