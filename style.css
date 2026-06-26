@@ -1920,6 +1920,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     flex-direction: column;
     align-items: center;
     gap: 0.3rem;
+    cursor: pointer;
 }
 
 .pk-evo-node img {
@@ -1931,6 +1932,11 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 10px;
     background: var(--surface-2);
     transition: border-color 0.18s;
+}
+
+.pk-evo-node:not(.selected):hover img {
+    border-color: rgba(255, 86, 180, 0.4);
+    box-shadow: 0 0 8px rgba(255, 86, 180, 0.15);
 }
 
 .pk-evo-node.selected img {

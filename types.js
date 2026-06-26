@@ -787,7 +787,7 @@ function evoMethodLabel(details) {
 
 function evoNodeHTML(speciesName, selectedSpeciesName) {
     const isSelected = speciesName === selectedSpeciesName;
-    return `<div class="pk-evo-node${isSelected ? ' selected' : ''}">
+    return `<div class="pk-evo-node${isSelected ? ' selected' : ''}" onclick="onPkSelect('${speciesName}')" role="button" tabindex="0">
         <img src="sprites/${speciesName}.gif${SPRITE_VER}" alt="${speciesName}" loading="lazy"
              onerror="this.style.display='none'">
         <span class="pk-evo-node-name">${speciesName}</span>
