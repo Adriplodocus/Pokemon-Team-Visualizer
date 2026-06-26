@@ -706,8 +706,10 @@ async function initBadges() {
     buildBadgeGameSelect();
     buildBadgeLayoutSelect();
     buildBadgeCheckboxes();
-    document.getElementById('badge-brightness').value           = badgeBrightness;
-    document.getElementById('badge-brightness-val').textContent = badgeBrightness + '%';
+    const bEl = document.getElementById('badge-brightness');
+    if (bEl) bEl.value = badgeBrightness;
+    const bValEl = document.getElementById('badge-brightness-val');
+    if (bValEl) bValEl.textContent = badgeBrightness + '%';
     updateBadgeObsHint();
     applyBadgeLang();
 
