@@ -619,8 +619,8 @@ function openModal(i) {
         <div class="modal-row">
             <label>${t('modalGender')}</label>
             <select id="mp-gender" onchange="modalVars.gender=this.value">
-                <option value="male"   ${modalVars.gender==='male'   ? 'selected':''}>male</option>
-                <option value="female" ${modalVars.gender==='female' ? 'selected':''}>female</option>
+                <option value="male"   ${modalVars.gender==='male'   ? 'selected':''}>Male</option>
+                <option value="female" ${modalVars.gender==='female' ? 'selected':''}>Female</option>
             </select>
         </div>`;
 
