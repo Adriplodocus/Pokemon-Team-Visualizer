@@ -1280,7 +1280,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     padding: 0.2rem 0.55rem;
     border-radius: 100px;
 
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     font-weight: 700;
     color: white;
     text-shadow: 0 1px 2px rgba(0,0,0,0.6);
@@ -1801,7 +1801,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     align-items: center;
     padding: 0.22rem 0.7rem;
     border-radius: 100px;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     font-weight: 700;
     letter-spacing: 0.04em;
     border: 1px solid transparent;
@@ -1819,7 +1819,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     gap: 0.3rem;
     padding: 0.22rem 0.7rem;
     border-radius: 100px;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     font-weight: 600;
     background: var(--surface-2);
     color: var(--text);
@@ -1847,7 +1847,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border: 1px solid rgba(0, 204, 255, 0.20);
     border-radius: 8px;
     padding: 0.4rem 0.65rem;
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     line-height: 1.45;
     color: var(--text-2);
     max-width: 240px;
@@ -1872,7 +1872,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .pk-stat-name {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     color: var(--text-2);
     text-align: right;
 }
@@ -1891,7 +1891,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .pk-stat-value {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     color: var(--text);
     font-weight: 700;
     text-align: right;
@@ -1945,7 +1945,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .pk-evo-node-name {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     color: var(--text-2);
     text-align: center;
     text-transform: capitalize;
@@ -1965,7 +1965,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .pk-evo-arrow-method {
-    font-size: var(--fs-xs);
+    font-size: var(--fs-sm);
     color: var(--dimmed);
     text-transform: capitalize;
     white-space: normal;
