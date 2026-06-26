@@ -92,7 +92,7 @@ const TYPE_STRINGS = {
         statSpDef: 'Sp.Def',    statSpd:   'Velocidad',
         evoLevel:  'nv.',       evoTrade:  'intercambio',
         evoHappiness: 'amistad',  evoAffection: 'afinidad',
-        evoLocation: 'lugar',     evoSpecial: 'especial',
+        evoLocation: 'lugar',
     },
     en: {
         noTypeSelected:  'Select one or two types to see effectiveness.',
@@ -121,7 +121,7 @@ const TYPE_STRINGS = {
         statSpDef: 'Sp.Def',    statSpd:   'Speed',
         evoLevel:  'lv.',       evoTrade:  'trade',
         evoHappiness: 'friendship', evoAffection: 'affection',
-        evoLocation: 'location',   evoSpecial: 'special',
+        evoLocation: 'location',
     }
 };
 
@@ -760,11 +760,41 @@ const EVO_ITEM_NAMES = {
     'star-sweet':         { es: 'Confite Estrella',      en: 'Star Sweet' },
 };
 
-function evoMethodLabel(details) {
+const TRIGGER_LABELS = {
+    'shed':                 { es: 'muda',              en: 'shed' },
+    'spin':                 { es: 'girar',             en: 'spin' },
+    'tower-of-darkness':    { es: 'Torre Sombras',     en: 'Tower of Darkness' },
+    'tower-of-waters':      { es: 'Torre Aguas',       en: 'Tower of Waters' },
+    'three-critical-hits':  { es: '3 golpes críticos', en: '3 critical hits' },
+    'take-damage':          { es: 'recibir daño',      en: 'take damage' },
+    'agile-style-move':     { es: 'estilo ágil',       en: 'agile style' },
+    'strong-style-move':    { es: 'estilo fuerte',     en: 'strong style' },
+    'recoil-damage':        { es: 'daño retroceso',    en: 'recoil damage' },
+    'other':                { es: 'especial',          en: 'special' },
+};
+
+const EVO_SPECIAL_CASES = {
+    'kingambit':   { es: 'Distintivo de Líder + vencer 3 Bisharp', en: "Leader's Crest + defeat 3 Bisharp" },
+    'annihilape':  { es: 'Golpe de Rabia ×20',                     en: 'Rage Fist ×20' },
+    'gholdengo':   { es: '999 monedas Gimmighoul',                 en: '999 Gimmighoul Coins' },
+    'palafin':     { es: 'nv.38 + Círculo de Unión',               en: 'lv.38 + Union Circle' },
+    'rabsca':      { es: '1000 pasos Let\'s Go',                   en: "1000 Let's Go steps" },
+    'runerigus':   { es: 'recibir daño + arco de piedra',          en: 'take damage + stone arch' },
+    'dudunsparce': { es: 'nv.32 + Hipertaladro',                   en: 'lv.32 + Hyper Drill' },
+};
+
+function evoMethodLabel(details, speciesName) {
     if (!details || !details.length) return '';
 
-    // First pass: prefer use-item or trade (clearest methods)
+    if (speciesName && EVO_SPECIAL_CASES[speciesName])
+        return EVO_SPECIAL_CASES[speciesName][currentLang];
+
+    // First pass: prefer use-item, trade, or spin+item (clearest methods)
     for (const d of details) {
+        if (d.trigger?.name === 'spin' && d.held_item?.name) {
+            const item = EVO_ITEM_NAMES[d.held_item.name]?.[currentLang] ?? d.held_item.name.replace(/-/g, ' ');
+            return `${TRIGGER_LABELS['spin'][currentLang]} + ${item}`;
+        }
         if (d.trigger?.name === 'use-item' && d.item?.name)
             return EVO_ITEM_NAMES[d.item.name]?.[currentLang] ?? d.item.name.replace(/-/g, ' ');
         if (d.trigger?.name === 'trade')
@@ -783,7 +813,8 @@ function evoMethodLabel(details) {
 
     if (details.some(d => d.trigger?.name === 'level-up'))
         return `${tT('evoLevel')}?`;
-    return tT('evoSpecial');
+    const trigger = details[0].trigger?.name;
+    return TRIGGER_LABELS[trigger]?.[currentLang] ?? trigger?.replace(/-/g, ' ') ?? '';
 }
 
 function evoNodeHTML(speciesName, selectedSpeciesName) {
@@ -808,7 +839,7 @@ function renderChainNode(node, selectedSpeciesName) {
         let html = '<div class="pk-evo-row">';
         for (let i = 0; i < linear.length; i++) {
             if (i > 0) {
-                const method = evoMethodLabel(linear[i].evolution_details);
+                const method = evoMethodLabel(linear[i].evolution_details, linear[i].species.name);
                 html += `<div class="pk-evo-arrow">
                     <span class="pk-evo-arrow-method">${method}</span>
                     <span class="pk-evo-arrow-icon">→</span>
@@ -823,7 +854,7 @@ function renderChainNode(node, selectedSpeciesName) {
     // Branching node
     const parentHTML   = evoNodeHTML(node.species.name, selectedSpeciesName);
     const childrenHTML = node.evolves_to.map(child => {
-        const method = evoMethodLabel(child.evolution_details);
+        const method = evoMethodLabel(child.evolution_details, child.species.name);
         return `<div class="pk-evo-row">
             <div class="pk-evo-arrow">
                 <span class="pk-evo-arrow-method">${method}</span>
