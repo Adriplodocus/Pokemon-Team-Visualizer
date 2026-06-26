@@ -192,6 +192,7 @@ const POKEMON_CATALOG = {
     ursaluna:    { skin: ['bloodmoon'] },
     urshifu:     { skin: ['rapid_strike','single_strike_gmax','rapid_strike_gmax'] },
     venusaur:    { skin: ['mega','gmax'] },
+    victreebel:  { skin: ['mega'] },
     vikavolt:    { skin: ['totem'] },
     vivillon:    { skin: ['archipelago','continental','elegant','fancy','garden','highplains','jungle','marine'] },
     voltorb:     { skin: ['hisuian'] },
