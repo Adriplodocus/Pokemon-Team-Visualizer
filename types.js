@@ -91,7 +91,8 @@ const TYPE_STRINGS = {
         statDef:   'Defensa',   statSpAtk: 'Sp.Atk',
         statSpDef: 'Sp.Def',    statSpd:   'Velocidad',
         evoLevel:  'nv.',       evoTrade:  'intercambio',
-        evoHappiness: 'amistad',
+        evoHappiness: 'amistad',  evoAffection: 'afinidad',
+        evoLocation: 'lugar',
     },
     en: {
         noTypeSelected:  'Select one or two types to see effectiveness.',
@@ -119,7 +120,8 @@ const TYPE_STRINGS = {
         statDef:   'Defense',   statSpAtk: 'Sp.Atk',
         statSpDef: 'Sp.Def',    statSpd:   'Speed',
         evoLevel:  'lv.',       evoTrade:  'trade',
-        evoHappiness: 'friendship',
+        evoHappiness: 'friendship', evoAffection: 'affection',
+        evoLocation: 'location',
     }
 };
 
@@ -760,15 +762,27 @@ const EVO_ITEM_NAMES = {
 
 function evoMethodLabel(details) {
     if (!details || !details.length) return '';
-    const d = details[0];
-    if (d.min_level)                                   return `${tT('evoLevel')}${d.min_level}`;
-    if (d.trigger?.name === 'use-item' && d.item?.name) {
-        return EVO_ITEM_NAMES[d.item.name]?.[currentLang] ?? d.item.name.replace(/-/g, ' ');
+
+    // First pass: prefer use-item or trade (clearest methods)
+    for (const d of details) {
+        if (d.trigger?.name === 'use-item' && d.item?.name)
+            return EVO_ITEM_NAMES[d.item.name]?.[currentLang] ?? d.item.name.replace(/-/g, ' ');
+        if (d.trigger?.name === 'trade')
+            return tT('evoTrade');
     }
-    if (d.trigger?.name === 'trade')                   return tT('evoTrade');
-    if (d.min_happiness)                               return tT('evoHappiness');
-    if (d.trigger?.name === 'level-up')                return `${tT('evoLevel')}?`;
-    return d.trigger?.name?.replace(/-/g, ' ') ?? '';
+
+    // Second pass: specific level-up conditions
+    for (const d of details) {
+        if (d.min_level)        return `${tT('evoLevel')}${d.min_level}`;
+        if (d.min_happiness)    return tT('evoHappiness');
+        if (d.min_affection)    return tT('evoAffection');
+        if (d.known_move_type)  return tT('evoAffection');
+        if (d.location)         return tT('evoLocation');
+    }
+
+    if (details.some(d => d.trigger?.name === 'level-up'))
+        return `${tT('evoLevel')}?`;
+    return details[0].trigger?.name?.replace(/-/g, ' ') ?? '';
 }
 
 function evoNodeHTML(speciesName, selectedSpeciesName) {
