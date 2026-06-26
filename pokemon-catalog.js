@@ -129,6 +129,7 @@ const POKEMON_CATALOG = {
     mr_mime:     { skin: ['galar'] },
     muk:         { skin: ['alola'] },
     necrozma:    { skin: ['dawnwings','duskmane','ultra'] },
+    nidoran:     { skipBase: true, skin: ['f','m'] },
     ninetales:   { skin: ['alola'] },
     ogerpon:     { skin: ['cornerstone'] },
     oinkologne:  { skin: ['male'] },
