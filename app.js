@@ -280,7 +280,8 @@ let typography = { ...DEFAULT_TYPOGRAPHY };
 const team = Array.from({ length: 6 }, () => ({
     name: '',
     mote: '',
-    properties: { ...DEFAULT_PROPS }
+    properties: { ...DEFAULT_PROPS },
+    types: null,
 }));
 
 let pokemonNames = [];
@@ -348,6 +349,71 @@ Promise.all([
     updatePreview();
 })
 .catch(() => {});
+
+// ── Team weaknesses ─────────────────────────────────────────────
+async function fetchPokemonTypes(i, name, skin) {
+    if (!name) return;
+    const slug = toPokeApiSlug(name.toLowerCase(), skin && skin !== 'common' ? skin : null);
+    try {
+        let res = await fetch(`https://pokeapi.co/api/v2/pokemon/${slug}`);
+        if (!res.ok && skin && skin !== 'common') {
+            res = await fetch(`https://pokeapi.co/api/v2/pokemon/${toPokeApiSlug(name.toLowerCase(), null)}`);
+        }
+        if (!res.ok) throw new Error('not found');
+        const data = await res.json();
+        team[i].types = data.types.map(t => t.type.name).filter(t => TYPES.includes(t)).slice(0, 2);
+    } catch {
+        team[i].types = null;
+    }
+    renderWeaknessPanel();
+}
+
+function calcTeamWeaknesses() {
+    const scores = {};
+    for (const atkType of TYPES) scores[atkType] = 0;
+
+    for (const slot of team) {
+        if (!slot.types || slot.types.length === 0) continue;
+        for (const atkType of TYPES) {
+            let mult = 1;
+            for (const defType of slot.types) {
+                mult *= TYPE_CHART[defType][atkType];
+            }
+            if (mult >= 4) scores[atkType] += 2;
+            else if (mult >= 2) scores[atkType] += 1;
+        }
+    }
+
+    return TYPES
+        .map(type => ({ type, score: scores[type] }))
+        .filter(e => e.score > 0)
+        .sort((a, b) => b.score - a.score);
+}
+
+function renderWeaknessPanel() {
+    const chipsEl = document.getElementById('weakness-chips');
+    if (!chipsEl) return;
+
+    const hasAnyPokemon = team.some(s => s.name.trim() !== '');
+    if (!hasAnyPokemon) {
+        chipsEl.innerHTML = `<span class="weakness-placeholder">${t('teamWeaknessesEmpty')}</span>`;
+        return;
+    }
+
+    const weaknesses = calcTeamWeaknesses();
+    if (weaknesses.length === 0) {
+        chipsEl.innerHTML = `<span class="weakness-placeholder">${t('teamWeaknessesEmpty')}</span>`;
+        return;
+    }
+
+    chipsEl.innerHTML = weaknesses.map(({ type, score }) => `
+        <div class="weakness-chip" style="background:${TYPE_COLORS[type]}">
+            <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
+            <span>${TYPE_NAMES[currentLang][type]}</span>
+            <span class="weakness-chip__score">${score}</span>
+        </div>
+    `).join('');
+}
 
 // ── Build UI rows ───────────────────────────────────────────────
 function buildRows() {
