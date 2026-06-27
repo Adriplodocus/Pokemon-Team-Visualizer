@@ -410,7 +410,7 @@ function renderSlotWeaknesses(i) {
     if (!team[i].types) { el.innerHTML = ''; return; }
     const weaknesses = calcSlotWeaknesses(team[i].types);
     el.innerHTML = weaknesses.map(({ type }) => `
-        <div class="slot-weakness-chip" style="background:${TYPE_COLORS[type]}" data-tooltip="${TYPE_NAMES[currentLang][type]}">
+        <div class="slot-weakness-chip" style="background:${TYPE_ICON_COLORS[type] || TYPE_COLORS[type]}" data-tooltip="${TYPE_NAMES[currentLang][type]}">
             <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
         </div>
     `).join('');
@@ -433,7 +433,7 @@ function renderWeaknessPanel() {
     }
 
     chipsEl.innerHTML = weaknesses.map(({ type, score }) => `
-        <div class="weakness-chip" style="background:${TYPE_COLORS[type]}" data-tooltip="${TYPE_NAMES[currentLang][type]}">
+        <div class="weakness-chip" style="background:${TYPE_ICON_COLORS[type] || TYPE_COLORS[type]}" data-tooltip="${TYPE_NAMES[currentLang][type]}">
             <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
             <span class="weakness-chip__score">${score}</span>
         </div>

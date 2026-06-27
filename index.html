@@ -337,6 +337,10 @@
 </div>
 
 <script src="type-chart.js"></script>
+<script>
+TYPES.forEach(t => TYPE_ICON_COLORS[t] = TYPE_COLORS[t]);
+Promise.all(TYPES.map(t => sampleIconColor(t)));
+</script>
 <script src="app.js"></script>
 <script src="badges.js"></script>
 

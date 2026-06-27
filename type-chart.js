@@ -179,6 +179,26 @@ const PK_SLUG_EXCEPTIONS = {
 
 const SKIN_SLUG_MAP = { hisuian: 'hisui' };
 
+const TYPE_ICON_COLORS = {};
+
+function sampleIconColor(type) {
+    return new Promise(resolve => {
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            canvas.width = img.width;
+            canvas.height = img.height;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(img, 0, 0);
+            const [r, g, b, a] = ctx.getImageData(0, 0, 1, 1).data;
+            TYPE_ICON_COLORS[type] = a > 128 ? `rgb(${r},${g},${b})` : TYPE_COLORS[type];
+            resolve();
+        };
+        img.onerror = () => { TYPE_ICON_COLORS[type] = TYPE_COLORS[type]; resolve(); };
+        img.src = `sprites/types/${type}.webp?v=2`;
+    });
+}
+
 function toPokeApiSlug(name, skin) {
     const key = skin ? `${name}+${skin}` : name;
     if (PK_SLUG_EXCEPTIONS[key]) return PK_SLUG_EXCEPTIONS[key];
