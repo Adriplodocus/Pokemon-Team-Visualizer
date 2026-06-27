@@ -243,6 +243,10 @@ function initPromoBanner() {
     const today = new Date().toISOString().slice(0, 10);
     if (localStorage.getItem('ptv_promo_last_shown') === today) return;
 
+    const sfx = new Audio('sounds/toast.mp3');
+    sfx.preload = 'auto';
+    sfx.volume = 0.6;
+
     let clicks = 0;
 
     function onDocClick(e) {
@@ -251,17 +255,15 @@ function initPromoBanner() {
         clicks++;
         if (clicks >= PROMO_CLICKS_REQUIRED) {
             document.removeEventListener('click', onDocClick, true);
-            showPromoBanner(today);
+            showPromoBanner(today, sfx);
         }
     }
 
     document.addEventListener('click', onDocClick, true);
 }
 
-function showPromoBanner(today) {
+function showPromoBanner(today, sfx) {
     try {
-        const sfx = new Audio('sounds/toast.mp3');
-        sfx.volume = 0.6;
         sfx.play().catch(() => {});
     } catch (_) {}
 
