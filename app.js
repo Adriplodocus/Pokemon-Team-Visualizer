@@ -219,6 +219,7 @@ function applyLang() {
     for (let i = 0; i < 6; i++) refreshIcons(i);
     renderPresets();
     renderWeaknessPanel();
+    for (let i = 0; i < 6; i++) renderSlotWeaknesses(i);
 }
 
 // ── Constants ───────────────────────────────────────────────────
@@ -367,6 +368,7 @@ async function fetchPokemonTypes(i, name, skin) {
         team[i].types = null;
     }
     renderWeaknessPanel();
+    renderSlotWeaknesses(i);
 }
 
 function calcTeamWeaknesses() {
@@ -391,6 +393,29 @@ function calcTeamWeaknesses() {
         .sort((a, b) => b.score - a.score);
 }
 
+function calcSlotWeaknesses(types) {
+    if (!types || types.length === 0) return [];
+    const result = [];
+    for (const atkType of TYPES) {
+        let mult = 1;
+        for (const defType of types) mult *= TYPE_CHART[defType][atkType];
+        if (mult >= 2) result.push({ type: atkType, mult });
+    }
+    return result.sort((a, b) => b.mult - a.mult);
+}
+
+function renderSlotWeaknesses(i) {
+    const el = document.querySelector(`.pokemon-row[data-index="${i}"] .slot-weakness-row`);
+    if (!el) return;
+    if (!team[i].types) { el.innerHTML = ''; return; }
+    const weaknesses = calcSlotWeaknesses(team[i].types);
+    el.innerHTML = weaknesses.map(({ type }) => `
+        <div class="slot-weakness-chip" style="background:${TYPE_COLORS[type]}" title="${TYPE_NAMES[currentLang][type]}">
+            <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
+        </div>
+    `).join('');
+}
+
 function renderWeaknessPanel() {
     const chipsEl = document.getElementById('weakness-chips');
     if (!chipsEl) return;
@@ -408,9 +433,8 @@ function renderWeaknessPanel() {
     }
 
     chipsEl.innerHTML = weaknesses.map(({ type, score }) => `
-        <div class="weakness-chip" style="background:${TYPE_COLORS[type]}">
+        <div class="weakness-chip" style="background:${TYPE_COLORS[type]}" title="${TYPE_NAMES[currentLang][type]}">
             <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
-            <span class="weakness-chip__name">${TYPE_NAMES[currentLang][type]}</span>
             <span class="weakness-chip__score">${score}</span>
         </div>
     `).join('');
@@ -440,6 +464,7 @@ function buildRows() {
             </div>
             <button class="props-btn" data-i18n="propsBtn" onclick="openModal(${i})"></button>
             <button class="clear-btn" onclick="clearSlot(${i})">✕</button>
+            <div class="slot-weakness-row"></div>
         `;
         container.appendChild(row);
 
@@ -455,6 +480,7 @@ function buildRows() {
             team[i].properties = { ...DEFAULT_PROPS };
             team[i].types = null;
             renderWeaknessPanel();
+            renderSlotWeaknesses(i);
             updateSuggestions(nameInput, suggestions, i);
             refreshIcons(i);
             refreshSprite(i);
@@ -573,6 +599,7 @@ function buildRows() {
                 }
             }
             renderWeaknessPanel();
+            for (let idx = 0; idx < 6; idx++) renderSlotWeaknesses(idx);
         });
 
         row.querySelectorAll('.icon').forEach(icon => {
@@ -668,6 +695,7 @@ function clearSlot(i) {
     refreshSprite(i);
     saveState();
     renderWeaknessPanel();
+    renderSlotWeaknesses(i);
 }
 
 // ── Reset all ───────────────────────────────────────────────────
@@ -1295,6 +1323,7 @@ function applyRawState(raw) {
     }
 
     renderWeaknessPanel();
+    for (let i = 0; i < 6; i++) renderSlotWeaknesses(i);
     updatePreview();
     updateObsHint();
 }
