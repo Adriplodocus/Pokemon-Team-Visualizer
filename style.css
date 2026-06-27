@@ -2020,6 +2020,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     opacity: 0;
     transition: opacity 0.15s;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.60);
+    white-space: pre-line;
 }
 .ui-tooltip.visible { opacity: 1; }
 
@@ -2195,11 +2196,26 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     flex-basis: 100%;
     display: flex;
     flex-wrap: wrap;
-    gap: 4px;
+    align-items: center;
+    gap: 4px 6px;
     padding-bottom: 4px;
 }
 .slot-weakness-row:empty { display: none; }
-.slot-weakness-chip {
+.slot-row-label {
+    font-size: var(--fs-xs);
+    color: var(--dimmed);
+    font-weight: 600;
+    white-space: nowrap;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+.slot-type-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    margin-right: 2px;
+}
+.slot-type-chip {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -2208,4 +2224,4 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     border-radius: 50%;
     cursor: default;
 }
-.slot-weakness-chip .type-icon { width: 14px; height: 14px; }
+.slot-type-chip .type-icon { width: 14px; height: 14px; }
