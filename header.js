@@ -243,9 +243,15 @@ function initPromoBanner() {
     const today = new Date().toISOString().slice(0, 10);
     if (localStorage.getItem('ptv_promo_last_shown') === today) return;
 
-    const sfx = new Audio('sounds/toast.mp3');
-    sfx.preload = 'auto';
-    sfx.volume = 0.6;
+    let audioPromise = null;
+    try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        audioPromise = fetch('sounds/toast.mp3')
+            .then(r => r.arrayBuffer())
+            .then(buf => ctx.decodeAudioData(buf))
+            .then(decoded => ({ ctx, decoded }))
+            .catch(() => null);
+    } catch (_) {}
 
     let clicks = 0;
 
@@ -255,17 +261,30 @@ function initPromoBanner() {
         clicks++;
         if (clicks >= PROMO_CLICKS_REQUIRED) {
             document.removeEventListener('click', onDocClick, true);
-            showPromoBanner(today, sfx);
+            showPromoBanner(today, audioPromise);
         }
     }
 
     document.addEventListener('click', onDocClick, true);
 }
 
-function showPromoBanner(today, sfx) {
-    try {
-        sfx.play().catch(() => {});
-    } catch (_) {}
+function showPromoBanner(today, audioPromise) {
+    if (audioPromise) {
+        audioPromise.then(audio => {
+            if (!audio) return;
+            try {
+                audio.ctx.resume().then(() => {
+                    const source = audio.ctx.createBufferSource();
+                    source.buffer = audio.decoded;
+                    const gain = audio.ctx.createGain();
+                    gain.gain.value = 0.6;
+                    source.connect(gain);
+                    gain.connect(audio.ctx.destination);
+                    source.start(0);
+                });
+            } catch (_) {}
+        });
+    }
 
     const s = HEADER_STRINGS[currentLang] || HEADER_STRINGS.es;
 
