@@ -1358,6 +1358,33 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     line-height: 1;
 }
 .cemetery-remove-btn:hover { color: var(--error, #f44); border-color: var(--error, #f44); }
+.cemetery-edit-btn {
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 1px solid var(--border);
+    background: var(--bg-card);
+    color: var(--muted);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 0.15s, color 0.15s, border-color 0.15s;
+}
+.cemetery-entry:hover .cemetery-edit-btn { opacity: 1; }
+.cemetery-edit-btn:hover { color: var(--blue); border-color: rgba(0, 204, 255, 0.4); }
+.cemetery-count {
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    margin-bottom: 10px;
+}
 .cemetery-empty {
     color: var(--muted);
     font-size: var(--fs-md);

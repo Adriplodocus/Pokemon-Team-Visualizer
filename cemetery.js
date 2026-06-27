@@ -118,6 +118,7 @@ const CEMETERY_STRINGS = {
         typoSize:             'Tamaño',
         typoText:             'Texto',
         typoStroke:           'Borde',
+        countLabel:           n => `${n} muerto${n !== 1 ? 's' : ''}`,
     },
     en: {
         gridCols:             'Cols',
@@ -158,6 +159,7 @@ const CEMETERY_STRINGS = {
         typoSize:             'Size',
         typoText:             'Text',
         typoStroke:           'Stroke',
+        countLabel:           n => `${n} dead`,
     },
 };
 
@@ -178,6 +180,7 @@ let themeIndex  = {};
 let themeIndexLoaded = false;
 let pendingEntry = { name: '', mote: '', props: { ...DEFAULT_PROPS } };
 let modalProps   = { ...DEFAULT_PROPS };
+let editingIdx   = null;
 
 // ── Channel ID ────────────────────────────────────────────────────
 async function initChannelId() {
@@ -474,26 +477,17 @@ function updatePendingSprite() {
 }
 
 // ── Properties modal ──────────────────────────────────────────────
-function openModal() {
-    const name = pendingEntry.name.trim();
-    if (!name) { setStatus(tC('errWriteFirst'), 'var(--error)'); return; }
+function _openModalFor(name, props) {
     document.getElementById('modal-title').textContent = capitalize(name) + ' ' + tC('modalTitle');
-
     const lower      = name.toLowerCase();
     const catalog    = POKEMON_CATALOG[lower] || {};
     const avail      = themeAvail(lower);
     const catalogSkins = catalog.skin || [];
     const availSkins   = themeIndexLoaded ? (avail.skins || []) : catalogSkins;
-    const hasFemale    = themeIndexLoaded ? (avail.female === true) : FEMALE_VARIANTS.has(lower);
     const skins = catalog.skipBase
         ? (availSkins.length ? availSkins : catalogSkins)
         : ['common', ...availSkins];
-    const props   = pendingEntry.props;
-    modalProps    = {
-        ...props,
-        gender: props.gender || 'male',
-    };
-
+    modalProps = { ...props, gender: props.gender || 'male' };
     document.getElementById('modal-props').innerHTML = `
         <div class="modal-row">
             <label>${tC('modalGender')}</label>
@@ -515,18 +509,37 @@ function openModal() {
                 <option value="True"  ${props.shiny === 'True'  ? 'selected' : ''}>True</option>
             </select>
         </div>`;
-
     document.getElementById('modal-backdrop').classList.add('open');
 }
 
+function openModal() {
+    const name = pendingEntry.name.trim();
+    if (!name) { setStatus(tC('errWriteFirst'), 'var(--error)'); return; }
+    editingIdx = null;
+    _openModalFor(name, pendingEntry.props);
+}
+
+function openEditModal(idx) {
+    editingIdx = idx;
+    const entry = cemetery[idx];
+    _openModalFor(entry.name, entry.props);
+}
+
 function applyModal() {
-    pendingEntry.props = { ...modalProps };
+    if (editingIdx !== null) {
+        cemetery[editingIdx].props = { ...modalProps };
+        saveCemetery();
+        renderCemetery();
+    } else {
+        pendingEntry.props = { ...modalProps };
+        updatePendingSprite();
+    }
     closeModal();
-    updatePendingSprite();
 }
 
 function closeModal() {
     document.getElementById('modal-backdrop').classList.remove('open');
+    editingIdx = null;
 }
 
 const backdropEl = document.getElementById('modal-backdrop');
@@ -566,15 +579,21 @@ function resetCemetery() {
 
 // ── Render list ───────────────────────────────────────────────────
 function renderCemetery() {
-    const list    = document.getElementById('cemetery-list');
-    const emptyEl = document.getElementById('cemetery-empty');
+    const list     = document.getElementById('cemetery-list');
+    const emptyEl  = document.getElementById('cemetery-empty');
+    const countEl  = document.getElementById('cemetery-count');
     if (!cemetery.length) {
         list.innerHTML = '';
         emptyEl.style.display = 'block';
+        if (countEl) countEl.style.display = 'none';
         updateCemeteryPreviewContent();
         return;
     }
     emptyEl.style.display = 'none';
+    if (countEl) {
+        countEl.textContent  = tC('countLabel', cemetery.length);
+        countEl.style.display = 'block';
+    }
     updateCemeteryPreviewContent();
     list.innerHTML = cemetery.map((entry, idx) => {
         const name      = entry.name.toLowerCase();
@@ -592,6 +611,7 @@ function renderCemetery() {
                 <img src="${url}" ${fbAttr} alt="${escapeHtml(name)}">
                 <span class="cemetery-entry-name">${escapeHtml(label)}</span>
                 <button class="cemetery-remove-btn" onclick="removeFromCemetery(${idx})">✕</button>
+                <button class="cemetery-edit-btn" onclick="openEditModal(${idx})">✎</button>
             </div>`;
     }).join('');
 }
@@ -724,6 +744,8 @@ function applyCemeteryLang() {
     if (nameInput) nameInput.placeholder = tC('namePh');
     const modalApply = document.querySelector('.modal-apply');
     if (modalApply) modalApply.textContent = tC('modalSet');
+    const countEl = document.getElementById('cemetery-count');
+    if (countEl && countEl.style.display !== 'none') countEl.textContent = tC('countLabel', cemetery.length);
     updateCemeteryObsHint();
     syncOverflowControl();
 }
