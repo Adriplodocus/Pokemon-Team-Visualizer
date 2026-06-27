@@ -361,7 +361,8 @@ async function fetchPokemonTypes(i, name, skin) {
         }
         if (!res.ok) throw new Error('not found');
         const data = await res.json();
-        team[i].types = data.types.map(t => t.type.name).filter(t => TYPES.includes(t)).slice(0, 2);
+        const parsed = data.types.map(entry => entry.type.name).filter(typeName => TYPES.includes(typeName)).slice(0, 2);
+        team[i].types = parsed.length ? parsed : null;
     } catch {
         team[i].types = null;
     }
