@@ -503,9 +503,10 @@ const STAT_KEYS = {
 
 function statColor(v) {
     if (v < 50)  return '#E5173A';
-    if (v < 80)  return '#FFD700';
-    if (v < 110) return 'var(--cyan)';
-    return 'var(--accent)';
+    if (v < 90)  return '#FF7A00';
+    if (v < 120) return '#FFD700';
+    if (v < 150) return '#3AC45A';
+    return '#4A9EFF';
 }
 
 function toPokeApiSlug(name, skin) {
@@ -608,12 +609,14 @@ async function resolvePokemonTypes(name, skin) {
         data.abilities.forEach((a, i) => {
             const detail = abilityDetails[i];
             const slug   = a.ability.name;
-            const ftes = detail?.flavor_text_entries;
+            const ftes   = detail?.flavor_text_entries;
+            const ft  = lang => cleanAbilityDesc(ftes?.filter(e => e.language.name === lang).pop()?.flavor_text);
+            const eff = lang => cleanAbilityDesc(detail?.effect_entries?.find(e => e.language.name === lang)?.short_effect);
             pkAbilityNames[slug] = {
                 es:      detail?.names?.find(n => n.language.name === 'es')?.name ?? slug.replace(/-/g, ' '),
                 en:      detail?.names?.find(n => n.language.name === 'en')?.name ?? slug.replace(/-/g, ' '),
-                desc_es: cleanAbilityDesc(ftes?.filter(e => e.language.name === 'es').pop()?.flavor_text),
-                desc_en: cleanAbilityDesc(ftes?.filter(e => e.language.name === 'en').pop()?.flavor_text),
+                desc_es: ft('es') || ft('en') || eff('es') || eff('en'),
+                desc_en: ft('en') || ft('es') || eff('en') || eff('es'),
             };
         });
 
