@@ -57,8 +57,10 @@ const HEADER_STRINGS = {
         guideBtn: 'Guía',
         donationMsg: 'Este es un proyecto gratuito. Pero utiliza servicios de terceros que aplican barreras de pago (Cloudflare, Ably, Neon). Tu donación puede ayudar a mejorar los servicios prestados por la aplicación. Puedes realizar una donación <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">aquí</a>.',
         promoTitle: '¿Te está gustando Pokémon Stream Visualizer?',
-        promoSubtitle: 'Encuentra más apps y sígueme en mis redes',
-        promoAppsBtn: 'Ver apps →',
+        promoFeedbackPre: 'Tu feedback me ayudaría a mejorar la app. Puedes dejarlo',
+        promoFeedbackLink: 'aquí',
+        promoAppsBtn: 'Encuentra más apps aquí',
+        promoSocialsLabel: 'Sígueme en mis redes:',
         promoClose: 'Cerrar',
     },
     en: {
@@ -70,8 +72,10 @@ const HEADER_STRINGS = {
         guideBtn: 'Guide',
         donationMsg: 'This is a free project, but it relies on third-party services with paid tiers (Cloudflare, Ably, Neon). Your donation helps keep and improve the app. You can make a donation <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">here</a>.',
         promoTitle: 'Enjoying Pokémon Stream Visualizer?',
-        promoSubtitle: 'Find more apps and follow me on socials',
-        promoAppsBtn: 'See apps →',
+        promoFeedbackPre: 'Your feedback would help me improve the app. You can leave it',
+        promoFeedbackLink: 'here',
+        promoAppsBtn: 'Find more apps here',
+        promoSocialsLabel: 'Follow me on socials:',
         promoClose: 'Close',
     },
 };
@@ -295,9 +299,10 @@ function showPromoBanner(today) {
             <span id="promo-toast-countdown">5</span>
         </button>
         <p class="promo-toast-title">${esc(s.promoTitle)}</p>
-        <p class="promo-toast-subtitle">${esc(s.promoSubtitle)}</p>
-        <div class="promo-toast-socials">${socialsHtml}</div>
+        <p class="promo-toast-subtitle">${esc(s.promoFeedbackPre)} <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener" class="promo-toast-link">${esc(s.promoFeedbackLink)}</a>.</p>
         <a href="https://mrklypp.com/#apps" target="_blank" rel="noopener" class="promo-toast-apps-btn">${esc(s.promoAppsBtn)}</a>
+        <p class="promo-toast-socials-label">${esc(s.promoSocialsLabel)}</p>
+        <div class="promo-toast-socials">${socialsHtml}</div>
     `;
 
     document.body.appendChild(toast);
