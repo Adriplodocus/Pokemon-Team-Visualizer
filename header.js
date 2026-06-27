@@ -255,17 +255,9 @@ function initPromoBanner() {
 
 function showPromoBanner(today) {
     try {
-        const ctx = new (window.AudioContext || window.webkitAudioContext)();
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.value = 880;
-        gain.gain.value = 0.08;
-        gain.gain.linearRampToValueAtTime(0, ctx.currentTime + 0.4);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start();
-        osc.stop(ctx.currentTime + 0.4);
+        const sfx = new Audio('sounds/toast.mp3');
+        sfx.volume = 0.6;
+        sfx.play().catch(() => {});
     } catch (_) {}
 
     const s = HEADER_STRINGS[currentLang] || HEADER_STRINGS.es;
