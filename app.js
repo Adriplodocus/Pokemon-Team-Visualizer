@@ -457,7 +457,11 @@ function buildRows() {
             refreshSprite(i);
             saveState(false);
         });
-        nameInput.addEventListener('blur', () => { schedulePreviewUpdate(); });
+        nameInput.addEventListener('blur', () => {
+            schedulePreviewUpdate();
+            const name = team[i].name.trim();
+            if (name) fetchPokemonTypes(i, name, team[i].properties.skin);
+        });
         nameInput.addEventListener('keydown', e => {
             if (e.key === 'Tab' && suggestions.style.display === 'block') {
                 e.preventDefault();
@@ -467,8 +471,9 @@ function buildRows() {
                     nameInput.value = target.dataset.value;
                     team[i].name = target.dataset.value;
                     refreshSprite(i);
-        
+
                     saveState();
+                    fetchPokemonTypes(i, team[i].name, team[i].properties.skin);
                 }
                 closeSuggestions(suggestions);
                 activeSuggIdx = -1;
@@ -507,6 +512,7 @@ function buildRows() {
             refreshSprite(i);
 
             saveState();
+            fetchPokemonTypes(i, team[i].name, team[i].properties.skin);
         });
 
         // ── Drag & drop ─────────────────────────────────────────
@@ -642,13 +648,14 @@ function refreshRow(i) {
 
 // ── Clear slot ──────────────────────────────────────────────────
 function clearSlot(i) {
-    team[i] = { name: '', mote: '', properties: { ...DEFAULT_PROPS } };
+    team[i] = { name: '', mote: '', properties: { ...DEFAULT_PROPS }, types: null };
     const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
     row.querySelector('.name-input').value = '';
     row.querySelector('.mote-input').value = '';
     refreshIcons(i);
     refreshSprite(i);
     saveState();
+    renderWeaknessPanel();
 }
 
 // ── Reset all ───────────────────────────────────────────────────
@@ -724,6 +731,7 @@ function applyModal() {
     refreshIcons(modalIndex);
     refreshSprite(modalIndex);
     saveState();
+    fetchPokemonTypes(modalIndex, team[modalIndex].name, team[modalIndex].properties.skin);
     closeModal();
 }
 
@@ -1238,6 +1246,7 @@ function applyRawState(raw) {
             name:       slot.name || '',
             mote:       slot.mote || '',
             properties: { ...DEFAULT_PROPS, ...(slot.properties || {}) },
+            types:      slot.types || null,
         };
         const row = document.querySelector(`.pokemon-row[data-index="${i}"]`);
         if (!row) return;
@@ -1245,6 +1254,9 @@ function applyRawState(raw) {
         row.querySelector('.mote-input').value = team[i].mote;
         refreshIcons(i);
         refreshSprite(i);
+        if (team[i].name && !team[i].types) {
+            fetchPokemonTypes(i, team[i].name, team[i].properties.skin);
+        }
     });
 
     if (raw.layout  !== undefined) document.getElementById('layout-select').value  = raw.layout;
@@ -1270,6 +1282,7 @@ function applyRawState(raw) {
         rlLoadRoutes();
     }
 
+    renderWeaknessPanel();
     updatePreview();
     updateObsHint();
 }
