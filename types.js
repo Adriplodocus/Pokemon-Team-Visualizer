@@ -673,7 +673,7 @@ function renderPkAbilities(abilities) {
         const hiddenLabel = a.is_hidden
             ? ` <span class="pk-ability-hidden-label">(${tT('hiddenAbility')})</span>`
             : '';
-        return `<span class="pk-ability-chip${a.is_hidden ? ' hidden' : ''}" data-ability-slug="${slug}">${name}${hiddenLabel}</span>`;
+        return `<span class="pk-ability-chip${a.is_hidden ? ' is-hidden-ability' : ''}" data-ability-slug="${slug}">${name}${hiddenLabel}</span>`;
     }).join('');
     el.innerHTML = `<div class="pk-info-label">${tT('abilitiesSection')}</div>
         <div class="pk-ability-chips">${chips}</div>`;

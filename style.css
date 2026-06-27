@@ -1991,7 +1991,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     text-transform: capitalize;
 }
 
-.pk-ability-chip.hidden {
+.pk-ability-chip.is-hidden-ability {
     color: var(--dimmed);
     border-style: dashed;
 }
