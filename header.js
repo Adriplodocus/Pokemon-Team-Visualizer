@@ -243,6 +243,7 @@ function initPromoBanner() {
 
     function onDocClick(e) {
         if (document.getElementById('promo-toast')?.contains(e.target)) return;
+        if (document.getElementById('modal-backdrop')?.classList.contains('open')) return;
         clicks++;
         if (clicks >= PROMO_CLICKS_REQUIRED) {
             document.removeEventListener('click', onDocClick, true);
