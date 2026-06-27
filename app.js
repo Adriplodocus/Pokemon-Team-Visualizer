@@ -88,6 +88,8 @@ const STRINGS = {
         botGoogleNotice:    'El bot requiere una cuenta de Twitch. Inicia sesión con Twitch para activarlo.',
         botLoginTwitch:     'Iniciar sesión con Twitch',
         counterDesc:        'Necesitas crear un contador en <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> y pegar el enlace embed iframe aquí.',
+        teamWeaknesses:      'Debilidades del equipo',
+        teamWeaknessesEmpty: 'Añade Pokémon para ver debilidades',
     },
     en: {
         subtitle1:     'Generate your Pokémon team overlay for OBS in seconds.',
@@ -177,6 +179,8 @@ const STRINGS = {
         botGoogleNotice:    'The bot requires a Twitch account. Log in with Twitch to enable it.',
         botLoginTwitch:     'Log in with Twitch',
         counterDesc:        'You need to create a counter on <a href="https://streamcounters.mrklypp.com/" target="_blank" rel="noopener">StreamCounters</a> and paste the iframe embed link here.',
+        teamWeaknesses:      'Team weaknesses',
+        teamWeaknessesEmpty: 'Add Pokémon to see weaknesses',
     }
 };
 
@@ -214,6 +218,7 @@ function applyLang() {
     updateObsHint();
     for (let i = 0; i < 6; i++) refreshIcons(i);
     renderPresets();
+    renderWeaknessPanel();
 }
 
 // ── Constants ───────────────────────────────────────────────────
