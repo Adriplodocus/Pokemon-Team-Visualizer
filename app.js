@@ -1184,6 +1184,20 @@ function applyRawState(raw) {
         syncTypographyUI();
     }
 
+    if (raw.counterUrl !== undefined) {
+        const counterInput = document.getElementById('counter-url');
+        if (counterInput) {
+            counterInput.value = raw.counterUrl;
+            rlApplyCounterUrl(raw.counterUrl);
+        }
+    }
+
+    if (Array.isArray(raw.zones)) {
+        rlRoutes = raw.zones.slice();
+        rlRenderRoutes();
+        rlLoadRoutes();
+    }
+
     updatePreview();
     updateObsHint();
 }
@@ -1338,6 +1352,8 @@ async function publishToObs() {
                     shadows,
                     bg,
                     typography,
+                    counterUrl: document.getElementById('counter-url')?.value || '',
+                    zones: JSON.parse(JSON.stringify(rlRoutes)),
                 },
             }),
         });

@@ -282,6 +282,11 @@ async function hydrateFromAbly() {
             syncGridUI();
         }
 
+        if (data.typography) {
+            cemeteryTypo = { ...DEFAULT_CEMETERY_TYPO, ...data.typography };
+            syncCemTypoUI();
+        }
+
         if (!externalMode) saveCemetery();
         renderCemetery();
     } catch (_) {}
@@ -664,11 +669,13 @@ async function publishCemetery() {
         });
         if (resp.ok) {
             setStatus(tC('cemeteryPublishOk'), 'var(--success)');
-            fetch('/api/state', {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(buildCemeteryBlob()),
-            }).catch(() => {});
+            if (!externalMode) {
+                fetch('/api/state', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(buildCemeteryBlob()),
+                }).catch(() => {});
+            }
         } else {
             setStatus(tC('cemeteryPublishErr'), 'var(--error)');
         }

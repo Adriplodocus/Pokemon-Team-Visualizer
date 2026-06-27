@@ -519,11 +519,13 @@ async function publishBadgesToObs() {
         });
         if (resp.ok) {
             setBadgeStatus(tB('badgePublishOk'), 'var(--success)');
-            fetch('/api/state', {
-                method:  'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body:    JSON.stringify(buildBadgesBlob()),
-            }).catch(() => {});
+            if (!badgeExternalMode) {
+                fetch('/api/state', {
+                    method:  'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body:    JSON.stringify(buildBadgesBlob()),
+                }).catch(() => {});
+            }
             badgeProgressMap[badgeGame] = { active: badgeActive.slice(), layout: badgeLayout };
             fetch('/api/badges/progress', {
                 method:  'POST',
