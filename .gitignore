@@ -8,3 +8,4 @@ scripts/_pokeapi_cache.json
 node_modules/
 dist-functions/
 docs/superpowers/
+.superpowers/
