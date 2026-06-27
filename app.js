@@ -565,6 +565,12 @@ function buildRows() {
             team.splice(dest, 0, item);
             for (let k = 0; k < 6; k++) refreshRow(k);
             saveState();
+            for (let idx = 0; idx < 6; idx++) {
+                if (team[idx].name && !team[idx].types) {
+                    fetchPokemonTypes(idx, team[idx].name, team[idx].properties.skin);
+                }
+            }
+            renderWeaknessPanel();
         });
 
         row.querySelectorAll('.icon').forEach(icon => {
