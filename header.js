@@ -26,6 +26,7 @@
         initDonationBanner();
         initPatchNotesBanner();
         initPromoBanner();
+        initUiTooltip();
     });
 
     document.body.insertAdjacentHTML('afterbegin', `
@@ -349,5 +350,37 @@ function showPromoBanner(today, audioPromise) {
         toast.classList.add('promo-toast--out');
         setTimeout(() => toast.remove(), 250);
         try { localStorage.setItem('ptv_promo_last_shown', today); } catch (_) {}
+    });
+}
+
+function initUiTooltip() {
+    if (document.getElementById('ui-tooltip')) return;
+    const tip = document.createElement('div');
+    tip.id = 'ui-tooltip';
+    tip.className = 'ui-tooltip';
+    document.body.appendChild(tip);
+
+    function show(el) {
+        const text = el.dataset.tooltip;
+        if (!text) return;
+        tip.textContent = text;
+        const rect = el.getBoundingClientRect();
+        tip.style.top  = (rect.bottom + 6) + 'px';
+        tip.style.left = rect.left + 'px';
+        tip.classList.add('visible');
+        requestAnimationFrame(() => {
+            const tr = tip.getBoundingClientRect();
+            if (tr.right > window.innerWidth - 8)
+                tip.style.left = Math.max(8, window.innerWidth - tr.width - 8) + 'px';
+        });
+    }
+    function hide() { tip.classList.remove('visible'); }
+
+    document.addEventListener('mouseover', e => {
+        const el = e.target.closest('[data-tooltip]');
+        if (el) show(el); else hide();
+    });
+    document.addEventListener('mouseout', e => {
+        if (!e.target.closest('[data-tooltip]')) hide();
     });
 }

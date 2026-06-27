@@ -687,7 +687,7 @@ function initAbilityTooltip() {
     if (document.getElementById('ability-tooltip')) return;
     const tip = document.createElement('div');
     tip.id = 'ability-tooltip';
-    tip.className = 'pk-ability-tooltip';
+    tip.className = 'ui-tooltip';
     document.body.appendChild(tip);
 
     function showTip(chip) {

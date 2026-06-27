@@ -410,7 +410,7 @@ function renderSlotWeaknesses(i) {
     if (!team[i].types) { el.innerHTML = ''; return; }
     const weaknesses = calcSlotWeaknesses(team[i].types);
     el.innerHTML = weaknesses.map(({ type }) => `
-        <div class="slot-weakness-chip" style="background:${TYPE_COLORS[type]}" title="${TYPE_NAMES[currentLang][type]}">
+        <div class="slot-weakness-chip" style="background:${TYPE_COLORS[type]}" data-tooltip="${TYPE_NAMES[currentLang][type]}">
             <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
         </div>
     `).join('');
@@ -433,7 +433,7 @@ function renderWeaknessPanel() {
     }
 
     chipsEl.innerHTML = weaknesses.map(({ type, score }) => `
-        <div class="weakness-chip" style="background:${TYPE_COLORS[type]}" title="${TYPE_NAMES[currentLang][type]}">
+        <div class="weakness-chip" style="background:${TYPE_COLORS[type]}" data-tooltip="${TYPE_NAMES[currentLang][type]}">
             <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
             <span class="weakness-chip__score">${score}</span>
         </div>
@@ -449,7 +449,7 @@ function buildRows() {
         row.className = 'pokemon-row';
         row.dataset.index = i;
         row.innerHTML = `
-            <span class="drag-handle" title="Drag to reorder">⠿</span>
+            <span class="drag-handle" data-tooltip="Drag to reorder">⠿</span>
             <img class="sprite-preview" src="" alt="" decoding="async" onclick="openModal(${i})" style="cursor:pointer">
             <span class="row-label">Pokémon ${i + 1}:</span>
             <div class="ac-wrapper">
@@ -458,9 +458,9 @@ function buildRows() {
             </div>
             <input class="mote-input" type="text" data-i18n-ph="notePh">
             <div class="icons">
-                <span class="icon gender-icon" title="Gender">♂</span>
-                <span class="icon skin-icon dimmed" title="Skin">◆</span>
-                <span class="icon shiny-icon dimmed" title="Shiny">★</span>
+                <span class="icon gender-icon" data-tooltip="Gender">♂</span>
+                <span class="icon skin-icon dimmed" data-tooltip="Skin">◆</span>
+                <span class="icon shiny-icon dimmed" data-tooltip="Shiny">★</span>
             </div>
             <button class="props-btn" data-i18n="propsBtn" onclick="openModal(${i})"></button>
             <button class="clear-btn" onclick="clearSlot(${i})">✕</button>

@@ -2005,7 +2005,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 
 .pk-ability-chip[data-ability-slug] { cursor: help; }
 
-.pk-ability-tooltip {
+.ui-tooltip {
     position: fixed;
     z-index: 300;
     background: var(--surface-2);
@@ -2021,7 +2021,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     transition: opacity 0.15s;
     box-shadow: 0 6px 24px rgba(0, 0, 0, 0.60);
 }
-.pk-ability-tooltip.visible { opacity: 1; }
+.ui-tooltip.visible { opacity: 1; }
 
 .pk-stat-list {
     display: flex;
