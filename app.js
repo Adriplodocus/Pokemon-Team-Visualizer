@@ -447,6 +447,7 @@ function buildRows() {
         const moteInput   = row.querySelector('.mote-input');
         const suggestions = row.querySelector('.suggestions');
         let activeSuggIdx = -1;
+        let skipNextBlurFetch = false;
 
         nameInput.addEventListener('input', () => {
             activeSuggIdx = -1;
@@ -459,6 +460,8 @@ function buildRows() {
         });
         nameInput.addEventListener('blur', () => {
             schedulePreviewUpdate();
+            if (suggestions.style.display === 'block') return;
+            if (skipNextBlurFetch) { skipNextBlurFetch = false; return; }
             const name = team[i].name.trim();
             if (name) fetchPokemonTypes(i, name, team[i].properties.skin);
         });
@@ -473,6 +476,7 @@ function buildRows() {
                     refreshSprite(i);
 
                     saveState();
+                    skipNextBlurFetch = true;
                     fetchPokemonTypes(i, team[i].name, team[i].properties.skin);
                 }
                 closeSuggestions(suggestions);
@@ -731,7 +735,7 @@ function applyModal() {
     refreshIcons(modalIndex);
     refreshSprite(modalIndex);
     saveState();
-    fetchPokemonTypes(modalIndex, team[modalIndex].name, team[modalIndex].properties.skin);
+    if (team[modalIndex].name) fetchPokemonTypes(modalIndex, team[modalIndex].name, team[modalIndex].properties.skin);
     closeModal();
 }
 
