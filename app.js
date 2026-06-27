@@ -410,7 +410,7 @@ function renderWeaknessPanel() {
     chipsEl.innerHTML = weaknesses.map(({ type, score }) => `
         <div class="weakness-chip" style="background:${TYPE_COLORS[type]}">
             <img src="sprites/types/${type}.webp?v=2" class="type-icon" alt="">
-            <span>${TYPE_NAMES[currentLang][type]}</span>
+            <span class="weakness-chip__name">${TYPE_NAMES[currentLang][type]}</span>
             <span class="weakness-chip__score">${score}</span>
         </div>
     `).join('');
@@ -453,6 +453,8 @@ function buildRows() {
             activeSuggIdx = -1;
             team[i].name = nameInput.value;
             team[i].properties = { ...DEFAULT_PROPS };
+            team[i].types = null;
+            renderWeaknessPanel();
             updateSuggestions(nameInput, suggestions, i);
             refreshIcons(i);
             refreshSprite(i);
