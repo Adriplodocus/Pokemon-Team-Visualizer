@@ -43,6 +43,7 @@
             <button id="lang-en" onclick="setLang('en')">EN</button>
         </div>
         <a href="https://pleasant-nerine-dc9.notion.site/Pok-mon-Stream-Visualizer-Gu-a-de-uso-383ca8d9d3fe80e8ab0cdbda2c106ded" target="_blank" rel="noopener" class="guide-btn" aria-label="Guía de uso"><svg class="guide-btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n-header="guideBtn">Guía</span></a>
+        <a href="/credits-pmd.html" class="guide-btn" aria-label="Créditos PMD"><svg class="guide-btn-icon" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><circle cx="9" cy="7" r="4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M23 21v-2a4 4 0 0 0-3-3.87" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M16 3.13a4 4 0 0 1 0 7.75" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg><span data-i18n-header="creditsBtn">Créditos</span></a>
         <div class="user-widget" id="user-widget"></div>
     </div>
 </header>`);
@@ -56,6 +57,7 @@ const HEADER_STRINGS = {
         headerSubtitle: 'La herramienta definitiva para gestionar tu overlay de pokémon',
         headerError: '¿Quieres notificar un error o dejar feedback? Puedes hacerlo a través de este <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">enlace</a>.',
         guideBtn: 'Guía',
+        creditsBtn: 'Créditos',
         donationMsg: 'Este es un proyecto gratuito. Pero utiliza servicios de terceros que aplican barreras de pago (Cloudflare, Ably, Neon). Tu donación puede ayudar a mejorar los servicios prestados por la aplicación. Puedes realizar una donación <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">aquí</a>.',
         promoTitle: '¿Te está gustando Pokémon Stream Visualizer?',
         promoFeedbackPre: 'Tu feedback me ayudaría a mejorar la app. Puedes dejarlo',
@@ -71,6 +73,7 @@ const HEADER_STRINGS = {
         headerSubtitle: 'The ultimate tool to manage your Pokémon overlay',
         headerError: 'Want to report a bug or leave feedback? You can do so through this <a href="https://forms.gle/x2AC4Xwb1w4ukJui6" target="_blank" rel="noopener">link</a>.',
         guideBtn: 'Guide',
+        creditsBtn: 'Credits',
         donationMsg: 'This is a free project, but it relies on third-party services with paid tiers (Cloudflare, Ably, Neon). Your donation helps keep and improve the app. You can make a donation <a href="https://www.paypal.com/paypalme/MrKlypp" target="_blank" rel="noopener">here</a>.',
         promoTitle: 'Enjoying Pokémon Stream Visualizer?',
         promoFeedbackPre: 'Your feedback would help me improve the app. You can leave it',
