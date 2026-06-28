@@ -17,4 +17,10 @@ const PATCH_NOTES = [
         title: { es: 'Búsqueda mejorada', en: 'Better search' },
         body:  { es: 'Se ha mejorado la función de búsqueda de la tabla de tipos. Ahora podrás ver más estadísticas del pokémon que busques. ¡Pruébala!', en: 'The Type Chart search feature has been improved. You can now view more stats for any Pokémon you search for. Give it a try!' },
     },
+    {
+        id: 'pmd_sprites',
+        date: '29/06/2026',
+        title: { es: 'Sprites de Pokémon Mundo Misterioso', en: 'Pokémon Mistery Dungeon sprites' },
+        body:  { es: '¡Ahora puedes elegir los sprites de Pokémon Mundo Misterioso desde el panel de diseño!', en: 'Now you can choose Pokémon Mistery Dungeon sprites from design panel!' },
+    },
 ];
