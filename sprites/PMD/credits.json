@@ -1,5 +1,6 @@
 {
   "bulbasaur": {
+    "pmd_id": "0001",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -8,6 +9,7 @@
     "secondary": []
   },
   "ivysaur": {
+    "pmd_id": "0002",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -22,6 +24,7 @@
     ]
   },
   "venusaur": {
+    "pmd_id": "0003",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -41,6 +44,7 @@
     ]
   },
   "charmander": {
+    "pmd_id": "0004",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -55,6 +59,7 @@
     ]
   },
   "charmeleon": {
+    "pmd_id": "0005",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -69,6 +74,7 @@
     ]
   },
   "charizard": {
+    "pmd_id": "0006",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -83,6 +89,7 @@
     ]
   },
   "squirtle": {
+    "pmd_id": "0007",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -91,6 +98,7 @@
     "secondary": []
   },
   "wartortle": {
+    "pmd_id": "0008",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -105,6 +113,7 @@
     ]
   },
   "blastoise": {
+    "pmd_id": "0009",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -124,6 +133,7 @@
     ]
   },
   "caterpie": {
+    "pmd_id": "0010",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -143,6 +153,7 @@
     ]
   },
   "metapod": {
+    "pmd_id": "0011",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -162,6 +173,7 @@
     ]
   },
   "butterfree": {
+    "pmd_id": "0012",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -176,6 +188,7 @@
     ]
   },
   "weedle": {
+    "pmd_id": "0013",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -190,6 +203,7 @@
     ]
   },
   "kakuna": {
+    "pmd_id": "0014",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -204,6 +218,7 @@
     ]
   },
   "beedrill": {
+    "pmd_id": "0015",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -218,6 +233,7 @@
     ]
   },
   "pidgey": {
+    "pmd_id": "0016",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -232,6 +248,7 @@
     ]
   },
   "pidgeotto": {
+    "pmd_id": "0017",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -246,6 +263,7 @@
     ]
   },
   "pidgeot": {
+    "pmd_id": "0018",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -260,6 +278,7 @@
     ]
   },
   "rattata": {
+    "pmd_id": "0019",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -274,6 +293,7 @@
     ]
   },
   "raticate": {
+    "pmd_id": "0020",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -293,6 +313,7 @@
     ]
   },
   "spearow": {
+    "pmd_id": "0021",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -312,6 +333,7 @@
     ]
   },
   "fearow": {
+    "pmd_id": "0022",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -326,6 +348,7 @@
     ]
   },
   "ekans": {
+    "pmd_id": "0023",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -345,6 +368,7 @@
     ]
   },
   "arbok": {
+    "pmd_id": "0024",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -359,6 +383,7 @@
     ]
   },
   "pikachu": {
+    "pmd_id": "0025",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -367,6 +392,7 @@
     "secondary": []
   },
   "raichu": {
+    "pmd_id": "0026",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -381,6 +407,7 @@
     ]
   },
   "sandshrew": {
+    "pmd_id": "0027",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -400,6 +427,7 @@
     ]
   },
   "sandslash": {
+    "pmd_id": "0028",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -419,6 +447,7 @@
     ]
   },
   "nidoran_f": {
+    "pmd_id": "0029",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -438,6 +467,7 @@
     ]
   },
   "nidorina": {
+    "pmd_id": "0030",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -452,6 +482,7 @@
     ]
   },
   "nidoqueen": {
+    "pmd_id": "0031",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -466,6 +497,7 @@
     ]
   },
   "nidoran_m": {
+    "pmd_id": "0032",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -480,6 +512,7 @@
     ]
   },
   "nidorino": {
+    "pmd_id": "0033",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -494,6 +527,7 @@
     ]
   },
   "nidoking": {
+    "pmd_id": "0034",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -513,6 +547,7 @@
     ]
   },
   "clefairy": {
+    "pmd_id": "0035",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -527,6 +562,7 @@
     ]
   },
   "clefable": {
+    "pmd_id": "0036",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -546,6 +582,7 @@
     ]
   },
   "vulpix": {
+    "pmd_id": "0037",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -554,6 +591,7 @@
     "secondary": []
   },
   "ninetales": {
+    "pmd_id": "0038",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -568,6 +606,7 @@
     ]
   },
   "jigglypuff": {
+    "pmd_id": "0039",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -587,6 +626,7 @@
     ]
   },
   "wigglytuff": {
+    "pmd_id": "0040",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -606,6 +646,7 @@
     ]
   },
   "zubat": {
+    "pmd_id": "0041",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -620,6 +661,7 @@
     ]
   },
   "golbat": {
+    "pmd_id": "0042",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -634,6 +676,7 @@
     ]
   },
   "oddish": {
+    "pmd_id": "0043",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -653,6 +696,7 @@
     ]
   },
   "gloom": {
+    "pmd_id": "0044",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -667,6 +711,7 @@
     ]
   },
   "vileplume": {
+    "pmd_id": "0045",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -675,6 +720,7 @@
     "secondary": []
   },
   "paras": {
+    "pmd_id": "0046",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -694,6 +740,7 @@
     ]
   },
   "parasect": {
+    "pmd_id": "0047",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -702,6 +749,7 @@
     "secondary": []
   },
   "venonat": {
+    "pmd_id": "0048",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -716,6 +764,7 @@
     ]
   },
   "venomoth": {
+    "pmd_id": "0049",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -735,6 +784,7 @@
     ]
   },
   "diglett": {
+    "pmd_id": "0050",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -754,6 +804,7 @@
     ]
   },
   "dugtrio": {
+    "pmd_id": "0051",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -768,6 +819,7 @@
     ]
   },
   "meowth": {
+    "pmd_id": "0052",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -782,6 +834,7 @@
     ]
   },
   "persian": {
+    "pmd_id": "0053",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -801,6 +854,7 @@
     ]
   },
   "psyduck": {
+    "pmd_id": "0054",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -820,6 +874,7 @@
     ]
   },
   "golduck": {
+    "pmd_id": "0055",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -839,6 +894,7 @@
     ]
   },
   "mankey": {
+    "pmd_id": "0056",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -853,6 +909,7 @@
     ]
   },
   "primeape": {
+    "pmd_id": "0057",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -861,6 +918,7 @@
     "secondary": []
   },
   "growlithe": {
+    "pmd_id": "0058",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -880,6 +938,7 @@
     ]
   },
   "arcanine": {
+    "pmd_id": "0059",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -894,6 +953,7 @@
     ]
   },
   "poliwag": {
+    "pmd_id": "0060",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -908,6 +968,7 @@
     ]
   },
   "poliwhirl": {
+    "pmd_id": "0061",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -922,6 +983,7 @@
     ]
   },
   "poliwrath": {
+    "pmd_id": "0062",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -936,6 +998,7 @@
     ]
   },
   "abra": {
+    "pmd_id": "0063",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -955,6 +1018,7 @@
     ]
   },
   "kadabra": {
+    "pmd_id": "0064",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -974,6 +1038,7 @@
     ]
   },
   "alakazam": {
+    "pmd_id": "0065",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -988,6 +1053,7 @@
     ]
   },
   "machop": {
+    "pmd_id": "0066",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1007,6 +1073,7 @@
     ]
   },
   "machoke": {
+    "pmd_id": "0067",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1021,6 +1088,7 @@
     ]
   },
   "machamp": {
+    "pmd_id": "0068",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1029,6 +1097,7 @@
     "secondary": []
   },
   "bellsprout": {
+    "pmd_id": "0069",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1048,6 +1117,7 @@
     ]
   },
   "weepinbell": {
+    "pmd_id": "0070",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1062,6 +1132,7 @@
     ]
   },
   "victreebel": {
+    "pmd_id": "0071",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1070,6 +1141,7 @@
     "secondary": []
   },
   "tentacool": {
+    "pmd_id": "0072",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1089,6 +1161,7 @@
     ]
   },
   "tentacruel": {
+    "pmd_id": "0073",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1097,6 +1170,7 @@
     "secondary": []
   },
   "geodude": {
+    "pmd_id": "0074",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1111,6 +1185,7 @@
     ]
   },
   "graveler": {
+    "pmd_id": "0075",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1125,6 +1200,7 @@
     ]
   },
   "golem": {
+    "pmd_id": "0076",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1139,6 +1215,7 @@
     ]
   },
   "ponyta": {
+    "pmd_id": "0077",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1153,6 +1230,7 @@
     ]
   },
   "rapidash": {
+    "pmd_id": "0078",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1172,6 +1250,7 @@
     ]
   },
   "slowpoke": {
+    "pmd_id": "0079",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1191,6 +1270,7 @@
     ]
   },
   "slowbro": {
+    "pmd_id": "0080",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1205,6 +1285,7 @@
     ]
   },
   "magnemite": {
+    "pmd_id": "0081",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1224,6 +1305,7 @@
     ]
   },
   "magneton": {
+    "pmd_id": "0082",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1238,6 +1320,7 @@
     ]
   },
   "farfetch_d": {
+    "pmd_id": "0083",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1252,6 +1335,7 @@
     ]
   },
   "doduo": {
+    "pmd_id": "0084",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1266,6 +1350,7 @@
     ]
   },
   "dodrio": {
+    "pmd_id": "0085",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1280,6 +1365,7 @@
     ]
   },
   "seel": {
+    "pmd_id": "0086",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1294,6 +1380,7 @@
     ]
   },
   "dewgong": {
+    "pmd_id": "0087",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1308,6 +1395,7 @@
     ]
   },
   "grimer": {
+    "pmd_id": "0088",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1316,6 +1404,7 @@
     "secondary": []
   },
   "muk": {
+    "pmd_id": "0089",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1324,6 +1413,7 @@
     "secondary": []
   },
   "shellder": {
+    "pmd_id": "0090",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1338,6 +1428,7 @@
     ]
   },
   "cloyster": {
+    "pmd_id": "0091",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1346,6 +1437,7 @@
     "secondary": []
   },
   "gastly": {
+    "pmd_id": "0092",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1360,6 +1452,7 @@
     ]
   },
   "haunter": {
+    "pmd_id": "0093",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1374,6 +1467,7 @@
     ]
   },
   "gengar": {
+    "pmd_id": "0094",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1382,6 +1476,7 @@
     "secondary": []
   },
   "onix": {
+    "pmd_id": "0095",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1396,6 +1491,7 @@
     ]
   },
   "drowzee": {
+    "pmd_id": "0096",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1415,6 +1511,7 @@
     ]
   },
   "hypno": {
+    "pmd_id": "0097",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1429,6 +1526,7 @@
     ]
   },
   "krabby": {
+    "pmd_id": "0098",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1443,6 +1541,7 @@
     ]
   },
   "kingler": {
+    "pmd_id": "0099",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1457,6 +1556,7 @@
     ]
   },
   "voltorb": {
+    "pmd_id": "0100",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1471,6 +1571,7 @@
     ]
   },
   "electrode": {
+    "pmd_id": "0101",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1490,6 +1591,7 @@
     ]
   },
   "exeggcute": {
+    "pmd_id": "0102",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1498,6 +1600,7 @@
     "secondary": []
   },
   "exeggutor": {
+    "pmd_id": "0103",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1512,6 +1615,7 @@
     ]
   },
   "cubone": {
+    "pmd_id": "0104",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1531,6 +1635,7 @@
     ]
   },
   "marowak": {
+    "pmd_id": "0105",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1545,6 +1650,7 @@
     ]
   },
   "hitmonlee": {
+    "pmd_id": "0106",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1564,6 +1670,7 @@
     ]
   },
   "hitmonchan": {
+    "pmd_id": "0107",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1572,6 +1679,7 @@
     "secondary": []
   },
   "lickitung": {
+    "pmd_id": "0108",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1586,6 +1694,7 @@
     ]
   },
   "koffing": {
+    "pmd_id": "0109",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1600,6 +1709,7 @@
     ]
   },
   "weezing": {
+    "pmd_id": "0110",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1608,6 +1718,7 @@
     "secondary": []
   },
   "rhyhorn": {
+    "pmd_id": "0111",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1622,6 +1733,7 @@
     ]
   },
   "rhydon": {
+    "pmd_id": "0112",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1636,6 +1748,7 @@
     ]
   },
   "chansey": {
+    "pmd_id": "0113",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1650,6 +1763,7 @@
     ]
   },
   "tangela": {
+    "pmd_id": "0114",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1669,6 +1783,7 @@
     ]
   },
   "kangaskhan": {
+    "pmd_id": "0115",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1683,6 +1798,7 @@
     ]
   },
   "horsea": {
+    "pmd_id": "0116",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1702,6 +1818,7 @@
     ]
   },
   "seadra": {
+    "pmd_id": "0117",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1710,6 +1827,7 @@
     "secondary": []
   },
   "goldeen": {
+    "pmd_id": "0118",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1724,6 +1842,7 @@
     ]
   },
   "seaking": {
+    "pmd_id": "0119",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1732,6 +1851,7 @@
     "secondary": []
   },
   "staryu": {
+    "pmd_id": "0120",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1746,6 +1866,7 @@
     ]
   },
   "starmie": {
+    "pmd_id": "0121",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1754,6 +1875,7 @@
     "secondary": []
   },
   "mr_mime": {
+    "pmd_id": "0122",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1762,6 +1884,7 @@
     "secondary": []
   },
   "scyther": {
+    "pmd_id": "0123",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1781,6 +1904,7 @@
     ]
   },
   "jynx": {
+    "pmd_id": "0124",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1789,6 +1913,7 @@
     "secondary": []
   },
   "electabuzz": {
+    "pmd_id": "0125",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1803,6 +1928,7 @@
     ]
   },
   "magmar": {
+    "pmd_id": "0126",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1817,6 +1943,7 @@
     ]
   },
   "pinsir": {
+    "pmd_id": "0127",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1825,6 +1952,7 @@
     "secondary": []
   },
   "tauros": {
+    "pmd_id": "0128",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1839,6 +1967,7 @@
     ]
   },
   "magikarp": {
+    "pmd_id": "0129",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1853,6 +1982,7 @@
     ]
   },
   "gyarados": {
+    "pmd_id": "0130",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1867,6 +1997,7 @@
     ]
   },
   "lapras": {
+    "pmd_id": "0131",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1886,6 +2017,7 @@
     ]
   },
   "ditto": {
+    "pmd_id": "0132",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1900,6 +2032,7 @@
     ]
   },
   "eevee": {
+    "pmd_id": "0133",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1908,6 +2041,7 @@
     "secondary": []
   },
   "vaporeon": {
+    "pmd_id": "0134",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1922,6 +2056,7 @@
     ]
   },
   "jolteon": {
+    "pmd_id": "0135",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1941,6 +2076,7 @@
     ]
   },
   "flareon": {
+    "pmd_id": "0136",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1960,6 +2096,7 @@
     ]
   },
   "porygon": {
+    "pmd_id": "0137",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1979,6 +2116,7 @@
     ]
   },
   "omanyte": {
+    "pmd_id": "0138",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -1993,6 +2131,7 @@
     ]
   },
   "omastar": {
+    "pmd_id": "0139",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2001,6 +2140,7 @@
     "secondary": []
   },
   "kabuto": {
+    "pmd_id": "0140",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2020,6 +2160,7 @@
     ]
   },
   "kabutops": {
+    "pmd_id": "0141",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2034,6 +2175,7 @@
     ]
   },
   "aerodactyl": {
+    "pmd_id": "0142",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2048,6 +2190,7 @@
     ]
   },
   "snorlax": {
+    "pmd_id": "0143",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2067,6 +2210,7 @@
     ]
   },
   "articuno": {
+    "pmd_id": "0144",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2075,6 +2219,7 @@
     "secondary": []
   },
   "zapdos": {
+    "pmd_id": "0145",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2083,6 +2228,7 @@
     "secondary": []
   },
   "moltres": {
+    "pmd_id": "0146",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2091,6 +2237,7 @@
     "secondary": []
   },
   "dratini": {
+    "pmd_id": "0147",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2105,6 +2252,7 @@
     ]
   },
   "dragonair": {
+    "pmd_id": "0148",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2119,6 +2267,7 @@
     ]
   },
   "dragonite": {
+    "pmd_id": "0149",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2138,6 +2287,7 @@
     ]
   },
   "mewtwo": {
+    "pmd_id": "0150",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2152,6 +2302,7 @@
     ]
   },
   "mew": {
+    "pmd_id": "0151",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2171,6 +2322,7 @@
     ]
   },
   "chikorita": {
+    "pmd_id": "0152",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2185,6 +2337,7 @@
     ]
   },
   "bayleef": {
+    "pmd_id": "0153",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2199,6 +2352,7 @@
     ]
   },
   "meganium": {
+    "pmd_id": "0154",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2213,6 +2367,7 @@
     ]
   },
   "cyndaquil": {
+    "pmd_id": "0155",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2221,6 +2376,7 @@
     "secondary": []
   },
   "quilava": {
+    "pmd_id": "0156",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2235,6 +2391,7 @@
     ]
   },
   "typhlosion": {
+    "pmd_id": "0157",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2249,6 +2406,7 @@
     ]
   },
   "totodile": {
+    "pmd_id": "0158",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2257,6 +2415,7 @@
     "secondary": []
   },
   "croconaw": {
+    "pmd_id": "0159",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2271,6 +2430,7 @@
     ]
   },
   "feraligatr": {
+    "pmd_id": "0160",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2285,6 +2445,7 @@
     ]
   },
   "sentret": {
+    "pmd_id": "0161",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2304,6 +2465,7 @@
     ]
   },
   "furret": {
+    "pmd_id": "0162",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2318,6 +2480,7 @@
     ]
   },
   "hoothoot": {
+    "pmd_id": "0163",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2332,6 +2495,7 @@
     ]
   },
   "noctowl": {
+    "pmd_id": "0164",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2351,6 +2515,7 @@
     ]
   },
   "ledyba": {
+    "pmd_id": "0165",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2365,6 +2530,7 @@
     ]
   },
   "ledian": {
+    "pmd_id": "0166",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2379,6 +2545,7 @@
     ]
   },
   "spinarak": {
+    "pmd_id": "0167",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2393,6 +2560,7 @@
     ]
   },
   "ariados": {
+    "pmd_id": "0168",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2407,6 +2575,7 @@
     ]
   },
   "crobat": {
+    "pmd_id": "0169",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2426,6 +2595,7 @@
     ]
   },
   "chinchou": {
+    "pmd_id": "0170",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2440,6 +2610,7 @@
     ]
   },
   "lanturn": {
+    "pmd_id": "0171",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2454,6 +2625,7 @@
     ]
   },
   "pichu": {
+    "pmd_id": "0172",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2468,6 +2640,7 @@
     ]
   },
   "cleffa": {
+    "pmd_id": "0173",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2487,6 +2660,7 @@
     ]
   },
   "igglybuff": {
+    "pmd_id": "0174",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2501,6 +2675,7 @@
     ]
   },
   "togepi": {
+    "pmd_id": "0175",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2520,6 +2695,7 @@
     ]
   },
   "togetic": {
+    "pmd_id": "0176",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2534,6 +2710,7 @@
     ]
   },
   "natu": {
+    "pmd_id": "0177",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2548,6 +2725,7 @@
     ]
   },
   "xatu": {
+    "pmd_id": "0178",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2562,6 +2740,7 @@
     ]
   },
   "mareep": {
+    "pmd_id": "0179",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2576,6 +2755,7 @@
     ]
   },
   "flaaffy": {
+    "pmd_id": "0180",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2590,6 +2770,7 @@
     ]
   },
   "ampharos": {
+    "pmd_id": "0181",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2604,6 +2785,7 @@
     ]
   },
   "bellossom": {
+    "pmd_id": "0182",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2618,6 +2800,7 @@
     ]
   },
   "marill": {
+    "pmd_id": "0183",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2637,6 +2820,7 @@
     ]
   },
   "azumarill": {
+    "pmd_id": "0184",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2656,6 +2840,7 @@
     ]
   },
   "sudowoodo": {
+    "pmd_id": "0185",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2670,6 +2855,7 @@
     ]
   },
   "politoed": {
+    "pmd_id": "0186",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2684,6 +2870,7 @@
     ]
   },
   "hoppip": {
+    "pmd_id": "0187",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2698,6 +2885,7 @@
     ]
   },
   "skiploom": {
+    "pmd_id": "0188",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2717,6 +2905,7 @@
     ]
   },
   "jumpluff": {
+    "pmd_id": "0189",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2731,6 +2920,7 @@
     ]
   },
   "aipom": {
+    "pmd_id": "0190",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2750,6 +2940,7 @@
     ]
   },
   "sunkern": {
+    "pmd_id": "0191",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2769,6 +2960,7 @@
     ]
   },
   "sunflora": {
+    "pmd_id": "0192",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2783,6 +2975,7 @@
     ]
   },
   "yanma": {
+    "pmd_id": "0193",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2797,6 +2990,7 @@
     ]
   },
   "wooper": {
+    "pmd_id": "0194",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2816,6 +3010,7 @@
     ]
   },
   "quagsire": {
+    "pmd_id": "0195",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2830,6 +3025,7 @@
     ]
   },
   "espeon": {
+    "pmd_id": "0196",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2849,6 +3045,7 @@
     ]
   },
   "umbreon": {
+    "pmd_id": "0197",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2863,6 +3060,7 @@
     ]
   },
   "murkrow": {
+    "pmd_id": "0198",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2882,6 +3080,7 @@
     ]
   },
   "slowking": {
+    "pmd_id": "0199",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2896,6 +3095,7 @@
     ]
   },
   "misdreavus": {
+    "pmd_id": "0200",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2915,6 +3115,7 @@
     ]
   },
   "unown": {
+    "pmd_id": "0201",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2929,6 +3130,7 @@
     ]
   },
   "wobbuffet": {
+    "pmd_id": "0202",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2948,6 +3150,7 @@
     ]
   },
   "girafarig": {
+    "pmd_id": "0203",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2967,6 +3170,7 @@
     ]
   },
   "pineco": {
+    "pmd_id": "0204",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2981,6 +3185,7 @@
     ]
   },
   "forretress": {
+    "pmd_id": "0205",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -2989,6 +3194,7 @@
     "secondary": []
   },
   "dunsparce": {
+    "pmd_id": "0206",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3008,6 +3214,7 @@
     ]
   },
   "gligar": {
+    "pmd_id": "0207",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3022,6 +3229,7 @@
     ]
   },
   "steelix": {
+    "pmd_id": "0208",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3030,6 +3238,7 @@
     "secondary": []
   },
   "snubbull": {
+    "pmd_id": "0209",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3044,6 +3253,7 @@
     ]
   },
   "granbull": {
+    "pmd_id": "0210",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3052,6 +3262,7 @@
     "secondary": []
   },
   "qwilfish": {
+    "pmd_id": "0211",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3066,6 +3277,7 @@
     ]
   },
   "scizor": {
+    "pmd_id": "0212",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3080,6 +3292,7 @@
     ]
   },
   "shuckle": {
+    "pmd_id": "0213",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3094,6 +3307,7 @@
     ]
   },
   "heracross": {
+    "pmd_id": "0214",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3108,6 +3322,7 @@
     ]
   },
   "sneasel": {
+    "pmd_id": "0215",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3122,6 +3337,7 @@
     ]
   },
   "teddiursa": {
+    "pmd_id": "0216",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3141,6 +3357,7 @@
     ]
   },
   "ursaring": {
+    "pmd_id": "0217",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3160,6 +3377,7 @@
     ]
   },
   "slugma": {
+    "pmd_id": "0218",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3174,6 +3392,7 @@
     ]
   },
   "magcargo": {
+    "pmd_id": "0219",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3188,6 +3407,7 @@
     ]
   },
   "swinub": {
+    "pmd_id": "0220",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3202,6 +3422,7 @@
     ]
   },
   "piloswine": {
+    "pmd_id": "0221",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3216,6 +3437,7 @@
     ]
   },
   "corsola": {
+    "pmd_id": "0222",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3235,6 +3457,7 @@
     ]
   },
   "remoraid": {
+    "pmd_id": "0223",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3254,6 +3477,7 @@
     ]
   },
   "octillery": {
+    "pmd_id": "0224",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3268,6 +3492,7 @@
     ]
   },
   "delibird": {
+    "pmd_id": "0225",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3282,6 +3507,7 @@
     ]
   },
   "mantine": {
+    "pmd_id": "0226",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3296,6 +3522,7 @@
     ]
   },
   "skarmory": {
+    "pmd_id": "0227",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3310,6 +3537,7 @@
     ]
   },
   "houndour": {
+    "pmd_id": "0228",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3324,6 +3552,7 @@
     ]
   },
   "houndoom": {
+    "pmd_id": "0229",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3343,6 +3572,7 @@
     ]
   },
   "kingdra": {
+    "pmd_id": "0230",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3357,6 +3587,7 @@
     ]
   },
   "phanpy": {
+    "pmd_id": "0231",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3365,6 +3596,7 @@
     "secondary": []
   },
   "donphan": {
+    "pmd_id": "0232",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3384,6 +3616,7 @@
     ]
   },
   "porygon2": {
+    "pmd_id": "0233",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3403,6 +3636,7 @@
     ]
   },
   "stantler": {
+    "pmd_id": "0234",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3417,6 +3651,7 @@
     ]
   },
   "smeargle": {
+    "pmd_id": "0235",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3431,6 +3666,7 @@
     ]
   },
   "tyrogue": {
+    "pmd_id": "0236",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3445,6 +3681,7 @@
     ]
   },
   "hitmontop": {
+    "pmd_id": "0237",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3459,6 +3696,7 @@
     ]
   },
   "smoochum": {
+    "pmd_id": "0238",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3473,6 +3711,7 @@
     ]
   },
   "elekid": {
+    "pmd_id": "0239",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3492,6 +3731,7 @@
     ]
   },
   "magby": {
+    "pmd_id": "0240",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3506,6 +3746,7 @@
     ]
   },
   "miltank": {
+    "pmd_id": "0241",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3525,6 +3766,7 @@
     ]
   },
   "blissey": {
+    "pmd_id": "0242",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3539,6 +3781,7 @@
     ]
   },
   "raikou": {
+    "pmd_id": "0243",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3553,6 +3796,7 @@
     ]
   },
   "entei": {
+    "pmd_id": "0244",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3567,6 +3811,7 @@
     ]
   },
   "suicune": {
+    "pmd_id": "0245",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3581,6 +3826,7 @@
     ]
   },
   "larvitar": {
+    "pmd_id": "0246",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3595,6 +3841,7 @@
     ]
   },
   "pupitar": {
+    "pmd_id": "0247",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3603,6 +3850,7 @@
     "secondary": []
   },
   "tyranitar": {
+    "pmd_id": "0248",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3617,6 +3865,7 @@
     ]
   },
   "lugia": {
+    "pmd_id": "0249",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3631,6 +3880,7 @@
     ]
   },
   "ho_oh": {
+    "pmd_id": "0250",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3645,6 +3895,7 @@
     ]
   },
   "celebi": {
+    "pmd_id": "0251",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3659,6 +3910,7 @@
     ]
   },
   "treecko": {
+    "pmd_id": "0252",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3667,6 +3919,7 @@
     "secondary": []
   },
   "grovyle": {
+    "pmd_id": "0253",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3681,6 +3934,7 @@
     ]
   },
   "sceptile": {
+    "pmd_id": "0254",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3700,6 +3954,7 @@
     ]
   },
   "torchic": {
+    "pmd_id": "0255",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3708,6 +3963,7 @@
     "secondary": []
   },
   "combusken": {
+    "pmd_id": "0256",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3727,6 +3983,7 @@
     ]
   },
   "blaziken": {
+    "pmd_id": "0257",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3741,6 +3998,7 @@
     ]
   },
   "mudkip": {
+    "pmd_id": "0258",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3749,6 +4007,7 @@
     "secondary": []
   },
   "marshtomp": {
+    "pmd_id": "0259",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3763,6 +4022,7 @@
     ]
   },
   "swampert": {
+    "pmd_id": "0260",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3777,6 +4037,7 @@
     ]
   },
   "poochyena": {
+    "pmd_id": "0261",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3791,6 +4052,7 @@
     ]
   },
   "mightyena": {
+    "pmd_id": "0262",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3810,6 +4072,7 @@
     ]
   },
   "zigzagoon": {
+    "pmd_id": "0263",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3829,6 +4092,7 @@
     ]
   },
   "linoone": {
+    "pmd_id": "0264",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3837,6 +4101,7 @@
     "secondary": []
   },
   "wurmple": {
+    "pmd_id": "0265",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3851,6 +4116,7 @@
     ]
   },
   "silcoon": {
+    "pmd_id": "0266",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3865,6 +4131,7 @@
     ]
   },
   "beautifly": {
+    "pmd_id": "0267",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3879,6 +4146,7 @@
     ]
   },
   "cascoon": {
+    "pmd_id": "0268",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3887,6 +4155,7 @@
     "secondary": []
   },
   "dustox": {
+    "pmd_id": "0269",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3901,6 +4170,7 @@
     ]
   },
   "lotad": {
+    "pmd_id": "0270",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3920,6 +4190,7 @@
     ]
   },
   "lombre": {
+    "pmd_id": "0271",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3939,6 +4210,7 @@
     ]
   },
   "ludicolo": {
+    "pmd_id": "0272",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3947,6 +4219,7 @@
     "secondary": []
   },
   "seedot": {
+    "pmd_id": "0273",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3961,6 +4234,7 @@
     ]
   },
   "nuzleaf": {
+    "pmd_id": "0274",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3975,6 +4249,7 @@
     ]
   },
   "shiftry": {
+    "pmd_id": "0275",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -3994,6 +4269,7 @@
     ]
   },
   "taillow": {
+    "pmd_id": "0276",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4008,6 +4284,7 @@
     ]
   },
   "swellow": {
+    "pmd_id": "0277",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4022,6 +4299,7 @@
     ]
   },
   "wingull": {
+    "pmd_id": "0278",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4036,6 +4314,7 @@
     ]
   },
   "pelipper": {
+    "pmd_id": "0279",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4055,6 +4334,7 @@
     ]
   },
   "ralts": {
+    "pmd_id": "0280",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4069,6 +4349,7 @@
     ]
   },
   "kirlia": {
+    "pmd_id": "0281",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4083,6 +4364,7 @@
     ]
   },
   "gardevoir": {
+    "pmd_id": "0282",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4097,6 +4379,7 @@
     ]
   },
   "surskit": {
+    "pmd_id": "0283",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4116,6 +4399,7 @@
     ]
   },
   "masquerain": {
+    "pmd_id": "0284",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4130,6 +4414,7 @@
     ]
   },
   "shroomish": {
+    "pmd_id": "0285",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4144,6 +4429,7 @@
     ]
   },
   "breloom": {
+    "pmd_id": "0286",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4163,6 +4449,7 @@
     ]
   },
   "slakoth": {
+    "pmd_id": "0287",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4177,6 +4464,7 @@
     ]
   },
   "vigoroth": {
+    "pmd_id": "0288",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4185,6 +4473,7 @@
     "secondary": []
   },
   "slaking": {
+    "pmd_id": "0289",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4199,6 +4488,7 @@
     ]
   },
   "nincada": {
+    "pmd_id": "0290",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4213,6 +4503,7 @@
     ]
   },
   "ninjask": {
+    "pmd_id": "0291",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4227,6 +4518,7 @@
     ]
   },
   "shedinja": {
+    "pmd_id": "0292",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4241,6 +4533,7 @@
     ]
   },
   "whismur": {
+    "pmd_id": "0293",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4255,6 +4548,7 @@
     ]
   },
   "loudred": {
+    "pmd_id": "0294",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4269,6 +4563,7 @@
     ]
   },
   "exploud": {
+    "pmd_id": "0295",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4277,6 +4572,7 @@
     "secondary": []
   },
   "makuhita": {
+    "pmd_id": "0296",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4291,6 +4587,7 @@
     ]
   },
   "hariyama": {
+    "pmd_id": "0297",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4299,6 +4596,7 @@
     "secondary": []
   },
   "azurill": {
+    "pmd_id": "0298",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4313,6 +4611,7 @@
     ]
   },
   "nosepass": {
+    "pmd_id": "0299",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4327,6 +4626,7 @@
     ]
   },
   "skitty": {
+    "pmd_id": "0300",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4335,6 +4635,7 @@
     "secondary": []
   },
   "delcatty": {
+    "pmd_id": "0301",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4349,6 +4650,7 @@
     ]
   },
   "sableye": {
+    "pmd_id": "0302",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4363,6 +4665,7 @@
     ]
   },
   "mawile": {
+    "pmd_id": "0303",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4382,6 +4685,7 @@
     ]
   },
   "aron": {
+    "pmd_id": "0304",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4401,6 +4705,7 @@
     ]
   },
   "lairon": {
+    "pmd_id": "0305",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4420,6 +4725,7 @@
     ]
   },
   "aggron": {
+    "pmd_id": "0306",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4434,6 +4740,7 @@
     ]
   },
   "meditite": {
+    "pmd_id": "0307",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4442,6 +4749,7 @@
     "secondary": []
   },
   "medicham": {
+    "pmd_id": "0308",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4456,6 +4764,7 @@
     ]
   },
   "electrike": {
+    "pmd_id": "0309",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4475,6 +4784,7 @@
     ]
   },
   "manectric": {
+    "pmd_id": "0310",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4489,6 +4799,7 @@
     ]
   },
   "plusle": {
+    "pmd_id": "0311",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4503,6 +4814,7 @@
     ]
   },
   "minun": {
+    "pmd_id": "0312",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4517,6 +4829,7 @@
     ]
   },
   "volbeat": {
+    "pmd_id": "0313",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4536,6 +4849,7 @@
     ]
   },
   "illumise": {
+    "pmd_id": "0314",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4550,6 +4864,7 @@
     ]
   },
   "roselia": {
+    "pmd_id": "0315",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4564,6 +4879,7 @@
     ]
   },
   "gulpin": {
+    "pmd_id": "0316",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4578,6 +4894,7 @@
     ]
   },
   "swalot": {
+    "pmd_id": "0317",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4592,6 +4909,7 @@
     ]
   },
   "carvanha": {
+    "pmd_id": "0318",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4600,6 +4918,7 @@
     "secondary": []
   },
   "sharpedo": {
+    "pmd_id": "0319",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4614,6 +4933,7 @@
     ]
   },
   "wailmer": {
+    "pmd_id": "0320",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4633,6 +4953,7 @@
     ]
   },
   "wailord": {
+    "pmd_id": "0321",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4647,6 +4968,7 @@
     ]
   },
   "numel": {
+    "pmd_id": "0322",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4661,6 +4983,7 @@
     ]
   },
   "camerupt": {
+    "pmd_id": "0323",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4675,6 +4998,7 @@
     ]
   },
   "torkoal": {
+    "pmd_id": "0324",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4689,6 +5013,7 @@
     ]
   },
   "spoink": {
+    "pmd_id": "0325",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4703,6 +5028,7 @@
     ]
   },
   "grumpig": {
+    "pmd_id": "0326",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4717,6 +5043,7 @@
     ]
   },
   "spinda": {
+    "pmd_id": "0327",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4731,6 +5058,7 @@
     ]
   },
   "trapinch": {
+    "pmd_id": "0328",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4750,6 +5078,7 @@
     ]
   },
   "vibrava": {
+    "pmd_id": "0329",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4764,6 +5093,7 @@
     ]
   },
   "flygon": {
+    "pmd_id": "0330",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4778,6 +5108,7 @@
     ]
   },
   "cacnea": {
+    "pmd_id": "0331",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4792,6 +5123,7 @@
     ]
   },
   "cacturne": {
+    "pmd_id": "0332",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4811,6 +5143,7 @@
     ]
   },
   "swablu": {
+    "pmd_id": "0333",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4825,6 +5158,7 @@
     ]
   },
   "altaria": {
+    "pmd_id": "0334",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4844,6 +5178,7 @@
     ]
   },
   "zangoose": {
+    "pmd_id": "0335",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4858,6 +5193,7 @@
     ]
   },
   "seviper": {
+    "pmd_id": "0336",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4877,6 +5213,7 @@
     ]
   },
   "lunatone": {
+    "pmd_id": "0337",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4891,6 +5228,7 @@
     ]
   },
   "solrock": {
+    "pmd_id": "0338",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4899,6 +5237,7 @@
     "secondary": []
   },
   "barboach": {
+    "pmd_id": "0339",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4913,6 +5252,7 @@
     ]
   },
   "whiscash": {
+    "pmd_id": "0340",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4932,6 +5272,7 @@
     ]
   },
   "corphish": {
+    "pmd_id": "0341",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4946,6 +5287,7 @@
     ]
   },
   "crawdaunt": {
+    "pmd_id": "0342",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4965,6 +5307,7 @@
     ]
   },
   "baltoy": {
+    "pmd_id": "0343",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4984,6 +5327,7 @@
     ]
   },
   "claydol": {
+    "pmd_id": "0344",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -4998,6 +5342,7 @@
     ]
   },
   "lileep": {
+    "pmd_id": "0345",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5017,6 +5362,7 @@
     ]
   },
   "cradily": {
+    "pmd_id": "0346",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5031,6 +5377,7 @@
     ]
   },
   "anorith": {
+    "pmd_id": "0347",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5045,6 +5392,7 @@
     ]
   },
   "armaldo": {
+    "pmd_id": "0348",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5064,6 +5412,7 @@
     ]
   },
   "feebas": {
+    "pmd_id": "0349",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5078,6 +5427,7 @@
     ]
   },
   "milotic": {
+    "pmd_id": "0350",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5092,6 +5442,7 @@
     ]
   },
   "castform": {
+    "pmd_id": "0351",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5111,6 +5462,7 @@
     ]
   },
   "kecleon": {
+    "pmd_id": "0352",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5125,6 +5477,7 @@
     ]
   },
   "shuppet": {
+    "pmd_id": "0353",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5139,6 +5492,7 @@
     ]
   },
   "banette": {
+    "pmd_id": "0354",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5153,6 +5507,7 @@
     ]
   },
   "duskull": {
+    "pmd_id": "0355",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5172,6 +5527,7 @@
     ]
   },
   "dusclops": {
+    "pmd_id": "0356",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5191,6 +5547,7 @@
     ]
   },
   "tropius": {
+    "pmd_id": "0357",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5205,6 +5562,7 @@
     ]
   },
   "chimecho": {
+    "pmd_id": "0358",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5224,6 +5582,7 @@
     ]
   },
   "absol": {
+    "pmd_id": "0359",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5243,6 +5602,7 @@
     ]
   },
   "wynaut": {
+    "pmd_id": "0360",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5262,6 +5622,7 @@
     ]
   },
   "snorunt": {
+    "pmd_id": "0361",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5276,6 +5637,7 @@
     ]
   },
   "glalie": {
+    "pmd_id": "0362",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5290,6 +5652,7 @@
     ]
   },
   "spheal": {
+    "pmd_id": "0363",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5304,6 +5667,7 @@
     ]
   },
   "sealeo": {
+    "pmd_id": "0364",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5318,6 +5682,7 @@
     ]
   },
   "walrein": {
+    "pmd_id": "0365",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5326,6 +5691,7 @@
     "secondary": []
   },
   "clamperl": {
+    "pmd_id": "0366",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5345,6 +5711,7 @@
     ]
   },
   "huntail": {
+    "pmd_id": "0367",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5359,6 +5726,7 @@
     ]
   },
   "gorebyss": {
+    "pmd_id": "0368",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5373,6 +5741,7 @@
     ]
   },
   "relicanth": {
+    "pmd_id": "0369",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5387,6 +5756,7 @@
     ]
   },
   "luvdisc": {
+    "pmd_id": "0370",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5401,6 +5771,7 @@
     ]
   },
   "bagon": {
+    "pmd_id": "0371",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5415,6 +5786,7 @@
     ]
   },
   "shelgon": {
+    "pmd_id": "0372",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5423,6 +5795,7 @@
     "secondary": []
   },
   "salamence": {
+    "pmd_id": "0373",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5437,6 +5810,7 @@
     ]
   },
   "beldum": {
+    "pmd_id": "0374",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5451,6 +5825,7 @@
     ]
   },
   "metang": {
+    "pmd_id": "0375",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5470,6 +5845,7 @@
     ]
   },
   "metagross": {
+    "pmd_id": "0376",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5484,6 +5860,7 @@
     ]
   },
   "regirock": {
+    "pmd_id": "0377",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5498,6 +5875,7 @@
     ]
   },
   "regice": {
+    "pmd_id": "0378",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5512,6 +5890,7 @@
     ]
   },
   "registeel": {
+    "pmd_id": "0379",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5526,6 +5905,7 @@
     ]
   },
   "latias": {
+    "pmd_id": "0380",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5545,6 +5925,7 @@
     ]
   },
   "latios": {
+    "pmd_id": "0381",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5559,6 +5940,7 @@
     ]
   },
   "kyogre": {
+    "pmd_id": "0382",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5573,6 +5955,7 @@
     ]
   },
   "groudon": {
+    "pmd_id": "0383",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5587,6 +5970,7 @@
     ]
   },
   "rayquaza": {
+    "pmd_id": "0384",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5601,6 +5985,7 @@
     ]
   },
   "jirachi": {
+    "pmd_id": "0385",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5615,6 +6000,7 @@
     ]
   },
   "deoxys": {
+    "pmd_id": "0386",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5634,6 +6020,7 @@
     ]
   },
   "turtwig": {
+    "pmd_id": "0387",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5642,6 +6029,7 @@
     "secondary": []
   },
   "grotle": {
+    "pmd_id": "0388",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5656,6 +6044,7 @@
     ]
   },
   "torterra": {
+    "pmd_id": "0389",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5670,6 +6059,7 @@
     ]
   },
   "chimchar": {
+    "pmd_id": "0390",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5678,6 +6068,7 @@
     "secondary": []
   },
   "monferno": {
+    "pmd_id": "0391",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5697,6 +6088,7 @@
     ]
   },
   "infernape": {
+    "pmd_id": "0392",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5711,6 +6103,7 @@
     ]
   },
   "piplup": {
+    "pmd_id": "0393",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5719,6 +6112,7 @@
     "secondary": []
   },
   "prinplup": {
+    "pmd_id": "0394",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5733,6 +6127,7 @@
     ]
   },
   "empoleon": {
+    "pmd_id": "0395",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5747,6 +6142,7 @@
     ]
   },
   "starly": {
+    "pmd_id": "0396",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5761,6 +6157,7 @@
     ]
   },
   "staravia": {
+    "pmd_id": "0397",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5775,6 +6172,7 @@
     ]
   },
   "staraptor": {
+    "pmd_id": "0398",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5794,6 +6192,7 @@
     ]
   },
   "bidoof": {
+    "pmd_id": "0399",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5813,6 +6212,7 @@
     ]
   },
   "bibarel": {
+    "pmd_id": "0400",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5821,6 +6221,7 @@
     "secondary": []
   },
   "kricketot": {
+    "pmd_id": "0401",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5829,6 +6230,7 @@
     "secondary": []
   },
   "kricketune": {
+    "pmd_id": "0402",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5843,6 +6245,7 @@
     ]
   },
   "shinx": {
+    "pmd_id": "0403",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5851,6 +6254,7 @@
     "secondary": []
   },
   "luxio": {
+    "pmd_id": "0404",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5865,6 +6269,7 @@
     ]
   },
   "luxray": {
+    "pmd_id": "0405",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5879,6 +6284,7 @@
     ]
   },
   "budew": {
+    "pmd_id": "0406",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5898,6 +6304,7 @@
     ]
   },
   "roserade": {
+    "pmd_id": "0407",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5917,6 +6324,7 @@
     ]
   },
   "cranidos": {
+    "pmd_id": "0408",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5931,6 +6339,7 @@
     ]
   },
   "rampardos": {
+    "pmd_id": "0409",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5950,6 +6359,7 @@
     ]
   },
   "shieldon": {
+    "pmd_id": "0410",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5964,6 +6374,7 @@
     ]
   },
   "bastiodon": {
+    "pmd_id": "0411",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5978,6 +6389,7 @@
     ]
   },
   "burmy": {
+    "pmd_id": "0412",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -5992,6 +6404,7 @@
     ]
   },
   "wormadam": {
+    "pmd_id": "0413",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6006,6 +6419,7 @@
     ]
   },
   "mothim": {
+    "pmd_id": "0414",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6020,6 +6434,7 @@
     ]
   },
   "combee": {
+    "pmd_id": "0415",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6034,6 +6449,7 @@
     ]
   },
   "vespiquen": {
+    "pmd_id": "0416",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6048,6 +6464,7 @@
     ]
   },
   "pachirisu": {
+    "pmd_id": "0417",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6062,6 +6479,7 @@
     ]
   },
   "buizel": {
+    "pmd_id": "0418",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6076,6 +6494,7 @@
     ]
   },
   "floatzel": {
+    "pmd_id": "0419",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6090,6 +6509,7 @@
     ]
   },
   "cherubi": {
+    "pmd_id": "0420",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6104,6 +6524,7 @@
     ]
   },
   "cherrim": {
+    "pmd_id": "0421",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6118,6 +6539,7 @@
     ]
   },
   "shellos": {
+    "pmd_id": "0422",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6132,6 +6554,7 @@
     ]
   },
   "gastrodon": {
+    "pmd_id": "0423",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6146,6 +6569,7 @@
     ]
   },
   "ambipom": {
+    "pmd_id": "0424",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6160,6 +6584,7 @@
     ]
   },
   "drifloon": {
+    "pmd_id": "0425",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6179,6 +6604,7 @@
     ]
   },
   "drifblim": {
+    "pmd_id": "0426",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6193,6 +6619,7 @@
     ]
   },
   "buneary": {
+    "pmd_id": "0427",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6207,6 +6634,7 @@
     ]
   },
   "lopunny": {
+    "pmd_id": "0428",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6221,6 +6649,7 @@
     ]
   },
   "mismagius": {
+    "pmd_id": "0429",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6235,6 +6664,7 @@
     ]
   },
   "honchkrow": {
+    "pmd_id": "0430",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6254,6 +6684,7 @@
     ]
   },
   "glameow": {
+    "pmd_id": "0431",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6273,6 +6704,7 @@
     ]
   },
   "purugly": {
+    "pmd_id": "0432",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6287,6 +6719,7 @@
     ]
   },
   "chingling": {
+    "pmd_id": "0433",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6301,6 +6734,7 @@
     ]
   },
   "stunky": {
+    "pmd_id": "0434",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6320,6 +6754,7 @@
     ]
   },
   "skuntank": {
+    "pmd_id": "0435",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6339,6 +6774,7 @@
     ]
   },
   "bronzor": {
+    "pmd_id": "0436",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6353,6 +6789,7 @@
     ]
   },
   "bronzong": {
+    "pmd_id": "0437",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6361,6 +6798,7 @@
     "secondary": []
   },
   "bonsly": {
+    "pmd_id": "0438",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6375,6 +6813,7 @@
     ]
   },
   "mime_jr_": {
+    "pmd_id": "0439",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6389,6 +6828,7 @@
     ]
   },
   "happiny": {
+    "pmd_id": "0440",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6403,6 +6843,7 @@
     ]
   },
   "chatot": {
+    "pmd_id": "0441",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6417,6 +6858,7 @@
     ]
   },
   "spiritomb": {
+    "pmd_id": "0442",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6431,6 +6873,7 @@
     ]
   },
   "gible": {
+    "pmd_id": "0443",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6445,6 +6888,7 @@
     ]
   },
   "gabite": {
+    "pmd_id": "0444",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6459,6 +6903,7 @@
     ]
   },
   "garchomp": {
+    "pmd_id": "0445",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6478,6 +6923,7 @@
     ]
   },
   "munchlax": {
+    "pmd_id": "0446",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6486,6 +6932,7 @@
     "secondary": []
   },
   "riolu": {
+    "pmd_id": "0447",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6500,6 +6947,7 @@
     ]
   },
   "lucario": {
+    "pmd_id": "0448",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6519,6 +6967,7 @@
     ]
   },
   "hippopotas": {
+    "pmd_id": "0449",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6533,6 +6982,7 @@
     ]
   },
   "hippowdon": {
+    "pmd_id": "0450",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6547,6 +6997,7 @@
     ]
   },
   "skorupi": {
+    "pmd_id": "0451",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6566,6 +7017,7 @@
     ]
   },
   "drapion": {
+    "pmd_id": "0452",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6574,6 +7026,7 @@
     "secondary": []
   },
   "croagunk": {
+    "pmd_id": "0453",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6593,6 +7046,7 @@
     ]
   },
   "toxicroak": {
+    "pmd_id": "0454",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6607,6 +7061,7 @@
     ]
   },
   "carnivine": {
+    "pmd_id": "0455",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6621,6 +7076,7 @@
     ]
   },
   "finneon": {
+    "pmd_id": "0456",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6640,6 +7096,7 @@
     ]
   },
   "lumineon": {
+    "pmd_id": "0457",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6654,6 +7111,7 @@
     ]
   },
   "mantyke": {
+    "pmd_id": "0458",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6668,6 +7126,7 @@
     ]
   },
   "snover": {
+    "pmd_id": "0459",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6682,6 +7141,7 @@
     ]
   },
   "abomasnow": {
+    "pmd_id": "0460",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6696,6 +7156,7 @@
     ]
   },
   "weavile": {
+    "pmd_id": "0461",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6715,6 +7176,7 @@
     ]
   },
   "magnezone": {
+    "pmd_id": "0462",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6729,6 +7191,7 @@
     ]
   },
   "lickilicky": {
+    "pmd_id": "0463",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6743,6 +7206,7 @@
     ]
   },
   "rhyperior": {
+    "pmd_id": "0464",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6757,6 +7221,7 @@
     ]
   },
   "tangrowth": {
+    "pmd_id": "0465",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6765,6 +7230,7 @@
     "secondary": []
   },
   "electivire": {
+    "pmd_id": "0466",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6784,6 +7250,7 @@
     ]
   },
   "magmortar": {
+    "pmd_id": "0467",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6792,6 +7259,7 @@
     "secondary": []
   },
   "togekiss": {
+    "pmd_id": "0468",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6806,6 +7274,7 @@
     ]
   },
   "yanmega": {
+    "pmd_id": "0469",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6820,6 +7289,7 @@
     ]
   },
   "leafeon": {
+    "pmd_id": "0470",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6834,6 +7304,7 @@
     ]
   },
   "glaceon": {
+    "pmd_id": "0471",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6848,6 +7319,7 @@
     ]
   },
   "gliscor": {
+    "pmd_id": "0472",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6862,6 +7334,7 @@
     ]
   },
   "mamoswine": {
+    "pmd_id": "0473",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6876,6 +7349,7 @@
     ]
   },
   "porygon_z": {
+    "pmd_id": "0474",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6895,6 +7369,7 @@
     ]
   },
   "gallade": {
+    "pmd_id": "0475",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6909,6 +7384,7 @@
     ]
   },
   "probopass": {
+    "pmd_id": "0476",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6923,6 +7399,7 @@
     ]
   },
   "dusknoir": {
+    "pmd_id": "0477",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6937,6 +7414,7 @@
     ]
   },
   "froslass": {
+    "pmd_id": "0478",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6951,6 +7429,7 @@
     ]
   },
   "rotom": {
+    "pmd_id": "0479",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6965,6 +7444,7 @@
     ]
   },
   "uxie": {
+    "pmd_id": "0480",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6979,6 +7459,7 @@
     ]
   },
   "mesprit": {
+    "pmd_id": "0481",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -6993,6 +7474,7 @@
     ]
   },
   "azelf": {
+    "pmd_id": "0482",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7007,6 +7489,7 @@
     ]
   },
   "dialga": {
+    "pmd_id": "0483",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7021,6 +7504,7 @@
     ]
   },
   "palkia": {
+    "pmd_id": "0484",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7035,6 +7519,7 @@
     ]
   },
   "heatran": {
+    "pmd_id": "0485",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7049,6 +7534,7 @@
     ]
   },
   "regigigas": {
+    "pmd_id": "0486",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7063,6 +7549,7 @@
     ]
   },
   "giratina": {
+    "pmd_id": "0487",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7077,6 +7564,7 @@
     ]
   },
   "cresselia": {
+    "pmd_id": "0488",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7096,6 +7584,7 @@
     ]
   },
   "phione": {
+    "pmd_id": "0489",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7110,6 +7599,7 @@
     ]
   },
   "manaphy": {
+    "pmd_id": "0490",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7124,6 +7614,7 @@
     ]
   },
   "darkrai": {
+    "pmd_id": "0491",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7138,6 +7629,7 @@
     ]
   },
   "shaymin": {
+    "pmd_id": "0492",
     "primary": {
       "name": "CHUNSOFT",
       "discord": "CHUNSOFT",
@@ -7152,6 +7644,7 @@
     ]
   },
   "arceus": {
+    "pmd_id": "0493",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7160,6 +7653,7 @@
     "secondary": []
   },
   "victini": {
+    "pmd_id": "0494",
     "primary": {
       "name": "MonochromeKirby",
       "discord": "<@!324999377946935297>",
@@ -7174,6 +7668,7 @@
     ]
   },
   "snivy": {
+    "pmd_id": "0495",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7182,6 +7677,7 @@
     "secondary": []
   },
   "servine": {
+    "pmd_id": "0496",
     "primary": {
       "name": "Deeshura",
       "discord": "<@!157796074457661440>",
@@ -7190,6 +7686,7 @@
     "secondary": []
   },
   "serperior": {
+    "pmd_id": "0497",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7198,6 +7695,7 @@
     "secondary": []
   },
   "tepig": {
+    "pmd_id": "0498",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -7212,6 +7710,7 @@
     ]
   },
   "pignite": {
+    "pmd_id": "0499",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7226,6 +7725,7 @@
     ]
   },
   "emboar": {
+    "pmd_id": "0500",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7234,6 +7734,7 @@
     "secondary": []
   },
   "oshawott": {
+    "pmd_id": "0501",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7242,6 +7743,7 @@
     "secondary": []
   },
   "dewott": {
+    "pmd_id": "0502",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7256,6 +7758,7 @@
     ]
   },
   "samurott": {
+    "pmd_id": "0503",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7264,6 +7767,7 @@
     "secondary": []
   },
   "patrat": {
+    "pmd_id": "0504",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7272,6 +7776,7 @@
     "secondary": []
   },
   "watchog": {
+    "pmd_id": "0505",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7286,6 +7791,7 @@
     ]
   },
   "lillipup": {
+    "pmd_id": "0506",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7300,6 +7806,7 @@
     ]
   },
   "herdier": {
+    "pmd_id": "0507",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7314,6 +7821,7 @@
     ]
   },
   "stoutland": {
+    "pmd_id": "0508",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -7328,6 +7836,7 @@
     ]
   },
   "purrloin": {
+    "pmd_id": "0509",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7336,6 +7845,7 @@
     "secondary": []
   },
   "liepard": {
+    "pmd_id": "0510",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7350,6 +7860,7 @@
     ]
   },
   "pansage": {
+    "pmd_id": "0511",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -7358,6 +7869,7 @@
     "secondary": []
   },
   "simisage": {
+    "pmd_id": "0512",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7366,6 +7878,7 @@
     "secondary": []
   },
   "pansear": {
+    "pmd_id": "0513",
     "primary": {
       "name": "<@!315528859921678336>",
       "discord": "",
@@ -7385,6 +7898,7 @@
     ]
   },
   "simisear": {
+    "pmd_id": "0514",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7393,6 +7907,7 @@
     "secondary": []
   },
   "panpour": {
+    "pmd_id": "0515",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7407,6 +7922,7 @@
     ]
   },
   "simipour": {
+    "pmd_id": "0516",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7415,6 +7931,7 @@
     "secondary": []
   },
   "munna": {
+    "pmd_id": "0517",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7434,6 +7951,7 @@
     ]
   },
   "musharna": {
+    "pmd_id": "0518",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7442,6 +7960,7 @@
     "secondary": []
   },
   "pidove": {
+    "pmd_id": "0519",
     "primary": {
       "name": "TawnySoup",
       "discord": "<@!216640380408430592>",
@@ -7450,6 +7969,7 @@
     "secondary": []
   },
   "tranquill": {
+    "pmd_id": "0520",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7458,6 +7978,7 @@
     "secondary": []
   },
   "unfezant": {
+    "pmd_id": "0521",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7466,6 +7987,7 @@
     "secondary": []
   },
   "blitzle": {
+    "pmd_id": "0522",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7480,6 +8002,7 @@
     ]
   },
   "zebstrika": {
+    "pmd_id": "0523",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7488,6 +8011,7 @@
     "secondary": []
   },
   "roggenrola": {
+    "pmd_id": "0524",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7496,6 +8020,7 @@
     "secondary": []
   },
   "boldore": {
+    "pmd_id": "0525",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7504,6 +8029,7 @@
     "secondary": []
   },
   "gigalith": {
+    "pmd_id": "0526",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7512,6 +8038,7 @@
     "secondary": []
   },
   "woobat": {
+    "pmd_id": "0527",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7520,6 +8047,7 @@
     "secondary": []
   },
   "swoobat": {
+    "pmd_id": "0528",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7534,6 +8062,7 @@
     ]
   },
   "drilbur": {
+    "pmd_id": "0529",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -7548,6 +8077,7 @@
     ]
   },
   "excadrill": {
+    "pmd_id": "0530",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7556,6 +8086,7 @@
     "secondary": []
   },
   "audino": {
+    "pmd_id": "0531",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7564,6 +8095,7 @@
     "secondary": []
   },
   "timburr": {
+    "pmd_id": "0532",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7572,6 +8104,7 @@
     "secondary": []
   },
   "gurdurr": {
+    "pmd_id": "0533",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7580,6 +8113,7 @@
     "secondary": []
   },
   "conkeldurr": {
+    "pmd_id": "0534",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7594,6 +8128,7 @@
     ]
   },
   "tympole": {
+    "pmd_id": "0535",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7608,6 +8143,7 @@
     ]
   },
   "palpitoad": {
+    "pmd_id": "0536",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7627,6 +8163,7 @@
     ]
   },
   "seismitoad": {
+    "pmd_id": "0537",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7641,6 +8178,7 @@
     ]
   },
   "throh": {
+    "pmd_id": "0538",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7655,6 +8193,7 @@
     ]
   },
   "sawk": {
+    "pmd_id": "0539",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7669,6 +8208,7 @@
     ]
   },
   "sewaddle": {
+    "pmd_id": "0540",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7677,6 +8217,7 @@
     "secondary": []
   },
   "swadloon": {
+    "pmd_id": "0541",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7685,6 +8226,7 @@
     "secondary": []
   },
   "leavanny": {
+    "pmd_id": "0542",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7693,6 +8235,7 @@
     "secondary": []
   },
   "venipede": {
+    "pmd_id": "0543",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -7707,6 +8250,7 @@
     ]
   },
   "whirlipede": {
+    "pmd_id": "0544",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7715,6 +8259,7 @@
     "secondary": []
   },
   "scolipede": {
+    "pmd_id": "0545",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7723,6 +8268,7 @@
     "secondary": []
   },
   "cottonee": {
+    "pmd_id": "0546",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7731,6 +8277,7 @@
     "secondary": []
   },
   "whimsicott": {
+    "pmd_id": "0547",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7739,6 +8286,7 @@
     "secondary": []
   },
   "petilil": {
+    "pmd_id": "0548",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7747,6 +8295,7 @@
     "secondary": []
   },
   "lilligant": {
+    "pmd_id": "0549",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7755,6 +8304,7 @@
     "secondary": []
   },
   "basculin": {
+    "pmd_id": "0550",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7763,6 +8313,7 @@
     "secondary": []
   },
   "sandile": {
+    "pmd_id": "0551",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -7771,6 +8322,7 @@
     "secondary": []
   },
   "krokorok": {
+    "pmd_id": "0552",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7779,6 +8331,7 @@
     "secondary": []
   },
   "krookodile": {
+    "pmd_id": "0553",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7787,6 +8340,7 @@
     "secondary": []
   },
   "darumaka": {
+    "pmd_id": "0554",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7795,6 +8349,7 @@
     "secondary": []
   },
   "darmanitan": {
+    "pmd_id": "0555",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7803,6 +8358,7 @@
     "secondary": []
   },
   "maractus": {
+    "pmd_id": "0556",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7811,6 +8367,7 @@
     "secondary": []
   },
   "dwebble": {
+    "pmd_id": "0557",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7819,6 +8376,7 @@
     "secondary": []
   },
   "crustle": {
+    "pmd_id": "0558",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7827,6 +8385,7 @@
     "secondary": []
   },
   "scraggy": {
+    "pmd_id": "0559",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -7835,6 +8394,7 @@
     "secondary": []
   },
   "scrafty": {
+    "pmd_id": "0560",
     "primary": {
       "name": "NeroIntruder",
       "discord": "<@!319945906600411179>",
@@ -7854,6 +8414,7 @@
     ]
   },
   "sigilyph": {
+    "pmd_id": "0561",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7862,6 +8423,7 @@
     "secondary": []
   },
   "yamask": {
+    "pmd_id": "0562",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7870,6 +8432,7 @@
     "secondary": []
   },
   "cofagrigus": {
+    "pmd_id": "0563",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -7878,6 +8441,7 @@
     "secondary": []
   },
   "tirtouga": {
+    "pmd_id": "0564",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -7886,6 +8450,7 @@
     "secondary": []
   },
   "carracosta": {
+    "pmd_id": "0565",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -7894,6 +8459,7 @@
     "secondary": []
   },
   "archen": {
+    "pmd_id": "0566",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7902,6 +8468,7 @@
     "secondary": []
   },
   "archeops": {
+    "pmd_id": "0567",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -7910,6 +8477,7 @@
     "secondary": []
   },
   "trubbish": {
+    "pmd_id": "0568",
     "primary": {
       "name": "powercristal",
       "discord": "POWERCRISTAL",
@@ -7929,6 +8497,7 @@
     ]
   },
   "garbodor": {
+    "pmd_id": "0569",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7937,6 +8506,7 @@
     "secondary": []
   },
   "zorua": {
+    "pmd_id": "0570",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -7951,6 +8521,7 @@
     ]
   },
   "zoroark": {
+    "pmd_id": "0571",
     "primary": {
       "name": "0palite",
       "discord": "<@!327927398941196289>",
@@ -7970,6 +8541,7 @@
     ]
   },
   "minccino": {
+    "pmd_id": "0572",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -7984,6 +8556,7 @@
     ]
   },
   "cinccino": {
+    "pmd_id": "0573",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -7992,6 +8565,7 @@
     "secondary": []
   },
   "gothita": {
+    "pmd_id": "0574",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8000,6 +8574,7 @@
     "secondary": []
   },
   "gothorita": {
+    "pmd_id": "0575",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8008,6 +8583,7 @@
     "secondary": []
   },
   "gothitelle": {
+    "pmd_id": "0576",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8016,6 +8592,7 @@
     "secondary": []
   },
   "solosis": {
+    "pmd_id": "0577",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8030,6 +8607,7 @@
     ]
   },
   "duosion": {
+    "pmd_id": "0578",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -8044,6 +8622,7 @@
     ]
   },
   "reuniclus": {
+    "pmd_id": "0579",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8052,6 +8631,7 @@
     "secondary": []
   },
   "ducklett": {
+    "pmd_id": "0580",
     "primary": {
       "name": "Emboarger",
       "discord": "<@!237286997645983744>",
@@ -8066,6 +8646,7 @@
     ]
   },
   "swanna": {
+    "pmd_id": "0581",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8074,6 +8655,7 @@
     "secondary": []
   },
   "vanillite": {
+    "pmd_id": "0582",
     "primary": {
       "name": "NOLASMOR",
       "discord": "<@!833717817445974046>",
@@ -8082,6 +8664,7 @@
     "secondary": []
   },
   "vanillish": {
+    "pmd_id": "0583",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -8101,6 +8684,7 @@
     ]
   },
   "vanilluxe": {
+    "pmd_id": "0584",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8109,6 +8693,7 @@
     "secondary": []
   },
   "deerling": {
+    "pmd_id": "0585",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8123,6 +8708,7 @@
     ]
   },
   "sawsbuck": {
+    "pmd_id": "0586",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8131,6 +8717,7 @@
     "secondary": []
   },
   "emolga": {
+    "pmd_id": "0587",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8139,6 +8726,7 @@
     "secondary": []
   },
   "karrablast": {
+    "pmd_id": "0588",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -8147,6 +8735,7 @@
     "secondary": []
   },
   "escavalier": {
+    "pmd_id": "0589",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8161,6 +8750,7 @@
     ]
   },
   "foongus": {
+    "pmd_id": "0590",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8169,6 +8759,7 @@
     "secondary": []
   },
   "amoonguss": {
+    "pmd_id": "0591",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -8177,6 +8768,7 @@
     "secondary": []
   },
   "frillish": {
+    "pmd_id": "0592",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -8191,6 +8783,7 @@
     ]
   },
   "jellicent": {
+    "pmd_id": "0593",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8205,6 +8798,7 @@
     ]
   },
   "alomomola": {
+    "pmd_id": "0594",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8219,6 +8813,7 @@
     ]
   },
   "joltik": {
+    "pmd_id": "0595",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -8227,6 +8822,7 @@
     "secondary": []
   },
   "galvantula": {
+    "pmd_id": "0596",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8235,6 +8831,7 @@
     "secondary": []
   },
   "ferroseed": {
+    "pmd_id": "0597",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8243,6 +8840,7 @@
     "secondary": []
   },
   "ferrothorn": {
+    "pmd_id": "0598",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8251,6 +8849,7 @@
     "secondary": []
   },
   "klink": {
+    "pmd_id": "0599",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8259,6 +8858,7 @@
     "secondary": []
   },
   "klang": {
+    "pmd_id": "0600",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8267,6 +8867,7 @@
     "secondary": []
   },
   "klinklang": {
+    "pmd_id": "0601",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8275,6 +8876,7 @@
     "secondary": []
   },
   "tynamo": {
+    "pmd_id": "0602",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8283,6 +8885,7 @@
     "secondary": []
   },
   "eelektrik": {
+    "pmd_id": "0603",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8291,6 +8894,7 @@
     "secondary": []
   },
   "eelektross": {
+    "pmd_id": "0604",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8310,6 +8914,7 @@
     ]
   },
   "elgyem": {
+    "pmd_id": "0605",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -8324,6 +8929,7 @@
     ]
   },
   "beheeyem": {
+    "pmd_id": "0606",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -8338,6 +8944,7 @@
     ]
   },
   "litwick": {
+    "pmd_id": "0607",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8346,6 +8953,7 @@
     "secondary": []
   },
   "lampent": {
+    "pmd_id": "0608",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8354,6 +8962,7 @@
     "secondary": []
   },
   "chandelure": {
+    "pmd_id": "0609",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8362,6 +8971,7 @@
     "secondary": []
   },
   "axew": {
+    "pmd_id": "0610",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8370,6 +8980,7 @@
     "secondary": []
   },
   "fraxure": {
+    "pmd_id": "0611",
     "primary": {
       "name": "Deeshura",
       "discord": "<@!157796074457661440>",
@@ -8378,6 +8989,7 @@
     "secondary": []
   },
   "haxorus": {
+    "pmd_id": "0612",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8392,6 +9004,7 @@
     ]
   },
   "cubchoo": {
+    "pmd_id": "0613",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8400,6 +9013,7 @@
     "secondary": []
   },
   "beartic": {
+    "pmd_id": "0614",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8408,6 +9022,7 @@
     "secondary": []
   },
   "cryogonal": {
+    "pmd_id": "0615",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8416,6 +9031,7 @@
     "secondary": []
   },
   "shelmet": {
+    "pmd_id": "0616",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -8424,6 +9040,7 @@
     "secondary": []
   },
   "accelgor": {
+    "pmd_id": "0617",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8438,6 +9055,7 @@
     ]
   },
   "stunfisk": {
+    "pmd_id": "0618",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8446,6 +9064,7 @@
     "secondary": []
   },
   "mienfoo": {
+    "pmd_id": "0619",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -8465,6 +9084,7 @@
     ]
   },
   "mienshao": {
+    "pmd_id": "0620",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8473,6 +9093,7 @@
     "secondary": []
   },
   "druddigon": {
+    "pmd_id": "0621",
     "primary": {
       "name": "Deeshura",
       "discord": "<@!157796074457661440>",
@@ -8481,6 +9102,7 @@
     "secondary": []
   },
   "golett": {
+    "pmd_id": "0622",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8495,6 +9117,7 @@
     ]
   },
   "golurk": {
+    "pmd_id": "0623",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8503,6 +9126,7 @@
     "secondary": []
   },
   "pawniard": {
+    "pmd_id": "0624",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -8517,6 +9141,7 @@
     ]
   },
   "bisharp": {
+    "pmd_id": "0625",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8525,6 +9150,7 @@
     "secondary": []
   },
   "bouffalant": {
+    "pmd_id": "0626",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -8533,6 +9159,7 @@
     "secondary": []
   },
   "rufflet": {
+    "pmd_id": "0627",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8547,6 +9174,7 @@
     ]
   },
   "braviary": {
+    "pmd_id": "0628",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -8555,6 +9183,7 @@
     "secondary": []
   },
   "vullaby": {
+    "pmd_id": "0629",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8563,6 +9192,7 @@
     "secondary": []
   },
   "mandibuzz": {
+    "pmd_id": "0630",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8571,6 +9201,7 @@
     "secondary": []
   },
   "heatmor": {
+    "pmd_id": "0631",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8579,6 +9210,7 @@
     "secondary": []
   },
   "durant": {
+    "pmd_id": "0632",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8587,6 +9219,7 @@
     "secondary": []
   },
   "deino": {
+    "pmd_id": "0633",
     "primary": {
       "name": "mucrush",
       "discord": "MUCRUSH",
@@ -8601,6 +9234,7 @@
     ]
   },
   "zweilous": {
+    "pmd_id": "0634",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8609,6 +9243,7 @@
     "secondary": []
   },
   "hydreigon": {
+    "pmd_id": "0635",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8623,6 +9258,7 @@
     ]
   },
   "larvesta": {
+    "pmd_id": "0636",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8631,6 +9267,7 @@
     "secondary": []
   },
   "volcarona": {
+    "pmd_id": "0637",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8645,6 +9282,7 @@
     ]
   },
   "cobalion": {
+    "pmd_id": "0638",
     "primary": {
       "name": "Deeshura",
       "discord": "<@!157796074457661440>",
@@ -8653,6 +9291,7 @@
     "secondary": []
   },
   "terrakion": {
+    "pmd_id": "0639",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -8667,6 +9306,7 @@
     ]
   },
   "virizion": {
+    "pmd_id": "0640",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8675,6 +9315,7 @@
     "secondary": []
   },
   "tornadus": {
+    "pmd_id": "0641",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8683,6 +9324,7 @@
     "secondary": []
   },
   "thundurus": {
+    "pmd_id": "0642",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8691,6 +9333,7 @@
     "secondary": []
   },
   "reshiram": {
+    "pmd_id": "0643",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8699,6 +9342,7 @@
     "secondary": []
   },
   "zekrom": {
+    "pmd_id": "0644",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8707,6 +9351,7 @@
     "secondary": []
   },
   "landorus": {
+    "pmd_id": "0645",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8715,6 +9360,7 @@
     "secondary": []
   },
   "kyurem": {
+    "pmd_id": "0646",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -8723,6 +9369,7 @@
     "secondary": []
   },
   "keldeo": {
+    "pmd_id": "0647",
     "primary": {
       "name": "<@!557599571170033664>",
       "discord": "",
@@ -8742,6 +9389,7 @@
     ]
   },
   "meloetta": {
+    "pmd_id": "0648",
     "primary": {
       "name": "Deleca7755",
       "discord": "<@!273958644788363265>",
@@ -8761,6 +9409,7 @@
     ]
   },
   "genesect": {
+    "pmd_id": "0649",
     "primary": {
       "name": "chime",
       "discord": "<@!183561486893842432>",
@@ -8769,6 +9418,7 @@
     "secondary": []
   },
   "chespin": {
+    "pmd_id": "0650",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -8783,6 +9433,7 @@
     ]
   },
   "quilladin": {
+    "pmd_id": "0651",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8797,6 +9448,7 @@
     ]
   },
   "chesnaught": {
+    "pmd_id": "0652",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -8805,6 +9457,7 @@
     "secondary": []
   },
   "fennekin": {
+    "pmd_id": "0653",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8813,6 +9466,7 @@
     "secondary": []
   },
   "braixen": {
+    "pmd_id": "0654",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8821,6 +9475,7 @@
     "secondary": []
   },
   "delphox": {
+    "pmd_id": "0655",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8829,6 +9484,7 @@
     "secondary": []
   },
   "froakie": {
+    "pmd_id": "0656",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8848,6 +9504,7 @@
     ]
   },
   "frogadier": {
+    "pmd_id": "0657",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8867,6 +9524,7 @@
     ]
   },
   "greninja": {
+    "pmd_id": "0658",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8875,6 +9533,7 @@
     "secondary": []
   },
   "bunnelby": {
+    "pmd_id": "0659",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8883,6 +9542,7 @@
     "secondary": []
   },
   "diggersby": {
+    "pmd_id": "0660",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -8897,6 +9557,7 @@
     ]
   },
   "fletchling": {
+    "pmd_id": "0661",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8905,6 +9566,7 @@
     "secondary": []
   },
   "fletchinder": {
+    "pmd_id": "0662",
     "primary": {
       "name": "Chesyon",
       "discord": "<@!178935491867967490>",
@@ -8924,6 +9586,7 @@
     ]
   },
   "talonflame": {
+    "pmd_id": "0663",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8932,6 +9595,7 @@
     "secondary": []
   },
   "scatterbug": {
+    "pmd_id": "0664",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8940,6 +9604,7 @@
     "secondary": []
   },
   "spewpa": {
+    "pmd_id": "0665",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8948,6 +9613,7 @@
     "secondary": []
   },
   "vivillon": {
+    "pmd_id": "0666",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -8956,6 +9622,7 @@
     "secondary": []
   },
   "litleo": {
+    "pmd_id": "0667",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8964,6 +9631,7 @@
     "secondary": []
   },
   "pyroar": {
+    "pmd_id": "0668",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -8972,6 +9640,7 @@
     "secondary": []
   },
   "flabebe": {
+    "pmd_id": "0669",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8980,6 +9649,7 @@
     "secondary": []
   },
   "floette": {
+    "pmd_id": "0670",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -8988,6 +9658,7 @@
     "secondary": []
   },
   "florges": {
+    "pmd_id": "0671",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9002,6 +9673,7 @@
     ]
   },
   "skiddo": {
+    "pmd_id": "0672",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9016,6 +9688,7 @@
     ]
   },
   "gogoat": {
+    "pmd_id": "0673",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -9024,6 +9697,7 @@
     "secondary": []
   },
   "pancham": {
+    "pmd_id": "0674",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9032,6 +9706,7 @@
     "secondary": []
   },
   "pangoro": {
+    "pmd_id": "0675",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9051,6 +9726,7 @@
     ]
   },
   "furfrou": {
+    "pmd_id": "0676",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -9070,6 +9746,7 @@
     ]
   },
   "espurr": {
+    "pmd_id": "0677",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9078,6 +9755,7 @@
     "secondary": []
   },
   "meowstic": {
+    "pmd_id": "0678",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9086,6 +9764,7 @@
     "secondary": []
   },
   "honedge": {
+    "pmd_id": "0679",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -9100,6 +9779,7 @@
     ]
   },
   "doublade": {
+    "pmd_id": "0680",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9108,6 +9788,7 @@
     "secondary": []
   },
   "aegislash": {
+    "pmd_id": "0681",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9122,6 +9803,7 @@
     ]
   },
   "spritzee": {
+    "pmd_id": "0682",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9136,6 +9818,7 @@
     ]
   },
   "aromatisse": {
+    "pmd_id": "0683",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9144,6 +9827,7 @@
     "secondary": []
   },
   "swirlix": {
+    "pmd_id": "0684",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9158,6 +9842,7 @@
     ]
   },
   "slurpuff": {
+    "pmd_id": "0685",
     "primary": {
       "name": "mixy:3",
       "discord": "<@!1113856747564695633>",
@@ -9166,6 +9851,7 @@
     "secondary": []
   },
   "inkay": {
+    "pmd_id": "0686",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -9180,6 +9866,7 @@
     ]
   },
   "malamar": {
+    "pmd_id": "0687",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9188,6 +9875,7 @@
     "secondary": []
   },
   "binacle": {
+    "pmd_id": "0688",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9196,6 +9884,7 @@
     "secondary": []
   },
   "barbaracle": {
+    "pmd_id": "0689",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -9210,6 +9899,7 @@
     ]
   },
   "skrelp": {
+    "pmd_id": "0690",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9224,6 +9914,7 @@
     ]
   },
   "dragalge": {
+    "pmd_id": "0691",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9232,6 +9923,7 @@
     "secondary": []
   },
   "clauncher": {
+    "pmd_id": "0692",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9240,6 +9932,7 @@
     "secondary": []
   },
   "clawitzer": {
+    "pmd_id": "0693",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9248,6 +9941,7 @@
     "secondary": []
   },
   "helioptile": {
+    "pmd_id": "0694",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -9256,6 +9950,7 @@
     "secondary": []
   },
   "heliolisk": {
+    "pmd_id": "0695",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9264,6 +9959,7 @@
     "secondary": []
   },
   "tyrunt": {
+    "pmd_id": "0696",
     "primary": {
       "name": "NeroIntruder",
       "discord": "<@!319945906600411179>",
@@ -9272,6 +9968,7 @@
     "secondary": []
   },
   "tyrantrum": {
+    "pmd_id": "0697",
     "primary": {
       "name": "NeroIntruder",
       "discord": "<@!319945906600411179>",
@@ -9286,6 +9983,7 @@
     ]
   },
   "amaura": {
+    "pmd_id": "0698",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9294,6 +9992,7 @@
     "secondary": []
   },
   "aurorus": {
+    "pmd_id": "0699",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9302,6 +10001,7 @@
     "secondary": []
   },
   "sylveon": {
+    "pmd_id": "0700",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9321,6 +10021,7 @@
     ]
   },
   "hawlucha": {
+    "pmd_id": "0701",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -9329,6 +10030,7 @@
     "secondary": []
   },
   "dedenne": {
+    "pmd_id": "0702",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9343,6 +10045,7 @@
     ]
   },
   "carbink": {
+    "pmd_id": "0703",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9362,6 +10065,7 @@
     ]
   },
   "goomy": {
+    "pmd_id": "0704",
     "primary": {
       "name": "RacieB",
       "discord": "<@!227594271794921472>",
@@ -9370,6 +10074,7 @@
     "secondary": []
   },
   "sliggoo": {
+    "pmd_id": "0705",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9378,6 +10083,7 @@
     "secondary": []
   },
   "goodra": {
+    "pmd_id": "0706",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9386,6 +10092,7 @@
     "secondary": []
   },
   "klefki": {
+    "pmd_id": "0707",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9400,6 +10107,7 @@
     ]
   },
   "phantump": {
+    "pmd_id": "0708",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9414,6 +10122,7 @@
     ]
   },
   "trevenant": {
+    "pmd_id": "0709",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9422,6 +10131,7 @@
     "secondary": []
   },
   "pumpkaboo": {
+    "pmd_id": "0710",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9436,6 +10146,7 @@
     ]
   },
   "gourgeist": {
+    "pmd_id": "0711",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9455,6 +10166,7 @@
     ]
   },
   "bergmite": {
+    "pmd_id": "0712",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -9469,6 +10181,7 @@
     ]
   },
   "avalugg": {
+    "pmd_id": "0713",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -9477,6 +10190,7 @@
     "secondary": []
   },
   "noibat": {
+    "pmd_id": "0714",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -9496,6 +10210,7 @@
     ]
   },
   "noivern": {
+    "pmd_id": "0715",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -9515,6 +10230,7 @@
     ]
   },
   "xerneas": {
+    "pmd_id": "0716",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9529,6 +10245,7 @@
     ]
   },
   "yveltal": {
+    "pmd_id": "0717",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -9537,6 +10254,7 @@
     "secondary": []
   },
   "zygarde": {
+    "pmd_id": "0718",
     "primary": {
       "name": "Noo",
       "discord": "<@!217899432652308480>",
@@ -9545,6 +10263,7 @@
     "secondary": []
   },
   "diancie": {
+    "pmd_id": "0719",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9553,6 +10272,7 @@
     "secondary": []
   },
   "hoopa": {
+    "pmd_id": "0720",
     "primary": {
       "name": "programmedsleepstate",
       "discord": "<@!224476380790915072>",
@@ -9561,6 +10281,7 @@
     "secondary": []
   },
   "volcanion": {
+    "pmd_id": "0721",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -9569,6 +10290,7 @@
     "secondary": []
   },
   "rowlet": {
+    "pmd_id": "0722",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9577,6 +10299,7 @@
     "secondary": []
   },
   "dartrix": {
+    "pmd_id": "0723",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -9591,6 +10314,7 @@
     ]
   },
   "decidueye": {
+    "pmd_id": "0724",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9605,6 +10329,7 @@
     ]
   },
   "litten": {
+    "pmd_id": "0725",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9613,6 +10338,7 @@
     "secondary": []
   },
   "torracat": {
+    "pmd_id": "0726",
     "primary": {
       "name": "Caitemis",
       "discord": "<@!330751862590406656>",
@@ -9632,6 +10358,7 @@
     ]
   },
   "incineroar": {
+    "pmd_id": "0727",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9640,6 +10367,7 @@
     "secondary": []
   },
   "popplio": {
+    "pmd_id": "0728",
     "primary": {
       "name": "Fable",
       "discord": "<@!225813236589527041>",
@@ -9659,6 +10387,7 @@
     ]
   },
   "brionne": {
+    "pmd_id": "0729",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9673,6 +10402,7 @@
     ]
   },
   "primarina": {
+    "pmd_id": "0730",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9692,6 +10422,7 @@
     ]
   },
   "pikipek": {
+    "pmd_id": "0731",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -9711,6 +10442,7 @@
     ]
   },
   "trumbeak": {
+    "pmd_id": "0732",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9719,6 +10451,7 @@
     "secondary": []
   },
   "toucannon": {
+    "pmd_id": "0733",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -9727,6 +10460,7 @@
     "secondary": []
   },
   "yungoos": {
+    "pmd_id": "0734",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9735,6 +10469,7 @@
     "secondary": []
   },
   "gumshoos": {
+    "pmd_id": "0735",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9749,6 +10484,7 @@
     ]
   },
   "grubbin": {
+    "pmd_id": "0736",
     "primary": {
       "name": "JFain",
       "discord": "<@!702275233125630042>",
@@ -9757,6 +10493,7 @@
     "secondary": []
   },
   "charjabug": {
+    "pmd_id": "0737",
     "primary": {
       "name": "Deeshura",
       "discord": "<@!157796074457661440>",
@@ -9765,6 +10502,7 @@
     "secondary": []
   },
   "vikavolt": {
+    "pmd_id": "0738",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9773,6 +10511,7 @@
     "secondary": []
   },
   "crabrawler": {
+    "pmd_id": "0739",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9781,6 +10520,7 @@
     "secondary": []
   },
   "crabominable": {
+    "pmd_id": "0740",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9795,6 +10535,7 @@
     ]
   },
   "oricorio": {
+    "pmd_id": "0741",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9809,6 +10550,7 @@
     ]
   },
   "cutiefly": {
+    "pmd_id": "0742",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9823,6 +10565,7 @@
     ]
   },
   "ribombee": {
+    "pmd_id": "0743",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9831,6 +10574,7 @@
     "secondary": []
   },
   "rockruff": {
+    "pmd_id": "0744",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9839,6 +10583,7 @@
     "secondary": []
   },
   "lycanroc": {
+    "pmd_id": "0745",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9847,6 +10592,7 @@
     "secondary": []
   },
   "wishiwashi": {
+    "pmd_id": "0746",
     "primary": {
       "name": "chime",
       "discord": "<@!183561486893842432>",
@@ -9855,6 +10601,7 @@
     "secondary": []
   },
   "mareanie": {
+    "pmd_id": "0747",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -9869,6 +10616,7 @@
     ]
   },
   "toxapex": {
+    "pmd_id": "0748",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -9877,6 +10625,7 @@
     "secondary": []
   },
   "mudbray": {
+    "pmd_id": "0749",
     "primary": {
       "name": "bwappi",
       "discord": "<@!193530896211509248>",
@@ -9885,6 +10634,7 @@
     "secondary": []
   },
   "mudsdale": {
+    "pmd_id": "0750",
     "primary": {
       "name": "bwappi",
       "discord": "<@!193530896211509248>",
@@ -9893,6 +10643,7 @@
     "secondary": []
   },
   "dewpider": {
+    "pmd_id": "0751",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -9901,6 +10652,7 @@
     "secondary": []
   },
   "araquanid": {
+    "pmd_id": "0752",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -9909,6 +10661,7 @@
     "secondary": []
   },
   "fomantis": {
+    "pmd_id": "0753",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -9923,6 +10676,7 @@
     ]
   },
   "lurantis": {
+    "pmd_id": "0754",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9931,6 +10685,7 @@
     "secondary": []
   },
   "morelull": {
+    "pmd_id": "0755",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9939,6 +10694,7 @@
     "secondary": []
   },
   "shiinotic": {
+    "pmd_id": "0756",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -9947,6 +10703,7 @@
     "secondary": []
   },
   "salandit": {
+    "pmd_id": "0757",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9955,6 +10712,7 @@
     "secondary": []
   },
   "salazzle": {
+    "pmd_id": "0758",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9963,6 +10721,7 @@
     "secondary": []
   },
   "stufful": {
+    "pmd_id": "0759",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9977,6 +10736,7 @@
     ]
   },
   "bewear": {
+    "pmd_id": "0760",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9985,6 +10745,7 @@
     "secondary": []
   },
   "bounsweet": {
+    "pmd_id": "0761",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -9999,6 +10760,7 @@
     ]
   },
   "steenee": {
+    "pmd_id": "0762",
     "primary": {
       "name": "JFain",
       "discord": "<@!702275233125630042>",
@@ -10018,6 +10780,7 @@
     ]
   },
   "tsareena": {
+    "pmd_id": "0763",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10026,6 +10789,7 @@
     "secondary": []
   },
   "comfey": {
+    "pmd_id": "0764",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10045,6 +10809,7 @@
     ]
   },
   "oranguru": {
+    "pmd_id": "0765",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -10059,6 +10824,7 @@
     ]
   },
   "passimian": {
+    "pmd_id": "0766",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10067,6 +10833,7 @@
     "secondary": []
   },
   "wimpod": {
+    "pmd_id": "0767",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -10075,6 +10842,7 @@
     "secondary": []
   },
   "golisopod": {
+    "pmd_id": "0768",
     "primary": {
       "name": "Deleca7755",
       "discord": "<@!273958644788363265>",
@@ -10089,6 +10857,7 @@
     ]
   },
   "sandygast": {
+    "pmd_id": "0769",
     "primary": {
       "name": "JFain",
       "discord": "<@!702275233125630042>",
@@ -10103,6 +10872,7 @@
     ]
   },
   "palossand": {
+    "pmd_id": "0770",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10111,6 +10881,7 @@
     "secondary": []
   },
   "pyukumuku": {
+    "pmd_id": "0771",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -10119,6 +10890,7 @@
     "secondary": []
   },
   "type_null": {
+    "pmd_id": "0772",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10127,6 +10899,7 @@
     "secondary": []
   },
   "silvally": {
+    "pmd_id": "0773",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10135,6 +10908,7 @@
     "secondary": []
   },
   "minior": {
+    "pmd_id": "0774",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10143,6 +10917,7 @@
     "secondary": []
   },
   "komala": {
+    "pmd_id": "0775",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -10151,6 +10926,7 @@
     "secondary": []
   },
   "turtonator": {
+    "pmd_id": "0776",
     "primary": {
       "name": "TawnySoup",
       "discord": "<@!216640380408430592>",
@@ -10159,6 +10935,7 @@
     "secondary": []
   },
   "togedemaru": {
+    "pmd_id": "0777",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10167,6 +10944,7 @@
     "secondary": []
   },
   "mimikyu": {
+    "pmd_id": "0778",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10175,6 +10953,7 @@
     "secondary": []
   },
   "bruxish": {
+    "pmd_id": "0779",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10183,6 +10962,7 @@
     "secondary": []
   },
   "drampa": {
+    "pmd_id": "0780",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10197,6 +10977,7 @@
     ]
   },
   "dhelmise": {
+    "pmd_id": "0781",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10205,6 +10986,7 @@
     "secondary": []
   },
   "jangmo_o": {
+    "pmd_id": "0782",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10213,6 +10995,7 @@
     "secondary": []
   },
   "hakamo_o": {
+    "pmd_id": "0783",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10221,6 +11004,7 @@
     "secondary": []
   },
   "kommo_o": {
+    "pmd_id": "0784",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10235,6 +11019,7 @@
     ]
   },
   "tapu_koko": {
+    "pmd_id": "0785",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10243,6 +11028,7 @@
     "secondary": []
   },
   "tapu_lele": {
+    "pmd_id": "0786",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10251,6 +11037,7 @@
     "secondary": []
   },
   "tapu_bulu": {
+    "pmd_id": "0787",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10259,6 +11046,7 @@
     "secondary": []
   },
   "tapu_fini": {
+    "pmd_id": "0788",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10267,6 +11055,7 @@
     "secondary": []
   },
   "cosmog": {
+    "pmd_id": "0789",
     "primary": {
       "name": "XxWindpawxX",
       "discord": "<@!192118698859954178>",
@@ -10286,6 +11075,7 @@
     ]
   },
   "cosmoem": {
+    "pmd_id": "0790",
     "primary": {
       "name": "Emboarger",
       "discord": "<@!237286997645983744>",
@@ -10294,6 +11084,7 @@
     "secondary": []
   },
   "solgaleo": {
+    "pmd_id": "0791",
     "primary": {
       "name": "0palite",
       "discord": "<@!327927398941196289>",
@@ -10313,20 +11104,16 @@
     ]
   },
   "lunala": {
+    "pmd_id": "0792",
     "primary": {
-      "name": "0palite",
-      "discord": "<@!327927398941196289>",
-      "contact": "https://zeropalart.tumblr.com/"
+      "name": "Deeshura",
+      "discord": "<@!157796074457661440>",
+      "contact": "https://bsky.app/profile/deeshura.bsky.social"
     },
-    "secondary": [
-      {
-        "name": "Emboarger",
-        "discord": "<@!237286997645983744>",
-        "contact": ""
-      }
-    ]
+    "secondary": []
   },
   "nihilego": {
+    "pmd_id": "0793",
     "primary": {
       "name": "gromchurch",
       "discord": "<@!421379254077620225>",
@@ -10346,6 +11133,7 @@
     ]
   },
   "buzzwole": {
+    "pmd_id": "0794",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -10354,6 +11142,7 @@
     "secondary": []
   },
   "pheromosa": {
+    "pmd_id": "0795",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10362,6 +11151,7 @@
     "secondary": []
   },
   "xurkitree": {
+    "pmd_id": "0796",
     "primary": {
       "name": "RelicCipher",
       "discord": "<@!739304144552198285>",
@@ -10381,6 +11171,7 @@
     ]
   },
   "celesteela": {
+    "pmd_id": "0797",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10389,6 +11180,7 @@
     "secondary": []
   },
   "kartana": {
+    "pmd_id": "0798",
     "primary": {
       "name": "JFain",
       "discord": "<@!702275233125630042>",
@@ -10403,6 +11195,7 @@
     ]
   },
   "guzzlord": {
+    "pmd_id": "0799",
     "primary": {
       "name": "Emboarger",
       "discord": "<@!237286997645983744>",
@@ -10411,6 +11204,7 @@
     "secondary": []
   },
   "necrozma": {
+    "pmd_id": "0800",
     "primary": {
       "name": "0palite",
       "discord": "<@!327927398941196289>",
@@ -10430,6 +11224,7 @@
     ]
   },
   "magearna": {
+    "pmd_id": "0801",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10438,6 +11233,7 @@
     "secondary": []
   },
   "marshadow": {
+    "pmd_id": "0802",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -10446,6 +11242,7 @@
     "secondary": []
   },
   "poipole": {
+    "pmd_id": "0803",
     "primary": {
       "name": "XxWindpawxX",
       "discord": "<@!192118698859954178>",
@@ -10460,6 +11257,7 @@
     ]
   },
   "naganadel": {
+    "pmd_id": "0804",
     "primary": {
       "name": "Emboarger",
       "discord": "<@!237286997645983744>",
@@ -10468,6 +11266,7 @@
     "secondary": []
   },
   "stakataka": {
+    "pmd_id": "0805",
     "primary": {
       "name": "Emboarger",
       "discord": "<@!237286997645983744>",
@@ -10482,6 +11281,7 @@
     ]
   },
   "blacephalon": {
+    "pmd_id": "0806",
     "primary": {
       "name": "Emboarger",
       "discord": "<@!237286997645983744>",
@@ -10490,6 +11290,7 @@
     "secondary": []
   },
   "zeraora": {
+    "pmd_id": "0807",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10504,6 +11305,7 @@
     ]
   },
   "meltan": {
+    "pmd_id": "0808",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10512,6 +11314,7 @@
     "secondary": []
   },
   "melmetal": {
+    "pmd_id": "0809",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10520,6 +11323,7 @@
     "secondary": []
   },
   "grookey": {
+    "pmd_id": "0810",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10534,6 +11338,7 @@
     ]
   },
   "thwackey": {
+    "pmd_id": "0811",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10548,6 +11353,7 @@
     ]
   },
   "rillaboom": {
+    "pmd_id": "0812",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10562,6 +11368,7 @@
     ]
   },
   "scorbunny": {
+    "pmd_id": "0813",
     "primary": {
       "name": "NeroIntruder",
       "discord": "<@!319945906600411179>",
@@ -10576,6 +11383,7 @@
     ]
   },
   "raboot": {
+    "pmd_id": "0814",
     "primary": {
       "name": "NeroIntruder",
       "discord": "<@!319945906600411179>",
@@ -10590,6 +11398,7 @@
     ]
   },
   "cinderace": {
+    "pmd_id": "0815",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10598,6 +11407,7 @@
     "secondary": []
   },
   "sobble": {
+    "pmd_id": "0816",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10612,6 +11422,7 @@
     ]
   },
   "drizzile": {
+    "pmd_id": "0817",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10620,6 +11431,7 @@
     "secondary": []
   },
   "inteleon": {
+    "pmd_id": "0818",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10634,6 +11446,7 @@
     ]
   },
   "skwovet": {
+    "pmd_id": "0819",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10642,6 +11455,7 @@
     "secondary": []
   },
   "greedent": {
+    "pmd_id": "0820",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10650,6 +11464,7 @@
     "secondary": []
   },
   "rookidee": {
+    "pmd_id": "0821",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10664,6 +11479,7 @@
     ]
   },
   "corvisquire": {
+    "pmd_id": "0822",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10672,6 +11488,7 @@
     "secondary": []
   },
   "corviknight": {
+    "pmd_id": "0823",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -10686,6 +11503,7 @@
     ]
   },
   "blipbug": {
+    "pmd_id": "0824",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10694,6 +11512,7 @@
     "secondary": []
   },
   "dottler": {
+    "pmd_id": "0825",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10702,6 +11521,7 @@
     "secondary": []
   },
   "orbeetle": {
+    "pmd_id": "0826",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10710,6 +11530,7 @@
     "secondary": []
   },
   "nickit": {
+    "pmd_id": "0827",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -10718,6 +11539,7 @@
     "secondary": []
   },
   "thievul": {
+    "pmd_id": "0828",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10726,6 +11548,7 @@
     "secondary": []
   },
   "gossifleur": {
+    "pmd_id": "0829",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10740,6 +11563,7 @@
     ]
   },
   "eldegoss": {
+    "pmd_id": "0830",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -10759,6 +11583,7 @@
     ]
   },
   "wooloo": {
+    "pmd_id": "0831",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10767,6 +11592,7 @@
     "secondary": []
   },
   "dubwool": {
+    "pmd_id": "0832",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10775,6 +11601,7 @@
     "secondary": []
   },
   "chewtle": {
+    "pmd_id": "0833",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -10789,6 +11616,7 @@
     ]
   },
   "drednaw": {
+    "pmd_id": "0834",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -10803,6 +11631,7 @@
     ]
   },
   "yamper": {
+    "pmd_id": "0835",
     "primary": {
       "name": "RelicCipher",
       "discord": "<@!739304144552198285>",
@@ -10811,6 +11640,7 @@
     "secondary": []
   },
   "boltund": {
+    "pmd_id": "0836",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10825,6 +11655,7 @@
     ]
   },
   "rolycoly": {
+    "pmd_id": "0837",
     "primary": {
       "name": "<@!319728945920475137>",
       "discord": "",
@@ -10833,6 +11664,7 @@
     "secondary": []
   },
   "carkol": {
+    "pmd_id": "0838",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10841,6 +11673,7 @@
     "secondary": []
   },
   "coalossal": {
+    "pmd_id": "0839",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10849,6 +11682,7 @@
     "secondary": []
   },
   "applin": {
+    "pmd_id": "0840",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10857,6 +11691,7 @@
     "secondary": []
   },
   "flapple": {
+    "pmd_id": "0841",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -10876,6 +11711,7 @@
     ]
   },
   "appletun": {
+    "pmd_id": "0842",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10884,6 +11720,7 @@
     "secondary": []
   },
   "silicobra": {
+    "pmd_id": "0843",
     "primary": {
       "name": "Jelly",
       "discord": "<@!402702516866908160>",
@@ -10903,6 +11740,7 @@
     ]
   },
   "sandaconda": {
+    "pmd_id": "0844",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10917,6 +11755,7 @@
     ]
   },
   "cramorant": {
+    "pmd_id": "0845",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -10925,6 +11764,7 @@
     "secondary": []
   },
   "arrokuda": {
+    "pmd_id": "0846",
     "primary": {
       "name": "Caitemis",
       "discord": "<@!330751862590406656>",
@@ -10933,6 +11773,7 @@
     "secondary": []
   },
   "barraskewda": {
+    "pmd_id": "0847",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10941,6 +11782,7 @@
     "secondary": []
   },
   "toxel": {
+    "pmd_id": "0848",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -10955,6 +11797,7 @@
     ]
   },
   "toxtricity": {
+    "pmd_id": "0849",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10963,6 +11806,7 @@
     "secondary": []
   },
   "sizzlipede": {
+    "pmd_id": "0850",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10971,6 +11815,7 @@
     "secondary": []
   },
   "centiskorch": {
+    "pmd_id": "0851",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -10979,6 +11824,7 @@
     "secondary": []
   },
   "clobbopus": {
+    "pmd_id": "0852",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -10987,6 +11833,7 @@
     "secondary": []
   },
   "grapploct": {
+    "pmd_id": "0853",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -10995,6 +11842,7 @@
     "secondary": []
   },
   "sinistea": {
+    "pmd_id": "0854",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11014,6 +11862,7 @@
     ]
   },
   "polteageist": {
+    "pmd_id": "0855",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11028,6 +11877,7 @@
     ]
   },
   "hatenna": {
+    "pmd_id": "0856",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11047,6 +11897,7 @@
     ]
   },
   "hattrem": {
+    "pmd_id": "0857",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11055,6 +11906,7 @@
     "secondary": []
   },
   "hatterene": {
+    "pmd_id": "0858",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11063,6 +11915,7 @@
     "secondary": []
   },
   "impidimp": {
+    "pmd_id": "0859",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11071,6 +11924,7 @@
     "secondary": []
   },
   "morgrem": {
+    "pmd_id": "0860",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11079,6 +11933,7 @@
     "secondary": []
   },
   "grimmsnarl": {
+    "pmd_id": "0861",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11087,6 +11942,7 @@
     "secondary": []
   },
   "obstagoon": {
+    "pmd_id": "0862",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11095,6 +11951,7 @@
     "secondary": []
   },
   "perrserker": {
+    "pmd_id": "0863",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11103,6 +11960,7 @@
     "secondary": []
   },
   "cursola": {
+    "pmd_id": "0864",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11111,6 +11969,7 @@
     "secondary": []
   },
   "sirfetch_d": {
+    "pmd_id": "0865",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11119,6 +11978,7 @@
     "secondary": []
   },
   "mr_rime": {
+    "pmd_id": "0866",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11127,6 +11987,7 @@
     "secondary": []
   },
   "runerigus": {
+    "pmd_id": "0867",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11141,6 +12002,7 @@
     ]
   },
   "milcery": {
+    "pmd_id": "0868",
     "primary": {
       "name": "mixy:3",
       "discord": "<@!1113856747564695633>",
@@ -11155,6 +12017,7 @@
     ]
   },
   "alcremie": {
+    "pmd_id": "0869",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11163,6 +12026,7 @@
     "secondary": []
   },
   "falinks": {
+    "pmd_id": "0870",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11171,6 +12035,7 @@
     "secondary": []
   },
   "pincurchin": {
+    "pmd_id": "0871",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11179,6 +12044,7 @@
     "secondary": []
   },
   "snom": {
+    "pmd_id": "0872",
     "primary": {
       "name": "Jelly",
       "discord": "<@!402702516866908160>",
@@ -11193,6 +12059,7 @@
     ]
   },
   "frosmoth": {
+    "pmd_id": "0873",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11201,6 +12068,7 @@
     "secondary": []
   },
   "stonjourner": {
+    "pmd_id": "0874",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11209,6 +12077,7 @@
     "secondary": []
   },
   "eiscue": {
+    "pmd_id": "0875",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11217,6 +12086,7 @@
     "secondary": []
   },
   "indeedee": {
+    "pmd_id": "0876",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11225,6 +12095,7 @@
     "secondary": []
   },
   "morpeko": {
+    "pmd_id": "0877",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11233,6 +12104,7 @@
     "secondary": []
   },
   "cufant": {
+    "pmd_id": "0878",
     "primary": {
       "name": "Gust",
       "discord": "<@!861005464682889266>",
@@ -11241,6 +12113,7 @@
     "secondary": []
   },
   "copperajah": {
+    "pmd_id": "0879",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11255,6 +12128,7 @@
     ]
   },
   "dracozolt": {
+    "pmd_id": "0880",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11263,6 +12137,7 @@
     "secondary": []
   },
   "arctozolt": {
+    "pmd_id": "0881",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -11271,6 +12146,7 @@
     "secondary": []
   },
   "dracovish": {
+    "pmd_id": "0882",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11279,6 +12155,7 @@
     "secondary": []
   },
   "arctovish": {
+    "pmd_id": "0883",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -11287,6 +12164,7 @@
     "secondary": []
   },
   "duraludon": {
+    "pmd_id": "0884",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11306,6 +12184,7 @@
     ]
   },
   "dreepy": {
+    "pmd_id": "0885",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11325,6 +12204,7 @@
     ]
   },
   "drakloak": {
+    "pmd_id": "0886",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11333,6 +12213,7 @@
     "secondary": []
   },
   "dragapult": {
+    "pmd_id": "0887",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11341,6 +12222,7 @@
     "secondary": []
   },
   "zacian": {
+    "pmd_id": "0888",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11355,6 +12237,7 @@
     ]
   },
   "zamazenta": {
+    "pmd_id": "0889",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11363,6 +12246,7 @@
     "secondary": []
   },
   "eternatus": {
+    "pmd_id": "0890",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -11371,6 +12255,7 @@
     "secondary": []
   },
   "kubfu": {
+    "pmd_id": "0891",
     "primary": {
       "name": "JustAGunk",
       "discord": "<@!1377429093997477928>",
@@ -11379,6 +12264,7 @@
     "secondary": []
   },
   "urshifu": {
+    "pmd_id": "0892",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11387,6 +12273,7 @@
     "secondary": []
   },
   "zarude": {
+    "pmd_id": "0893",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11401,6 +12288,7 @@
     ]
   },
   "regieleki": {
+    "pmd_id": "0894",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11415,6 +12303,7 @@
     ]
   },
   "regidrago": {
+    "pmd_id": "0895",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11429,6 +12318,7 @@
     ]
   },
   "glastrier": {
+    "pmd_id": "0896",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11437,6 +12327,7 @@
     "secondary": []
   },
   "spectrier": {
+    "pmd_id": "0897",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11451,6 +12342,7 @@
     ]
   },
   "calyrex": {
+    "pmd_id": "0898",
     "primary": {
       "name": "EzerArt",
       "discord": "EZERART",
@@ -11470,6 +12362,7 @@
     ]
   },
   "wyrdeer": {
+    "pmd_id": "0899",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11478,6 +12371,7 @@
     "secondary": []
   },
   "kleavor": {
+    "pmd_id": "0900",
     "primary": {
       "name": "Soulja",
       "discord": "<@!229131140903075840>",
@@ -11486,6 +12380,7 @@
     "secondary": []
   },
   "ursaluna": {
+    "pmd_id": "0901",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11494,6 +12389,7 @@
     "secondary": []
   },
   "basculegion": {
+    "pmd_id": "0902",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11502,6 +12398,7 @@
     "secondary": []
   },
   "sneasler": {
+    "pmd_id": "0903",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11516,6 +12413,7 @@
     ]
   },
   "overqwil": {
+    "pmd_id": "0904",
     "primary": {
       "name": "Novie",
       "discord": "<@!229363481852379136>",
@@ -11530,6 +12428,7 @@
     ]
   },
   "enamorus": {
+    "pmd_id": "0905",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11538,6 +12437,7 @@
     "secondary": []
   },
   "sprigatito": {
+    "pmd_id": "0906",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11546,6 +12446,7 @@
     "secondary": []
   },
   "floragato": {
+    "pmd_id": "0907",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11565,6 +12466,7 @@
     ]
   },
   "meowscarada": {
+    "pmd_id": "0908",
     "primary": {
       "name": "distress",
       "discord": "<@!177489961275097088>",
@@ -11573,6 +12475,7 @@
     "secondary": []
   },
   "fuecoco": {
+    "pmd_id": "0909",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11581,6 +12484,7 @@
     "secondary": []
   },
   "crocalor": {
+    "pmd_id": "0910",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -11595,6 +12499,7 @@
     ]
   },
   "skeledirge": {
+    "pmd_id": "0911",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -11603,6 +12508,7 @@
     "secondary": []
   },
   "quaxly": {
+    "pmd_id": "0912",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11617,6 +12523,7 @@
     ]
   },
   "quaxwell": {
+    "pmd_id": "0913",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -11631,6 +12538,7 @@
     ]
   },
   "quaquaval": {
+    "pmd_id": "0914",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -11639,6 +12547,7 @@
     "secondary": []
   },
   "lechonk": {
+    "pmd_id": "0915",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11653,6 +12562,7 @@
     ]
   },
   "oinkologne": {
+    "pmd_id": "0916",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11661,6 +12571,7 @@
     "secondary": []
   },
   "tarountula": {
+    "pmd_id": "0917",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11669,6 +12580,7 @@
     "secondary": []
   },
   "spidops": {
+    "pmd_id": "0918",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11677,6 +12589,7 @@
     "secondary": []
   },
   "nymble": {
+    "pmd_id": "0919",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11691,6 +12604,7 @@
     ]
   },
   "lokix": {
+    "pmd_id": "0920",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11699,6 +12613,7 @@
     "secondary": []
   },
   "pawmi": {
+    "pmd_id": "0921",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11713,6 +12628,7 @@
     ]
   },
   "pawmo": {
+    "pmd_id": "0922",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11727,6 +12643,7 @@
     ]
   },
   "pawmot": {
+    "pmd_id": "0923",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11735,6 +12652,7 @@
     "secondary": []
   },
   "tandemaus": {
+    "pmd_id": "0924",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11743,6 +12661,7 @@
     "secondary": []
   },
   "maushold": {
+    "pmd_id": "0925",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11751,6 +12670,7 @@
     "secondary": []
   },
   "fidough": {
+    "pmd_id": "0926",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11759,6 +12679,7 @@
     "secondary": []
   },
   "dachsbun": {
+    "pmd_id": "0927",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11767,6 +12688,7 @@
     "secondary": []
   },
   "smoliv": {
+    "pmd_id": "0928",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11781,6 +12703,7 @@
     ]
   },
   "dolliv": {
+    "pmd_id": "0929",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11789,6 +12712,7 @@
     "secondary": []
   },
   "arboliva": {
+    "pmd_id": "0930",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11808,6 +12732,7 @@
     ]
   },
   "squawkabilly": {
+    "pmd_id": "0931",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11816,6 +12741,7 @@
     "secondary": []
   },
   "nacli": {
+    "pmd_id": "0932",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11824,6 +12750,7 @@
     "secondary": []
   },
   "naclstack": {
+    "pmd_id": "0933",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11832,6 +12759,7 @@
     "secondary": []
   },
   "garganacl": {
+    "pmd_id": "0934",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11840,6 +12768,7 @@
     "secondary": []
   },
   "charcadet": {
+    "pmd_id": "0935",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11848,6 +12777,7 @@
     "secondary": []
   },
   "armarouge": {
+    "pmd_id": "0936",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11856,6 +12786,7 @@
     "secondary": []
   },
   "ceruledge": {
+    "pmd_id": "0937",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11864,6 +12795,7 @@
     "secondary": []
   },
   "tadbulb": {
+    "pmd_id": "0938",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -11872,6 +12804,7 @@
     "secondary": []
   },
   "bellibolt": {
+    "pmd_id": "0939",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11880,6 +12813,7 @@
     "secondary": []
   },
   "wattrel": {
+    "pmd_id": "0940",
     "primary": {
       "name": "Aviivix",
       "discord": "<@!196351316681818112>",
@@ -11894,6 +12828,7 @@
     ]
   },
   "kilowattrel": {
+    "pmd_id": "0941",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11902,6 +12837,7 @@
     "secondary": []
   },
   "maschiff": {
+    "pmd_id": "0942",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11910,6 +12846,7 @@
     "secondary": []
   },
   "mabosstiff": {
+    "pmd_id": "0943",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -11918,6 +12855,7 @@
     "secondary": []
   },
   "shroodle": {
+    "pmd_id": "0944",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11926,6 +12864,7 @@
     "secondary": []
   },
   "grafaiai": {
+    "pmd_id": "0945",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11934,6 +12873,7 @@
     "secondary": []
   },
   "bramblin": {
+    "pmd_id": "0946",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11942,6 +12882,7 @@
     "secondary": []
   },
   "brambleghast": {
+    "pmd_id": "0947",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11950,6 +12891,7 @@
     "secondary": []
   },
   "toedscool": {
+    "pmd_id": "0948",
     "primary": {
       "name": "Okami",
       "discord": "<@!238146046146904069>",
@@ -11958,6 +12900,7 @@
     "secondary": []
   },
   "toedscruel": {
+    "pmd_id": "0949",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11966,6 +12909,7 @@
     "secondary": []
   },
   "klawf": {
+    "pmd_id": "0950",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -11974,6 +12918,7 @@
     "secondary": []
   },
   "capsakid": {
+    "pmd_id": "0951",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11982,6 +12927,7 @@
     "secondary": []
   },
   "scovillain": {
+    "pmd_id": "0952",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -11990,6 +12936,7 @@
     "secondary": []
   },
   "rellor": {
+    "pmd_id": "0953",
     "primary": {
       "name": "Noivern",
       "discord": "<@!150809243816165377>",
@@ -11998,6 +12945,7 @@
     "secondary": []
   },
   "rabsca": {
+    "pmd_id": "0954",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12006,6 +12954,7 @@
     "secondary": []
   },
   "flittle": {
+    "pmd_id": "0955",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12014,6 +12963,7 @@
     "secondary": []
   },
   "espathra": {
+    "pmd_id": "0956",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12022,6 +12972,7 @@
     "secondary": []
   },
   "tinkatink": {
+    "pmd_id": "0957",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12030,6 +12981,7 @@
     "secondary": []
   },
   "tinkatuff": {
+    "pmd_id": "0958",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12044,6 +12996,7 @@
     ]
   },
   "tinkaton": {
+    "pmd_id": "0959",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12052,6 +13005,7 @@
     "secondary": []
   },
   "wiglett": {
+    "pmd_id": "0960",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12060,6 +13014,7 @@
     "secondary": []
   },
   "wugtrio": {
+    "pmd_id": "0961",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12068,6 +13023,7 @@
     "secondary": []
   },
   "bombirdier": {
+    "pmd_id": "0962",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12076,6 +13032,7 @@
     "secondary": []
   },
   "finizen": {
+    "pmd_id": "0963",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -12090,6 +13047,7 @@
     ]
   },
   "palafin": {
+    "pmd_id": "0964",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -12104,6 +13062,7 @@
     ]
   },
   "varoom": {
+    "pmd_id": "0965",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12112,6 +13071,7 @@
     "secondary": []
   },
   "revavroom": {
+    "pmd_id": "0966",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12126,6 +13086,7 @@
     ]
   },
   "cyclizar": {
+    "pmd_id": "0967",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12134,6 +13095,7 @@
     "secondary": []
   },
   "orthworm": {
+    "pmd_id": "0968",
     "primary": {
       "name": "TawnySoup",
       "discord": "<@!216640380408430592>",
@@ -12148,6 +13110,7 @@
     ]
   },
   "glimmet": {
+    "pmd_id": "0969",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12162,6 +13125,7 @@
     ]
   },
   "glimmora": {
+    "pmd_id": "0970",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12170,6 +13134,7 @@
     "secondary": []
   },
   "greavard": {
+    "pmd_id": "0971",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12184,6 +13149,7 @@
     ]
   },
   "houndstone": {
+    "pmd_id": "0972",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12192,6 +13158,7 @@
     "secondary": []
   },
   "flamigo": {
+    "pmd_id": "0973",
     "primary": {
       "name": "Top_Kec",
       "discord": "<@!276369635304275968>",
@@ -12206,6 +13173,7 @@
     ]
   },
   "cetoddle": {
+    "pmd_id": "0974",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12214,6 +13182,7 @@
     "secondary": []
   },
   "cetitan": {
+    "pmd_id": "0975",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12222,6 +13191,7 @@
     "secondary": []
   },
   "veluza": {
+    "pmd_id": "0976",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12230,6 +13200,7 @@
     "secondary": []
   },
   "dondozo": {
+    "pmd_id": "0977",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12238,6 +13209,7 @@
     "secondary": []
   },
   "tatsugiri": {
+    "pmd_id": "0978",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12246,6 +13218,7 @@
     "secondary": []
   },
   "annihilape": {
+    "pmd_id": "0979",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12260,6 +13233,7 @@
     ]
   },
   "clodsire": {
+    "pmd_id": "0980",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12268,6 +13242,7 @@
     "secondary": []
   },
   "farigiraf": {
+    "pmd_id": "0981",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12282,6 +13257,7 @@
     ]
   },
   "dudunsparce": {
+    "pmd_id": "0982",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12290,6 +13266,7 @@
     "secondary": []
   },
   "kingambit": {
+    "pmd_id": "0983",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12298,6 +13275,7 @@
     "secondary": []
   },
   "great_tusk": {
+    "pmd_id": "0984",
     "primary": {
       "name": "TawnySoup",
       "discord": "<@!216640380408430592>",
@@ -12306,6 +13284,7 @@
     "secondary": []
   },
   "scream_tail": {
+    "pmd_id": "0985",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12314,6 +13293,7 @@
     "secondary": []
   },
   "brute_bonnet": {
+    "pmd_id": "0986",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12322,6 +13302,7 @@
     "secondary": []
   },
   "flutter_mane": {
+    "pmd_id": "0987",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12330,6 +13311,7 @@
     "secondary": []
   },
   "slither_wing": {
+    "pmd_id": "0988",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12338,6 +13320,7 @@
     "secondary": []
   },
   "sandy_shocks": {
+    "pmd_id": "0989",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12346,6 +13329,7 @@
     "secondary": []
   },
   "iron_treads": {
+    "pmd_id": "0990",
     "primary": {
       "name": "TawnySoup",
       "discord": "<@!216640380408430592>",
@@ -12360,6 +13344,7 @@
     ]
   },
   "iron_bundle": {
+    "pmd_id": "0991",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12379,6 +13364,7 @@
     ]
   },
   "iron_hands": {
+    "pmd_id": "0992",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12387,6 +13373,7 @@
     "secondary": []
   },
   "iron_jugulis": {
+    "pmd_id": "0993",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12395,6 +13382,7 @@
     "secondary": []
   },
   "iron_moth": {
+    "pmd_id": "0994",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12409,6 +13397,7 @@
     ]
   },
   "iron_thorns": {
+    "pmd_id": "0995",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12417,6 +13406,7 @@
     "secondary": []
   },
   "frigibax": {
+    "pmd_id": "0996",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12425,6 +13415,7 @@
     "secondary": []
   },
   "arctibax": {
+    "pmd_id": "0997",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -12433,6 +13424,7 @@
     "secondary": []
   },
   "baxcalibur": {
+    "pmd_id": "0998",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12441,6 +13433,7 @@
     "secondary": []
   },
   "gimmighoul": {
+    "pmd_id": "0999",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12449,6 +13442,7 @@
     "secondary": []
   },
   "gholdengo": {
+    "pmd_id": "1000",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12457,6 +13451,7 @@
     "secondary": []
   },
   "wo_chien": {
+    "pmd_id": "1001",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12465,6 +13460,7 @@
     "secondary": []
   },
   "chien_pao": {
+    "pmd_id": "1002",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12473,6 +13469,7 @@
     "secondary": []
   },
   "ting_lu": {
+    "pmd_id": "1003",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12481,6 +13478,7 @@
     "secondary": []
   },
   "chi_yu": {
+    "pmd_id": "1004",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12489,6 +13487,7 @@
     "secondary": []
   },
   "roaring_moon": {
+    "pmd_id": "1005",
     "primary": {
       "name": "distress",
       "discord": "<@!177489961275097088>",
@@ -12503,6 +13502,7 @@
     ]
   },
   "iron_valiant": {
+    "pmd_id": "1006",
     "primary": {
       "name": "baronessfaron",
       "discord": "<@!544245909639397378>",
@@ -12517,6 +13517,7 @@
     ]
   },
   "koraidon": {
+    "pmd_id": "1007",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12525,6 +13526,7 @@
     "secondary": []
   },
   "miraidon": {
+    "pmd_id": "1008",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12533,6 +13535,7 @@
     "secondary": []
   },
   "walking_wake": {
+    "pmd_id": "1009",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12552,6 +13555,7 @@
     ]
   },
   "iron_leaves": {
+    "pmd_id": "1010",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12560,6 +13564,7 @@
     "secondary": []
   },
   "dipplin": {
+    "pmd_id": "1011",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12568,6 +13573,7 @@
     "secondary": []
   },
   "poltchageist": {
+    "pmd_id": "1012",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12576,6 +13582,7 @@
     "secondary": []
   },
   "sinistcha": {
+    "pmd_id": "1013",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12584,6 +13591,7 @@
     "secondary": []
   },
   "okidogi": {
+    "pmd_id": "1014",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12592,6 +13600,7 @@
     "secondary": []
   },
   "munkidori": {
+    "pmd_id": "1015",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12606,6 +13615,7 @@
     ]
   },
   "fezandipiti": {
+    "pmd_id": "1016",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12614,6 +13624,7 @@
     "secondary": []
   },
   "ogerpon": {
+    "pmd_id": "1017",
     "primary": {
       "name": "◥θ┴θ◤",
       "discord": "<@!215638650434617345>",
@@ -12628,6 +13639,7 @@
     ]
   },
   "archaludon": {
+    "pmd_id": "1018",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12636,6 +13648,7 @@
     "secondary": []
   },
   "hydrapple": {
+    "pmd_id": "1019",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12655,6 +13668,7 @@
     ]
   },
   "gouging_fire": {
+    "pmd_id": "1020",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12663,6 +13677,7 @@
     "secondary": []
   },
   "raging_bolt": {
+    "pmd_id": "1021",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12671,6 +13686,7 @@
     "secondary": []
   },
   "iron_boulder": {
+    "pmd_id": "1022",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12679,6 +13695,7 @@
     "secondary": []
   },
   "iron_crown": {
+    "pmd_id": "1023",
     "primary": {
       "name": "G〜",
       "discord": "<@!350050109741858829>",
@@ -12693,6 +13710,7 @@
     ]
   },
   "terapagos": {
+    "pmd_id": "1024",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",
@@ -12707,6 +13725,7 @@
     ]
   },
   "pecharunt": {
+    "pmd_id": "1025",
     "primary": {
       "name": "Emmuffin",
       "discord": "<@!356635814668664832>",

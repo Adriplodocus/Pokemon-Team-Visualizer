@@ -122,6 +122,7 @@ def main():
 
         if primary_name:
             credits_out[canonical] = {
+                'pmd_id': raw_id,
                 'primary': resolve_artist(primary_name, credit_map, discord_map),
                 'secondary': [
                     resolve_artist(s, credit_map, discord_map)

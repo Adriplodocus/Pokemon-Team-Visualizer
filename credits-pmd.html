@@ -74,6 +74,18 @@
     text-align: center;
     padding: 2rem;
 }
+.credits-source-link {
+    font-size: 0.65rem;
+    color: var(--muted);
+    text-decoration: none;
+    margin-left: 0.2rem;
+    opacity: 0.5;
+    transition: opacity 0.15s;
+}
+.credits-source-link:hover {
+    opacity: 1;
+    color: var(--blue);
+}
 </style>
 </head>
 <body>
@@ -148,12 +160,16 @@ async function loadCredits() {
         const entries = Object.entries(data).sort(([a], [b]) => a.localeCompare(b));
         for (const [name, credit] of entries) {
             const secondaryList = (credit.secondary || []).map(artistCell).join(', ') || s.noContact;
+            const creditsUrl = credit.pmd_id
+                ? `https://github.com/PMDCollab/SpriteCollab/blob/master/portrait/${credit.pmd_id}/credits.txt`
+                : null;
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>
                     <div class="credits-pokemon">
                         <img src="/sprites/PMD/${name}.png" alt="${name}" onerror="this.style.display='none'">
                         <span class="credits-name-text">${name.replace(/_/g, ' ')}</span>
+                        ${creditsUrl ? `<a href="${creditsUrl}" target="_blank" rel="noopener" class="credits-source-link" title="credits.txt">↗</a>` : ''}
                     </div>
                 </td>
                 <td class="credits-artist">${artistCell(credit.primary)}</td>
