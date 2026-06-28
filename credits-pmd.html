@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Créditos PMD — Pokémon Stream Visualizer</title>
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='white'/><path d='M2,16 A14,14 0 0,1 30,16 Z' fill='%23EE1515'/><circle cx='16' cy='16' r='14' fill='none' stroke='%231a1a1a' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%231a1a1a' stroke-width='2'/><circle cx='16' cy='16' r='5' fill='%231a1a1a'/><circle cx='16' cy='16' r='3' fill='white'/></svg>">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Russo+One&family=JetBrains+Mono:wght@400;700&display=swap">
+<meta name="theme-color" content="#00CCFF">
+<script src="lang.js"></script>
+<style>
+.credits-container {
+    max-width: 860px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+.credits-intro {
+    color: var(--text);
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+.credits-intro a {
+    color: var(--blue);
+}
+.credits-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+}
+.credits-table th {
+    text-align: left;
+    padding: 0.5rem 0.75rem;
+    color: var(--text-em);
+    border-bottom: 1px solid var(--border);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-size: 0.7rem;
+}
+.credits-table td {
+    padding: 0.4rem 0.75rem;
+    color: var(--text);
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+}
+.credits-table tr:hover td {
+    background: var(--surface2);
+}
+.credits-pokemon {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+.credits-pokemon img {
+    width: 40px;
+    height: 40px;
+    image-rendering: pixelated;
+}
+.credits-name-text {
+    color: var(--text-em);
+    text-transform: capitalize;
+}
+.credits-artist a {
+    color: var(--blue);
+    text-decoration: none;
+}
+.credits-artist a:hover {
+    text-decoration: underline;
+}
+.credits-loading {
+    color: var(--muted);
+    text-align: center;
+    padding: 2rem;
+}
+</style>
+</head>
+<body>
+<script>const ACTIVE_PAGE = '';</script>
+<script src="patch-notes.js"></script>
+<script src="header.js"></script>
+
+<div class="credits-container">
+    <p class="credits-intro" id="credits-intro">
+        Los retratos PMD provienen de <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a>
+        y están licenciados bajo <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>.
+        Aquí se listan los artistas que los crearon.
+    </p>
+    <div id="credits-loading" class="credits-loading">Cargando créditos…</div>
+    <table class="credits-table" id="credits-table" style="display:none">
+        <thead>
+            <tr>
+                <th id="th-pokemon">Pokémon</th>
+                <th id="th-primary">Artista principal</th>
+                <th id="th-secondary">Artistas secundarios</th>
+            </tr>
+        </thead>
+        <tbody id="credits-tbody"></tbody>
+    </table>
+</div>
+
+<script>
+const CREDITS_STRINGS = {
+    es: {
+        intro: 'Los retratos PMD provienen de <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a> y están licenciados bajo <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>. Aquí se listan los artistas que los crearon.',
+        loading: 'Cargando créditos…',
+        thPokemon: 'Pokémon',
+        thPrimary: 'Artista principal',
+        thSecondary: 'Artistas secundarios',
+        noContact: '—',
+    },
+    en: {
+        intro: 'PMD portraits come from <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a> and are licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>. Artist credits are listed below.',
+        loading: 'Loading credits…',
+        thPokemon: 'Pokémon',
+        thPrimary: 'Primary artist',
+        thSecondary: 'Secondary artists',
+        noContact: '—',
+    },
+};
+
+function applyCreditsLang() {
+    const s = CREDITS_STRINGS[currentLang] || CREDITS_STRINGS.es;
+    document.getElementById('credits-intro').innerHTML = s.intro;
+    document.getElementById('credits-loading').textContent = s.loading;
+    document.getElementById('th-pokemon').textContent = s.thPokemon;
+    document.getElementById('th-primary').textContent = s.thPrimary;
+    document.getElementById('th-secondary').textContent = s.thSecondary;
+}
+
+function artistCell(artist) {
+    if (!artist || !artist.name) return '—';
+    const contact = artist.contact || artist.discord || '';
+    if (contact && contact.startsWith('http')) {
+        return `<a href="${contact}" target="_blank" rel="noopener">${artist.name}</a>`;
+    }
+    return artist.name + (artist.discord ? ` (${artist.discord})` : '');
+}
+
+async function loadCredits() {
+    const s = CREDITS_STRINGS[currentLang] || CREDITS_STRINGS.es;
+    try {
+        const res = await fetch('/sprites/PMD/credits.json');
+        if (!res.ok) throw new Error('fetch failed');
+        const data = await res.json();
+        const tbody = document.getElementById('credits-tbody');
+        const entries = Object.entries(data).sort(([a], [b]) => a.localeCompare(b));
+        for (const [name, credit] of entries) {
+            const secondaryList = (credit.secondary || []).map(artistCell).join(', ') || s.noContact;
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>
+                    <div class="credits-pokemon">
+                        <img src="/sprites/PMD/${name}.png" alt="${name}" onerror="this.style.display='none'">
+                        <span class="credits-name-text">${name.replace(/_/g, ' ')}</span>
+                    </div>
+                </td>
+                <td class="credits-artist">${artistCell(credit.primary)}</td>
+                <td class="credits-artist">${secondaryList}</td>
+            `;
+            tbody.appendChild(row);
+        }
+        document.getElementById('credits-loading').style.display = 'none';
+        document.getElementById('credits-table').style.display = '';
+    } catch (e) {
+        document.getElementById('credits-loading').textContent = 'Error al cargar créditos.';
+    }
+}
+
+applyCreditsLang();
+loadCredits();
+</script>
+</body>
+</html>
