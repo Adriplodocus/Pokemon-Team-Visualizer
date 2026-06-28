@@ -75,6 +75,7 @@ let typeResolveId   = 0;
 let pkSpeciesData        = null;
 let pkChainData          = null;
 let pkCurrentSpeciesName = '';
+let pkCurrentSkin        = '';
 let pkAbilityNames       = {};
 let SPRITE_VER      = '';
 
@@ -156,6 +157,7 @@ function clearPkSearch() {
     pkSpeciesData        = null;
     pkChainData          = null;
     pkCurrentSpeciesName = '';
+    pkCurrentSkin        = '';
     pkAbilityNames       = {};
     const input = document.getElementById('pk-search-input');
     if (input) input.value = '';
@@ -331,6 +333,7 @@ async function resolvePokemonTypes(name, skin) {
     selectedPokemon.abilities = data.abilities;
     selectedPokemon.stats     = data.stats;
     pkCurrentSpeciesName      = data.species.name;
+    pkCurrentSkin             = capSkin || '';
     pkSpeciesData             = null;
     pkChainData               = null;
 
@@ -395,7 +398,7 @@ async function resolvePokemonTypes(name, skin) {
         if (!chainRes.ok) throw new Error('chain not found');
         pkChainData = await chainRes.json();
         if (reqId !== typeResolveId) return;
-        const hasEvo = renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+        const hasEvo = renderPkEvo(pkChainData.chain, pkCurrentSpeciesName, pkCurrentSkin);
         if (hasEvo && infoDiv) infoDiv.style.display = 'flex';
     } catch {
         // non-critical — silently skip on error
@@ -584,11 +587,20 @@ function evoMethodLabel(details, speciesName) {
     return TRIGGER_LABELS[trigger]?.[currentLang] ?? trigger?.replace(/-/g, ' ') ?? '';
 }
 
-function evoNodeHTML(speciesName, selectedSpeciesName) {
+function evoNodeHTML(speciesName, selectedSpeciesName, contextSkin) {
     const isSelected = speciesName === selectedSpeciesName;
+    let imgSrc  = `sprites/${speciesName}.gif${SPRITE_VER}`;
+    let onerror = `this.style.display='none'`;
+    if (contextSkin && typeof POKEMON_CATALOG !== 'undefined') {
+        const skins   = POKEMON_CATALOG[speciesName]?.skin ?? [];
+        const matched = skins.find(s => s === contextSkin || s.startsWith(contextSkin));
+        if (matched) {
+            imgSrc  = `sprites/${speciesName}_${matched}.gif${SPRITE_VER}`;
+            onerror = `this.onerror=null;this.src='sprites/${speciesName}.gif${SPRITE_VER}'`;
+        }
+    }
     return `<div class="pk-evo-node${isSelected ? ' selected' : ''}" onclick="onPkSelect('${speciesName}')" role="button" tabindex="0">
-        <img src="sprites/${speciesName}.gif${SPRITE_VER}" alt="${speciesName}" loading="lazy"
-             onerror="this.style.display='none'">
+        <img src="${imgSrc}" alt="${speciesName}" loading="lazy" onerror="${onerror}">
         <span class="pk-evo-node-name">${speciesName}</span>
     </div>`;
 }
@@ -600,7 +612,7 @@ function collectLinear(node) {
     return rest ? [node, ...rest] : null;
 }
 
-function renderChainNode(node, selectedSpeciesName) {
+function renderChainNode(node, selectedSpeciesName, contextSkin) {
     const linear = collectLinear(node);
     if (linear) {
         let html = '<div class="pk-evo-row">';
@@ -612,14 +624,14 @@ function renderChainNode(node, selectedSpeciesName) {
                     <span class="pk-evo-arrow-icon">→</span>
                 </div>`;
             }
-            html += evoNodeHTML(linear[i].species.name, selectedSpeciesName);
+            html += evoNodeHTML(linear[i].species.name, selectedSpeciesName, contextSkin);
         }
         html += '</div>';
         return html;
     }
 
     // Branching node
-    const parentHTML   = evoNodeHTML(node.species.name, selectedSpeciesName);
+    const parentHTML   = evoNodeHTML(node.species.name, selectedSpeciesName, contextSkin);
     const childrenHTML = node.evolves_to.map(child => {
         const method = evoMethodLabel(child.evolution_details, child.species.name);
         return `<div class="pk-evo-row">
@@ -627,7 +639,7 @@ function renderChainNode(node, selectedSpeciesName) {
                 <span class="pk-evo-arrow-method">${method}</span>
                 <span class="pk-evo-arrow-icon">→</span>
             </div>
-            ${renderChainNode(child, selectedSpeciesName)}
+            ${renderChainNode(child, selectedSpeciesName, contextSkin)}
         </div>`;
     }).join('');
 
@@ -637,7 +649,7 @@ function renderChainNode(node, selectedSpeciesName) {
     </div>`;
 }
 
-function renderPkEvo(chain, selectedSpeciesName) {
+function renderPkEvo(chain, selectedSpeciesName, contextSkin) {
     const el = document.getElementById('pk-info-evo');
     if (!el) return false;
     if (!chain.evolves_to || !chain.evolves_to.length) {
@@ -645,7 +657,7 @@ function renderPkEvo(chain, selectedSpeciesName) {
         return false;
     }
     el.innerHTML = `<div class="pk-info-label">${tT('evoSection')}</div>
-        <div class="pk-evo-tree">${renderChainNode(chain, selectedSpeciesName)}</div>`;
+        <div class="pk-evo-tree">${renderChainNode(chain, selectedSpeciesName, contextSkin)}</div>`;
     return true;
 }
 
@@ -657,7 +669,7 @@ function renderPkInfo() {
     renderPkStats(selectedPokemon.stats);
     const infoDiv = document.getElementById('pk-info');
     if (pkChainData && infoDiv) {
-        const hasEvo = renderPkEvo(pkChainData.chain, pkCurrentSpeciesName);
+        const hasEvo = renderPkEvo(pkChainData.chain, pkCurrentSpeciesName, pkCurrentSkin);
         infoDiv.style.display = hasEvo ? 'flex' : 'none';
     }
 }
