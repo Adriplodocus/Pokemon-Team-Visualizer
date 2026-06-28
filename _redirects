@@ -3,6 +3,7 @@
 /sprites/Home/* /sprites/Home/:splat 200
 /sprites/Official/* /sprites/Official/:splat 200
 /sprites/Pixel/* /sprites/Pixel/:splat 200
+/sprites/PMD/* /sprites/PMD/:splat 200
 /sprites/types/* /sprites/types/:splat 200
 
 # Backward compat: old root Showdown URLs → sprites/Showdown/
