@@ -97,7 +97,10 @@ def fetch_combined_credits(raw_id: str, name_map: dict, discord_map: dict) -> li
             if status != 'CUR':
                 continue
             if raw_artist not in seen:
-                seen[raw_artist] = resolve_artist(raw_artist, name_map, discord_map)
+                resolved = resolve_artist(raw_artist, name_map, discord_map)
+                if resolved['name'].startswith('<@'):
+                    continue  # unresolvable Discord ID — skip
+                seen[raw_artist] = resolved
     return list(seen.values())
 
 
