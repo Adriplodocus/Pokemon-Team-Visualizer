@@ -44,17 +44,19 @@ def normalize_name(name: str) -> str:
     return name
 
 
-def parse_credit_names(text: str) -> dict:
-    """Parse credit_names.txt TSV into a dict keyed by artist name.
+def parse_credit_names(text: str) -> tuple:
+    """Parse credit_names.txt TSV.
 
     The TSV has a header row (Name\\tDiscord\\tContact) followed by data rows.
     Empty lines are skipped.
 
     Returns:
-        {'ArtistName': {'discord': '...', 'contact': '...'}, ...}
+        name_map:    {'ArtistName': {'discord': '...', 'contact': '...'}, ...}
+        discord_map: {'<@!XXXXXXX>': 'ArtistName', ...}  — reverse lookup
     """
     lines = text.strip().split('\n')
-    result = {}
+    name_map = {}
+    discord_map = {}
     for line in lines[1:]:  # skip header row
         parts = line.split('\t')
         name = parts[0].strip()
@@ -62,8 +64,17 @@ def parse_credit_names(text: str) -> dict:
             continue
         discord = parts[1].strip() if len(parts) > 1 else ''
         contact = parts[2].strip() if len(parts) > 2 else ''
-        result[name] = {'discord': discord, 'contact': contact}
-    return result
+        name_map[name] = {'discord': discord, 'contact': contact}
+        if discord:
+            discord_map[discord] = name
+    return name_map, discord_map
+
+
+def resolve_artist(raw: str, name_map: dict, discord_map: dict) -> dict:
+    """Resolve a raw credit string (name or Discord mention) to artist info."""
+    name = discord_map.get(raw, raw)  # resolve mention → real name if needed
+    info = name_map.get(name, {'discord': '', 'contact': ''})
+    return {'name': name, **info}
 
 
 def main():
@@ -74,7 +85,7 @@ def main():
 
     print('Fetching credit_names.txt...')
     credit_text = requests.get(f'{BASE}/credit_names.txt', timeout=30).text
-    credit_map = parse_credit_names(credit_text)
+    credit_map, discord_map = parse_credit_names(credit_text)
 
     downloaded = set()
     credits_out = {}
@@ -110,11 +121,10 @@ def main():
         secondary_names = portrait_credit.get('secondary', [])
 
         if primary_name:
-            primary_info = credit_map.get(primary_name, {'discord': '', 'contact': ''})
             credits_out[canonical] = {
-                'primary': {'name': primary_name, **primary_info},
+                'primary': resolve_artist(primary_name, credit_map, discord_map),
                 'secondary': [
-                    {'name': s, **credit_map.get(s, {'discord': '', 'contact': ''})}
+                    resolve_artist(s, credit_map, discord_map)
                     for s in secondary_names
                     if s
                 ],
