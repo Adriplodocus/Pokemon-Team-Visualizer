@@ -1,4 +1,6 @@
-const BASE_URL            = 'https://pokemon.mrklypp.com/sprites/';
+const BASE_URL            = location.hostname === 'pokemon.mrklypp.com'
+    ? 'https://pokemon.mrklypp.com/sprites/'
+    : location.origin + '/sprites/';
 const CEMETERY_KEY        = 'ptv_cemetery';
 const CEMETERY_CONFIG_KEY = 'ptv_cemetery_config';
 const DEFAULT_PROPS       = { gender: 'male', skin: 'common', shiny: 'False' };

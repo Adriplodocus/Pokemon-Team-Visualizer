@@ -12,6 +12,7 @@ const PUBLIC_PATHS = new Set([
   '/overlay.html',
   '/badge-overlay.html',
   '/cemetery-overlay.html',
+  '/credits-pmd.html',
 ]);
 
 const PUBLIC_PREFIXES = ['/api/', '/sprites/'];
