@@ -104,8 +104,7 @@
         <thead>
             <tr>
                 <th id="th-pokemon">Pokémon</th>
-                <th id="th-primary">Artista principal</th>
-                <th id="th-secondary">Artistas secundarios</th>
+                <th id="th-artists">Artistas</th>
             </tr>
         </thead>
         <tbody id="credits-tbody"></tbody>
@@ -118,16 +117,14 @@ const CREDITS_STRINGS = {
         intro: 'Los retratos PMD provienen de <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a> y están licenciados bajo <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>. Aquí se listan los artistas que los crearon.',
         loading: 'Cargando créditos…',
         thPokemon: 'Pokémon',
-        thPrimary: 'Artista principal',
-        thSecondary: 'Artistas secundarios',
+        thArtists: 'Artistas',
         noContact: '—',
     },
     en: {
         intro: 'PMD portraits come from <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a> and are licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>. Artist credits are listed below.',
         loading: 'Loading credits…',
         thPokemon: 'Pokémon',
-        thPrimary: 'Primary artist',
-        thSecondary: 'Secondary artists',
+        thArtists: 'Artists',
         noContact: '—',
     },
 };
@@ -137,8 +134,7 @@ function applyCreditsLang() {
     document.getElementById('credits-intro').innerHTML = s.intro;
     document.getElementById('credits-loading').textContent = s.loading;
     document.getElementById('th-pokemon').textContent = s.thPokemon;
-    document.getElementById('th-primary').textContent = s.thPrimary;
-    document.getElementById('th-secondary').textContent = s.thSecondary;
+    document.getElementById('th-artists').textContent = s.thArtists;
 }
 
 function artistCell(artist) {
@@ -159,7 +155,7 @@ async function loadCredits() {
         const tbody = document.getElementById('credits-tbody');
         const entries = Object.entries(data).sort(([a], [b]) => a.localeCompare(b));
         for (const [name, credit] of entries) {
-            const secondaryList = (credit.secondary || []).map(artistCell).join(', ') || s.noContact;
+            const artistList = (credit.artists || []).map(artistCell).join(', ') || s.noContact;
             const creditsUrl = credit.pmd_id
                 ? `https://github.com/PMDCollab/SpriteCollab/blob/master/portrait/${credit.pmd_id}/credits.txt`
                 : null;
@@ -172,8 +168,7 @@ async function loadCredits() {
                         ${creditsUrl ? `<a href="${creditsUrl}" target="_blank" rel="noopener" class="credits-source-link" title="credits.txt">↗</a>` : ''}
                     </div>
                 </td>
-                <td class="credits-artist">${artistCell(credit.primary)}</td>
-                <td class="credits-artist">${secondaryList}</td>
+                <td class="credits-artist">${artistList}</td>
             `;
             tbody.appendChild(row);
         }
