@@ -139,11 +139,10 @@ function applyCreditsLang() {
 
 function artistCell(artist) {
     if (!artist || !artist.name) return '—';
-    const contact = artist.contact || artist.discord || '';
-    if (contact && contact.startsWith('http')) {
-        return `<a href="${contact}" target="_blank" rel="noopener">${artist.name}</a>`;
+    if (artist.contact && artist.contact.startsWith('http')) {
+        return `<a href="${artist.contact}" target="_blank" rel="noopener">${artist.name}</a>`;
     }
-    return artist.name + (artist.discord ? ` (${artist.discord})` : '');
+    return artist.name;
 }
 
 async function loadCredits() {
