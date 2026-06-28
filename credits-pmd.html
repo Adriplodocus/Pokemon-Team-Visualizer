@@ -24,6 +24,33 @@
 .credits-intro a {
     color: var(--blue);
 }
+.credits-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+.credits-search {
+    flex: 1;
+    min-width: 160px;
+    padding: 0.4rem 0.65rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    outline: none;
+}
+.credits-search:focus {
+    border-color: var(--blue);
+}
+.credits-count {
+    font-size: 0.75rem;
+    color: var(--muted);
+    white-space: nowrap;
+}
 .credits-table {
     width: 100%;
     border-collapse: collapse;
@@ -86,6 +113,45 @@
     opacity: 1;
     color: var(--blue);
 }
+.credits-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    margin-top: 1.25rem;
+    flex-wrap: wrap;
+}
+.credits-pagination button {
+    padding: 0.3rem 0.6rem;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+.credits-pagination button:hover:not(:disabled) {
+    background: var(--surface3, var(--surface2));
+    border-color: var(--blue);
+}
+.credits-pagination button.active {
+    background: var(--blue);
+    border-color: var(--blue);
+    color: #fff;
+    font-weight: 700;
+}
+.credits-pagination button:disabled {
+    opacity: 0.35;
+    cursor: default;
+}
+.credits-no-results {
+    text-align: center;
+    color: var(--muted);
+    padding: 2rem;
+    font-size: 0.85rem;
+}
 </style>
 </head>
 <body>
@@ -100,18 +166,28 @@
         Aquí se listan los artistas que los crearon.
     </p>
     <div id="credits-loading" class="credits-loading">Cargando créditos…</div>
-    <table class="credits-table" id="credits-table" style="display:none">
-        <thead>
-            <tr>
-                <th id="th-pokemon">Pokémon</th>
-                <th id="th-artists">Artistas</th>
-            </tr>
-        </thead>
-        <tbody id="credits-tbody"></tbody>
-    </table>
+    <div id="credits-ui" style="display:none">
+        <div class="credits-controls">
+            <input id="credits-search" class="credits-search" type="search" placeholder="Buscar Pokémon o artista…" autocomplete="off">
+            <span id="credits-count" class="credits-count"></span>
+        </div>
+        <table class="credits-table">
+            <thead>
+                <tr>
+                    <th id="th-pokemon">Pokémon</th>
+                    <th id="th-artists">Artistas</th>
+                </tr>
+            </thead>
+            <tbody id="credits-tbody"></tbody>
+        </table>
+        <div id="credits-no-results" class="credits-no-results" style="display:none"></div>
+        <div id="credits-pagination" class="credits-pagination"></div>
+    </div>
 </div>
 
 <script>
+const PAGE_SIZE = 50;
+
 const CREDITS_STRINGS = {
     es: {
         intro: 'Los retratos PMD provienen de <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a> y están licenciados bajo <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>. Aquí se listan los artistas que los crearon.',
@@ -119,6 +195,9 @@ const CREDITS_STRINGS = {
         thPokemon: 'Pokémon',
         thArtists: 'Artistas',
         noContact: '—',
+        searchPlaceholder: 'Buscar Pokémon o artista…',
+        noResults: 'Sin resultados para',
+        count: (n, total) => n === total ? `${total} Pokémon` : `${n} de ${total}`,
     },
     en: {
         intro: 'PMD portraits come from <a href="https://github.com/PMDCollab/SpriteCollab" target="_blank" rel="noopener">PMDCollab/SpriteCollab</a> and are licensed under <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC Attribution 4.0</a>. Artist credits are listed below.',
@@ -126,8 +205,15 @@ const CREDITS_STRINGS = {
         thPokemon: 'Pokémon',
         thArtists: 'Artists',
         noContact: '—',
+        searchPlaceholder: 'Search Pokémon or artist…',
+        noResults: 'No results for',
+        count: (n, total) => n === total ? `${total} Pokémon` : `${n} of ${total}`,
     },
 };
+
+let allEntries = [];
+let filtered = [];
+let currentPage = 1;
 
 function applyCreditsLang() {
     const s = CREDITS_STRINGS[currentLang] || CREDITS_STRINGS.es;
@@ -135,6 +221,7 @@ function applyCreditsLang() {
     document.getElementById('credits-loading').textContent = s.loading;
     document.getElementById('th-pokemon').textContent = s.thPokemon;
     document.getElementById('th-artists').textContent = s.thArtists;
+    document.getElementById('credits-search').placeholder = s.searchPlaceholder;
 }
 
 function artistCell(artist) {
@@ -145,34 +232,126 @@ function artistCell(artist) {
     return artist.name;
 }
 
-async function loadCredits() {
+function renderPage() {
     const s = CREDITS_STRINGS[currentLang] || CREDITS_STRINGS.es;
+    const tbody = document.getElementById('credits-tbody');
+    const noResults = document.getElementById('credits-no-results');
+    const countEl = document.getElementById('credits-count');
+
+    tbody.innerHTML = '';
+    countEl.textContent = s.count(filtered.length, allEntries.length);
+
+    if (filtered.length === 0) {
+        const q = document.getElementById('credits-search').value.trim();
+        noResults.textContent = `${s.noResults} "${q}"`;
+        noResults.style.display = '';
+        renderPagination();
+        return;
+    }
+    noResults.style.display = 'none';
+
+    const start = (currentPage - 1) * PAGE_SIZE;
+    const slice = filtered.slice(start, start + PAGE_SIZE);
+
+    for (const [name, credit] of slice) {
+        const artistList = (credit.artists || []).map(artistCell).join(', ') || s.noContact;
+        const creditsUrl = credit.pmd_id
+            ? `https://github.com/PMDCollab/SpriteCollab/blob/master/portrait/${credit.pmd_id}/credits.txt`
+            : null;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>
+                <div class="credits-pokemon">
+                    <img src="/sprites/PMD/${name}.png" alt="${name}" onerror="this.style.display='none'">
+                    <span class="credits-name-text">${name.replace(/_/g, ' ')}</span>
+                    ${creditsUrl ? `<a href="${creditsUrl}" target="_blank" rel="noopener" class="credits-source-link" title="credits.txt">↗</a>` : ''}
+                </div>
+            </td>
+            <td class="credits-artist">${artistList}</td>
+        `;
+        tbody.appendChild(row);
+    }
+
+    renderPagination();
+}
+
+function renderPagination() {
+    const container = document.getElementById('credits-pagination');
+    container.innerHTML = '';
+    const totalPages = Math.ceil(filtered.length / PAGE_SIZE);
+    if (totalPages <= 1) return;
+
+    const prev = document.createElement('button');
+    prev.textContent = '‹';
+    prev.disabled = currentPage === 1;
+    prev.addEventListener('click', () => { currentPage--; renderPage(); scrollToTable(); });
+    container.appendChild(prev);
+
+    // show at most 7 page buttons with ellipsis
+    const pages = pagesToShow(currentPage, totalPages);
+    let lastPage = null;
+    for (const p of pages) {
+        if (lastPage !== null && p - lastPage > 1) {
+            const dots = document.createElement('button');
+            dots.textContent = '…';
+            dots.disabled = true;
+            container.appendChild(dots);
+        }
+        const btn = document.createElement('button');
+        btn.textContent = p;
+        if (p === currentPage) btn.classList.add('active');
+        btn.addEventListener('click', () => { currentPage = p; renderPage(); scrollToTable(); });
+        container.appendChild(btn);
+        lastPage = p;
+    }
+
+    const next = document.createElement('button');
+    next.textContent = '›';
+    next.disabled = currentPage === totalPages;
+    next.addEventListener('click', () => { currentPage++; renderPage(); scrollToTable(); });
+    container.appendChild(next);
+}
+
+function pagesToShow(current, total) {
+    if (total <= 7) return Array.from({length: total}, (_, i) => i + 1);
+    const pages = new Set([1, total, current]);
+    if (current > 1) pages.add(current - 1);
+    if (current < total) pages.add(current + 1);
+    return [...pages].sort((a, b) => a - b);
+}
+
+function scrollToTable() {
+    document.getElementById('credits-ui').scrollIntoView({behavior: 'smooth', block: 'start'});
+}
+
+function applyFilter() {
+    const q = document.getElementById('credits-search').value.trim().toLowerCase();
+    if (!q) {
+        filtered = [...allEntries];
+    } else {
+        filtered = allEntries.filter(([name, credit]) => {
+            if (name.replace(/_/g, ' ').includes(q)) return true;
+            return (credit.artists || []).some(a => a.name.toLowerCase().includes(q));
+        });
+    }
+    currentPage = 1;
+    renderPage();
+}
+
+async function loadCredits() {
     try {
         const res = await fetch('/sprites/PMD/credits.json');
         if (!res.ok) throw new Error('fetch failed');
         const data = await res.json();
-        const tbody = document.getElementById('credits-tbody');
-        const entries = Object.entries(data).sort(([a], [b]) => a.localeCompare(b));
-        for (const [name, credit] of entries) {
-            const artistList = (credit.artists || []).map(artistCell).join(', ') || s.noContact;
-            const creditsUrl = credit.pmd_id
-                ? `https://github.com/PMDCollab/SpriteCollab/blob/master/portrait/${credit.pmd_id}/credits.txt`
-                : null;
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td>
-                    <div class="credits-pokemon">
-                        <img src="/sprites/PMD/${name}.png" alt="${name}" onerror="this.style.display='none'">
-                        <span class="credits-name-text">${name.replace(/_/g, ' ')}</span>
-                        ${creditsUrl ? `<a href="${creditsUrl}" target="_blank" rel="noopener" class="credits-source-link" title="credits.txt">↗</a>` : ''}
-                    </div>
-                </td>
-                <td class="credits-artist">${artistList}</td>
-            `;
-            tbody.appendChild(row);
-        }
+        allEntries = Object.entries(data).sort(([a], [b]) => a.localeCompare(b));
+        filtered = [...allEntries];
+
         document.getElementById('credits-loading').style.display = 'none';
-        document.getElementById('credits-table').style.display = '';
+        document.getElementById('credits-ui').style.display = '';
+
+        document.getElementById('credits-search').addEventListener('input', applyFilter);
+
+        renderPage();
     } catch (e) {
         document.getElementById('credits-loading').textContent = 'Error al cargar créditos.';
     }
