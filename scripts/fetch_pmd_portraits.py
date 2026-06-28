@@ -76,7 +76,7 @@ def main():
     credit_text = requests.get(f'{BASE}/credit_names.txt', timeout=30).text
     credit_map = parse_credit_names(credit_text)
 
-    downloaded = []
+    downloaded = set()
     credits_out = {}
     skipped = 0
 
@@ -93,7 +93,7 @@ def main():
 
         if os.path.exists(out_path):
             # File already downloaded; still collect credits
-            downloaded.append(canonical)
+            downloaded.add(canonical)
         else:
             r = requests.get(f'{BASE}/portrait/{raw_id}/Normal.png', timeout=20)
             if r.status_code != 200:
@@ -102,7 +102,7 @@ def main():
                 continue
             with open(out_path, 'wb') as f:
                 f.write(r.content)
-            downloaded.append(canonical)
+            downloaded.add(canonical)
 
         # Build credits entry using the portrait_credit field
         portrait_credit = entry.get('portrait_credit', {})
