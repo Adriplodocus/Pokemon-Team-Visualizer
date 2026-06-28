@@ -2,6 +2,9 @@
   "name": "pokemon-team-visualizer",
   "version": "1.0.0",
   "type": "module",
+  "scripts": {
+    "add-patch-note": "node scripts/add-patch-note.js"
+  },
   "dependencies": {
     "@neondatabase/serverless": "^0.10.0"
   }
