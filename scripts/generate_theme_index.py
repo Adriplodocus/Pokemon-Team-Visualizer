@@ -46,6 +46,7 @@ def scan_theme(root_dir, ext):
     Walk root_dir and return:
       skins  = { base: [skin, ...] }
       female = { base: True }
+      bases  = set of Pokémon that have a plain base file (no skin suffix)
 
     Subdirectory conventions (same for GIF and PNG themes):
       root/           → base or skin variants
@@ -56,18 +57,21 @@ def scan_theme(root_dir, ext):
     """
     skins  = {}
     female = {}
+    bases  = set()
 
     if not os.path.isdir(root_dir):
-        return skins, female
+        return skins, female, bases
 
     for fname in os.listdir(root_dir):
         if not fname.lower().endswith(ext):
             continue
         stem = fname[:-len(ext)]
         base, skin = parse_stem(stem)
-        if skin == 'female':
+        if skin is None:
+            bases.add(base)
+        elif skin == 'female':
             female[base] = True
-        elif skin:
+        else:
             skins.setdefault(base, []).append(skin)
 
     female_dir = os.path.join(root_dir, 'female')
@@ -79,15 +83,17 @@ def scan_theme(root_dir, ext):
             base, _ = parse_stem(stem)
             female[base] = True
 
-    return skins, female
+    return skins, female, bases
 
-def build_entry(skins, female):
+def build_entry(skins, female, has_base):
     """Merge skins + female into a compact dict; omit if empty."""
     out = {}
     if skins:
         out['skins'] = sorted(skins)
     if female:
         out['female'] = True
+    if skins and not has_base:
+        out['hasBase'] = False
     return out or None
 
 # ── Themes ────────────────────────────────────────────────────────────────────
@@ -102,20 +108,22 @@ THEMES = {
 index = {}
 
 for theme, (root, ext) in THEMES.items():
-    skins_map, female_map = scan_theme(root, ext)
+    skins_map, female_map, bases_set = scan_theme(root, ext)
 
     # Merge: a Pokémon can have skins AND female
     all_bases = set(skins_map) | set(female_map)
     entry = {}
     for base in sorted(all_bases):
-        data = build_entry(skins_map.get(base, []), female_map.get(base, False))
+        data = build_entry(skins_map.get(base, []), female_map.get(base, False), base in bases_set)
         if data:
             entry[base] = data
 
     index[theme] = entry
+    no_base_count = sum(1 for v in entry.values() if v.get('hasBase') is False)
     print(f'{theme}: {len(entry)} pokemon with variants '
           f'({sum(len(v.get("skins",[])) for v in entry.values())} skins, '
-          f'{sum(1 for v in entry.values() if v.get("female"))} female)')
+          f'{sum(1 for v in entry.values() if v.get("female"))} female, '
+          f'{no_base_count} without base sprite)')
 
 with open(OUT_PATH, 'w', encoding='utf-8') as f:
     json.dump(index, f, separators=(',', ':'))

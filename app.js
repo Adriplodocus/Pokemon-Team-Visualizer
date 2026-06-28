@@ -851,6 +851,8 @@ function buildSpriteUrl(name, props) {
     const effectiveSkin = (skin === 'common' && catalog.skipBase && skins.length) ? skins[0] : skin;
     if (effectiveSkin !== 'common' && availSkins.includes(effectiveSkin)) {
         fileName += '_' + effectiveSkin;
+    } else if (skin === 'common' && !catalog.skipBase && avail.hasBase === false && availSkins.length) {
+        fileName += '_' + availSkins[0];
     }
     if (shiny) folder += 'shiny/';
     if (gender === 'female' && hasFemale && skin === 'common') folder += 'female/';

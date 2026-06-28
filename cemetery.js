@@ -372,6 +372,7 @@ function buildSpriteUrl(name, props) {
     let fileName = lower;
     let folder   = themeBaseUrl();
     if (skin !== 'common' && availSkins.includes(skin)) fileName += '_' + skin;
+    else if (skin === 'common' && avail.hasBase === false && availSkins.length) fileName += '_' + availSkins[0];
     if (shiny) folder += 'shiny/';
     if (gender === 'female' && hasFemale && skin === 'common') folder += 'female/';
     return folder + encodeURIComponent(fileName) + themeExt() + SPRITE_VER;
