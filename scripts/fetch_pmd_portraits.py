@@ -65,36 +65,40 @@ def resolve_artist(raw: str, name_map: dict, discord_map: dict) -> dict:
     return {'name': name, **info}
 
 
-def parse_portrait_credits_txt(text: str, name_map: dict, discord_map: dict) -> list:
-    """Parse a per-Pokémon portrait credits.txt into an ordered, de-duplicated artist list.
 
-    Only CUR (current) contributions are counted, matching the SpriteCollab website.
-    """
-    seen = {}  # raw artist id → resolved dict, preserving insertion order
-    for line in text.strip().split('\n'):
-        parts = line.split('\t')
-        if len(parts) < 3:
-            continue
-        raw_artist = parts[1].strip()
-        status = parts[2].strip()
-        if status != 'CUR':
-            continue
-        if raw_artist not in seen:
-            seen[raw_artist] = resolve_artist(raw_artist, name_map, discord_map)
-    return list(seen.values())
-
-
-def fetch_portrait_credits(raw_id: str, name_map: dict, discord_map: dict) -> list:
-    """Fetch and parse portrait credits for one Pokémon ID. Returns [] on failure."""
-    url = f'{BASE}/portrait/{raw_id}/credits.txt'
+def fetch_credits_txt(url: str) -> str:
+    """Fetch a credits.txt URL. Returns '' on 404 or error."""
     try:
         r = requests.get(url, timeout=20)
-        if r.status_code == 404:
-            return []
-        r.raise_for_status()
-        return parse_portrait_credits_txt(r.text, name_map, discord_map)
+        return r.text if r.status_code == 200 else ''
     except Exception:
-        return []
+        return ''
+
+
+def fetch_combined_credits(raw_id: str, name_map: dict, discord_map: dict) -> list:
+    """Fetch portrait + sprite credits.txt for one ID and merge unique artists.
+
+    Portrait artists listed first, sprite-only contributors appended after.
+    Matches what the SpriteCollab website shows in its credits viewer.
+    """
+    portrait_text = fetch_credits_txt(f'{BASE}/portrait/{raw_id}/credits.txt')
+    sprite_text = fetch_credits_txt(f'{BASE}/sprite/{raw_id}/credits.txt')
+
+    seen = {}  # raw artist id → resolved dict, preserving insertion order
+    for text in (portrait_text, sprite_text):
+        if not text:
+            continue
+        for line in text.strip().split('\n'):
+            parts = line.split('\t')
+            if len(parts) < 3:
+                continue
+            raw_artist = parts[1].strip()
+            status = parts[2].strip()
+            if status != 'CUR':
+                continue
+            if raw_artist not in seen:
+                seen[raw_artist] = resolve_artist(raw_artist, name_map, discord_map)
+    return list(seen.values())
 
 
 def main():
@@ -140,12 +144,12 @@ def main():
             downloaded.add(canonical)
             sprite_results[raw_id] = canonical
 
-    # Fetch all portrait credits.txt concurrently
+    # Fetch portrait + sprite credits.txt concurrently (2 requests per Pokémon)
     ids_to_fetch = list(sprite_results.keys())
-    print(f'Fetching {len(ids_to_fetch)} portrait credits.txt files (workers={MAX_WORKERS})...')
+    print(f'Fetching portrait+sprite credits for {len(ids_to_fetch)} Pokémon (workers={MAX_WORKERS})...')
     credits_by_id = {}
     with ThreadPoolExecutor(max_workers=MAX_WORKERS) as pool:
-        futures = {pool.submit(fetch_portrait_credits, rid, credit_map, discord_map): rid
+        futures = {pool.submit(fetch_combined_credits, rid, credit_map, discord_map): rid
                    for rid in ids_to_fetch}
         done = 0
         for future in as_completed(futures):
