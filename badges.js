@@ -218,7 +218,7 @@ const LEVEL_CAPS = {
       { label: { es: 'Norman',    en: 'Norman'    }, cap: 31 },
       { label: { es: 'Winona',    en: 'Winona'    }, cap: 33 },
       { label: { es: 'Tate & Liza', en: 'Tate & Liza' }, cap: 42 },
-      { label: { es: 'Juan',      en: 'Juan'      }, cap: 43 },
+      { label: { es: 'Wallace',   en: 'Wallace'   }, cap: 43 },
     ],
     league: [
       { label: { es: 'Sidney', en: 'Sidney' }, cap: 49 },
@@ -239,7 +239,7 @@ const LEVEL_CAPS = {
       { label: { es: 'Norman',    en: 'Norman'    }, cap: 31 },
       { label: { es: 'Winona',    en: 'Winona'    }, cap: 33 },
       { label: { es: 'Tate & Liza', en: 'Tate & Liza' }, cap: 42 },
-      { label: { es: 'Wallace',   en: 'Wallace'   }, cap: 46 },
+      { label: { es: 'Juan',      en: 'Juan'      }, cap: 46 },
     ],
     league: [
       { label: { es: 'Sidney',  en: 'Sidney'  }, cap: 49 },
