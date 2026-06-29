@@ -55,6 +55,461 @@ const REGION_DATA = {
     Passio: { count: 8 },
 };
 
+// ── Level cap data ────────────────────────────────────────────────
+// String values are aliases: resolve with
+//   const d = LEVEL_CAPS[k]; const data = typeof d === 'string' ? LEVEL_CAPS[d] : d;
+// Absent keys → panel hidden.
+const LEVEL_CAPS = {
+
+  // ── Kanto ──────────────────────────────────────────────────────
+  'pokemon-rojo': {
+    gyms: [
+      { label: { es: 'Brock',     en: 'Brock'     }, cap: 14 },
+      { label: { es: 'Misty',     en: 'Misty'     }, cap: 21 },
+      { label: { es: 'Lt. Surge', en: 'Lt. Surge' }, cap: 24 },
+      { label: { es: 'Erika',     en: 'Erika'     }, cap: 29 },
+      { label: { es: 'Koga',      en: 'Koga'      }, cap: 43 },
+      { label: { es: 'Sabrina',   en: 'Sabrina'   }, cap: 43 },
+      { label: { es: 'Blaine',    en: 'Blaine'    }, cap: 47 },
+      { label: { es: 'Giovanni',  en: 'Giovanni'  }, cap: 50 },
+    ],
+    league: [
+      { label: { es: 'Lorelei', en: 'Lorelei' }, cap: 56 },
+      { label: { es: 'Bruno',   en: 'Bruno'   }, cap: 58 },
+      { label: { es: 'Agatha',  en: 'Agatha'  }, cap: 60 },
+      { label: { es: 'Lance',   en: 'Lance'   }, cap: 62 },
+      { label: { es: 'Blue',    en: 'Blue'    }, cap: 65 },
+    ],
+  },
+  'pokemon-azul': 'pokemon-rojo',
+
+  'pokemon-amarillo': {
+    gyms: [
+      { label: { es: 'Brock',     en: 'Brock'     }, cap: 12 },
+      { label: { es: 'Misty',     en: 'Misty'     }, cap: 21 },
+      { label: { es: 'Lt. Surge', en: 'Lt. Surge' }, cap: 28 },
+      { label: { es: 'Erika',     en: 'Erika'     }, cap: 32 },
+      { label: { es: 'Koga',      en: 'Koga'      }, cap: 50 },
+      { label: { es: 'Sabrina',   en: 'Sabrina'   }, cap: 50 },
+      { label: { es: 'Blaine',    en: 'Blaine'    }, cap: 54 },
+      { label: { es: 'Giovanni',  en: 'Giovanni'  }, cap: 55 },
+    ],
+    league: [
+      { label: { es: 'Lorelei', en: 'Lorelei' }, cap: 56 },
+      { label: { es: 'Bruno',   en: 'Bruno'   }, cap: 58 },
+      { label: { es: 'Agatha',  en: 'Agatha'  }, cap: 60 },
+      { label: { es: 'Lance',   en: 'Lance'   }, cap: 62 },
+      { label: { es: 'Blue',    en: 'Blue'    }, cap: 65 },
+    ],
+  },
+
+  'pokemon-rojo-fuego': {
+    gyms: [
+      { label: { es: 'Brock',     en: 'Brock'     }, cap: 14 },
+      { label: { es: 'Misty',     en: 'Misty'     }, cap: 21 },
+      { label: { es: 'Lt. Surge', en: 'Lt. Surge' }, cap: 24 },
+      { label: { es: 'Erika',     en: 'Erika'     }, cap: 29 },
+      { label: { es: 'Koga',      en: 'Koga'      }, cap: 43 },
+      { label: { es: 'Sabrina',   en: 'Sabrina'   }, cap: 43 },
+      { label: { es: 'Blaine',    en: 'Blaine'    }, cap: 47 },
+      { label: { es: 'Giovanni',  en: 'Giovanni'  }, cap: 50 },
+    ],
+    league: [
+      { label: { es: 'Lorelei', en: 'Lorelei' }, cap: 54 },
+      { label: { es: 'Bruno',   en: 'Bruno'   }, cap: 56 },
+      { label: { es: 'Agatha',  en: 'Agatha'  }, cap: 58 },
+      { label: { es: 'Lance',   en: 'Lance'   }, cap: 60 },
+      { label: { es: 'Blue',    en: 'Blue'    }, cap: 63 },
+    ],
+  },
+  'pokemon-verde-hoja': 'pokemon-rojo-fuego',
+
+  'pokemon-lets-go-pikachu': {
+    gyms: [
+      { label: { es: 'Brock',     en: 'Brock'     }, cap: 12 },
+      { label: { es: 'Misty',     en: 'Misty'     }, cap: 19 },
+      { label: { es: 'Lt. Surge', en: 'Lt. Surge' }, cap: 26 },
+      { label: { es: 'Erika',     en: 'Erika'     }, cap: 34 },
+      { label: { es: 'Koga',      en: 'Koga'      }, cap: 44 },
+      { label: { es: 'Sabrina',   en: 'Sabrina'   }, cap: 44 },
+      { label: { es: 'Blaine',    en: 'Blaine'    }, cap: 48 },
+      { label: { es: 'Giovanni',  en: 'Giovanni'  }, cap: 50 },
+    ],
+    league: [
+      { label: { es: 'Lorelei', en: 'Lorelei' }, cap: 52 },
+      { label: { es: 'Bruno',   en: 'Bruno'   }, cap: 53 },
+      { label: { es: 'Agatha',  en: 'Agatha'  }, cap: 54 },
+      { label: { es: 'Lance',   en: 'Lance'   }, cap: 55 },
+      { label: { es: 'Trace',   en: 'Trace'   }, cap: 57 },
+    ],
+  },
+  'pokemon-lets-go-eevee': 'pokemon-lets-go-pikachu',
+  // pokemon-anil: absent → panel hidden
+
+  // ── Johto ──────────────────────────────────────────────────────
+  'pokemon-oro': {
+    gyms: [
+      { label: { es: 'Falkner', en: 'Falkner' }, cap:  9 },
+      { label: { es: 'Bugsy',   en: 'Bugsy'   }, cap: 16 },
+      { label: { es: 'Whitney', en: 'Whitney' }, cap: 20 },
+      { label: { es: 'Morty',   en: 'Morty'   }, cap: 25 },
+      { label: { es: 'Chuck',   en: 'Chuck'   }, cap: 30 },
+      { label: { es: 'Jasmine', en: 'Jasmine' }, cap: 35 },
+      { label: { es: 'Pryce',   en: 'Pryce'   }, cap: 31 }, // drops from gym 6
+      { label: { es: 'Clair',   en: 'Clair'   }, cap: 40 },
+    ],
+    league: [
+      { label: { es: 'Will',              en: 'Will'              }, cap: 42 },
+      { label: { es: 'Koga',              en: 'Koga'              }, cap: 44 },
+      { label: { es: 'Bruno',             en: 'Bruno'             }, cap: 46 },
+      { label: { es: 'Karen',             en: 'Karen'             }, cap: 47 },
+      { label: { es: 'Lance',             en: 'Lance'             }, cap: 50 },
+      { label: { es: 'Brock (Kanto)',     en: 'Brock (Kanto)'     }, cap: 44 },
+      { label: { es: 'Misty (Kanto)',     en: 'Misty (Kanto)'     }, cap: 47 },
+      { label: { es: 'Lt. Surge (Kanto)', en: 'Lt. Surge (Kanto)' }, cap: 45 },
+      { label: { es: 'Erika (Kanto)',     en: 'Erika (Kanto)'     }, cap: 46 },
+      { label: { es: 'Janine (Kanto)',    en: 'Janine (Kanto)'    }, cap: 39 }, // drops from Surge
+      { label: { es: 'Sabrina (Kanto)',   en: 'Sabrina (Kanto)'   }, cap: 48 },
+      { label: { es: 'Blaine (Kanto)',    en: 'Blaine (Kanto)'    }, cap: 50 },
+      { label: { es: 'Giovanni (Kanto)',  en: 'Giovanni (Kanto)'  }, cap: 58 },
+      { label: { es: 'Red',              en: 'Red'               }, cap: 81 },
+    ],
+  },
+  'pokemon-plata':  'pokemon-oro',
+  'pokemon-cristal': 'pokemon-oro',
+
+  'pokemon-heartgold': {
+    gyms: [
+      { label: { es: 'Falkner', en: 'Falkner' }, cap: 13 },
+      { label: { es: 'Bugsy',   en: 'Bugsy'   }, cap: 17 },
+      { label: { es: 'Whitney', en: 'Whitney' }, cap: 19 },
+      { label: { es: 'Morty',   en: 'Morty'   }, cap: 25 },
+      { label: { es: 'Chuck',   en: 'Chuck'   }, cap: 31 },
+      { label: { es: 'Jasmine', en: 'Jasmine' }, cap: 35 },
+      { label: { es: 'Pryce',   en: 'Pryce'   }, cap: 34 }, // drops from gym 6
+      { label: { es: 'Clair',   en: 'Clair'   }, cap: 41 },
+    ],
+    league: [
+      { label: { es: 'Will',              en: 'Will'              }, cap: 42 },
+      { label: { es: 'Koga',              en: 'Koga'              }, cap: 44 },
+      { label: { es: 'Bruno',             en: 'Bruno'             }, cap: 46 },
+      { label: { es: 'Karen',             en: 'Karen'             }, cap: 47 },
+      { label: { es: 'Lance',             en: 'Lance'             }, cap: 50 },
+      { label: { es: 'Brock (Kanto)',     en: 'Brock (Kanto)'     }, cap: 54 },
+      { label: { es: 'Misty (Kanto)',     en: 'Misty (Kanto)'     }, cap: 54 },
+      { label: { es: 'Lt. Surge (Kanto)', en: 'Lt. Surge (Kanto)' }, cap: 53 },
+      { label: { es: 'Erika (Kanto)',     en: 'Erika (Kanto)'     }, cap: 56 },
+      { label: { es: 'Janine (Kanto)',    en: 'Janine (Kanto)'    }, cap: 50 }, // drops
+      { label: { es: 'Sabrina (Kanto)',   en: 'Sabrina (Kanto)'   }, cap: 55 },
+      { label: { es: 'Blaine (Kanto)',    en: 'Blaine (Kanto)'    }, cap: 59 },
+      { label: { es: 'Giovanni (Kanto)',  en: 'Giovanni (Kanto)'  }, cap: 60 },
+      { label: { es: 'Red',              en: 'Red'               }, cap: 88 },
+    ],
+  },
+  'pokemon-soulsilver': 'pokemon-heartgold',
+
+  // ── Hoenn ──────────────────────────────────────────────────────
+  'pokemon-rubi': {
+    gyms: [
+      { label: { es: 'Roxanne',   en: 'Roxanne'   }, cap: 15 },
+      { label: { es: 'Brawly',    en: 'Brawly'    }, cap: 18 },
+      { label: { es: 'Wattson',   en: 'Wattson'   }, cap: 23 },
+      { label: { es: 'Flannery',  en: 'Flannery'  }, cap: 28 },
+      { label: { es: 'Norman',    en: 'Norman'    }, cap: 31 },
+      { label: { es: 'Winona',    en: 'Winona'    }, cap: 33 },
+      { label: { es: 'Tate & Liza', en: 'Tate & Liza' }, cap: 42 },
+      { label: { es: 'Juan',      en: 'Juan'      }, cap: 43 },
+    ],
+    league: [
+      { label: { es: 'Sidney', en: 'Sidney' }, cap: 49 },
+      { label: { es: 'Phoebe', en: 'Phoebe' }, cap: 51 },
+      { label: { es: 'Glacia', en: 'Glacia' }, cap: 53 },
+      { label: { es: 'Drake',  en: 'Drake'  }, cap: 55 },
+      { label: { es: 'Steven', en: 'Steven' }, cap: 58 },
+    ],
+  },
+  'pokemon-zafiro': 'pokemon-rubi',
+
+  'pokemon-esmeralda': {
+    gyms: [
+      { label: { es: 'Roxanne',   en: 'Roxanne'   }, cap: 15 },
+      { label: { es: 'Brawly',    en: 'Brawly'    }, cap: 19 },
+      { label: { es: 'Wattson',   en: 'Wattson'   }, cap: 24 },
+      { label: { es: 'Flannery',  en: 'Flannery'  }, cap: 29 },
+      { label: { es: 'Norman',    en: 'Norman'    }, cap: 31 },
+      { label: { es: 'Winona',    en: 'Winona'    }, cap: 33 },
+      { label: { es: 'Tate & Liza', en: 'Tate & Liza' }, cap: 42 },
+      { label: { es: 'Wallace',   en: 'Wallace'   }, cap: 46 },
+    ],
+    league: [
+      { label: { es: 'Sidney',  en: 'Sidney'  }, cap: 49 },
+      { label: { es: 'Phoebe',  en: 'Phoebe'  }, cap: 51 },
+      { label: { es: 'Glacia',  en: 'Glacia'  }, cap: 53 },
+      { label: { es: 'Drake',   en: 'Drake'   }, cap: 55 },
+      { label: { es: 'Wallace', en: 'Wallace' }, cap: 58 },
+    ],
+  },
+
+  'pokemon-rubi-omega': {
+    gyms: [
+      { label: { es: 'Roxanne',   en: 'Roxanne'   }, cap: 14 },
+      { label: { es: 'Brawly',    en: 'Brawly'    }, cap: 16 },
+      { label: { es: 'Wattson',   en: 'Wattson'   }, cap: 21 },
+      { label: { es: 'Flannery',  en: 'Flannery'  }, cap: 28 },
+      { label: { es: 'Norman',    en: 'Norman'    }, cap: 30 },
+      { label: { es: 'Winona',    en: 'Winona'    }, cap: 35 },
+      { label: { es: 'Tate & Liza', en: 'Tate & Liza' }, cap: 45 },
+      { label: { es: 'Juan',      en: 'Juan'      }, cap: 46 },
+    ],
+    league: [
+      { label: { es: 'Sidney', en: 'Sidney' }, cap: 52 },
+      { label: { es: 'Phoebe', en: 'Phoebe' }, cap: 53 },
+      { label: { es: 'Glacia', en: 'Glacia' }, cap: 54 },
+      { label: { es: 'Drake',  en: 'Drake'  }, cap: 55 },
+      { label: { es: 'Steven', en: 'Steven' }, cap: 59 },
+    ],
+  },
+  'pokemon-zafiro-alfa': 'pokemon-rubi-omega',
+
+  // ── Sinnoh ─────────────────────────────────────────────────────
+  'pokemon-diamante': {
+    gyms: [
+      { label: { es: 'Roark',        en: 'Roark'        }, cap: 14 },
+      { label: { es: 'Gardenia',     en: 'Gardenia'     }, cap: 22 },
+      { label: { es: 'Maylene',      en: 'Maylene'      }, cap: 30 },
+      { label: { es: 'Crasher Wake', en: 'Crasher Wake' }, cap: 30 },
+      { label: { es: 'Fantina',      en: 'Fantina'      }, cap: 36 },
+      { label: { es: 'Byron',        en: 'Byron'        }, cap: 39 },
+      { label: { es: 'Candice',      en: 'Candice'      }, cap: 42 },
+      { label: { es: 'Volkner',      en: 'Volkner'      }, cap: 49 },
+    ],
+    league: [
+      { label: { es: 'Aaron',  en: 'Aaron'  }, cap: 57 },
+      { label: { es: 'Bertha', en: 'Bertha' }, cap: 59 },
+      { label: { es: 'Flint',  en: 'Flint'  }, cap: 61 },
+      { label: { es: 'Lucian', en: 'Lucian' }, cap: 63 },
+      { label: { es: 'Cynthia', en: 'Cynthia' }, cap: 66 },
+    ],
+  },
+  'pokemon-perla':              'pokemon-diamante',
+  'pokemon-diamante-brillante': 'pokemon-diamante',
+  'pokemon-perla-reluciente':   'pokemon-diamante',
+
+  'pokemon-platino': {
+    gyms: [
+      { label: { es: 'Roark',        en: 'Roark'        }, cap: 14 },
+      { label: { es: 'Gardenia',     en: 'Gardenia'     }, cap: 22 },
+      { label: { es: 'Maylene',      en: 'Maylene'      }, cap: 26 },
+      { label: { es: 'Crasher Wake', en: 'Crasher Wake' }, cap: 32 },
+      { label: { es: 'Fantina',      en: 'Fantina'      }, cap: 37 },
+      { label: { es: 'Byron',        en: 'Byron'        }, cap: 41 },
+      { label: { es: 'Candice',      en: 'Candice'      }, cap: 44 },
+      { label: { es: 'Volkner',      en: 'Volkner'      }, cap: 50 },
+    ],
+    league: [
+      { label: { es: 'Aaron',  en: 'Aaron'  }, cap: 53 },
+      { label: { es: 'Bertha', en: 'Bertha' }, cap: 55 },
+      { label: { es: 'Flint',  en: 'Flint'  }, cap: 57 },
+      { label: { es: 'Lucian', en: 'Lucian' }, cap: 59 },
+      { label: { es: 'Cynthia', en: 'Cynthia' }, cap: 62 },
+    ],
+  },
+
+  // ── Unova ──────────────────────────────────────────────────────
+  'pokemon-negro': {
+    gyms: [
+      { label: { es: 'Cilan/Chili/Cress', en: 'Cilan/Chili/Cress' }, cap: 14 },
+      { label: { es: 'Lenora',  en: 'Lenora'  }, cap: 20 },
+      { label: { es: 'Burgh',   en: 'Burgh'   }, cap: 23 },
+      { label: { es: 'Elesa',   en: 'Elesa'   }, cap: 27 },
+      { label: { es: 'Clay',    en: 'Clay'    }, cap: 31 },
+      { label: { es: 'Skyla',   en: 'Skyla'   }, cap: 35 },
+      { label: { es: 'Brycen',  en: 'Brycen'  }, cap: 39 },
+      { label: { es: 'Iris/Drayden', en: 'Iris/Drayden' }, cap: 43 },
+    ],
+    league: [
+      { label: { es: 'Shauntal', en: 'Shauntal' }, cap: 50 },
+      { label: { es: 'Marshal',  en: 'Marshal'  }, cap: 50 },
+      { label: { es: 'Grimsley', en: 'Grimsley' }, cap: 50 },
+      { label: { es: 'Caitlin',  en: 'Caitlin'  }, cap: 50 },
+      { label: { es: 'N',        en: 'N'        }, cap: 52 },
+      { label: { es: 'Ghetsis',  en: 'Ghetsis'  }, cap: 54 },
+    ],
+  },
+  'pokemon-blanco': 'pokemon-negro',
+
+  'pokemon-negro-2': {
+    gyms: [
+      { label: { es: 'Cheren',  en: 'Cheren'  }, cap: 13 },
+      { label: { es: 'Roxie',   en: 'Roxie'   }, cap: 18 },
+      { label: { es: 'Burgh',   en: 'Burgh'   }, cap: 24 },
+      { label: { es: 'Elesa',   en: 'Elesa'   }, cap: 30 },
+      { label: { es: 'Clay',    en: 'Clay'    }, cap: 33 },
+      { label: { es: 'Skyla',   en: 'Skyla'   }, cap: 39 },
+      { label: { es: 'Drayden', en: 'Drayden' }, cap: 48 },
+      { label: { es: 'Marlon',  en: 'Marlon'  }, cap: 51 },
+    ],
+    league: [
+      { label: { es: 'Shauntal', en: 'Shauntal' }, cap: 58 },
+      { label: { es: 'Marshal',  en: 'Marshal'  }, cap: 58 },
+      { label: { es: 'Grimsley', en: 'Grimsley' }, cap: 58 },
+      { label: { es: 'Caitlin',  en: 'Caitlin'  }, cap: 58 },
+      { label: { es: 'Iris',     en: 'Iris'     }, cap: 59 },
+    ],
+  },
+  'pokemon-blanco-2': 'pokemon-negro-2',
+
+  // ── Kalos ──────────────────────────────────────────────────────
+  'pokemon-x': {
+    gyms: [
+      { label: { es: 'Viola',   en: 'Viola'   }, cap: 12 },
+      { label: { es: 'Grant',   en: 'Grant'   }, cap: 25 },
+      { label: { es: 'Korrina', en: 'Korrina' }, cap: 32 },
+      { label: { es: 'Ramos',   en: 'Ramos'   }, cap: 34 },
+      { label: { es: 'Clemont', en: 'Clemont' }, cap: 37 },
+      { label: { es: 'Valerie', en: 'Valerie' }, cap: 42 },
+      { label: { es: 'Olympia', en: 'Olympia' }, cap: 48 },
+      { label: { es: 'Wulfric', en: 'Wulfric' }, cap: 59 },
+    ],
+    league: [
+      { label: { es: 'Malva',    en: 'Malva'    }, cap: 65 },
+      { label: { es: 'Siebold',  en: 'Siebold'  }, cap: 65 },
+      { label: { es: 'Wikstrom', en: 'Wikstrom' }, cap: 65 },
+      { label: { es: 'Drasna',   en: 'Drasna'   }, cap: 65 },
+      { label: { es: 'Diantha',  en: 'Diantha'  }, cap: 68 },
+    ],
+  },
+  'pokemon-y': 'pokemon-x',
+
+  // ── Alola ──────────────────────────────────────────────────────
+  // Sol/Luna: 11 stamps (matches REGION_DATA Alola count:11)
+  'pokemon-sol': {
+    gyms: [
+      { label: { es: 'Ilima',            en: 'Ilima'            }, cap: 12 },
+      { label: { es: 'Hala',             en: 'Hala'             }, cap: 15 },
+      { label: { es: 'Lana',             en: 'Lana'             }, cap: 20 },
+      { label: { es: 'Kiawe',            en: 'Kiawe'            }, cap: 22 },
+      { label: { es: 'Mallow',           en: 'Mallow'           }, cap: 24 },
+      { label: { es: 'Olivia',           en: 'Olivia'           }, cap: 26 },
+      { label: { es: 'Sophocles',        en: 'Sophocles'        }, cap: 29 },
+      { label: { es: 'Acerola',          en: 'Acerola'          }, cap: 33 },
+      { label: { es: 'Nanu',             en: 'Nanu'             }, cap: 39 },
+      { label: { es: 'Vast Poni Canyon', en: 'Vast Poni Canyon' }, cap: 45 },
+      { label: { es: 'Hapu',             en: 'Hapu'             }, cap: 48 },
+    ],
+    league: [
+      { label: { es: 'Hala',   en: 'Hala'   }, cap: 55 },
+      { label: { es: 'Olivia', en: 'Olivia' }, cap: 55 },
+      { label: { es: 'Acerola', en: 'Acerola' }, cap: 55 },
+      { label: { es: 'Kahili', en: 'Kahili' }, cap: 55 },
+      { label: { es: 'Kukui',  en: 'Kukui'  }, cap: 58 },
+    ],
+  },
+  'pokemon-luna': 'pokemon-sol',
+
+  // UltraSol/UltraLuna: 12 stamps (matches REGION_DATA AlolaUltra count:12)
+  'pokemon-ultrasol': {
+    gyms: [
+      { label: { es: 'Ilima',            en: 'Ilima'            }, cap: 12 },
+      { label: { es: 'Hala',             en: 'Hala'             }, cap: 16 },
+      { label: { es: 'Lana',             en: 'Lana'             }, cap: 20 },
+      { label: { es: 'Kiawe',            en: 'Kiawe'            }, cap: 22 },
+      { label: { es: 'Mallow',           en: 'Mallow'           }, cap: 24 },
+      { label: { es: 'Olivia',           en: 'Olivia'           }, cap: 28 },
+      { label: { es: 'Sophocles',        en: 'Sophocles'        }, cap: 33 },
+      { label: { es: 'Acerola',          en: 'Acerola'          }, cap: 35 },
+      { label: { es: 'Nanu',             en: 'Nanu'             }, cap: 44 },
+      { label: { es: 'Vast Poni Canyon', en: 'Vast Poni Canyon' }, cap: 49 },
+      { label: { es: 'Mina',             en: 'Mina'             }, cap: 55 },
+      { label: { es: 'Hapu',             en: 'Hapu'             }, cap: 54 }, // drops from Mina
+    ],
+    league: [
+      { label: { es: 'Hala',   en: 'Hala'   }, cap: 57 },
+      { label: { es: 'Olivia', en: 'Olivia' }, cap: 57 },
+      { label: { es: 'Acerola', en: 'Acerola' }, cap: 57 },
+      { label: { es: 'Kahili', en: 'Kahili' }, cap: 57 },
+      { label: { es: 'Kukui',  en: 'Kukui'  }, cap: 60 },
+    ],
+  },
+  'pokemon-ultraluna': 'pokemon-ultrasol',
+
+  // ── Galar ──────────────────────────────────────────────────────
+  // Galar count:10. Slots 1-8 = gym leaders. Slots 9-10 = Championship Cup
+  // quarter-finals (Marnie, Hop). League = semi-final/final + champion.
+  'pokemon-espada': {
+    gyms: [
+      { label: { es: 'Milo',   en: 'Milo'   }, cap: 20 },
+      { label: { es: 'Nessa',  en: 'Nessa'  }, cap: 24 },
+      { label: { es: 'Kabu',   en: 'Kabu'   }, cap: 27 },
+      { label: { es: 'Bea',    en: 'Bea'    }, cap: 36 }, // Sword exclusive
+      { label: { es: 'Opal',   en: 'Opal'   }, cap: 38 },
+      { label: { es: 'Gordie', en: 'Gordie' }, cap: 42 }, // Sword exclusive
+      { label: { es: 'Piers',  en: 'Piers'  }, cap: 46 },
+      { label: { es: 'Raihan', en: 'Raihan' }, cap: 48 },
+      { label: { es: 'Marnie', en: 'Marnie' }, cap: 49 }, // Championship Cup QF
+      { label: { es: 'Hop',    en: 'Hop'    }, cap: 49 }, // Championship Cup QF
+    ],
+    league: [
+      { label: { es: 'Bede',         en: 'Bede'         }, cap: 53 },
+      { label: { es: 'Nessa',        en: 'Nessa'        }, cap: 53 },
+      { label: { es: 'Bea/Allister', en: 'Bea/Allister' }, cap: 54 },
+      { label: { es: 'Raihan',       en: 'Raihan'       }, cap: 55 },
+      { label: { es: 'Leon',         en: 'Leon'         }, cap: 65 },
+    ],
+  },
+  'pokemon-escudo': {
+    gyms: [
+      { label: { es: 'Milo',     en: 'Milo'     }, cap: 20 },
+      { label: { es: 'Nessa',    en: 'Nessa'    }, cap: 24 },
+      { label: { es: 'Kabu',     en: 'Kabu'     }, cap: 27 },
+      { label: { es: 'Allister', en: 'Allister' }, cap: 36 }, // Shield exclusive
+      { label: { es: 'Opal',     en: 'Opal'     }, cap: 38 },
+      { label: { es: 'Melony',   en: 'Melony'   }, cap: 42 }, // Shield exclusive
+      { label: { es: 'Piers',    en: 'Piers'    }, cap: 46 },
+      { label: { es: 'Raihan',   en: 'Raihan'   }, cap: 48 },
+      { label: { es: 'Marnie',   en: 'Marnie'   }, cap: 49 },
+      { label: { es: 'Hop',      en: 'Hop'      }, cap: 49 },
+    ],
+    league: [
+      { label: { es: 'Bede',         en: 'Bede'         }, cap: 53 },
+      { label: { es: 'Nessa',        en: 'Nessa'        }, cap: 53 },
+      { label: { es: 'Bea/Allister', en: 'Bea/Allister' }, cap: 54 },
+      { label: { es: 'Raihan',       en: 'Raihan'       }, cap: 55 },
+      { label: { es: 'Leon',         en: 'Leon'         }, cap: 65 },
+    ],
+  },
+
+  // ── Paldea ─────────────────────────────────────────────────────
+  // Paldea count:8 = Victory Road gyms only.
+  'pokemon-escarlata': {
+    gyms: [
+      { label: { es: 'Katy (Bicho)',   en: 'Katy (Bug)'      }, cap: 15 },
+      { label: { es: 'Brassius (Planta)', en: 'Brassius (Grass)' }, cap: 17 },
+      { label: { es: 'Iono (Eléctrico)', en: 'Iono (Electric)'  }, cap: 24 },
+      { label: { es: 'Kofu (Agua)',    en: 'Kofu (Water)'    }, cap: 30 },
+      { label: { es: 'Larry (Normal)', en: 'Larry (Normal)'  }, cap: 36 },
+      { label: { es: 'Ryme (Fantasma)', en: 'Ryme (Ghost)'   }, cap: 42 },
+      { label: { es: 'Tulip (Psíquico)', en: 'Tulip (Psychic)'}, cap: 45 },
+      { label: { es: 'Grusha (Hielo)', en: 'Grusha (Ice)'    }, cap: 48 },
+    ],
+    league: [
+      { label: { es: 'Top Champion',  en: 'Top Champion'  }, cap: 61 },
+      { label: { es: 'Geeta',         en: 'Geeta'         }, cap: 62 },
+      { label: { es: 'Nemona',        en: 'Nemona'        }, cap: 66 },
+    ],
+  },
+  'pokemon-purpura': 'pokemon-escarlata',
+
+  // ── Fan games ──────────────────────────────────────────────────
+  'pokemon-consonancia': {
+    info: {
+      es: 'Sin level cap fijo. Los rivales se adaptan al nivel de tu equipo.',
+      en: "No fixed level cap. Opponents scale to your team's level.",
+    },
+  },
+  // pokemon-anil: absent → panel hidden
+};
+
 const BADGE_GAMES = [
     { region: 'Alola', labels: { es: 'Alola', en: 'Alola' }, games: [
         ['pokemon-luna',      { es: 'Pokémon Luna',      en: 'Pokémon Moon' }],
