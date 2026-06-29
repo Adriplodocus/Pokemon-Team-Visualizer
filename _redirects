@@ -1,10 +1,4 @@
-# Pass-through for current theme folders and other sprite assets
-/sprites/Showdown/* /sprites/Showdown/:splat 200
-/sprites/Home/* /sprites/Home/:splat 200
-/sprites/Official/* /sprites/Official/:splat 200
-/sprites/Pixel/* /sprites/Pixel/:splat 200
-/sprites/PMD/* /sprites/PMD/:splat 200
-/sprites/types/* /sprites/types/:splat 200
-
-# Backward compat: old root Showdown URLs → sprites/Showdown/
-/sprites/* /sprites/Showdown/:splat 301
+# Backward compat: old root Showdown URLs (bare filenames) → sprites/Showdown/
+# :file matches a single path segment (no slashes), so subfolders and
+# theme-index.json are served as static assets without hitting this rule.
+/sprites/:file /sprites/Showdown/:file 301
