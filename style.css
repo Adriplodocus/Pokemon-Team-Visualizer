@@ -1173,12 +1173,12 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     transition: color 0.15s;
 }
 .cap-row.cap-active {
-    color: var(--cyan);
-    border-left-color: var(--cyan);
+    color: var(--blue);
+    border-left-color: var(--blue);
     font-weight: 700;
 }
 .cap-row.cap-done {
-    color: var(--dimmed);
+    color: var(--dim);
 }
 .cap-row .cap-level {
     white-space: nowrap;
