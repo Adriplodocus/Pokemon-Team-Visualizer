@@ -589,14 +589,14 @@ function evoMethodLabel(details, speciesName) {
 
 function evoNodeHTML(speciesName, selectedSpeciesName, contextSkin) {
     const isSelected = speciesName === selectedSpeciesName;
-    let imgSrc  = `sprites/${speciesName}.gif${SPRITE_VER}`;
+    let imgSrc  = `sprites/Showdown/${speciesName}.gif${SPRITE_VER}`;
     let onerror = `this.style.display='none'`;
     if (contextSkin && typeof POKEMON_CATALOG !== 'undefined') {
         const skins   = POKEMON_CATALOG[speciesName]?.skin ?? [];
         const matched = skins.find(s => s === contextSkin || s.startsWith(contextSkin));
         if (matched) {
-            imgSrc  = `sprites/${speciesName}_${matched}.gif${SPRITE_VER}`;
-            onerror = `this.onerror=null;this.src='sprites/${speciesName}.gif${SPRITE_VER}'`;
+            imgSrc  = `sprites/Showdown/${speciesName}_${matched}.gif${SPRITE_VER}`;
+            onerror = `this.onerror=null;this.src='sprites/Showdown/${speciesName}.gif${SPRITE_VER}'`;
         }
     }
     return `<div class="pk-evo-node${isSelected ? ' selected' : ''}" onclick="onPkSelect('${speciesName}')" role="button" tabindex="0">
