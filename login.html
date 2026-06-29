@@ -35,7 +35,7 @@
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Pokémon Stream Visualizer",
-  "url": "https://pokemon.mrklypp.com/",
+  "url": "https://pokemon.mrklypp.com/login",
   "description": "Free Pokémon overlays for OBS and Twitch. Team editor, Nuzlocke cemetery, badge tracker and type chart.",
   "applicationCategory": "UtilitiesApplication",
   "operatingSystem": "Any",
@@ -48,7 +48,7 @@
 <link rel="stylesheet" href="style.css">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 .mode-toggle { display: none; }
 .login-wrap {
@@ -96,7 +96,7 @@
 }
 .featured-label {
   font-size: 0.65rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
-  color: var(--blue, #00CCFF);
+  color: var(--blue);
 }
 .featured-list { display: flex; flex-wrap: wrap; gap: 1.25rem; justify-content: center; }
 .featured-item {
@@ -156,7 +156,7 @@
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--blue, #00CCFF);
+  color: var(--blue);
   text-align: center;
 }
 .landing-grid {
@@ -211,7 +211,7 @@
   border-radius: 50%;
   background: rgba(0, 204, 255, 0.12);
   border: 1px solid rgba(0, 204, 255, 0.3);
-  color: var(--blue, #00CCFF);
+  color: var(--blue);
   font-size: 0.6rem;
   font-weight: 700;
   display: flex;
@@ -299,8 +299,8 @@ document.addEventListener('DOMContentLoaded', () => setLang(currentLang));
   </div>
 
   <!-- Features -->
-  <section class="landing-section" aria-label="features">
-    <h2 class="landing-section-title" data-i18n="featuresTitle">Herramientas incluidas</h2>
+  <section class="landing-section" aria-labelledby="features-title">
+    <h2 id="features-title" class="landing-section-title" data-i18n="featuresTitle">Herramientas incluidas</h2>
     <div class="landing-grid">
       <div class="landing-card">
         <span class="landing-card-icon" aria-hidden="true">🎮</span>
@@ -326,8 +326,8 @@ document.addEventListener('DOMContentLoaded', () => setLang(currentLang));
   </section>
 
   <!-- How it works -->
-  <section class="landing-section" aria-label="how it works">
-    <h2 class="landing-section-title" data-i18n="howTitle">Cómo funciona</h2>
+  <section class="landing-section" aria-labelledby="how-title">
+    <h2 id="how-title" class="landing-section-title" data-i18n="howTitle">Cómo funciona</h2>
     <ol class="landing-steps">
       <li data-i18n="step1">Elige hasta 6 Pokémon para tu equipo</li>
       <li data-i18n="step2">Personaliza el overlay: sprite, fuente y colores</li>
