@@ -307,7 +307,7 @@ h1 .header-brand:hover { transform: scale(1.08); }
 .pokemon-row {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: flex-start;
     flex-wrap: wrap;
     gap: 8px;
     padding: 13px 0;
@@ -365,7 +365,7 @@ h1 .header-brand:hover { transform: scale(1.08); }
 .row-label { min-width: 76px; font-size: var(--fs-md); color: var(--text-2); font-weight: 500; white-space: nowrap; }
 
 /* Autocomplete */
-.ac-wrapper { position: relative; flex: 0 0 162px; }
+.ac-wrapper { position: relative; flex: 0 0 150px; }
 .name-input, .mote-input {
     background: var(--input-bg);
     border: 1px solid var(--border);
