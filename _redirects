@@ -1,4 +1,2 @@
-# Backward compat: old root Showdown URLs (bare filenames) → sprites/Showdown/
-# :file matches a single path segment (no slashes), so subfolders and
-# theme-index.json are served as static assets without hitting this rule.
-/sprites/:file /sprites/Showdown/:file 301
+# No redirect rules needed — all sprite subfolders are static assets
+# served directly by Cloudflare Pages.
