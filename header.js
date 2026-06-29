@@ -7,7 +7,7 @@
     };
 
     const pages = [
-        { id: 'pokemon',  href: 'index.html',    i18n: 'pokemonMode',  label: 'Pokémon' },
+        { id: 'pokemon',  href: 'index.html',    i18n: 'pokemonMode',  label: 'Equipo' },
         { id: 'cemetery', href: 'cemetery.html', i18n: 'cemeteryMode', label: 'Cementerio' },
         { id: 'badges',   href: 'badges.html',   i18n: 'badgeMode',    label: 'Medallas' },
         { id: 'types',    href: 'types.html',    i18n: 'typesMode',    label: 'Pokédex' },
