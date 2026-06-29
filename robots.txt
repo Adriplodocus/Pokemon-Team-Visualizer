@@ -1,6 +1,9 @@
 User-agent: *
 Allow: /
 Disallow: /overlay.html
+Disallow: /badge-overlay.html
+Disallow: /cemetery-overlay.html
 Disallow: /functions/
+Disallow: /admin.html
 
 Sitemap: https://pokemon.mrklypp.com/sitemap.xml
