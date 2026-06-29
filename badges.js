@@ -579,7 +579,7 @@ const BADGE_GAMES = [
 // currentLang is a global defined in lang.js (loaded before badges.js)
 const BADGE_STRINGS = {
     es: {
-        pokemonMode:            'Pokémon',
+        pokemonMode:            'Equipo',
         badgeMode:              'Medallas',
         typesMode:              'Pokédex',
         cemeteryMode:           'Cementerio',
@@ -606,7 +606,7 @@ const BADGE_STRINGS = {
         levelCapLeague:      'Liga',
     },
     en: {
-        pokemonMode:            'Pokémon',
+        pokemonMode:            'Equipo',
         badgeMode:              'Badges',
         typesMode:              'Pokédex',
         cemeteryMode:           'Cemetery',
