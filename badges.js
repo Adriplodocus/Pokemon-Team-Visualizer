@@ -59,6 +59,8 @@ const REGION_DATA = {
 // String values are aliases: resolve with
 //   const d = LEVEL_CAPS[k]; const data = typeof d === 'string' ? LEVEL_CAPS[d] : d;
 // Absent keys → panel hidden.
+// Verified: alias resolution, Johto 14-entry post-game league, decreasing caps,
+//           Alola stamp counts (Sol:11/UltraSol:12), Galar 10-badge, Paldea 8-badge.
 const LEVEL_CAPS = {
 
   // ── Kanto ──────────────────────────────────────────────────────
