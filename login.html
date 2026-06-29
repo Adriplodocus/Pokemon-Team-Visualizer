@@ -3,9 +3,52 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Login — Pokémon Stream Visualizer</title>
+<title>Pokémon Stream Visualizer — Free OBS Overlay for Streamers</title>
+<!-- SEO -->
+<meta name="description" content="Crea overlays de Pokémon para OBS y Twitch gratis. Team editor, cementerio Nuzlocke, tracker de medallas y tabla de tipos. Free Pokémon OBS overlay for streamers.">
+<link rel="canonical" href="https://pokemon.mrklypp.com/login">
+<link rel="alternate" hreflang="es" href="https://pokemon.mrklypp.com/login">
+<link rel="alternate" hreflang="en" href="https://pokemon.mrklypp.com/login">
+<link rel="alternate" hreflang="x-default" href="https://pokemon.mrklypp.com/login">
+
+<!-- Open Graph -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://pokemon.mrklypp.com/login">
+<meta property="og:title" content="Pokémon Stream Visualizer — Free OBS Overlay">
+<meta property="og:description" content="Free Pokémon overlays for OBS and Twitch. Team editor, Nuzlocke cemetery, badge tracker and type chart. Live in seconds.">
+<meta property="og:image" content="https://pokemon.mrklypp.com/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="es_ES">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="Pokémon Stream Visualizer">
+
+<!-- Twitter Card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Pokémon Stream Visualizer — Free OBS Overlay">
+<meta name="twitter:description" content="Free Pokémon overlays for OBS and Twitch. Live in seconds.">
+<meta name="twitter:image" content="https://pokemon.mrklypp.com/og-image.png">
+
+<!-- Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Pokémon Stream Visualizer",
+  "url": "https://pokemon.mrklypp.com/",
+  "description": "Free Pokémon overlays for OBS and Twitch. Team editor, Nuzlocke cemetery, badge tracker and type chart.",
+  "applicationCategory": "UtilitiesApplication",
+  "operatingSystem": "Any",
+  "browserRequirements": "HTML5",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "keywords": "pokemon overlay OBS, free pokemon OBS overlay, pokemon twitch overlay, nuzlocke overlay, pokemon stream widget, overlay pokemon gratis, fuente navegador pokemon, overlay equipo pokemon"
+}
+</script>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><circle cx='16' cy='16' r='14' fill='white'/><path d='M2,16 A14,14 0 0,1 30,16 Z' fill='%23EE1515'/><circle cx='16' cy='16' r='14' fill='none' stroke='%231a1a1a' stroke-width='2'/><line x1='2' y1='16' x2='30' y2='16' stroke='%231a1a1a' stroke-width='2'/><circle cx='16' cy='16' r='5' fill='%231a1a1a'/><circle cx='16' cy='16' r='3' fill='white'/></svg>">
 <link rel="stylesheet" href="style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
 .mode-toggle { display: none; }
 .login-wrap {
@@ -76,6 +119,106 @@
 .featured-name {
   font-size: 0.62rem; font-weight: 600; color: var(--muted, #9A9A9A);
   max-width: 70px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; text-align: center;
+}
+.login-wrap {
+  justify-content: flex-start;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+  gap: 2rem;
+}
+.landing-hero {
+  text-align: center;
+  max-width: 520px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.landing-title {
+  font-family: 'Russo One', sans-serif;
+  font-size: clamp(1.5rem, 5vw, 2.2rem);
+  color: var(--text-em);
+  line-height: 1.1;
+}
+.landing-tagline {
+  font-size: 0.85rem;
+  color: var(--muted);
+  line-height: 1.6;
+}
+.landing-section {
+  width: 100%;
+  max-width: 480px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.landing-section-title {
+  font-size: 0.6rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--blue, #00CCFF);
+  text-align: center;
+}
+.landing-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+.landing-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  transition: border-color 0.18s;
+}
+.landing-card:hover {
+  border-color: rgba(255, 86, 180, 0.35);
+}
+.landing-card-icon { font-size: 1.1rem; line-height: 1; }
+.landing-card-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-em);
+}
+.landing-card-desc {
+  font-size: 0.62rem;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.landing-steps {
+  list-style: none;
+  counter-reset: steps;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.landing-steps li {
+  counter-increment: steps;
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.78rem;
+  color: var(--text);
+  line-height: 1.5;
+}
+.landing-steps li::before {
+  content: counter(steps);
+  min-width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: rgba(0, 204, 255, 0.12);
+  border: 1px solid rgba(0, 204, 255, 0.3);
+  color: var(--blue, #00CCFF);
+  font-size: 0.6rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0.1rem;
 }</style>
 </head>
 <body>
@@ -88,6 +231,20 @@ const LOGIN_STRINGS = {
     twitchBtn: 'Conectar con Twitch',
     googleBtn: 'Conectar con Google',
     consent: 'Al iniciar sesión aceptas que tu nombre y avatar puedan mostrarse como "Streamers que ya usan esta app".',
+    heroTagline: 'Overlays de Pokémon para OBS y Twitch — gratis y en segundos',
+    featuresTitle: 'Herramientas incluidas',
+    feature1Title: 'Editor de equipo',
+    feature1Desc: 'Hasta 6 Pokémon con sprite animado, apodo, nivel y tipo',
+    feature2Title: 'Cementerio Nuzlocke',
+    feature2Desc: 'Registra tus Pokémon caídos con sprite y causa de muerte',
+    feature3Title: 'Tracker de medallas',
+    feature3Desc: 'Sigue tu progreso de medallas por región en tiempo real',
+    feature4Title: 'Tabla de tipos',
+    feature4Desc: 'Efectividad de tipos completa, todas las generaciones',
+    howTitle: 'Cómo funciona',
+    step1: 'Elige hasta 6 Pokémon para tu equipo',
+    step2: 'Personaliza el overlay: sprite, fuente y colores',
+    step3: 'Añade la URL del overlay como Browser Source en OBS',
   },
   en: {
     featuredLabel: 'Streamers already using it',
@@ -95,6 +252,20 @@ const LOGIN_STRINGS = {
     twitchBtn: 'Connect with Twitch',
     googleBtn: 'Connect with Google',
     consent: 'By logging in you agree that your name and avatar may be shown as "Streamers already using this app".',
+    heroTagline: 'Free Pokémon overlays for OBS and Twitch — live in seconds',
+    featuresTitle: 'Included tools',
+    feature1Title: 'Team editor',
+    feature1Desc: 'Up to 6 Pokémon with animated sprites, nickname, level and type',
+    feature2Title: 'Nuzlocke cemetery',
+    feature2Desc: 'Track your fallen Pokémon with sprite and cause of death',
+    feature3Title: 'Badge tracker',
+    feature3Desc: 'Follow your badge progress by region in real time',
+    feature4Title: 'Type chart',
+    feature4Desc: 'Complete type effectiveness, all generations',
+    howTitle: 'How it works',
+    step1: 'Pick up to 6 Pokémon for your team',
+    step2: 'Customize the overlay: sprite style, font and colors',
+    step3: 'Add the overlay URL as a Browser Source in OBS',
   },
 };
 function applyLoginLang() {
@@ -120,10 +291,57 @@ document.addEventListener('DOMContentLoaded', () => setLang(currentLang));
 <script src="patch-notes.js"></script>
 <script src="header.js"></script>
 <div class="login-wrap">
+
+  <!-- Hero -->
+  <div class="landing-hero">
+    <h1 class="landing-title">Pokémon Stream Visualizer</h1>
+    <p class="landing-tagline" data-i18n="heroTagline">Overlays de Pokémon para OBS y Twitch — gratis y en segundos</p>
+  </div>
+
+  <!-- Features -->
+  <section class="landing-section" aria-label="features">
+    <h2 class="landing-section-title" data-i18n="featuresTitle">Herramientas incluidas</h2>
+    <div class="landing-grid">
+      <div class="landing-card">
+        <span class="landing-card-icon" aria-hidden="true">🎮</span>
+        <strong class="landing-card-title" data-i18n="feature1Title">Editor de equipo</strong>
+        <p class="landing-card-desc" data-i18n="feature1Desc">Hasta 6 Pokémon con sprite animado, apodo, nivel y tipo</p>
+      </div>
+      <div class="landing-card">
+        <span class="landing-card-icon" aria-hidden="true">⚰️</span>
+        <strong class="landing-card-title" data-i18n="feature2Title">Cementerio Nuzlocke</strong>
+        <p class="landing-card-desc" data-i18n="feature2Desc">Registra tus Pokémon caídos con sprite y causa de muerte</p>
+      </div>
+      <div class="landing-card">
+        <span class="landing-card-icon" aria-hidden="true">🏅</span>
+        <strong class="landing-card-title" data-i18n="feature3Title">Tracker de medallas</strong>
+        <p class="landing-card-desc" data-i18n="feature3Desc">Sigue tu progreso de medallas por región en tiempo real</p>
+      </div>
+      <div class="landing-card">
+        <span class="landing-card-icon" aria-hidden="true">⚡</span>
+        <strong class="landing-card-title" data-i18n="feature4Title">Tabla de tipos</strong>
+        <p class="landing-card-desc" data-i18n="feature4Desc">Efectividad de tipos completa, todas las generaciones</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="landing-section" aria-label="how it works">
+    <h2 class="landing-section-title" data-i18n="howTitle">Cómo funciona</h2>
+    <ol class="landing-steps">
+      <li data-i18n="step1">Elige hasta 6 Pokémon para tu equipo</li>
+      <li data-i18n="step2">Personaliza el overlay: sprite, fuente y colores</li>
+      <li data-i18n="step3">Añade la URL del overlay como Browser Source en OBS</li>
+    </ol>
+  </section>
+
+  <!-- Featured streamers (moved here from top) -->
   <div id="featured-section" class="featured-section" style="display:none">
     <div class="featured-label" data-i18n="featuredLabel">Streamers que ya lo usan</div>
     <div id="featured-list" class="featured-list"></div>
   </div>
+
+  <!-- Login -->
   <div>
     <p class="login-subtitle" data-i18n="loginSubtitle">Inicia sesión para acceder a todas las funciones</p>
   </div>
