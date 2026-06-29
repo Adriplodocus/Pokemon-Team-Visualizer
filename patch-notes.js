@@ -23,4 +23,10 @@ const PATCH_NOTES = [
         title: { es: 'Sprites de Pokémon Mundo Misterioso', en: 'Pokémon Mistery Dungeon sprites' },
         body:  { es: '¡Ahora puedes elegir los sprites de Pokémon Mundo Misterioso desde el panel de diseño!', en: 'Now you can choose Pokémon Mistery Dungeon sprites from design panel!' },
     },
+    {
+        id: 'levelcap',
+        date: '29/06/2026',
+        title: { es: 'Level caps', en: 'Level caps' },
+        body:  { es: 'Ahora puedes comprobar el level cap de cada gimnasio en la página "Medallas".', en: 'You can now check the level cap for each gym on the "Badges" page.' },
+    },
 ];

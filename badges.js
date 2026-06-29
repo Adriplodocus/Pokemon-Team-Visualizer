@@ -643,7 +643,10 @@ function applyBadgeLang() {
     document.querySelectorAll('[data-i18n-badge]').forEach(el => {
         const key = el.dataset.i18nBadge;
         const s = BADGE_STRINGS[currentLang];
-        if (typeof s[key] === 'string') el.textContent = s[key];
+        if (typeof s[key] === 'string') {
+            el.textContent = s[key];
+            el.closest('.mode-btn')?.setAttribute('aria-label', s[key]);
+        }
     });
     buildBadgeGameSelect();
     buildLevelCapPanel();
