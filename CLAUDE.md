@@ -33,6 +33,7 @@ npx wrangler pages dev . --binding ABLY_API_KEY=<key> --binding DATABASE_URL=<ne
 | `cemetery-overlay.html` | OBS Browser Source for cemetery |
 | `login.html` | OAuth login page (Twitch / Google) |
 | `admin.html` | Admin panel (tier management, featured streamers) |
+| `credits-pmd.html` | Attribution page for PMD portrait sprites |
 
 ## Shared modules
 
@@ -40,6 +41,7 @@ npx wrangler pages dev . --binding ABLY_API_KEY=<key> --binding DATABASE_URL=<ne
 - **`header.js`** — injects `<header>` (nav tabs, lang toggle, user widget) and `<footer>` into every page via `insertAdjacentHTML`. Defines `applyHeaderLang()`, `initUserWidget()`, `exitExternalMode()`. The `ACTIVE_PAGE` global must be declared before loading this script.
 - **`patch-notes.js`** — `PATCH_NOTES` array (id, date, title/body in ES+EN). Shown in UI on login. Add entries with `node scripts/add-patch-note.js` (interactive CLI).
 - **`type-chart.js`** — type effectiveness data used by `types.js`.
+- **`pokemon-catalog.js`** — skin/variant metadata per Pokémon (which skins exist, whether to skip the base sprite). Used by `app.js` and `cemetery.js` for the sprite picker. Maintained manually; `scripts/pokemon_catalog.py` is the reference source.
 
 ## Architecture
 
@@ -59,6 +61,19 @@ npx wrangler pages dev . --binding ABLY_API_KEY=<key> --binding DATABASE_URL=<ne
 - **Server-side state sync** — `GET/POST /api/state` persists team/badge state in the `users.state` JSONB column, enabling cross-device sync.
 
 > `FEMALE_VARIANTS` (Set of Pokémon with female sprites) is duplicated in both `app.js` and `cemetery.js`. Keep both in sync when adding entries.
+
+### Sprite themes
+
+Users pick a sprite style via `#theme-select` (stored in `ptv_sprite_theme`, default `'Showdown'`). Two themes:
+
+| Theme | Format | Location |
+|---|---|---|
+| `Showdown` | Animated GIF | `sprites/Showdown/` (same subdirs as root) |
+| `PMD` | Static PNG | `sprites/PMD/` |
+
+`sprites/theme-index.json` tracks per-theme availability (which Pokémon have female/skin variants). Loaded at runtime; if absent, falls back to `FEMALE_VARIANTS` set and `pokemon-catalog.js`. Rebuild after adding sprites with `python scripts/generate_theme_index.py`.
+
+`themeExt()` returns `.gif` for Showdown, `.png` for PMD. Sprite URL base = `BASE_URL + spriteTheme + '/'`.
 
 ### OBS overlays
 
@@ -126,12 +141,16 @@ Schema in `db/schema.sql`. Accessed via `@neondatabase/serverless` (HTTP transpo
 
 ## Updating Pokémon data
 
-- `scripts/generate_pokemon_list.py` — reads `sprites/*.gif` and writes `pokemon-list.json`. Run after adding sprites.
+- `scripts/generate_pokemon_list.py` — reads `sprites/*.gif` and writes `pokemon-list.json`. Run after adding Showdown sprites.
+- `scripts/generate_theme_index.py` — rebuilds `sprites/theme-index.json`. Run after adding sprites to any theme subdirectory.
+- `scripts/fetch_pmd_portraits.py` — fetches PMD portrait PNGs into `sprites/PMD/`.
 - `scripts/pokemon_catalog.py` — reference for skin variants; drives manual updates to `pokemon-catalog.js`.
 - `pokemon-aliases.json` — alternate → canonical name mapping. Both JSON files fetched at runtime by `app.js`.
+- `npm run add-patch-note` — interactive CLI to append to `PATCH_NOTES` in `patch-notes.js`.
 
 ```
 python scripts/generate_pokemon_list.py
+python scripts/generate_theme_index.py
 ```
 
 ## Sprites
