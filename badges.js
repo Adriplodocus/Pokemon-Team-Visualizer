@@ -600,6 +600,8 @@ const BADGE_STRINGS = {
         badgeCopyEditorUrl:  '🔗 Copiar link para editor',
         badgeExternalBanner: id => `Controlando canal externo · ${id}`,
         badgeExitExternal:   'Salir',
+        levelCapGyms:        'Gimnasios',
+        levelCapLeague:      'Liga',
     },
     en: {
         pokemonMode:            'Pokémon',
@@ -625,6 +627,8 @@ const BADGE_STRINGS = {
         badgeCopyEditorUrl:  '🔗 Copy editor link',
         badgeExternalBanner: id => `Controlling external channel · ${id}`,
         badgeExitExternal:   'Exit',
+        levelCapGyms:        'Gyms',
+        levelCapLeague:      'League',
     },
 };
 
@@ -640,6 +644,7 @@ function applyBadgeLang() {
         if (typeof s[key] === 'string') el.textContent = s[key];
     });
     buildBadgeGameSelect();
+    buildLevelCapPanel();
     if (badgeChannelId) updateBadgeObsHint();
 }
 
@@ -801,12 +806,65 @@ function buildBadgeCheckboxes() {
             badgeActive[i] = cb.checked;
             saveBadgeState();
             schedulePreviewBadgeUpdate();
+            buildLevelCapPanel();
         });
 
         item.appendChild(img);
         item.appendChild(cb);
         container.appendChild(item);
     }
+    buildLevelCapPanel();
+}
+
+// ── Level cap panel ──────────────────────────────────────────────
+function buildLevelCapPanel() {
+    const panel = document.getElementById('level-cap-panel');
+    if (!panel) return;
+
+    // Resolve alias
+    let entry = LEVEL_CAPS[badgeGame];
+    if (typeof entry === 'string') entry = LEVEL_CAPS[entry];
+
+    // No data → hide panel
+    if (!entry) {
+        panel.style.display = 'none';
+        return;
+    }
+    panel.style.display = '';
+
+    // Info-only game (Consonancia)
+    if (entry.info) {
+        panel.innerHTML = `<p class="cap-info">${entry.info[currentLang]}</p>`;
+        return;
+    }
+
+    // Active gym index: first unchecked badge
+    const nextIdx = badgeActive.indexOf(false);
+
+    const gymRows = entry.gyms.map((g, i) => {
+        const cls = i < nextIdx || nextIdx === -1 ? 'cap-done'
+                  : i === nextIdx                  ? 'cap-active'
+                  : '';
+        return `<div class="cap-row ${cls}">
+            <span class="cap-name">${g.label[currentLang]}</span>
+            <span class="cap-level">Lv.${g.cap}</span>
+        </div>`;
+    }).join('');
+
+    const leagueRows = entry.league.map((l, i) => {
+        const cls = nextIdx === -1 && i === 0 ? 'cap-active' : '';
+        return `<div class="cap-row ${cls}">
+            <span class="cap-name">${l.label[currentLang]}</span>
+            <span class="cap-level">Lv.${l.cap}</span>
+        </div>`;
+    }).join('');
+
+    panel.innerHTML =
+        `<div class="cap-section-title">${tB('levelCapGyms')}</div>` +
+        gymRows +
+        `<hr class="cap-divider">` +
+        `<div class="cap-section-title">${tB('levelCapLeague')}</div>` +
+        leagueRows;
 }
 
 function updateBadgeBrightness(val) {
