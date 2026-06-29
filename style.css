@@ -1142,11 +1142,22 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
 }
 
 .level-cap-panel {
-    flex: 0 0 160px;
+    flex: 1;
     overflow-y: auto;
     max-height: 300px;
     font-size: 0.72rem;
     font-family: 'JetBrains Mono', monospace;
+}
+
+.cap-columns {
+    display: flex;
+    gap: 0.75rem;
+    align-items: flex-start;
+}
+
+.cap-col {
+    flex: 1;
+    min-width: 0;
 }
 
 .cap-section-title {
@@ -1157,9 +1168,7 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     color: var(--muted);
     margin-bottom: 0.3rem;
 }
-.cap-section-title + .cap-section-title {
-    margin-top: 0.6rem;
-}
+
 
 .cap-row {
     display: flex;
@@ -1191,11 +1200,6 @@ input[type="checkbox"] { accent-color: var(--accent); width: 15px; height: 15px;
     white-space: nowrap;
 }
 
-.cap-divider {
-    border: none;
-    border-top: 1px solid var(--border);
-    margin: 0.5rem 0;
-}
 
 .cap-info {
     font-size: 0.68rem;

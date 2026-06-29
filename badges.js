@@ -862,11 +862,16 @@ function buildLevelCapPanel() {
     }).join('');
 
     panel.innerHTML =
-        `<div class="cap-section-title">${tB('levelCapGyms')}</div>` +
-        gymRows +
-        `<hr class="cap-divider">` +
-        `<div class="cap-section-title">${tB('levelCapLeague')}</div>` +
-        leagueRows;
+        `<div class="cap-columns">` +
+          `<div class="cap-col">` +
+            `<div class="cap-section-title">${tB('levelCapGyms')}</div>` +
+            gymRows +
+          `</div>` +
+          `<div class="cap-col">` +
+            `<div class="cap-section-title">${tB('levelCapLeague')}</div>` +
+            leagueRows +
+          `</div>` +
+        `</div>`;
 }
 
 function updateBadgeBrightness(val) {
