@@ -248,6 +248,21 @@ function isHoriz(layout) {
     return layout.startsWith('h');
 }
 
+function getLayout() {
+    return document.getElementById('grid-select').value;
+}
+
+function setLayout(v) {
+    v = normalizeLayout(v);
+    const horiz = isHoriz(v);
+    document.getElementById('orientation-select').value = horiz ? 'horizontal' : 'vertical';
+    const gridSel = document.getElementById('grid-select');
+    gridSel.innerHTML = horiz
+        ? '<option value="h6x1">6×1</option><option value="h3x2">3×2</option>'
+        : '<option value="v1x6">1×6</option><option value="v2x3">2×3</option>';
+    gridSel.value = v;
+}
+
 const LAYOUT_DIMS = {
     'h6x1': '1350x265',
     'h3x2': '675x530',
@@ -339,7 +354,7 @@ function setSaveIndicator(state, text) {
 function buildStateBlob() {
     return {
         team:       team.map(s => ({ name: s.name, mote: s.mote, properties: { ...s.properties } })),
-        layout:     document.getElementById('layout-select').value,
+        layout:     getLayout(),
         shadows:    document.getElementById('shadows-check').checked,
         bg:         document.getElementById('bg-check').checked,
         typography: { ...typography },
@@ -1141,16 +1156,13 @@ function schedulePreviewUpdate() {
 }
 
 function updatePreview() {
-    const layout  = document.getElementById('layout-select').value;
-    const msg     = document.getElementById('preview-msg');
-    const wrapper = document.getElementById('preview-wrapper');
-    const horiz   = isHoriz(layout);
+    const layout        = getLayout();
+    const previewLayout = isHoriz(layout) ? layout : 'h6x1';
+    const msg           = document.getElementById('preview-msg');
+    const wrapper       = document.getElementById('preview-wrapper');
 
-    msg.textContent       = horiz ? '' : t('previewVertical');
-    msg.style.display     = horiz ? 'none' : '';
-    wrapper.style.display = horiz ? '' : 'none';
-
-    if (!horiz) return;
+    msg.style.display     = 'none';
+    wrapper.style.display = '';
 
     const shadows    = document.getElementById('shadows-check').checked;
     const bg         = document.getElementById('bg-check').checked;
@@ -1162,19 +1174,25 @@ function updatePreview() {
 
     const nameH    = Math.max(typography.size, 25);
     const overlayH = 175 + nameH + 10;
-    const is3x2    = layout === 'h3x2';
+    const is3x2    = previewLayout === 'h3x2';
     const iframeW  = is3x2 ? 675  : 1350;
     const iframeH  = is3x2 ? overlayH * 2 : overlayH;
-    const scale    = Math.max(containerW / iframeW, 0.75);
+
+    let scale;
+    if (is3x2) {
+        scale = Math.min(230 / iframeH, containerW / iframeW);
+    } else {
+        scale = Math.max(containerW / iframeW, 0.75);
+    }
 
     iframe.style.width     = iframeW + 'px';
     iframe.style.height    = iframeH + 'px';
     iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
     wrapper.style.width    = '';
-    wrapper.style.height   = is3x2 ? Math.round(iframeH * scale) + 'px' : '';
+    wrapper.style.height   = is3x2 ? '230px' : '';
     wrapper.style.margin   = '0';
 
-    iframe.srcdoc = buildOverlayHTML(layout, shadows, bg, typography);
+    iframe.srcdoc = buildOverlayHTML(previewLayout, shadows, bg, typography);
 }
 
 // ── Color picker ──────────────────────────────────────────────────
@@ -1370,7 +1388,7 @@ function applyRawState(raw) {
         }
     });
 
-    if (raw.layout  !== undefined) document.getElementById('layout-select').value  = normalizeLayout(raw.layout);
+    if (raw.layout  !== undefined) setLayout(raw.layout);
     if (raw.shadows !== undefined) document.getElementById('shadows-check').checked = raw.shadows;
     if (raw.bg      !== undefined) document.getElementById('bg-check').checked      = raw.bg;
 
@@ -1460,7 +1478,7 @@ function updateObsHint() {
             `<button onclick="exitExternalMode()">${t('exitExternal')}</button>`;
     }
 
-    const layout = document.getElementById('layout-select').value;
+    const layout = getLayout();
     const dims   = LAYOUT_DIMS[layout] || '1350x265';
     const url    = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
     document.getElementById('obs-hint').innerHTML =
@@ -1528,7 +1546,7 @@ async function publishToObs() {
         };
     });
 
-    const layout  = document.getElementById('layout-select').value;
+    const layout  = getLayout();
     const shadows = document.getElementById('shadows-check').checked;
     const bg      = document.getElementById('bg-check').checked;
 
@@ -1571,7 +1589,16 @@ function newChannel() {
     updateObsHint();
 }
 
-document.getElementById('layout-select').addEventListener('change', () => { saveState(); updateObsHint(); });
+document.getElementById('orientation-select').addEventListener('change', () => {
+    const horiz = document.getElementById('orientation-select').value === 'horizontal';
+    const gridSel = document.getElementById('grid-select');
+    gridSel.innerHTML = horiz
+        ? '<option value="h6x1">6×1</option><option value="h3x2">3×2</option>'
+        : '<option value="v1x6">1×6</option><option value="v2x3">2×3</option>';
+    saveState();
+    updateObsHint();
+});
+document.getElementById('grid-select').addEventListener('change', () => { saveState(); updateObsHint(); });
 document.getElementById('shadows-check').addEventListener('change', saveState);
 document.getElementById('bg-check').addEventListener('change', saveState);
 const _themeSelect = document.getElementById('theme-select');
@@ -1618,7 +1645,7 @@ function savePreset(slot) {
     setPreset(slot, {
         name: name.trim() || defaultName,
         team: JSON.parse(JSON.stringify(team)),
-        layout: document.getElementById('layout-select').value,
+        layout: getLayout(),
         shadows: document.getElementById('shadows-check').checked,
         bg: document.getElementById('bg-check').checked,
         typography: JSON.parse(JSON.stringify(typography)),
@@ -1642,7 +1669,7 @@ async function loadPreset(slot) {
         refreshIcons(i);
         refreshSprite(i);
     });
-    if (preset.layout) document.getElementById('layout-select').value = normalizeLayout(preset.layout);
+    if (preset.layout) setLayout(preset.layout);
     if (preset.shadows !== undefined) document.getElementById('shadows-check').checked = preset.shadows;
     if (preset.bg !== undefined) document.getElementById('bg-check').checked = preset.bg;
     if (preset.typography) {
