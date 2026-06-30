@@ -910,7 +910,8 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
         };
     });
 
-    const isHorizontal = layout === 'horizontal';
+    const is3x2 = layout === 'h3x2';
+    const is2x3 = layout === 'v2x3';
 
     const nameHidden = typo.namePosition === 'hidden';
     const nameAbove  = !nameHidden && typo.namePosition !== 'below';
@@ -929,7 +930,7 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
         e && showShadows ? `<img id="shadow${i+1}" src="${SHADOW_URL}" decoding="async">` : ''
     );
 
-    if (isHorizontal) {
+    if (isHoriz(layout)) {
         return `<html>
 <head>
 <meta charset="UTF-8">
@@ -945,7 +946,7 @@ body,html{margin:0;padding:0;}
 .shadow-row{margin-top:-15px;}
 img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
 p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
-.container{display:flex;flex-wrap:nowrap;}
+.container{display:flex;flex-wrap:${is3x2 ? 'wrap' : 'nowrap'};${is3x2 ? 'max-width:675px;' : ''}}
 .nameDiv{flex:0 0 225px;width:225px;}
 .name-above-row{padding-top:10px;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
@@ -978,7 +979,7 @@ ${(!nameHidden && !nameAbove) ? `<div class="container">\n${entries.map((e, i) =
 ${gfLink}
 <style>
 body,html{margin:0;padding:0;}
-.wrapper{display:flex;flex-direction:column;}
+.wrapper{display:flex;${is2x3 ? 'flex-wrap:wrap;width:450px;' : 'flex-direction:column;'}}
 .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
 .pkDiv,.shadowDiv{margin:0;padding:0;}
 .pkDiv{width:225px;position:relative;}
@@ -1131,10 +1132,13 @@ function updatePreview() {
     const layout  = document.getElementById('layout-select').value;
     const msg     = document.getElementById('preview-msg');
     const wrapper = document.getElementById('preview-wrapper');
+    const horiz   = isHoriz(layout);
 
-    msg.textContent   = layout === 'vertical' ? t('previewVertical') : '';
-    msg.style.display = layout === 'vertical' ? '' : 'none';
-    wrapper.style.display = '';
+    msg.textContent       = horiz ? '' : t('previewVertical');
+    msg.style.display     = horiz ? 'none' : '';
+    wrapper.style.display = horiz ? '' : 'none';
+
+    if (!horiz) return;
 
     const shadows    = document.getElementById('shadows-check').checked;
     const bg         = document.getElementById('bg-check').checked;
@@ -1144,19 +1148,21 @@ function updatePreview() {
         - parseFloat(cardStyle.paddingLeft)
         - parseFloat(cardStyle.paddingRight);
 
-    const nameH     = Math.max(typography.size, 25);
-    const overlayH  = 175 + nameH + 10;
-    const scale     = Math.max(containerW / 1350, 0.75);
-    const wrapperW  = Math.min(Math.round(1350 * scale), containerW);
-    const wrapperH  = Math.round(overlayH * scale);
-    iframe.style.width     = '1350px';
-    iframe.style.height    = overlayH + 'px';
+    const nameH    = Math.max(typography.size, 25);
+    const overlayH = 175 + nameH + 10;
+    const is3x2    = layout === 'h3x2';
+    const iframeW  = is3x2 ? 675  : 1350;
+    const iframeH  = is3x2 ? overlayH * 2 : overlayH;
+    const scale    = Math.max(containerW / iframeW, 0.75);
+
+    iframe.style.width     = iframeW + 'px';
+    iframe.style.height    = iframeH + 'px';
     iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
     wrapper.style.width    = '';
     wrapper.style.height   = '';
     wrapper.style.margin   = '0';
 
-    iframe.srcdoc = buildOverlayHTML('horizontal', shadows, bg, typography);
+    iframe.srcdoc = buildOverlayHTML(layout, shadows, bg, typography);
 }
 
 // ── Color picker ──────────────────────────────────────────────────
