@@ -213,12 +213,13 @@
 <script>
 const TIERS = ['guest', 'vip'];
 
-let listPage     = 1;
-let listLimit    = 20;
-let listSort     = 'asc';
-let listPages    = 1;
-let listProvider = '';
-let listSortBy   = 'username';
+let listPage           = 1;
+let listLimit          = 20;
+let listSort           = 'asc';
+let listPages          = 1;
+let listProvider       = '';
+let listSortBy         = 'username';
+let liveStatusGen      = 0;
 
 function fmtFollowers(n) {
   if (n >= 1_000_000) return (n / 1_000_000).toFixed(1).replace(/\.0$/, '') + 'M';
@@ -305,12 +306,15 @@ async function loadUsers() {
 }
 
 async function checkLiveStatus(twitchUsers, key) {
+  const gen      = ++liveStatusGen;
   const usernames = twitchUsers.map(u => u.username).join(',');
   const res = await fetch(`/api/admin/live-status?usernames=${encodeURIComponent(usernames)}`, {
     headers: { 'X-Admin-Key': key },
   }).catch(() => null);
+  if (gen !== liveStatusGen) return;
   if (!res || !res.ok) return;
   const { live } = await res.json();
+  if (gen !== liveStatusGen) return;
   if (!live?.length) return;
   const liveSet  = new Set(live.map(u => u.toLowerCase()));
   const listEl   = document.getElementById('list-results');
