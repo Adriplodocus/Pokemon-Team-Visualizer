@@ -237,6 +237,24 @@ const FLOATING_POKEMON = new Set([
     'wingull','kyogre','swellow','vibrava','mantine','yanmega','yanma','tropius','regieleki',
 ]);
 
+// ── Layout helpers ────────────────────────────────────────────────
+function normalizeLayout(v) {
+    if (v === 'horizontal') return 'h6x1';
+    if (v === 'vertical')   return 'v1x6';
+    return v;
+}
+
+function isHoriz(layout) {
+    return layout.startsWith('h');
+}
+
+const LAYOUT_DIMS = {
+    'h6x1': '1350x265',
+    'h3x2': '675x530',
+    'v1x6': '265x1350',
+    'v2x3': '530x675',
+};
+
 const FEMALE_VARIANTS = new Set([
     'abomasnow','aipom','alakazam','ambipom','basculegion','beautifly',
     'bibarel','bidoof','blaziken','buizel','butterfree','cacturne',
@@ -1334,7 +1352,7 @@ function applyRawState(raw) {
         }
     });
 
-    if (raw.layout  !== undefined) document.getElementById('layout-select').value  = raw.layout;
+    if (raw.layout  !== undefined) document.getElementById('layout-select').value  = normalizeLayout(raw.layout);
     if (raw.shadows !== undefined) document.getElementById('shadows-check').checked = raw.shadows;
     if (raw.bg      !== undefined) document.getElementById('bg-check').checked      = raw.bg;
 
@@ -1425,7 +1443,7 @@ function updateObsHint() {
     }
 
     const layout = document.getElementById('layout-select').value;
-    const dims   = layout === 'horizontal' ? '1350x265' : '265x1350';
+    const dims   = LAYOUT_DIMS[layout] || '1350x265';
     const url    = `https://pokemon.mrklypp.com/overlay.html?id=${channelId}`;
     document.getElementById('obs-hint').innerHTML =
         t('obsHint', dims) +
@@ -1606,7 +1624,7 @@ async function loadPreset(slot) {
         refreshIcons(i);
         refreshSprite(i);
     });
-    if (preset.layout) document.getElementById('layout-select').value = preset.layout;
+    if (preset.layout) document.getElementById('layout-select').value = normalizeLayout(preset.layout);
     if (preset.shadows !== undefined) document.getElementById('shadows-check').checked = preset.shadows;
     if (preset.bg !== undefined) document.getElementById('bg-check').checked = preset.bg;
     if (preset.typography) {
@@ -1761,7 +1779,7 @@ function buildMigratedState() {
             mote:       s.mote       || '',
             properties: { ...DEFAULT_PROPS, ...(s.properties || {}) },
         })),
-        layout:     localStorage.getItem('ptv_layout')   || 'horizontal',
+        layout:     normalizeLayout(localStorage.getItem('ptv_layout') || 'h6x1'),
         shadows:    localStorage.getItem('ptv_shadows')  !== 'false',
         bg:         localStorage.getItem('ptv_bg')       === 'true',
         typography: parsedTypo ? { ...DEFAULT_TYPOGRAPHY, ...parsedTypo } : { ...DEFAULT_TYPOGRAPHY },
