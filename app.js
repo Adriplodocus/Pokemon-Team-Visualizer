@@ -1156,10 +1156,9 @@ function schedulePreviewUpdate() {
 }
 
 function updatePreview() {
-    const layout        = getLayout();
-    const previewLayout = isHoriz(layout) ? layout : 'h6x1';
-    const msg           = document.getElementById('preview-msg');
-    const wrapper       = document.getElementById('preview-wrapper');
+    const layout  = getLayout();
+    const msg     = document.getElementById('preview-msg');
+    const wrapper = document.getElementById('preview-wrapper');
 
     msg.style.display     = 'none';
     wrapper.style.display = '';
@@ -1174,25 +1173,34 @@ function updatePreview() {
 
     const nameH    = Math.max(typography.size, 25);
     const overlayH = 175 + nameH + 10;
-    const is3x2    = previewLayout === 'h3x2';
-    const iframeW  = is3x2 ? 675  : 1350;
-    const iframeH  = is3x2 ? overlayH * 2 : overlayH;
 
-    let scale;
-    if (is3x2) {
-        scale = Math.min(230 / iframeH, containerW / iframeW);
-    } else {
-        scale = Math.max(containerW / iframeW, 0.75);
+    let iframeW, iframeH, scale;
+    switch (layout) {
+        case 'h3x2':
+            iframeW = 675;  iframeH = overlayH * 2;
+            scale   = Math.min(230 / iframeH, containerW / iframeW);
+            break;
+        case 'v1x6':
+            iframeW = 265;  iframeH = 1350;
+            scale   = Math.min(230 / iframeH, containerW / iframeW);
+            break;
+        case 'v2x3':
+            iframeW = 530;  iframeH = 675;
+            scale   = Math.min(230 / iframeH, containerW / iframeW);
+            break;
+        default: // h6x1
+            iframeW = 1350; iframeH = overlayH;
+            scale   = Math.max(containerW / iframeW, 0.75);
     }
 
     iframe.style.width     = iframeW + 'px';
     iframe.style.height    = iframeH + 'px';
     iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
     wrapper.style.width    = '';
-    wrapper.style.height   = is3x2 ? '230px' : '';
+    wrapper.style.height   = layout === 'h6x1' ? '' : '230px';
     wrapper.style.margin   = '0';
 
-    iframe.srcdoc = buildOverlayHTML(previewLayout, shadows, bg, typography);
+    iframe.srcdoc = buildOverlayHTML(layout, shadows, bg, typography);
 }
 
 // ── Color picker ──────────────────────────────────────────────────
