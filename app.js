@@ -931,6 +931,25 @@ function buildOverlayHTML(layout, showShadows, showBg, typo) {
     );
 
     if (isHoriz(layout)) {
+        const bodyHTML = is3x2
+            ? [[0,1,2],[3,4,5]].map(idxs => {
+                const rowEntries = idxs.map(i => entries[i]);
+                const rowPk      = idxs.map(i => pkDivContent[i]);
+                const rowShadow  = idxs.map(i => shadowContent[i]);
+                const rowPTags   = idxs.map(i => pTagsArr[i]);
+                return [
+                    (!nameHidden && nameAbove) ? `<div class="container name-above-row">\n${rowEntries.map((e,i) => e ? `<div class="nameDiv">${rowPTags[i]}</div>` : '').join('\n')}\n</div>` : '',
+                    `<div class="container sprite-row">\n${rowEntries.map((e,i) => e ? `<div class="pkDiv${FLOATING_POKEMON.has(e.name) ? ' pkDiv--float' : ''}">${rowPk[i]}</div>` : '').join('\n')}\n</div>`,
+                    `<div class="container shadow-row">\n${rowEntries.map((e,i) => e ? `<div class="shadowDiv">${rowShadow[i]}</div>` : '').join('\n')}\n</div>`,
+                    (!nameHidden && !nameAbove) ? `<div class="container">\n${rowEntries.map((e,i) => e ? `<div class="nameDiv">${rowPTags[i]}</div>` : '').join('\n')}\n</div>` : '',
+                ].filter(Boolean).join('\n');
+              }).join('\n')
+            : [
+                (!nameHidden && nameAbove) ? `<div class="container name-above-row">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : '',
+                `<div class="container sprite-row">\n${entries.map((e, i) => e ? `<div class="pkDiv${FLOATING_POKEMON.has(e.name) ? ' pkDiv--float' : ''}">${pkDivContent[i]}</div>` : '').join('\n')}\n</div>`,
+                `<div class="container shadow-row">\n${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}\n</div>`,
+                (!nameHidden && !nameAbove) ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : '',
+              ].filter(Boolean).join('\n');
         return `<html>
 <head>
 <meta charset="UTF-8">
@@ -946,7 +965,7 @@ body,html{margin:0;padding:0;}
 .shadow-row{margin-top:-15px;}
 img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
 p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size, 25)}px;text-align:center;}
-.container{display:flex;flex-wrap:${is3x2 ? 'wrap' : 'nowrap'};${is3x2 ? 'max-width:675px;' : ''}}
+.container{display:flex;flex-wrap:nowrap;}
 .nameDiv{flex:0 0 225px;width:225px;}
 .name-above-row{padding-top:10px;}
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
@@ -961,14 +980,7 @@ p{margin:0;height:${Math.max(typo.size, 25)}px;line-height:${Math.max(typo.size,
 </style>
 </head>
 <body>
-${(!nameHidden && nameAbove) ? `<div class="container name-above-row">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
-<div class="container sprite-row">
-${entries.map((e, i) => e ? `<div class="pkDiv${FLOATING_POKEMON.has(e.name) ? ' pkDiv--float' : ''}">${pkDivContent[i]}</div>` : '').join('\n')}
-</div>
-<div class="container shadow-row">
-${entries.map((e, i) => e ? `<div class="shadowDiv">${shadowContent[i]}</div>` : '').join('\n')}
-</div>
-${(!nameHidden && !nameAbove) ? `<div class="container">\n${entries.map((e, i) => e ? `<div class="nameDiv">${pTagsArr[i]}</div>` : '').join('\n')}\n</div>` : ''}
+${bodyHTML}
 </body>
 </html>`;
     } else {
@@ -1159,7 +1171,7 @@ function updatePreview() {
     iframe.style.height    = iframeH + 'px';
     iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
     wrapper.style.width    = '';
-    wrapper.style.height   = '';
+    wrapper.style.height   = is3x2 ? Math.round(iframeH * scale) + 'px' : '';
     wrapper.style.margin   = '0';
 
     iframe.srcdoc = buildOverlayHTML(layout, shadows, bg, typography);

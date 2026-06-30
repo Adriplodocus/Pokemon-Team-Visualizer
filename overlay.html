@@ -19,11 +19,8 @@ body.layout-h6x1 img,body.layout-h3x2 img{width:100%;height:100%;object-fit:cont
 body.layout-h6x1 p,body.layout-h3x2 p{margin:0;height:35px;line-height:35px;text-align:center;}
 body.layout-h6x1 .name-above-row,body.layout-h3x2 .name-above-row{padding-top:10px;}
 
-/* ── h6x1 specific ── */
-body.layout-h6x1 .container{display:flex;flex-wrap:nowrap;}
-
-/* ── h3x2 specific ── */
-body.layout-h3x2 .container{display:flex;flex-wrap:wrap;max-width:675px;}
+/* ── h6x1 / h3x2 container ── */
+body.layout-h6x1 .container,body.layout-h3x2 .container{display:flex;flex-wrap:nowrap;}
 
 /* ── v1x6 / v2x3 shared rules ── */
 body.layout-v1x6 .pair,body.layout-v2x3 .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
@@ -167,40 +164,48 @@ body.layout-v1x6 .pair:nth-child(6),body.layout-v2x3 .pair:nth-child(6){animatio
         } else {
             var nameHidden = typo.namePosition === 'hidden';
             var nameAbove = !nameHidden && typo.namePosition !== 'below';
-            var nameAboveRow = nameAbove ? document.createElement('div') : null;
-            if (nameAboveRow) nameAboveRow.className = 'container name-above-row';
-            var top = document.createElement('div');
-            top.className = 'container sprite-row';
-            var bot = document.createElement('div');
-            bot.className = 'container shadow-row';
-            var nameBelowRow = (!nameAbove && !nameHidden) ? document.createElement('div') : null;
-            if (nameBelowRow) nameBelowRow.className = 'container';
-            team.forEach(function (slot) {
-                if (!slot || !slot.url) return;
-                var pk = document.createElement('div');
-                pk.className = 'pkDiv' + (slot.name && FLOATING_POKEMON.has(slot.name) ? ' pkDiv--float' : '');
-                if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
-                pk.appendChild(makeImg(slot.url, slot.fallback, null));
-                top.appendChild(pk);
 
-                var sh = document.createElement('div');
-                sh.className = 'shadowDiv';
-                if (shadows) sh.appendChild(makeImg(SHADOW_URL, null, null));
-                bot.appendChild(sh);
+            function appendRow(slots) {
+                var nameAboveRow = nameAbove ? document.createElement('div') : null;
+                if (nameAboveRow) nameAboveRow.className = 'container name-above-row';
+                var top = document.createElement('div');
+                top.className = 'container sprite-row';
+                var bot = document.createElement('div');
+                bot.className = 'container shadow-row';
+                var nameBelowRow = (!nameAbove && !nameHidden) ? document.createElement('div') : null;
+                if (nameBelowRow) nameBelowRow.className = 'container';
+                slots.forEach(function (slot) {
+                    if (!slot || !slot.url) return;
+                    var pk = document.createElement('div');
+                    pk.className = 'pkDiv' + (slot.name && FLOATING_POKEMON.has(slot.name) ? ' pkDiv--float' : '');
+                    if (bg) pk.appendChild(makeImg(POKEBALL_URL, null, 'position:absolute;width:225px;height:150px;z-index:-1;'));
+                    pk.appendChild(makeImg(slot.url, slot.fallback, null));
+                    top.appendChild(pk);
+                    var sh = document.createElement('div');
+                    sh.className = 'shadowDiv';
+                    if (shadows) sh.appendChild(makeImg(SHADOW_URL, null, null));
+                    bot.appendChild(sh);
+                    var p = document.createElement('p');
+                    p.style.cssText = pStyle;
+                    p.textContent = slot.mote || '';
+                    var nd = document.createElement('div');
+                    nd.className = 'nameDiv';
+                    nd.appendChild(p);
+                    if (nameAboveRow) nameAboveRow.appendChild(nd);
+                    if (nameBelowRow) nameBelowRow.appendChild(nd);
+                });
+                if (nameAboveRow) root.appendChild(nameAboveRow);
+                root.appendChild(top);
+                root.appendChild(bot);
+                if (nameBelowRow) root.appendChild(nameBelowRow);
+            }
 
-                var p = document.createElement('p');
-                p.style.cssText = pStyle;
-                p.textContent = slot.mote || '';
-                var nd = document.createElement('div');
-                nd.className = 'nameDiv';
-                nd.appendChild(p);
-                if (nameAboveRow) nameAboveRow.appendChild(nd);
-                if (nameBelowRow) nameBelowRow.appendChild(nd);
-            });
-            if (nameAboveRow) root.appendChild(nameAboveRow);
-            root.appendChild(top);
-            root.appendChild(bot);
-            if (nameBelowRow) root.appendChild(nameBelowRow);
+            if (layout === 'h3x2') {
+                appendRow(team.slice(0, 3));
+                appendRow(team.slice(3, 6));
+            } else {
+                appendRow(team);
+            }
         }
     }
 
