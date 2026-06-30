@@ -33,8 +33,8 @@ const STRINGS = {
         publishErr:          'Error al publicar. ¿Está configurado Ably?',
         newChannel:          '🔄 Nuevo enlace',
         newChannelConfirm:   '¿Generar un nuevo enlace? Tendrás que actualizar la URL en OBS y el enlace de editor.',
-        previewVertical:    'Vista previa no disponible en modo vertical. Ve a',
-        previewVerticalEnd: 'para ver el output.',
+        previewVertical:    'Vista previa no disponible en modo vertical.',
+        previewVerticalLink: 'Ver output',
         sharePromptCopy:  'Copia este enlace:',
         presets:          'Presets',
         presetSavePrompt: 'Nombre del preset:',
@@ -127,8 +127,8 @@ const STRINGS = {
         publishErr:          'Publish error. Is Ably configured?',
         newChannel:          '🔄 New link',
         newChannelConfirm:   'Generate a new link? You will need to update the URL in OBS.',
-        previewVertical:    'Preview not available in vertical mode. Go to',
-        previewVerticalEnd: 'to view the output.',
+        previewVertical:    'Preview not available in vertical mode.',
+        previewVerticalLink: 'View output',
         sharePromptCopy:  'Copy this link:',
         presets:          'Presets',
         presetSavePrompt: 'Preset name:',
@@ -1164,7 +1164,7 @@ function updatePreview() {
 
     if (!isHoriz(layout)) {
         const overlayUrl = `${window.location.origin}/overlay.html?id=${channelId || ''}`;
-        msg.innerHTML     = `${t('previewVertical')} <a href="${overlayUrl}" target="_blank">${overlayUrl}</a> ${t('previewVerticalEnd')}`;
+        msg.innerHTML     = `${t('previewVertical')} <a href="${overlayUrl}" target="_blank" style="color:var(--blue)">${t('previewVerticalLink')}</a>`;
         msg.style.display     = '';
         wrapper.style.display = 'none';
         return;
