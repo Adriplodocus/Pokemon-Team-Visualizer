@@ -29,4 +29,10 @@ const PATCH_NOTES = [
         title: { es: 'Level caps', en: 'Level caps' },
         body:  { es: 'Ahora puedes comprobar el level cap de cada gimnasio en la página "Medallas".', en: 'You can now check the level cap for each gym on the "Badges" page.' },
     },
+    {
+        id: 'layout_options',
+        date: '30/06/2026',
+        title: { es: 'Layouts en grid', en: 'Grid layouts' },
+        body:  { es: 'Ahora puedes seleccionar layouts en grid para tu equipo desde el panel de diseño.', en: 'You can now select grid layouts for your team from the design panel.' },
+    },
 ];
