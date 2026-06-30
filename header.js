@@ -91,7 +91,6 @@ function applyHeaderLang() {
 }
 
 function initDonationBanner() {
-    if (localStorage.getItem('ptv_donation_dismissed')) return;
     const banner = document.createElement('div');
     banner.className = 'donation-banner';
     banner.setAttribute('role', 'banner');
@@ -100,12 +99,7 @@ function initDonationBanner() {
         <div class="donation-banner-inner">
             <span class="donation-banner-icon" aria-hidden="true">★</span>
             <span data-i18n-header="donationMsg">${s.donationMsg}</span>
-        </div>
-        <button class="donation-banner-close" aria-label="Cerrar">✕</button>`;
-    banner.querySelector('.donation-banner-close').addEventListener('click', () => {
-        banner.remove();
-        localStorage.setItem('ptv_donation_dismissed', '1');
-    });
+        </div>`;
     const app = document.getElementById('app');
     const header = document.querySelector('header');
     if (app) app.insertAdjacentElement('afterbegin', banner);
