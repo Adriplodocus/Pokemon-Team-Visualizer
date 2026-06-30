@@ -8,45 +8,61 @@
 *{box-sizing:border-box;}
 body,html{margin:0;padding:0;background:transparent;}
 
-/* ── Horizontal ── */
-body.layout-horizontal .container{display:flex;flex-wrap:nowrap;}
-body.layout-horizontal .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
-body.layout-horizontal .pkDiv--float{align-items:center;}
-body.layout-horizontal .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
-body.layout-horizontal .sprite-row{position:relative;z-index:1;}
-body.layout-horizontal .shadow-row{margin-top:-15px;}
-body.layout-horizontal .nameDiv{flex:0 0 225px;width:225px;}
-body.layout-horizontal img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
-body.layout-horizontal p{margin:0;height:35px;line-height:35px;text-align:center;}
-body.layout-horizontal .name-above-row{padding-top:10px;}
+/* ── h6x1 / h3x2 shared rules ── */
+body.layout-h6x1 .pkDiv,body.layout-h3x2 .pkDiv{flex:0 0 225px;width:225px;height:150px;position:relative;display:flex;align-items:flex-end;justify-content:center;overflow:hidden;}
+body.layout-h6x1 .pkDiv--float,body.layout-h3x2 .pkDiv--float{align-items:center;}
+body.layout-h6x1 .shadowDiv,body.layout-h3x2 .shadowDiv{flex:0 0 225px;width:225px;height:40px;padding-top:5px;}
+body.layout-h6x1 .sprite-row,body.layout-h3x2 .sprite-row{position:relative;z-index:1;}
+body.layout-h6x1 .shadow-row,body.layout-h3x2 .shadow-row{margin-top:-15px;}
+body.layout-h6x1 .nameDiv,body.layout-h3x2 .nameDiv{flex:0 0 225px;width:225px;}
+body.layout-h6x1 img,body.layout-h3x2 img{width:100%;height:100%;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;display:block;}
+body.layout-h6x1 p,body.layout-h3x2 p{margin:0;height:35px;line-height:35px;text-align:center;}
+body.layout-h6x1 .name-above-row,body.layout-h3x2 .name-above-row{padding-top:10px;}
 
-/* ── Vertical ── */
-body.layout-vertical .wrapper{display:flex;flex-direction:column;}
-body.layout-vertical .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
-body.layout-vertical .pkDiv{width:225px;position:relative;}
-body.layout-vertical .shadowDiv{width:150px;margin-top:-15px;min-height:20px;}
-body.layout-vertical img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;}
-body.layout-vertical p{margin:0 0 6px;padding:0;height:auto;line-height:1.2;text-align:center;}
+/* ── h6x1 specific ── */
+body.layout-h6x1 .container{display:flex;flex-wrap:nowrap;}
+
+/* ── h3x2 specific ── */
+body.layout-h3x2 .container{display:flex;flex-wrap:wrap;max-width:675px;}
+
+/* ── v1x6 / v2x3 shared rules ── */
+body.layout-v1x6 .pair,body.layout-v2x3 .pair{display:flex;flex-direction:column;margin:0;padding:0;margin-bottom:20px;width:225px;align-items:center;}
+body.layout-v1x6 .pkDiv,body.layout-v2x3 .pkDiv{width:225px;position:relative;}
+body.layout-v1x6 .shadowDiv,body.layout-v2x3 .shadowDiv{width:150px;margin-top:-15px;min-height:20px;}
+body.layout-v1x6 img,body.layout-v2x3 img{display:block;width:100%;height:auto;max-height:150px;object-fit:contain;object-position:bottom center;pointer-events:none;user-select:none;}
+body.layout-v1x6 p,body.layout-v2x3 p{margin:0 0 6px;padding:0;height:auto;line-height:1.2;text-align:center;}
+
+/* ── v1x6 specific ── */
+body.layout-v1x6 .wrapper{display:flex;flex-direction:column;}
+
+/* ── v2x3 specific ── */
+body.layout-v2x3 .wrapper{display:flex;flex-wrap:wrap;width:450px;}
 
 /* ── Animations ── */
 @keyframes fadeSlideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
 
-body.layout-horizontal .pkDiv,
-body.layout-horizontal .shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
-body.layout-horizontal .pkDiv:nth-child(1),body.layout-horizontal .shadowDiv:nth-child(1){animation-delay:0.00s;}
-body.layout-horizontal .pkDiv:nth-child(2),body.layout-horizontal .shadowDiv:nth-child(2){animation-delay:0.12s;}
-body.layout-horizontal .pkDiv:nth-child(3),body.layout-horizontal .shadowDiv:nth-child(3){animation-delay:0.24s;}
-body.layout-horizontal .pkDiv:nth-child(4),body.layout-horizontal .shadowDiv:nth-child(4){animation-delay:0.36s;}
-body.layout-horizontal .pkDiv:nth-child(5),body.layout-horizontal .shadowDiv:nth-child(5){animation-delay:0.48s;}
-body.layout-horizontal .pkDiv:nth-child(6),body.layout-horizontal .shadowDiv:nth-child(6){animation-delay:0.60s;}
+body.layout-h6x1 .pkDiv,body.layout-h6x1 .shadowDiv,
+body.layout-h3x2 .pkDiv,body.layout-h3x2 .shadowDiv{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
+body.layout-h6x1 .pkDiv:nth-child(1),body.layout-h6x1 .shadowDiv:nth-child(1),
+body.layout-h3x2 .pkDiv:nth-child(1),body.layout-h3x2 .shadowDiv:nth-child(1){animation-delay:0.00s;}
+body.layout-h6x1 .pkDiv:nth-child(2),body.layout-h6x1 .shadowDiv:nth-child(2),
+body.layout-h3x2 .pkDiv:nth-child(2),body.layout-h3x2 .shadowDiv:nth-child(2){animation-delay:0.12s;}
+body.layout-h6x1 .pkDiv:nth-child(3),body.layout-h6x1 .shadowDiv:nth-child(3),
+body.layout-h3x2 .pkDiv:nth-child(3),body.layout-h3x2 .shadowDiv:nth-child(3){animation-delay:0.24s;}
+body.layout-h6x1 .pkDiv:nth-child(4),body.layout-h6x1 .shadowDiv:nth-child(4),
+body.layout-h3x2 .pkDiv:nth-child(4),body.layout-h3x2 .shadowDiv:nth-child(4){animation-delay:0.36s;}
+body.layout-h6x1 .pkDiv:nth-child(5),body.layout-h6x1 .shadowDiv:nth-child(5),
+body.layout-h3x2 .pkDiv:nth-child(5),body.layout-h3x2 .shadowDiv:nth-child(5){animation-delay:0.48s;}
+body.layout-h6x1 .pkDiv:nth-child(6),body.layout-h6x1 .shadowDiv:nth-child(6),
+body.layout-h3x2 .pkDiv:nth-child(6),body.layout-h3x2 .shadowDiv:nth-child(6){animation-delay:0.60s;}
 
-body.layout-vertical .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
-body.layout-vertical .pair:nth-child(1){animation-delay:0.00s;}
-body.layout-vertical .pair:nth-child(2){animation-delay:0.12s;}
-body.layout-vertical .pair:nth-child(3){animation-delay:0.24s;}
-body.layout-vertical .pair:nth-child(4){animation-delay:0.36s;}
-body.layout-vertical .pair:nth-child(5){animation-delay:0.48s;}
-body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
+body.layout-v1x6 .pair,body.layout-v2x3 .pair{animation:fadeSlideUp 0.45s ease forwards;opacity:0;}
+body.layout-v1x6 .pair:nth-child(1),body.layout-v2x3 .pair:nth-child(1){animation-delay:0.00s;}
+body.layout-v1x6 .pair:nth-child(2),body.layout-v2x3 .pair:nth-child(2){animation-delay:0.12s;}
+body.layout-v1x6 .pair:nth-child(3),body.layout-v2x3 .pair:nth-child(3){animation-delay:0.24s;}
+body.layout-v1x6 .pair:nth-child(4),body.layout-v2x3 .pair:nth-child(4){animation-delay:0.36s;}
+body.layout-v1x6 .pair:nth-child(5),body.layout-v2x3 .pair:nth-child(5){animation-delay:0.48s;}
+body.layout-v1x6 .pair:nth-child(6),body.layout-v2x3 .pair:nth-child(6){animation-delay:0.60s;}
 </style>
 </head>
 <body>
@@ -56,6 +72,16 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
 (function () {
     var SHADOW_URL   = 'https://i.postimg.cc/xdmpF4Tm/Shadow.png';
     var POKEBALL_URL = 'https://i.postimg.cc/0QdW9KS2/Pokeball-Background.png';
+
+    function normalizeLayout(v) {
+        if (v === 'horizontal') return 'h6x1';
+        if (v === 'vertical')   return 'v1x6';
+        return v;
+    }
+
+    function isHoriz(layout) {
+        return layout.startsWith('h');
+    }
 
     var FLOATING_POKEMON = new Set([
         'wingull','kyogre','swellow','vibrava','mantine','yanmega','yanma','tropius','regieleki',
@@ -71,7 +97,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
 
     function renderTeam(data) {
         var team    = data.team    || [];
-        var layout  = data.layout  || 'horizontal';
+        var layout  = normalizeLayout(data.layout  || 'h6x1');
         var shadows = data.shadows !== false;
         var bg      = data.bg      !== false;
         var typo = data.typography || {
@@ -111,7 +137,7 @@ body.layout-vertical .pair:nth-child(6){animation-delay:0.60s;}
             return img;
         }
 
-        if (layout === 'vertical') {
+        if (!isHoriz(layout)) {
             var wrapper = document.createElement('div');
             wrapper.className = 'wrapper';
             team.forEach(function (slot) {
