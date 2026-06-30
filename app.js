@@ -33,7 +33,8 @@ const STRINGS = {
         publishErr:          'Error al publicar. ¿Está configurado Ably?',
         newChannel:          '🔄 Nuevo enlace',
         newChannelConfirm:   '¿Generar un nuevo enlace? Tendrás que actualizar la URL en OBS y el enlace de editor.',
-        previewVertical:  'La vista previa solo está disponible en modo horizontal.',
+        previewVertical:    'Vista previa no disponible en modo vertical. Ve a',
+        previewVerticalEnd: 'para ver el output.',
         sharePromptCopy:  'Copia este enlace:',
         presets:          'Presets',
         presetSavePrompt: 'Nombre del preset:',
@@ -126,7 +127,8 @@ const STRINGS = {
         publishErr:          'Publish error. Is Ably configured?',
         newChannel:          '🔄 New link',
         newChannelConfirm:   'Generate a new link? You will need to update the URL in OBS.',
-        previewVertical:  'Live preview is only available in horizontal mode.',
+        previewVertical:    'Preview not available in vertical mode. Go to',
+        previewVerticalEnd: 'to view the output.',
         sharePromptCopy:  'Copy this link:',
         presets:          'Presets',
         presetSavePrompt: 'Preset name:',
@@ -1160,6 +1162,15 @@ function updatePreview() {
     const msg     = document.getElementById('preview-msg');
     const wrapper = document.getElementById('preview-wrapper');
 
+    if (!isHoriz(layout)) {
+        const overlayUrl = `${window.location.origin}/overlay.html?id=${channelId || ''}`;
+        msg.innerHTML     = `${t('previewVertical')} <a href="${overlayUrl}" target="_blank">${overlayUrl}</a> ${t('previewVerticalEnd')}`;
+        msg.style.display     = '';
+        wrapper.style.display = 'none';
+        return;
+    }
+
+    msg.innerHTML         = '';
     msg.style.display     = 'none';
     wrapper.style.display = '';
 
@@ -1173,31 +1184,22 @@ function updatePreview() {
 
     const nameH    = Math.max(typography.size, 25);
     const overlayH = 175 + nameH + 10;
+    const is3x2    = layout === 'h3x2';
+    const iframeW  = is3x2 ? 675  : 1350;
+    const iframeH  = is3x2 ? overlayH * 2 : overlayH;
 
-    let iframeW, iframeH, scale;
-    switch (layout) {
-        case 'h3x2':
-            iframeW = 675;  iframeH = overlayH * 2;
-            scale   = Math.min(230 / iframeH, containerW / iframeW);
-            break;
-        case 'v1x6':
-            iframeW = 265;  iframeH = 1350;
-            scale   = Math.min(230 / iframeH, containerW / iframeW);
-            break;
-        case 'v2x3':
-            iframeW = 530;  iframeH = 675;
-            scale   = Math.min(230 / iframeH, containerW / iframeW);
-            break;
-        default: // h6x1
-            iframeW = 1350; iframeH = overlayH;
-            scale   = Math.max(containerW / iframeW, 0.75);
+    let scale;
+    if (is3x2) {
+        scale = Math.min(230 / iframeH, containerW / iframeW);
+    } else {
+        scale = Math.max(containerW / iframeW, 0.75);
     }
 
     iframe.style.width     = iframeW + 'px';
     iframe.style.height    = iframeH + 'px';
     iframe.style.transform = `translate(-50%, -50%) scale(${scale})`;
     wrapper.style.width    = '';
-    wrapper.style.height   = layout === 'h6x1' ? '' : '230px';
+    wrapper.style.height   = is3x2 ? '230px' : '';
     wrapper.style.margin   = '0';
 
     iframe.srcdoc = buildOverlayHTML(layout, shadows, bg, typography);
