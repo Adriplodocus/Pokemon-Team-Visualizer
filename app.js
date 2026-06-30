@@ -1164,7 +1164,7 @@ function updatePreview() {
 
     if (!isHoriz(layout)) {
         const overlayUrl = `${window.location.origin}/overlay.html?id=${channelId || ''}`;
-        msg.innerHTML     = `${t('previewVertical')} <a href="${overlayUrl}" target="_blank" style="color:var(--blue)">${t('previewVerticalLink')}</a>`;
+        msg.innerHTML     = `${t('previewVertical')} <a href="${overlayUrl}" target="_blank" style="color:var(--cyan)">${t('previewVerticalLink')}</a>`;
         msg.style.display     = '';
         wrapper.style.display = 'none';
         return;
